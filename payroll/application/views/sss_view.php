@@ -1,90 +1,104 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <html>
-
+<title>SSS Table</title>
 <head>
-<title>PCC Dairy Corner</title>
-<link rel='stylesheet' type='text/css' media='all' href='<?php echo base_url()."css/product.css"?>' />
+<script type="text/javascript" src="jquery.columnhover.js"></script>
+<script type="text/javascript" src="jquery.columnhover.pack.js "></script>
+<script type="text/javascript">
 
-	<title><?=$title;?></title>
+$(document).ready(function()
+
+{
+	$('#tabletwo').columnHover({eachCell:true, hoverClass:'betterhover'});
+
+});
+
+</script>
+<style type="text/css">
+table
+{
+	margin: 10px 50px;
+	border: 1px solid gray;
+	border-collapse: collapse;
+	border-spacing: 0;
+	text-align: center;
+	
+}thead
+{
+	background: bisque;
+}
+pre
+{
+	background-color: LemonChiffon;
+	border: 1px solid gray;
+}
+td, th
+{
+	border: 1px solid gray;
+}
+td.betterhover, #tabletwo tbody tr:hover
+{
+	background: LightCyan;
+}
+</style>
 </head>
-
 <body>
-<br/><br/>
-<div id="page">
-	<?php 
-				echo "<a class = 'active' href = 'dropdown1/logout' id = 'cname' alignment = 'left' > Sign out </a>";
-				
-			?>	
-	<div id="contentarea">
-		<br/><br/>
-		<table id="tab" bordercolor="#9ac1c9" border="5" >
-				<tr id="tr_header">
-				<th id="10">Employee Number</th>
-				<th id="40">Password</th>
-				<th id="10">Type</th>
-				<th id="10">Fname</th>
-				<th id="10">Mname</th>
-				<th id="10">Lname</th>
-				</tr>
+<center>
+<table id="tabletwo">
+	<thead>
+	<tr>
+		<th colspan="2" rowspan="3">Range<br/> of<br/> Compensation</th>
+		<th rowspan="3"> Monthly<br/> Salary<br/> Credit</th>
+		<th colspan="7">EMPLOYER-EMPLOYEE</th>
+		<th >SE/VM/OFW</th>
+		<tr>
+		<th colspan="3">SOCIAL SECURITY</th>
+		<th >EC</th>
+		<th colspan="3">TOTAL CONTRIBUTION</th>
+		<th rowspan="2">TOTAL<br/>CONTRIBUTION</th>
+		</tr>
+		<tr>
+		<th>ER</th>
+		<th>EE</th>
+		<th>Total</th>
+		<th>EC</th>
+		<th>ER</th>
+		<th>EE</th>
+		<th>Total</th>
+		</tr>
+	</tr>
+	</thead>
+<?php
+	$cnt=1;
+	 //if ($cnt==$trows)echo "over"; else echo $row->rangeh; 
+	foreach ($query as $row){
+?>	
+	<tr>
+		<td colspan="2"><?php if ($cnt==$trows)echo $row->rangel."-over"; else echo $row->rangel."-".$row->rangeh; ?></td>
+		<td><?php echo $row->msc; ?></td>
+		<td><?php echo $row->ser; ?></td>
+		<td><?php echo $row->see; ?></td>
+		<td><?php echo $row->stotal; ?></td>
+		<td><?php echo $row->ecer; ?></td>
+		<td><?php echo $row->ter; ?></td>
+		<td><?php echo $row->tee; ?></td>
+		<td><?php echo $row->ttotal; ?></td>
+		<td><?php echo $row->totalcont; $cnt++;?></td>
+		<td>
+		
+		<?php
+			$hidden=$row->id;
+			echo form_open('sss/edit'); 
+			echo form_hidden('hidden', $hidden);
+			echo form_submit('mysubmit','Edit!'); 
+			echo form_close(); 
+		?></td>
 
-				<!--HELPFUL DYNAMIC TABLE (FOR LOOP NG PHP)
-					MAKIKITA KAGAD PAG-UPDATE SA DATABASE
-				-->
-				<?php
-				echo form_open('user');
-				$n=0;
-				foreach($result->result_array() as $entry):
-					
-					
-				
-					
-					if($result == NULL){echo "null";}else{ //if null display NULL pero ayaw!
-					if($n%2==0){
-						echo"<tr id=\"row1\" > "; 
-					}else{
-						echo"<tr id=\"row2\" > "; 
-					}$n++;
-					
-					echo"<th id=\"10\">";
-					echo $entry['empnum'];
-					echo"</th>";
-					echo"<th id=\"40\">";
-					echo $entry['password'];
-					echo"</th>";
-					echo "<td id=\"10\">";
-					echo $entry['type'];
-					echo"</td>";
-					echo "<td id=\"10\">";
-					echo $entry['fname'];
-					echo"</td>";
-					echo "<td id=\"10\">";
-					echo $entry['mname'];
-					echo"</td>";
-					echo "<td id=\"10\">";
-					echo $entry['lname'];
-					echo"</td>";
-					
-					
-					echo "</tr>";
-					}
-				
-				 endforeach;
-
-			echo "</table>";
-			
-			echo form_close();
-			?>
-			
-	</div>
-	
-	
-	
-	<div id="footer">
-		<a href="http://www.templatesold.com/" target="_blank">Website Templates</a> by <a href="http://www.free-css-templates.com/" target="_blank">Free CSS Templates</a>	</div>
-
-</div>
-
+	</tr>
+<?php
+	}
+?>
+<tfoot></tfoot>
+</table>
 </body>
-
+</center>
 </html>
