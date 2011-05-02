@@ -4,6 +4,9 @@
 		// load Controller constructor
 			
 			parent::__construct();
+			
+			//$this->load->model('sniffBrowser_model');		//for browser-related issues use in the future
+			
 			// load the model we will be using
 			$this->load->library('session');
 			$this->load->model('login_model');
