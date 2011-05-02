@@ -1,8 +1,10 @@
 <html>
-<title>SSS Table</title>
+<title>Edit SSS Table</title>
 <head>
-<script type="text/javascript" src="jquery.columnhover.js"></script>
-<script type="text/javascript" src="jquery.columnhover.pack.js "></script>
+<script type="text/javascript" src="system/application/views/jquery.columnhover.js"></script>
+<script type="text/javascript" src="system/application/views/jquery.columnhover.pack.js "></script>
+<link rel="stylesheet" type="text/css" href="system/application/views/style.css" media="screen" />
+
 <script type="text/javascript">
 
 $(document).ready(function()

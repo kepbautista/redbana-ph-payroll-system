@@ -1,32 +1,36 @@
 <?php
-	class Philhealth_table extends CI_Controller {
-	
-		function __construct(){
-		// load Controller constructor
-			parent::__construct();
-			// load the model we will be using
-			$this->load->model('philhealth_model');
-			$this->load->library('session');	
-			// load the database and connect to MySQL
-			$this->load->database();
-			// load the needed helpers
-			$this->load->helper(array('form','url'));
-			}
-			//Display the posted entries
-			function index() {
-			if ($this->session->userdata('logged_in') != TRUE)
-				{
-					redirect('login');
-				}		
-				//LOAD DATA FROM DATABASE	
-				$data['title']='User List';
-				
-				//use the model to get all entries
-				
-				$data['result'] = $this->philhealth_model->get_all_data();
-				// load 'forms_view' view
-				$this->load->view('philhealth_view',$data);
-			
-			}
+class Sss extends CI_Controller {
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->helper('url');
 	}
+	function GetAll()
+	{
+	$this->load->helper('form');  
+	$this->load->model('Sss_model');
+	$data['query']=$this->Sss_model->Sss_getall();
+	$data['trows']=$this->Sss_model->Sss_numrows();
+	$this->load->view('sss_view',$data);
+	}	
+	function Edit()
+	{
+	$this->load->helper('form');  
+	$this->load->model('Sss_model');
+	$data['edit'] = $this->input->post('hidden');
+	$data['query']=$this->Sss_model->Sss_getall();
+	$data['trows']=$this->Sss_model->Sss_numrows();
+	$this->load->view('sss_edit',$data);	
+	}
+	function Update()
+	{
+	$this->load->helper('form');  
+	$this->load->model('Sss_model');
+	$this->Sss_model->Sss_update();//($this->input->post('hidden'),$this->input->post('rangel'),$this->input->post('rangeh'),$this->input->post('msc'),$this->input->post('ser'),$this->input->post('stotal'),$this->input->post('ecer'),$this->input->post('ter'),$this->input->post('tee'),$this->input->post('ttotal'),$this->input->post('totalcont'));
+	$data['query']=$this->Sss_model->Sss_getall();
+	$data['trows']=$this->Sss_model->Sss_numrows();
+	$this->load->view('sss_view',$data);
+	}	
+}
 ?>
