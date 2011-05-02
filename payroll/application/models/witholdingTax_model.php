@@ -43,12 +43,12 @@
 		$fields = array(		 						
 			"EXEMPTION_DEFINITE",
 			"EXEMPTION_PERCENT",
-			"STAT_A_Z",
-			"STAT_A_SME",
-			"STAT_B_MES1",
-			"STAT_B_MES2",
-			"STAT_B_MES3",
-			"STAT_B_MES4"
+			"A_Z",
+			"A_SME",
+			"B_MES1",
+			"B_MES2",
+			"B_MES3",
+			"B_MES4"
 		);
 		foreach($fields as $fields_individual)
 		{						
