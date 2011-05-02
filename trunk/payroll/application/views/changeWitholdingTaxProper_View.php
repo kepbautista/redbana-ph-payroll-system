@@ -222,9 +222,9 @@
 			1. Z
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" name="stat_a_z" 
+			<input type="text" name="a_z" 
 			value="<?php
-			      	echo $bracket_Detail_Local->STAT_A_Z;
+			      	echo $bracket_Detail_Local->A_Z;
 			      ?>" />
 		</div>		
 		<br/>
@@ -232,9 +232,9 @@
 			2. S/ME
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" name="stat_a_sme" 
+			<input type="text" name="a_sme" 
 			value="<?php
-			      	echo $bracket_Detail_Local->STAT_A_SME;
+			      	echo $bracket_Detail_Local->A_SME;
 			      ?>" />
 		</div>		
 		<div id="payment_mode_subdivide" >
@@ -245,36 +245,36 @@
 			1. ME1/S1
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" name="stat_b_mes1" 
+			<input type="text" name="b_mes1" 
 			value="<?php
-			      	echo $bracket_Detail_Local->STAT_B_MES1;
+			      	echo $bracket_Detail_Local->B_MES1;
 			      ?>" />
 		</div>	
 		<div class="main_Fieldbox_descriptor">
 			2. ME2/S2
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" name="stat_b_mes2" 
+			<input type="text" name="b_mes2" 
 			value="<?php
-			      	echo $bracket_Detail_Local->STAT_B_MES2;
+			      	echo $bracket_Detail_Local->B_MES2;
 			      ?>" />
 		</div>	
 		<div class="main_Fieldbox_descriptor">
 			3. ME3/S3
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" name="stat_b_mes3" 
+			<input type="text" name="b_mes3" 
 			value="<?php
-			      	echo $bracket_Detail_Local->STAT_B_MES3;
+			      	echo $bracket_Detail_Local->B_MES3;
 			      ?>" />
 		</div>	
 		<div class="main_Fieldbox_descriptor">
 			4. ME4/S4
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" name="stat_b_mes4" 
+			<input type="text" name="b_mes4" 
 			value="<?php
-			      	echo $bracket_Detail_Local->STAT_B_MES4;
+			      	echo $bracket_Detail_Local->B_MES4;
 			      ?>" />
 		</div>		
 		<div class="buttonCollection" >

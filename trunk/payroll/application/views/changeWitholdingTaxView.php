@@ -164,12 +164,12 @@
 		 						"BRACKET" => $row_x->BRACKET,
 		 						"EXEMPTION_DEFINITE" => $row_x->EXEMPTION_DEFINITE,
 		 						"EXEMPTION_PERCENT" => $row_x->EXEMPTION_PERCENT,
-		 						"STAT_A_Z" => $row_x->STAT_A_Z,
-		 						"STAT_A_SME" => $row_x->STAT_A_SME,
-		 						"STAT_B_MES1" => $row_x->STAT_B_MES1,
-		 						"STAT_B_MES2" => $row_x->STAT_B_MES2,
-		 						"STAT_B_MES3" => $row_x->STAT_B_MES3,
-		 						"STAT_B_MES4" => $row_x->STAT_B_MES4
+		 						"STAT_A_Z" => $row_x->A_Z,
+		 						"STAT_A_SME" => $row_x->A_SME,
+		 						"STAT_B_MES1" => $row_x->B_MES1,
+		 						"STAT_B_MES2" => $row_x->B_MES2,
+		 						"STAT_B_MES3" => $row_x->B_MES3,
+		 						"STAT_B_MES4" => $row_x->B_MES4
 	 	);
 	 }
 	 
