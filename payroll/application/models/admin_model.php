@@ -5,10 +5,10 @@ function Signupmodel(){
 // load the parent constructor
 parent::__Model;
 }
-function submit_posted_data($fname, $mname, $lname, $eadd, $empnum,$passwrd) {
+function submit_posted_data($fname, $mname, $sname, $eadd, $empnum,$password,$status,$mrate,$payment_mode,$position,$dept,$gender,$sdate,$bdate,$type) {
 // db is initialized in the controller, to interact with the database.
-	$data = array('fname'=>$this->input->post('fname'),'mname'=>$this->input->post('mname'),'lname'=>$this->input->post('lname'), 'email'=>$this->input->post('eadd'), 'empnum'=>$this->input->post('empnum'), 'password'=>$this->input->post('passwrd'),'Class'=>'cashier'); 
-	$this->db->insert('user',$data);
+	$data = array('fname'=>$this->input->post('fname'),'mname'=>$this->input->post('mname'),'sname'=>$this->input->post('sname'), 'email'=>$this->input->post('eadd'), 'empnum'=>$this->input->post('empnum'), 'password'=>$this->input->post('password'),'status'=>$this->input->post('status'), 'mrate'=>$this->input->post('mrate'),'payment_mode'=>$this->input->post('payment_mode'),'position'=>$this->input->post('position'),'dept'=>$this->input->post('dept'),'gender'=>$this->input->post('gender'),'sdate'=>$this->input->post('sdate'),'bdate'=>$this->input->post('bdate')); 
+	$this->db->insert('employee',$data);
 	
 }
 /*
@@ -47,7 +47,7 @@ function validate_superuser($empnum1)
 {
 		$this->db->where('empnum', $empnum1);
 		$this->db->where('type', "superuser");
-		$query = $this->db->get('user');	
+		$query = $this->db->get('employee');	
 		if($query->num_rows == 1)return true;
 		else return false;
 }
@@ -55,7 +55,7 @@ function validate_hr($empnum1)
 {
 		$this->db->where('empnum', $empnum1);
 		$this->db->where('type', "hr");
-		$query = $this->db->get('user');	
+		$query = $this->db->get('employee');	
 		if($query->num_rows == 1)return true;
 		else return false;
 }
@@ -63,7 +63,7 @@ function validate_accounting($empnum1)
 {
 		$this->db->where('empnum', $empnum1);
 		$this->db->where('type', "accounting");
-		$query = $this->db->get('user');	
+		$query = $this->db->get('employee');	
 		if($query->num_rows == 1)return true;
 		else return false;
 }
@@ -79,7 +79,7 @@ function validate_supervisor($empnum1)
 {
 		$this->db->where('empnum', $empnum1);
 		$this->db->where('type', "supervisor");
-		$query = $this->db->get('user');	
+		$query = $this->db->get('employee');	
 		if($query->num_rows == 1)return true;
 		else return false;
 }

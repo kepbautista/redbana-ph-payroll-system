@@ -11,7 +11,7 @@ function validate()
 	{
 		$this->db->where('empnum', $this->input->post('empnum'));
 		$this->db->where('password', ($this->input->post('password')));
-		$query = $this->db->get('user');
+		$query = $this->db->get('employee');
 		
 		if($query->num_rows == 1)
 		{
