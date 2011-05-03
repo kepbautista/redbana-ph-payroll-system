@@ -10,6 +10,8 @@
  
  CHANGELOG
  28apr2011 1648h - 1.0.0 - basic basic basic. no mechanism yet for determining if logged in. no form validation.
+ ????			 - 1.1.0 - kristine added form validations sa updateBRacket method
+ 03may2011 1710h - 1.2.0 - now checks if a user is logged in, sa __construct method pa lang. if not, diretso sa login page.
 
 */
 
@@ -19,56 +21,30 @@ class witholdingTaxController extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper('url');		
-	}
-
-	function index()
-	{
-		if
-		(
-		 //put logic here in determining if not logged in
-		 !true
-		)
-		{
+		$this->load->model('login_model');
+		if( ! $this->login_model->isUser_LoggedIn() ) redirect('Login');
 		
-		}else		//user is logged in
-		{
+	}
+	
+	function index()
+	{		
 			$this->load->model('witholdingTax_model', '', TRUE);			
 			$data['details'] = $this->witholdingTax_model->pull_All_Information();			
 			$this->load->view('changeWitholdingTaxView', $data);			
-		}
-	
 	}
 	
 	function editBracket($paymentMode, $bracket)
-	{
-		if
-		(
-		 //put logic here in determining if not logged in
-		 !true
-		)
-		{
-		
-		}else		//user is logged in
-		{
+	{		
 			$this->load->model('witholdingTax_model', '', TRUE);
 			
 			$data['details'] = $this->witholdingTax_model->pull_Single_Info($paymentMode, $bracket);
 			$data['paymentMode_info'] = $this->witholdingTax_model->pull_PaymentMode_Info($paymentMode);
 			$this->load->view('changeWitholdingTaxProper_View', $data);						
-		}
 	}
 	
 	function updateBracket()
 	{
-		if
-		(
-		 //put logic here in determining if not logged in
-		 !true
-		)
-		{
 		
-		}else		//user is logged in
-		{
 					/**FORM VALIDATIONS**/
 					$this->load->library('form_validation');
 					
@@ -95,10 +71,9 @@ class witholdingTaxController extends CI_Controller
 						</script>
 						";
 					}
-		}
+		
 	}
 }
 
 /* End of file witholdingTaxController.php */
 /* Location: ./application/controller/witholdingTaxController.php */
-?>
