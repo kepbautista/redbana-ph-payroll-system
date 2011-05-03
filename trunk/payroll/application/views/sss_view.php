@@ -1,44 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<title>SSS Table</title>
 <head>
+	<title>SSS Table</title>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.pack.js "></script>
 <link rel="stylesheet" type="text/css" href="/cody/style.css" media="screen" />
 <script type="text/javascript">
-$(document).ready(function()
 
-{
+$(document).ready(function(){
 	$('#tabletwo').columnHover({eachCell:true, hoverClass:'betterhover'});
-
 });
 
 </script>
 <style type="text/css">
-table
-{
+table{
 	margin: 10px 50px;
 	border: 1px solid gray;
 	border-collapse: collapse;
 	border-spacing: 0;
 	text-align: center;
-	
-}thead
-{
+}
+
+thead{
 	background: bisque;
 }
-pre
-{
+
+pre{
 	background-color: LemonChiffon;
 	border: 1px solid gray;
 }
-td, th
-{
+
+td, th{
 	border: 1px solid gray;
 }
 td.betterhover, #tabletwo tbody tr:hover
 {
 	background: LightCyan;
 }
+
 </style>
 </head>
 <body>
@@ -46,15 +45,15 @@ td.betterhover, #tabletwo tbody tr:hover
 <table id="tabletwo">
 	<thead>
 	<tr>
-		<th colspan="2" rowspan="3">Range<br/> of<br/> Compensation</th>
-		<th rowspan="3"> Monthly<br/> Salary<br/> Credit</th>
-		<th colspan="7">EMPLOYER-EMPLOYEE</th>
-		<th >SE/VM/OFW</th>
+		<th colspan="2" rowspan="3"> Range <br /> of <br/> Compensation </th>
+		<th rowspan="3"> Monthly <br /> Salary <br /> Credit </th>
+		<th colspan="7"> EMPLOYER-EMPLOYEE </th>
+		<th> SE/VM/OFW </th>
 		<tr>
-		<th colspan="3">SOCIAL SECURITY</th>
-		<th >EC</th>
-		<th colspan="3">TOTAL CONTRIBUTION</th>
-		<th rowspan="2">TOTAL<br/>CONTRIBUTION</th>
+		<th colspan="3"> SOCIAL SECURITY </th>
+		<th> EC </th>
+		<th colspan="3"> TOTAL CONTRIBUTION </th>
+		<th rowspan="2"> TOTAL <br /> CONTRIBUTION </th>
 		</tr>
 		<tr>
 		<th>ER</th>
@@ -78,12 +77,11 @@ td.betterhover, #tabletwo tbody tr:hover
 		<td><?php echo $row->ser; ?></td>
 		<td><?php echo $row->see; ?></td>
 		<td><?php echo $row->stotal; ?></td>
-		<td><?php echo $row->ecer; ?></td>
 		<td><?php echo $row->ter; ?></td>
+		<td><?php echo $row->ecer; ?></td>
 		<td><?php echo $row->tee; ?></td>
 		<td><?php echo $row->ttotal; ?></td>
 		<td><?php echo $row->totalcont; $cnt++;?></td>
-		<td>
 		
 		<?php
 			$hidden=$row->id;

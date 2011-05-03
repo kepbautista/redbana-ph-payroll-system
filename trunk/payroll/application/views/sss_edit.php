@@ -13,29 +13,28 @@ $(document).ready(function()
 });
 </script>
 <style type="text/css">
-table
-{
+table{
 	margin: 10px 50px;
 	border: 1px solid gray;
 	border-collapse: collapse;
 	border-spacing: 0;
-	text-align: center;
-	
-}thead
-{
+	text-align: center;	
+}
+
+thead{
 	background: bisque;
 }
-pre
-{
+
+pre{
 	background-color: LemonChiffon;
 	border: 1px solid gray;
 }
-td, th
-{
+
+td, th{
 	border: 1px solid gray;
 }
-td.betterhover, #tabletwo tbody tr:hover
-{
+
+td.betterhover, #tabletwo tbody tr:hover{
 	background: LightCyan;
 }
 </style>
