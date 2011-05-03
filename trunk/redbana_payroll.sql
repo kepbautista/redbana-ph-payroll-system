@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 03, 2011 at 03:35 AM
+-- Generation Time: May 03, 2011 at 03:59 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,8 +12,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
-
-CREATE DATABASE `redbana_payroll` ;# 1 row(s) affected.
 
 -- --------------------------------------------------------
 
@@ -52,6 +50,66 @@ CREATE TABLE IF NOT EXISTS `department` (
 -- Dumping data for table `department`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+CREATE TABLE IF NOT EXISTS `employee` (
+  `empnum` varchar(50) NOT NULL,
+  `mname` varchar(50) NOT NULL,
+  `sname` varchar(50) NOT NULL,
+  `fname` varchar(50) NOT NULL,
+  `status` int(2) NOT NULL,
+  `mrate` float NOT NULL,
+  `payment_mode` varchar(20) NOT NULL,
+  `position` varchar(50) NOT NULL,
+  `dept` varchar(50) NOT NULL,
+  `gender` varchar(1) NOT NULL,
+  `password` varchar(15) NOT NULL,
+  `sdate` date NOT NULL,
+  `bdate` date NOT NULL,
+  PRIMARY KEY (`empnum`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`) VALUES
+('2007-09334', 'Gesha', 'Chachimichiru', 'Dessa Yesha ', 8, 3457.78, 'Semi Monthly', 'hr', 'hr', 'F', 'mRYK588dje', '0000-00-00', '0000-00-00'),
+('2008-12333', 'Perez', 'Caronan', 'Robby Dave', 7, 1256.45, 'Monthly', 'hr', 'exec', 'M', 'ae0DFOKF8C', '1992-04-03', '1992-04-03'),
+('2008-12345', 'Morena', 'Cristobal', 'Lovelie', 3, 5300, 'Monthly', 'admin', 'admin', 'F', 'fZOCLNjRzI', '1994-04-03', '1990-02-02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee_status`
+--
+
+CREATE TABLE IF NOT EXISTS `employee_status` (
+  `id` int(3) NOT NULL,
+  `desc` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee_status`
+--
+
+INSERT INTO `employee_status` (`id`, `desc`) VALUES
+(1, 'Married Employee whose spouse is unemployed'),
+(2, 'Married Employee whose spouse is a non-resident citizen receiving income from foreign sources'),
+(3, 'Married Employee whose spouse is engaged in business'),
+(4, 'Single with dependent father/mother/brother/sister/senior citizen'),
+(5, 'Single'),
+(6, 'Zero Exemption for Employee with multiple employers for their employers'),
+(7, 'Zero Exemption for those who failed to file Application for Registration'),
+(8, 'Employed husband and husband claims exemptions of children'),
+(9, 'Employed wife whose husband is also employed or engaged in business;husband waived claim for depende'),
+(10, 'Single with qualified dependent children');
 
 -- --------------------------------------------------------
 
@@ -227,15 +285,15 @@ CREATE TABLE IF NOT EXISTS `sss` (
 --
 
 INSERT INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `tee`, `ttotal`, `msc`, `totalcont`, `id`) VALUES
-(1000, 1249.99, 70.7, 33.33, 104, 10, 80.7, 33.3, 114, 1000, 104, 45),
+(1000, 1249.99, 70.7, 33.33, 105, 10, 80.7, 33.3, 114, 1000, 104, 45),
 (1250, 1749.99, 106, 50, 156, 10, 116, 50, 166, 1500, 156, 46),
 (1750, 2249.99, 141.3, 66.7, 208, 10, 151.3, 66.7, 218, 2000, 208, 47),
 (2250, 2749.99, 176.7, 83.3, 260, 10, 186.7, 83.3, 270, 2500, 260, 48),
 (2750, 3249.99, 212, 100, 312, 10, 222, 100, 322, 3000, 312, 49),
-(3250, 3749.99, 247.3, 116.7, 364, 10, 257.3, 116.7, 374, 3500, 364, 50),
+(3250, 3749.99, 247.3, 116.7, 365, 10, 257.3, 116.7, 374, 3500, 364, 50),
 (3750, 4249.99, 282.7, 133.3, 416, 10, 292.7, 133.3, 426, 4000, 416, 51),
 (4250, 4749.99, 318, 150, 468, 10, 328, 150, 478, 4500, 468, 52),
-(4750, 5249.99, 353.3, 166.7, 520, 10, 363.3, 166.7, 530, 5000, 520, 53),
+(4750, 5249.99, 353.3, 166.7, 521, 10, 363.3, 166.7, 530, 5000, 520, 53),
 (5250, 5749.99, 388.7, 183.3, 572, 10, 398.7, 183.3, 582, 5500, 572, 54),
 (5750, 6249.99, 424, 200, 624, 10, 434, 200, 634, 6000, 624, 55),
 (6250, 6749.99, 459.3, 216.7, 676, 10, 469.3, 216.7, 686, 6500, 676, 56),
