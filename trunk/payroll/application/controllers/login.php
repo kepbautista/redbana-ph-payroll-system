@@ -51,10 +51,10 @@
 			$check_emp = $this->admin_model->validate_emp($this->session->userdata('empnum'));
 			$check_supervisor = $this->admin_model->validate_supervisor($this->session->userdata('empnum'));
 			if($check_super) redirect ('super');
-			else if($check_hr) echo "hr to."; 
-			else if($check_accounting) echo "accounting to."; 
-			else if($check_emp) $this->load->view('employee_home');
-			else if($check_supervisor) echo "supervisor to."; 
+			else if($check_hr)  redirect ('hr');
+			else if($check_accounting) redirect ('accounting');
+			else if($check_emp)redirect ('employee_home');
+			else if($check_supervisor) redirect ('supervisor'); 
 			}
 			
 			
