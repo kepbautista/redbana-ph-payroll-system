@@ -10,19 +10,15 @@
 		
 		<div id="drdw">
 <div>
-Welcome super user! :)
+Welcome HR! :)
 		<?php 
 				echo "<a class = 'active' href = 'login/logout' id = 'cname' alignment = 'left' > Sign out </a>";
 				
 			?>	
 			
     <ul>    	
-    	<li><a href="#" class="underline">Add employee</a></li>
-		<li><a href="#" class="underline">Edit employee</a></li>
-		<li><a href="#" class="underline">View all employees</a></li>
-		<li><a href="#" class="underline">Delete an employee</a></li>
-		<li><a href="#" class="underline">View payroll</a></li>
-		<li><a href="#" class="underline">View history</a></li>
+    	<li><a href="viewtimesheet" class="underline">View time keeping sheet</a></li>
+		
     </ul>
 
 </div>
