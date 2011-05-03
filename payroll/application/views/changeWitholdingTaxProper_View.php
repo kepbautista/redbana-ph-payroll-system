@@ -222,7 +222,7 @@
 			1. Z
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" class="numeric" name="a_z" 
+			<input type="text" class="numeric" name="a_z" id="a_z"
 			value="<?php
 			      	echo $bracket_Detail_Local->A_Z;
 			      ?>" />
@@ -232,7 +232,7 @@
 			2. S/ME
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" class="numeric" name="a_sme" 
+			<input type="text" class="numeric" name="a_sme" id="a_sme"
 			value="<?php
 			      	echo $bracket_Detail_Local->A_SME;
 			      ?>" />
@@ -245,7 +245,7 @@
 			1. ME1/S1
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" class="numeric" name="b_mes1" 
+			<input type="text" class="numeric" name="b_mes1" id="b_mes1" 
 			value="<?php
 			      	echo $bracket_Detail_Local->B_MES1;
 			      ?>" />
@@ -254,7 +254,7 @@
 			2. ME2/S2
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" class="numeric" name="b_mes2" 
+			<input type="text" class="numeric" name="b_mes2" id="b_mes2" 
 			value="<?php
 			      	echo $bracket_Detail_Local->B_MES2;
 			      ?>" />
@@ -263,7 +263,7 @@
 			3. ME3/S3
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" class="numeric" name="b_mes3" 
+			<input type="text" class="numeric" name="b_mes3" id="b_mes3"
 			value="<?php
 			      	echo $bracket_Detail_Local->B_MES3;
 			      ?>" />
@@ -272,7 +272,7 @@
 			4. ME4/S4
 		</div>
 		<div class="main_Fieldbox_value" >
-			<input type="text" class="numeric" name="b_mes4" 
+			<input type="text" class="numeric" name="b_mes4" id="b_mes4"
 			value="<?php
 			      	echo $bracket_Detail_Local->B_MES4;
 			      ?>" />
