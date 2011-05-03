@@ -6,10 +6,9 @@ class Employee extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->helper('date');
-		
 	}
 	function Insert()//function for viewing the inserting employee page
-	{
+	{	
 	$this->load->helper('form');  
 	$this->load->model('Employee_model');
 	$data['options'] = $this->Employee_model->get_status();
@@ -30,8 +29,28 @@ class Employee extends CI_Controller {
                   'admin'    => 'Admin',
 				  'exec'    => 'Exec'
                 );
-	$this->load->view('Emp_view',$data);
+	
+	//load form validation library
+	$this->load->library('form_validation');
+	
+	//form validation rules for employee information
+	$this->form_validation->set_rules('empnum','Employee Number','required|callback_script_input|callback_duplicate_empnum');//additional rule: nasa database na...
+	$this->form_validation->set_rules('fname','First Name','required|callback_script_input');
+	$this->form_validation->set_rules('mname','Middle Name','required|callback_script_input');
+	$this->form_validation->set_rules('sname','Last Name','required|callback_script_input');
+	$this->form_validation->set_rules('mrate','Monthly Rate','required|numeric|greater_than[0]');
+	$this->form_validation->set_rules('password','Password','required|callback_script_input|min_length[10]');
+	
+	if ($this->form_validation->run() == FALSE){
+		$this->load->view('Emp_view',$data);
+	}//validation errors are present
+	else
+	{
+		$this->InsertDb();
+	}//insert data
+	
 	}
+	
 	function Edit()//function for viewing the editing an employee page 
 	{
 	$this->load->helper('form');
@@ -107,5 +126,30 @@ class Employee extends CI_Controller {
 	$data['query']=$this->Employee_model->Employee_getall();
 	$this->load->view('Emp_viewall',$data);
 	}
+	
+	function script_input($str){
+	$response = TRUE;
+	
+	//user entered a script as input
+	if((stripos($str,"script") !== false)){
+		if((stripos($str,"<") !== false) && (stripos($str,">") !== false)){
+			$this->form_validation->set_message('script_input', 'Invalid &ltscript&gt&lt/script&gt input for %s');
+			$response = FALSE;
+		}
+	}	
+	return $response;
+	}//check if user entered a script as input
+	
+	/**SQL INJECTIONS!**/
+	
+	function duplicate_empnum($str){	
+		$this->load->helper('form'); 
+		$this->load->model('Employee_model');
+		$response = $this->Employee_model->duplicate_EmployeeNum($str);
+		
+		$this->form_validation->set_message('duplicate_empnum','%s already exists.');
+		
+		return $response;
+	}//check if duplicate employee number
 }
 ?>

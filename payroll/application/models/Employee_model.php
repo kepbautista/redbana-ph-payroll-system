@@ -128,6 +128,18 @@ class Employee_model extends CI_Model {
 	function Employee_delete(){
 		$this->db->where('empnum',$this->input->post('empnum'));
 		$this->db->delete('employee'); 
+	}//delete an employee
+	
+	function duplicate_EmployeeNum($empnum){
+		//search if employee number is existing
+		$query = mysql_query("SELECT * from `employee` WHERE empnum LIKE '".$empnum."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
+	
+		if($rows>0) return FALSE;
+			//employee number already exists
+		else return TRUE;
 	}
 }
 ?>

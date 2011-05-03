@@ -18,6 +18,24 @@ function validator($q,$response){
 	return $response;
 }
 
+function validateEmpNum($q,$response){
+	
+	//search if employee number is existing
+	$query = mysql_query("SELECT * from `employee` WHERE empnum LIKE '".$q."'");
+	
+	//count number of rows produced by the query
+	$rows = mysql_num_rows($query);
+	
+	if($rows>0)
+		$response = "Employee Number already exists.";
+		//employee number already exists
+	//else
+	/**VALIDATE EMPLOYEE NUMBER FORMAT
+							here!!!**/
+	
+	return $response;
+}//function for validating employee number format
+
 function validateUname($q,$response){
 	if(strlen($q)<5)
 		$response = "Minimum of 5 characters";
@@ -29,8 +47,8 @@ function validateUname($q,$response){
 }//check length of username
 
 function validatePword($q,$response){
-	if(strlen($q)<6)
-		$response = "Minimum of 6 characters";
+	if(strlen($q)<10)
+		$response = "Minimum of 10 characters";
 		
 	return $response;
 }//check length of password
@@ -53,6 +71,22 @@ function validateNumber($q,$response){
 	return $response;
 }
 
+/*Functions for database connections*/
+function connectdb() {
+	$con = mysql_connect("localhost","root");//create connection to the database
+	if (!$con)
+		die('Could not connect: ' . mysql_error());
+		
+	mysql_select_db("redbana_payroll", $con);//select database from user
+	return $con;
+}//connect to the database
+	
+function closeconnection($con) {
+	mysql_close($con);
+}//close database connection
+
+$connect = connectdb();//open database connection
+
 $response = "";
 $q = "";
 $vtype = "";
@@ -66,6 +100,8 @@ $response = validator($q,$response);
 
 if($response==""){
 	switch($vtype){
+		case 'enum': $response = validateEmpNum($q,$response);
+					break;
 		case 'uname': $response = validateUname($q,$response);
 					break;
 		case 'password': $response = validatePword($q,$response);
@@ -76,6 +112,8 @@ if($response==""){
 					break;
 	}//validation type
 }
+
+closeconnection($connect);//close database connection
 
 echo $response;
 }
