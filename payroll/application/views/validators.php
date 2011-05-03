@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo base_url();?>devtools/jquery-1.5.2.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>devtools/jquery-1.5.2"></script>
 <script type="text/javascript">
 	i=j=k=l=0;
 	$(document).ready(function(){

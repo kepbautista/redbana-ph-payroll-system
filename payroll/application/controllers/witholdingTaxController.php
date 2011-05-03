@@ -70,9 +70,7 @@ class witholdingTaxController extends CI_Controller
 		}else		//user is logged in
 		{
 					/*
-						KRISTINE!!! PERFORM VALIDATION FIRST HERE!!!!!!!!
-						preferable na ilagay yung function sa model.
-						
+						FORM VALIDATIONS
 					*/
 					
 					
