@@ -6,6 +6,7 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<title>Add Employee</title>
+	<?php include 'validators.php'?>
 	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
@@ -31,52 +32,49 @@
 		$(function(){
 			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 		});
-	</script>	
+	</script>
 </head>
 <body>
 
-<form name="FRM" class="jNice" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/InsertDb" >
+<form name="FRM" class="jNice" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/insert">
 <?php  include  ("links.php");?>
 <table  border="0" cellspacing="2">
   <tr>
     <th width="100" align="left">Employee Number:</th>
-    <td><input name="empnum" type="text" id="textfield" size="25" /></td>
+    <td><input name="empnum" id="empnum" type="text" class="textfield" size="25" value="<?php echo set_value('empnum'); ?>"/>&nbsp<span name="enum" id="enum"><span></td>
   </tr>
   <tr>
     <th align="left">First Name:</th>
-    <td><input type="text" name="fname" id="textfield" size="25" /></td>
+    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/><span name="fstname" id="fstname"></td>
   </tr>
   <tr>
     <th align="left">Middle Name:</th>
-    <td><input type="text" name="mname" id="textfield" size="25" /></td>
+    <td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo set_value('mname'); ?>"/>&nbsp<span name="midname" id="midname"></span></td>
   </tr>
   <tr>
     <th align="left">Last Name:</th>
-    <td><input type="text" name="sname" id="textfield" size="25" /></td>
+    <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo set_value('sname'); ?>"/>&nbsp<span name="lname" id="lname"></span></td>
   </tr>
   <tr>
     <th align="left">Monthly Rate:PHP </th>
-   <td><input type="text" name="mrate" id="textfield" size="10" /></td>
+   <td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo set_value('mrate'); ?>"/>&nbsp<span name="monthly" id="monthly"></span></td>
   </tr>
   <tr>
     <th align="left">Payment Mode:</th>
     <td>
-	<?php
-		echo form_dropdown('payment_mode', $pmode_options);?>
+	<?php echo form_dropdown('payment_mode', $pmode_options);?>
 	</td>
   </tr>
   <tr>
     <th align="left">Department:</th>
     <td>
-		<?php
-		echo form_dropdown('dept', $dept_options);?>
+		<?php echo form_dropdown('dept', $dept_options);?>
 	</td>
   </tr>
   <tr>
     <th align="left">Position:</th>
     <td>
-	<?php
-		echo form_dropdown('position', $pos_options);?>
+	<?php echo form_dropdown('position', $pos_options);?>
     </td>
   </tr>
   <tr>
@@ -142,8 +140,11 @@
   <tr>
    <th width="100" align="left">Password:</th>
 		<td align="left">
-		<input type="text" name="password" />
-		 <input type="button" id="pwd" value="Generate"  /></td>
+		<input type="text" name="password" id="password"/>
+		 <input type="button" id="pwd" value="Generate"/>
+		&nbsp
+		<span name='pword' id='pword'></span>
+		</td>
 		<td>
 		</td>
 		 <script type="text/javascript">
@@ -160,6 +161,9 @@
   </tr>
   
 </table>
+<div>
+<?php echo validation_errors(); ?>
+</div>
 </form>
 </body>
 </html>

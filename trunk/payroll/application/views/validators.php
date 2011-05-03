@@ -2,6 +2,46 @@
 <script type="text/javascript">
 	i=j=k=l=0;
 	$(document).ready(function(){
+		$('#empnum').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#empnum').val(),
+			 vtype: "enum",
+          },
+          function(data){
+                $("#enum").text(data);
+          }
+		  );
+		});
+		$('#fname').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#fname').val(),
+			 vtype: "firstname",
+          },
+          function(data){
+                $("#fstname").text(data);
+          }
+		  );
+		});
+		$('#mname').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#mname').val(),
+			 vtype: "mname",
+          },
+          function(data){
+                $("#midname").text(data);
+          }
+		  );
+		});
+		$('#sname').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#sname').val(),
+			 vtype: "sname",
+          },
+          function(data){
+                $("#lname").text(data);
+          }
+		  );
+		});
 		$('#username').blur(function(){
 			$.post("<?php echo base_url();?>devtools/validate.php", {
              query: $('#username').val(),
@@ -18,7 +58,7 @@
 			 vtype: "password",
           },
           function(data){
-                $("#pword").text(data);
+            $("#pword").text(data);
           }
 		  );
 		});
@@ -49,6 +89,16 @@
           },
           function(data){
 			if(data!='') alert(data);
+          }
+		  );
+		});
+		$('#mrate').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#mrate').val(),
+			 vtype: "numeric",
+          },
+          function(data){
+			$("#monthly").text(data);
           }
 		  );
 		});
