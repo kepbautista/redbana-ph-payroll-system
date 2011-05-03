@@ -69,14 +69,32 @@ class witholdingTaxController extends CI_Controller
 		
 		}else		//user is logged in
 		{
-					/*
-						FORM VALIDATIONS
-					*/
+					/**FORM VALIDATIONS**/
+					$this->load->library('form_validation');
 					
+					/*set validation rules*/
+					$this->form_validation->set_rules('exemption_definite','Exemption Definite','required|greater_than[0]');
+					$this->form_validation->set_rules('exemption_percent','Exemption Percent','required|greater_than[0]');
+					$this->form_validation->set_rules('a_z','Z','required|greater_than[0]');
+					$this->form_validation->set_rules('a_sme','S/ME','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes1','ME1/S1','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes2','ME2/S2','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes3','ME3/S3','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes4','ME4/S4','required|greater_than[0]');
 					
-					$this->load->model('witholdingTax_model');
-					$this->witholdingTax_model->updateBracket();					
-					$this->index();		// go to list of witholding tax page again.					
+					if($this->form_validation->run() != FALSE){
+						$this->load->model('witholdingTax_model');
+						$this->witholdingTax_model->updateBracket();
+						
+						$this->index();		// go to list of witholding tax page again.
+					}
+					else{
+						echo "
+						<script>
+							alert('hi!');
+						</script>
+						";
+					}
 		}
 	}
 }
