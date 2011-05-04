@@ -1,17 +1,25 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 03, 2011 at 03:59 AM
--- Server version: 5.1.36
--- PHP Version: 5.3.0
+-- Generation Time: May 04, 2011 at 02:57 AM
+-- Server version: 5.5.8
+-- PHP Version: 5.3.5
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `redbana_payroll`
 --
+CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -61,7 +69,8 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `empnum` varchar(50) NOT NULL,
   `mname` varchar(50) NOT NULL,
   `sname` varchar(50) NOT NULL,
-  `fname` varchar(50) NOT NULL,
+  `fname` varchar(100) NOT NULL,
+  `type` varchar(100) NOT NULL,
   `status` int(2) NOT NULL,
   `mrate` float NOT NULL,
   `payment_mode` varchar(20) NOT NULL,
@@ -78,10 +87,10 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`) VALUES
-('2007-09334', 'Gesha', 'Chachimichiru', 'Dessa Yesha ', 8, 3457.78, 'Semi Monthly', 'hr', 'hr', 'F', 'mRYK588dje', '0000-00-00', '0000-00-00'),
-('2008-12333', 'Perez', 'Caronan', 'Robby Dave', 7, 1256.45, 'Monthly', 'hr', 'exec', 'M', 'ae0DFOKF8C', '1992-04-03', '1992-04-03'),
-('2008-12345', 'Morena', 'Cristobal', 'Lovelie', 3, 5300, 'Monthly', 'admin', 'admin', 'F', 'fZOCLNjRzI', '1994-04-03', '1990-02-02');
+INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `type`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`) VALUES
+('2007-09334', 'Gesha', 'Chachimichiru', 'Dessa Yesha ', 'superuser', 8, 3457.78, 'Semi Monthly', 'hr', 'hr', 'F', 'mRYK588dje', '0000-00-00', '0000-00-00'),
+('2008-12333', 'Perez', 'Caronan', 'Robby Dave', 'hr', 7, 1256.45, 'Monthly', 'hr', 'exec', 'M', 'ae0DFOKF8C', '1992-04-03', '1992-04-03'),
+('2008-12345', 'Morena', 'Cristobal', 'Lovelie', 'exec', 3, 5300, 'Monthly', 'admin', 'admin', 'F', 'fZOCLNjRzI', '1994-04-03', '1990-02-02');
 
 -- --------------------------------------------------------
 
@@ -388,3 +397,4 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
+
