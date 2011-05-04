@@ -16,23 +16,23 @@
 <table  border="0" cellspacing="2">
   <tr>
     <th width="100" align="left">Employee Number:</th>
-    <td><input name="empnum" id="empnum" type="text" class="textfield" size="25" value="<?php echo set_value('empnum'); ?>"/>&nbsp<span name="enum" id="enum"><span></td>
+    <td><input name="empnum" id="empnum" type="text" class="textfield" size="25" value="<?php echo set_value('empnum'); ?>"/>&nbsp<span class="warning" name="enum" id="enum"><span></td>
   </tr>
   <tr>
     <th align="left">First Name:</th>
-    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/>&nbsp<span name="fstname" id="fstname"></td>
+    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
   </tr>
   <tr>
     <th align="left">Middle Name:</th>
-    <td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo set_value('mname'); ?>"/>&nbsp<span name="midname" id="midname"></span></td>
+    <td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo set_value('mname'); ?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
   </tr>
   <tr>
     <th align="left">Last Name:</th>
-    <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo set_value('sname'); ?>"/>&nbsp<span name="lname" id="lname"></span></td>
+    <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo set_value('sname'); ?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
   </tr>
   <tr>
     <th align="left">Monthly Rate:PHP </th>
-   <td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo set_value('mrate'); ?>"/>&nbsp<span name="monthly" id="monthly"></span></td>
+   <td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo set_value('mrate'); ?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
   </tr>
   <tr>
     <th align="left">Payment Mode:</th>
@@ -118,7 +118,7 @@
 		<input type="text" name="password" id="password"/>
 		<input type="button" id="pwd" value="Generate"/>
 		&nbsp
-		<span name='pword' id='pword'></span>
+		<span class="warning" name='pword' id='pword'></span>
 		</td>
 		<td>
 		</td>
