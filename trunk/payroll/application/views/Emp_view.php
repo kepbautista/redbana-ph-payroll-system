@@ -7,32 +7,7 @@
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<title>Add Employee</title>
 	<?php include 'validators.php'?>
-	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
-	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
-	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
-	<script>
-	function randomPassword()
-	{
-	  chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	  pass = "";
-	  for(x=0;x<10;x++)
-	  {
-	    i = Math.floor(Math.random() * 62);
-	    pass += chars.charAt(i);
-	  }
-	  return pass;
-	}
-	function formSubmit()
-	{
-	  FRM.password.value = randomPassword(10);
-	  return false;
-	}
-	</script>
-	<script language="javascript">
-		$(function(){
-			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		});
-	</script>
+	<?php include 'display.php'?>
 </head>
 <body>
 
@@ -45,7 +20,7 @@
   </tr>
   <tr>
     <th align="left">First Name:</th>
-    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/><span name="fstname" id="fstname"></td>
+    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/>&nbsp<span name="fstname" id="fstname"></td>
   </tr>
   <tr>
     <th align="left">Middle Name:</th>
@@ -141,7 +116,7 @@
    <th width="100" align="left">Password:</th>
 		<td align="left">
 		<input type="text" name="password" id="password"/>
-		 <input type="button" id="pwd" value="Generate"/>
+		<input type="button" id="pwd" value="Generate"/>
 		&nbsp
 		<span name='pword' id='pword'></span>
 		</td>

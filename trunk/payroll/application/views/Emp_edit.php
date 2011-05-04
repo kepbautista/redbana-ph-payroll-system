@@ -6,32 +6,8 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<title>Edit Employee</title>
-	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
-	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
-	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
-	<script>
-	function randomPassword()//FUNCTION FOR MAKING PASSWORD
-	{
-	  chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	  pass = "";
-	  for(x=0;x<10;x++)
-	  {
-	    i = Math.floor(Math.random() * 62);
-	    pass += chars.charAt(i);
-	  }
-	  return pass;
-	}
-	function formSubmit()
-	{
-	  FRM.password.value = randomPassword(10);
-	  return false;
-	}
-	</script>
-	<script language="javascript">
-		$(function(){
-			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		});
-	</script>	
+	<?php include 'validators.php'?>
+	<?php include 'display.php'?>	
 </head>
 <body>
 <?php  include  ("links.php");?>
@@ -50,39 +26,30 @@
 	$sname= $row->sname;//LAST NAME
 	$sdate = preg_split("/[\s-]+/", $row->sdate);//STARTING DATE
 	$bdate = preg_split("/[\s-]+/", $row->bdate);//BIRTH DATE
-	echo $empnum; echo $sdate[0];?>
+	echo $sdate[0];?>
 	<form name="FRM" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/update" >
 	<table  border="0" cellspacing="2">
 		<tr>
 			<th width="100" align="left">Employee Number:</th>
 			<td>
+				<?php echo $empnum;?>
 				<input name="hidden" type="hidden" value="<?php echo $empnum;?>"/>
-				<input name="empnum" type="text" id="textfield" size="25" value="<?php echo $empnum;?>"/>
 			</td>
 		</tr>
 		<tr>
 			<th align="left">First Name:</th>
-			<td>
-				<input type="text" name="fname" id="textfield" size="25" value="<?php echo $fname;?>" />
-			</td>
+			<td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/>&nbsp<span name="fstname" id="fstname"></td>
 		</tr>
 		<tr>
 			<th align="left">Middle Name:</th>
-			<td>
-				<input type="text" name="mname" id="textfield" size="25" value="<?php echo $mname;?>" />
-			</td>
-			</tr>
-		<tr>
+			<td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo set_value('mname'); ?>"/>&nbsp<span name="midname" id="midname"></span></td>
+			<tr>
 			<th align="left">Last Name:</th>
-			<td>
-				<input type="text" name="sname" id="textfield" size="25" value="<?php echo $sname;?>" />
-			</td>
+			<td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo set_value('sname'); ?>"/>&nbsp<span name="lname" id="lname"></span></td>
 		</tr>
 		<tr>
 			<th align="left">Monthly Rate:PHP </th>
-			<td>
-				<input type="text" name="mrate" id="textfield" size="10" value="<?php echo $mrate;?>" />
-			</td>
+			<td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo set_value('mrate'); ?>"/>&nbsp<span name="monthly" id="monthly"></span></td>
 		</tr>
 		<tr>
 	    <th align="left">Payment Mode:</th>
@@ -182,8 +149,11 @@
 		<tr>
 			<th width="100" align="left">Password:</th>
 			<td align="left">
-				<input type="text" name="password" value="<?php echo $pwd;?>"/>
-				<input type="button" id="pwd" value="Generate"  /></td>
+				<input type="text" name="password" id='password' value="<?php echo $pwd;?>"/>
+				<input type="button" id="pwd" value="Generate"  />
+				&nbsp
+		<span name='pword' id='pword'></span>
+				</td>
 			<script type="text/javascript">
                 $(document).ready(function() {
                         $(":button#pwd").click(function() {
