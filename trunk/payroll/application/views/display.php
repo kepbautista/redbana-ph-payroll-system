@@ -1,6 +1,6 @@
 <!--Jquery Functions-->
 <link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
-	<style text="text/css">span{background-color:#ff8c00;}</style>
+	<style text="text/css">.warning{background-color:#ffd700;}</style>
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
 	<script>
 	function randomPassword()//FUNCTION FOR MAKING PASSWORD
