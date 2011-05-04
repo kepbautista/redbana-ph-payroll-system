@@ -56,9 +56,6 @@ class Employee extends CI_Controller {
 	
 	function Edit()//function for viewing the editing an employee page 
 	{		
-		$this->validateForm("update");//call function for form validation
-		
-		if ($this->form_validation->run() == FALSE){
 		$this->load->helper('form');
 		$this->load->model('Employee_model');
 		$data['query']=$this->Employee_model->Employee_edit();
@@ -80,7 +77,10 @@ class Employee extends CI_Controller {
 				  'exec'    => 'Exec'
                 );
 		$data['years'] = range(1990,2020);
+	
+		$this->validateForm("update");//call function for form validation
 		
+		if ($this->form_validation->run() == FALSE){
 			$this->load->view('Emp_edit',$data);
 			//validation errors are present
 		}

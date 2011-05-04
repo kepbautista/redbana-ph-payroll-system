@@ -10,14 +10,34 @@
 	<?php include 'display.php'?>	
 </head>
 <body>
-<?php  include  ("links.php");?>
+<?php  include  ("links.php");
+
+if(isset($query)){
+foreach($query as $row){
+	$empnum = $row->empnum;//EMPLOYEE NUMBER
+	$fname = $row->fname;//FIRST NAME
+	$mname = $row->mname;//MIDDLE NAME
+	$sname = $row->sname;//LAST NAME
+	$mrate= $row->mrate;//MONTHLY RATE
+	$position= $row->position;//POSITION
+	$dept= $row->dept;//DEPARTMENT
+	$gender= $row->gender;//GENDER
+	$status= $row->status;//STATUS
+	$pmode= $row->payment_mode;//PAYMENT MODE
+	$pwd= $row->password;//PASSWORD
+	$sdate = preg_split("/[\s-]+/", $row->sdate);//STARTING DATE
+	$bdate = preg_split("/[\s-]+/", $row->bdate);//BIRTH DATE
+	echo $sdate[0];
+}
+}
+?>
 
 <form name="FRM" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/edit">
 	<table  border="0" cellspacing="2">
 		<tr>
 			<th width="100" align="left">Employee Number:</th>
 			<td>
-				<input name="hidden" type="hidden" name="empnum" id="empnum" value="<?php echo set_value('empnum');?>"/>
+				<input type="text" name="empnum" id="empnum" value="<?php if(isset($query)) echo set_value('empnum',$empnum); else echo set_value('empnum');?>"/>
 			</td>
 		</tr>
 		<tr>
@@ -38,26 +58,36 @@
 		<tr>
 	    <th align="left">Payment Mode:</th>
 			<td>
-				<?php echo form_dropdown('payment_mode', $pmode_options,set_value('payment_mode'));?>
+				<?php 
+				if(isset($pmode)) echo form_dropdown('payment_mode', $pmode_options,$pmode);
+				else echo form_dropdown('payment_mode', $pmode_options,set_value('payment_mode'));
+				?>
 			</td>
 		</tr>
 		<tr>
 			<th align="left">Department:</th>
 			<td>
-			<?php echo form_dropdown('dept', $dept_options,set_value('dept'));?>
+			<?php
+			if(isset($dept)) echo form_dropdown('dept', $dept_options,$dept);
+			else echo form_dropdown('dept', $dept_options,set_value('dept'));
+			?>
 			</td>
 		</tr>
 		<tr>
 			<th align="left">Position:</th>
 			<td>
-				<?php echo form_dropdown('position', $pos_options,set_value('position'));?>
+			<?php
+			if(isset($position)) echo form_dropdown('position', $pos_options,$position);
+			else echo form_dropdown('position', $pos_options,set_value('position'));
+			?>
 			</td>
 		</tr>
 		<tr>
 			<th align="left">Gender:</th>
 			<td>
 				<table border="0" cellpadding="0" cellspacing="0">
-				<?php $gender = set_value('gender');
+				<?php 
+				if(!(isset($gender))) $gender = set_value('gender');
 				if ($gender=="F"){ ?>
 				<tr>
 					<td>
@@ -86,9 +116,11 @@
 			<th align="left">Birthday:</th>
 			<td align="left">
 			<?php
-			$bdate[1] = set_value('bmonth');
-			$bdate[2] = set_value('bday');
-			$bdate[0] = set_value('byear');
+			if(!isset($bdate)){
+				$bdate[1] = set_value('bmonth');
+				$bdate[2] = set_value('bday');
+				$bdate[0] = set_value('byear');
+			}
 			
 			echo form_dropdown('bmonth', $months,$bdate[1]);?>
 			<select name="bday" id="select">
@@ -111,9 +143,11 @@
 			<th align="left">Start Date:</th>
 			<td align="left">
 			<?php
-			$sdate[1] = set_value('smonth');
-			$sdate[2] = set_value('sday');
-			$sdate[0] = set_value('syear');
+			if(!isset($sdate)){
+				$sdate[1] = set_value('smonth');
+				$sdate[2] = set_value('sday');
+				$sdate[0] = set_value('syear');
+			}
 			
 			echo form_dropdown('smonth', $months,$sdate[1]);?>
 			<select name="sday" id="select">
@@ -135,8 +169,11 @@
 		</tr>
 		<tr>
 			<th width="100" align="left">Status:</th>
-			<td align="left"><?php
-				echo form_dropdown('status', $options,set_value('status'));?>
+			<td align="left">
+			<?php
+				if(isset($status)) form_dropdown('status', $options,$status);
+				else echo form_dropdown('status', $options,set_value('status'));
+			?>
 			</td>	
 		</tr>
 		<tr>
