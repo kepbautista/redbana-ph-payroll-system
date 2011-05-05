@@ -28,7 +28,7 @@
 			*					he/she will not be asked to login again.
 			*/
 		
-			if($this->login_model->isUser_LoggedIn())
+			if( $this->login_model->isUser_LoggedIn() )
 			{				
 				$this->redirect_To();
 			}else
@@ -58,7 +58,9 @@
 					if($query) 
 						$this->login($empnum); // if the user's credentials validated...
 					else 
-						echo "wrong pas"; // incorrect username or password
+						//echo "wrong pas"; // incorrect username or password
+						$data['incorrect_credentials'] = true;
+						$this->load->view('login_view', $data);	
 				}			
 			}
 					
@@ -71,13 +73,21 @@
 		function login($empnum){
 			
 			$data = array(
+				   'sname' => NULL,
+				   'fname' => NULL,
+				   'mname' => NULL,
 				   'empnum'  => $empnum,
 				   'logged_in'  => TRUE,
 				   'userType' => NULL			// added | abe | 05may2011_2113pm: para sa pag-access kapag naka-login na at hindi kailangang bumalik sa login
 				);
 					
-			//check what type of user he/she is.
+			//check what type of user he/she is.			
+			$query = $this->login_model->fetch_User($this->input->post('empnum'), $this->input->post('password'));
+			$obj_temp = $query->result();
 			
+			$data['sname'] = $obj_temp[0]->sname;
+			$data['fname'] = $obj_temp[0]->fname;
+			$data['mname'] = $obj_temp[0]->mname;
 			
 			$check_super = $this->admin_model->validate_superuser( $empnum );
 			$check_hr = $this->admin_model->validate_hr( $empnum );

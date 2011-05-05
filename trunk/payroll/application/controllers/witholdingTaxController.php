@@ -17,10 +17,13 @@
 
 class witholdingTaxController extends CI_Controller
 {
+	
+		
 	function __construct()
-	{
+	{		
 		parent::__construct();
-		$this->load->helper('url');		
+		
+		$this->load->helper(array('form','url') );		
 		$this->load->model('login_model');
 		if( ! $this->login_model->isUser_LoggedIn() ) redirect('Login');
 		
@@ -52,8 +55,8 @@ class witholdingTaxController extends CI_Controller
 			
 	}
 	
-	function editBracket($paymentMode = -1, $bracket = -1)
-	{		
+	function editBracket($paymentMode = -1, $bracket = -1, $showError = false)
+	{							
 			$this->load->model('witholdingTax_model', '', TRUE);
 						
 			$data['details'] = $this->witholdingTax_model->pull_Single_Info($paymentMode, $bracket);
@@ -68,25 +71,27 @@ class witholdingTaxController extends CI_Controller
 			}
 					
 			$data['details'] = $this->witholdingTax_model->pull_Single_Info($paymentMode, $bracket);
-			$data['paymentMode_info'] = $this->witholdingTax_model->pull_PaymentMode_Info($paymentMode);
+			$data['paymentMode_info'] = $this->witholdingTax_model->pull_PaymentMode_Info($paymentMode);			
 			$this->load->view('changeWitholdingTaxProper_View', $data);						
 	}
 	
 	function updateBracket()
 	{
-		
+					//global $errorMsg;
+					
+					
 					/**FORM VALIDATIONS**/
 					$this->load->library('form_validation');
 					
 					/*set validation rules*/
-					$this->form_validation->set_rules('exemption_definite','Exemption Definite','required|greater_than[0]');
-					$this->form_validation->set_rules('exemption_percent','Exemption Percent','required|greater_than[0]');
-					$this->form_validation->set_rules('a_z','Z','required|greater_than[0]');
-					$this->form_validation->set_rules('a_sme','S/ME','required|greater_than[0]');
-					$this->form_validation->set_rules('b_mes1','ME1/S1','required|greater_than[0]');
-					$this->form_validation->set_rules('b_mes2','ME2/S2','required|greater_than[0]');
-					$this->form_validation->set_rules('b_mes3','ME3/S3','required|greater_than[0]');
-					$this->form_validation->set_rules('b_mes4','ME4/S4','required|greater_than[0]');
+					$this->form_validation->set_rules('exemption_definite','Exemption Definite','numeric','required|greater_than[-2]');
+					$this->form_validation->set_rules('exemption_percent','Exemption Percent','numeric','required|greater_than[-2]');
+					$this->form_validation->set_rules('a_z','Z','numeric','required|greater_than[-2]');
+					$this->form_validation->set_rules('a_sme','S/ME','required|greater_than[-2]');
+					$this->form_validation->set_rules('b_mes1','ME1/S1','numeric','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes2','ME2/S2','numeric','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes3','ME3/S3','numeric','required|greater_than[0]');
+					$this->form_validation->set_rules('b_mes4','ME4/S4','numeric','required|greater_than[0]');
 					
 					if($this->form_validation->run() != FALSE){
 						$this->load->model('witholdingTax_model');
@@ -97,11 +102,8 @@ class witholdingTaxController extends CI_Controller
 						/*
 							tell the user of his error.
 						*/
-						echo "
-						<script>
-							alert('hi!');
-						</script>
-						";
+																		
+						$this->editBracket($this->input->post('payment_mode'), $this->input->post('bracket'), true);												
 					}
 		
 	}

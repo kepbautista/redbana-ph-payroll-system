@@ -18,11 +18,24 @@ class Login_model extends CI_Model {
 		$this->load->library('session');
 	}*/
 
+	function fetch_User($empnum = NULL, $password = NULL)
+	/*
+		made | abe | 05may2011_2357 | for purpose of cohesion or singularity?
+	*/
+	{
+		if($empnum == NULL or $password == NULL) return NULL; 
+	
+		$this->db->where('empnum', $empnum);
+		$this->db->where('password', $password);
+		$query = $this->db->get('employee');
+		
+		return $query;
+	}
+	
 	function validate()
 	{
-		$this->db->where('empnum', $this->input->post('empnum'));
-		$this->db->where('password', ($this->input->post('password')));
-		$query = $this->db->get('employee');
+	
+		$query = $this->fetch_User($this->input->post('empnum'), $this->input->post('password'));
 		
 		if($query->num_rows == 1)
 		{
@@ -40,7 +53,7 @@ class Login_model extends CI_Model {
 		/*
 		*	Made by abe, 03may2011 1702
 		*   -basically checks whether a user is still logged in.
-		*	-useful so that, only logged in users can access the functionalities.
+		*	-useful so that, Object-oriented approach is applied.
 		*/
 		$result = $this->session->userdata('logged_in');
 		
