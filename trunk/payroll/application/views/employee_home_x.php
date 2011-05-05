@@ -20,10 +20,10 @@
 <div id="header2" class="center">
 	
 	<ul class="nav"  >
-		<li class="nav"><a href="#news">View Payslip</a></li>
-		<li class="nav"><a href="#news">File Leave</a></li>
-		<li class="nav"><a href="#contact">Profile</a></li>		
-		<li class="nav"><a href="#contact">Logout</a></li>		
+		<li class="nav"><a id="nav" href="#news">View Payslip</a></li>
+		<li class="nav"><a id="nav" href="#news">File Leave</a></li>
+		<li class="nav"><a id="nav" href="#contact">Profile</a></li>		
+		<li class="nav"><a id="nav" href="#contact">Logout</a></li>		
 	</ul>	
 	
 </div>
