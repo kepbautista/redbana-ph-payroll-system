@@ -19,19 +19,28 @@
 	{
 		parent::__construct();
 	}
- 
-	function pull_All_Information()
+ 	
+	function pull_PaymentInfo()
 	{
-		// 27apr2011_2227: change the SQL to the one that conforms to CodeIgniter rules.	
-		return $this->db->query("SELECT * FROM `witholding_tax`");
+		//made by abe 04may2011 1136h
+		
+		$sql_x = "SELECT * from `payment_mode`";		
+		return $this->db->query($sql_x);
 	}
 	
 	function pull_Single_Info($paymentMode, $bracket)
 	{
 		$sql_x = "SELECT * FROM `witholding_tax` WHERE PAYMENT_MODE_ID_FK = ? AND BRACKET = ? ";
 		return $this->db->query($sql_x, array($paymentMode, $bracket));
+	}	
+	
+	function pull_per_PaymentMode($paymentMode)
+	{
+		$sql_x = "SELECT * FROM `witholding_tax` WHERE PAYMENT_MODE_ID_FK = ?";
+		return $this->db->query($sql_x, array($paymentMode) );
 	}
 	
+	//deprecated
 	function pull_PaymentMode_Info($paymentMode)
 	{
 		$sql_x = "SELECT * FROM payment_mode where ID = ?";

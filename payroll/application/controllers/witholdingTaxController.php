@@ -28,15 +28,45 @@ class witholdingTaxController extends CI_Controller
 	
 	function index()
 	{		
+			$x; 
+			$y;
+			$z;			
+
+			//load model(s)
 			$this->load->model('witholdingTax_model', '', TRUE);			
-			$data['details'] = $this->witholdingTax_model->pull_All_Information();			
-			$this->load->view('changeWitholdingTaxView', $data);			
+							
+			//first, we get how many payment modes we are considering.
+			$data['payment_modes'] = $this->witholdingTax_model->pull_PaymentInfo();
+			
+			//for each payment mode, get the corresponding witholding tax charges
+			for(  $x = 0, 
+				  $y = $data['payment_modes']->num_rows, 
+				  $obj = $data['payment_modes']->result(); 
+				$x < $y;
+				$x++)
+			{				
+				$data['witholding_tax'][$obj[$x]->TITLE] = $this->witholdingTax_model->pull_per_PaymentMode($obj[$x]->ID);
+			}
+						
+			$this->load->view('changeWitholdingTaxView', $data); //pass it to view
+			
 	}
 	
-	function editBracket($paymentMode, $bracket)
+	function editBracket($paymentMode = -1, $bracket = -1)
 	{		
 			$this->load->model('witholdingTax_model', '', TRUE);
+						
+			$data['details'] = $this->witholdingTax_model->pull_Single_Info($paymentMode, $bracket);
 			
+			
+			if( $data['details']->num_rows != 1 )
+			{
+					/*
+						further work: show the user na error yung ininput niya na parameter
+					*/
+					redirect('/witholdingTaxController');
+			}
+					
 			$data['details'] = $this->witholdingTax_model->pull_Single_Info($paymentMode, $bracket);
 			$data['paymentMode_info'] = $this->witholdingTax_model->pull_PaymentMode_Info($paymentMode);
 			$this->load->view('changeWitholdingTaxProper_View', $data);						
@@ -63,8 +93,10 @@ class witholdingTaxController extends CI_Controller
 						$this->witholdingTax_model->updateBracket();
 						
 						$this->index();		// go to list of witholding tax page again.
-					}
-					else{
+					}else{
+						/*
+							tell the user of his error.
+						*/
 						echo "
 						<script>
 							alert('hi!');

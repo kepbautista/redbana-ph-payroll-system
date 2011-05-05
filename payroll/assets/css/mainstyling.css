@@ -29,7 +29,7 @@ li.nav
 	background-color:#99ccdd;
 	
 }
-a:link,a:visited
+a#nav:link,a#nav:visited
 {
 font-weight:bold;
 color:#FFFFFF;
@@ -48,12 +48,10 @@ background-color:#7A991A;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 0.75em;
 	overflow: auto;
-	height: 27px;
+	height: 30px;
 	color: #000080;
 	background-image: url('../images/event-bg3.png');
-	background-repeat: repeat-x;
-
-	
+	background-repeat: repeat-x;	
 }
 #copyright {
 	clear: left;
@@ -66,10 +64,47 @@ background-color:#7A991A;
 	padding: 3px;
 	border-style: solid;
 	border-width: 1px;
-	color: #0033CC;
+	/*color: #0033CC;*/
 	overflow: auto;
 	width: 995px;
 	margin-top: 2px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 0.7em;
 }
+#whatareyoudoing
+{
+	padding-left: 10px;
+	padding-bottom: 10px;
+}
+#payment_mode_subdivide {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: x-small;
+	background-color: #999999;
+	visibility: visible;
+	float: left;
+	clear: both;
+	display: block;
+	width: 100%;
+	clear: left;
+}
+.witholdingTax_description
+{
+	float: left;
+	width: 138px;
+	clear: left;
+}
+.witholdingTax_data
+{
+	float: left;
+	width: 80px;
+	text-align: center;
+}
+.payment_mode_title {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: medium;
+	background-color: #18DCE7;
+	font-weight: bold;	
+	width: 100%;
+}
+
+

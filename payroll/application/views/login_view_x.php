@@ -25,7 +25,7 @@
 </div>
 <div id="header2" class="center">
 	<ul class="nav">
-		<li class="nav"><a href="<?php echo base_url(); ?>">Home</a></li>
+		<li class="nav"><a id="nav" href="<?php echo base_url(); ?>">Home</a></li>
 	</ul></div>
 <div id="container" class="center">
 <div id="announcements">
@@ -53,9 +53,9 @@
 				</table>
 						      	
 		      	<?php 
-		    		//if(($this->session->set_flashdata('login_error'))){
+		    		if(($this->session->set_flashdata('login_error'))){
 		    			//echo 'You entered an incorrect username or password.';
-		    		//}    		
+		    		}    		
 		    	echo validation_errors()?>
 				<br/>		    	
 		      	<?php echo form_close();?>      	
