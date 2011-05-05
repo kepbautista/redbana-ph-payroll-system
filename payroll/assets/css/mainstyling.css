@@ -1,4 +1,4 @@
-.center {
+﻿.center {
 	margin-left: auto;
 	margin-right: auto;
 	width: 1001px;
@@ -62,6 +62,7 @@ background-color:#7A991A;
 }
 #container {
 	padding: 3px;
+	padding-bottom: 20px;
 	border-style: solid;
 	border-width: 1px;
 	/*color: #0033CC;*/
@@ -87,6 +88,14 @@ background-color:#7A991A;
 	width: 100%;
 	clear: left;
 }
+#payment_mode_subdivide_witholdingTaxEditProper {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: x-small;
+	background-color: #999999;	
+	clear: both;
+	width: 80%;
+}
+
 .witholdingTax_description
 {
 	float: left;
@@ -106,5 +115,22 @@ background-color:#7A991A;
 	font-weight: bold;	
 	width: 100%;
 }
-
+#article_SpecificDetail{
+	margin-top: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 3px 3px 3px 10px;
+	font-size: medium;
+	font-weight: bold;	
+	background-color: rgb(243,243,243);
+	margin-bottom: 10px;
+	width: 80%;
+}
+#form_error_notice
+{
+	color: red;
+	border-style: solid;
+	border-width: 1px;
+	border-color: red;
+	padding-left: 20px;
+}
 

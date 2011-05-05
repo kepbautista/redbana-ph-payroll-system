@@ -41,13 +41,23 @@
 					</tr>
 				</table>
 						      	
-		      	<?php 
-		    		//if(($this->session->set_flashdata('login_error'))){
-		    			//echo 'You entered an incorrect username or password.';
-		    		//}    		
-		    	echo validation_errors()?>
+		      	<?php 		      		
+		    		if( isset($incorrect_credentials) ){		    			
+		    			echo '<div id="form_error_notice" style="width: 80%" class="center"><br/>';
+		    			echo 'You have entered an incorrect username or password.<br/><br/>Please try again.';
+		    			echo '</div>';
+		    		}    
+		    		if( strlen(validation_errors()) > 0 )
+		    		{
+		    			echo '<div id="form_error_notice" style="width: 80%" class="center"><br/>';
+		    			echo validation_errors();
+		    			echo '</div>';
+
+		    		}		
+		    	?>
+		    	
 				<br/>		    	
-		      	<?php echo form_close();?>      	
+		      	<?php echo form_close(); ?>      	
 
 </div>
 </div>
