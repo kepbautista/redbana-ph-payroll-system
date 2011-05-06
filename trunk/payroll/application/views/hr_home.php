@@ -17,7 +17,7 @@ Welcome HR! :)
 			?>	
 			
     <ul>    	
-    	<li><a href="viewtimesheet" class="underline">View time keeping sheet</a></li>
+    	<li><a href="<?php echo base_url()?>/index.php/employee/viewtimesheet" class="underline">View time keeping sheet</a></li>
 		
     </ul>
 

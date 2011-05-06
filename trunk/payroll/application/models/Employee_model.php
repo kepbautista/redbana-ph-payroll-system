@@ -31,33 +31,6 @@ class Employee_model extends CI_Model {
 		$query = $this->db->query('SELECT a.empnum,a.fname,a.password,a.mname,a.sname,a.bdate,a.sdate,a.mrate,a.position,a.dept,b.desc,a.payment_mode,a.gender FROM employee a,employee_status b WHERE a.status=b.id');
 		return $query->result();
 	}
-	 function Employee_viewalltime() {
-		$this->load->database();
-		$date=$this->input->post('date');
-		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum  apple ,b.login,b.logout,b.date FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
-		return $query->result();
-	}
-	function Employee_viewalltime_rows() {
-		$this->load->database();
-		$date=$this->input->post('date');
-		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
-		return $query->num_rows();
-	}
-	function View_time() {
-		$this->load->database();
-		$date=date("Y/n/j");
-		$query = $this->db->query('SELECT id,empnum,date,login,logout FROM timesheet where date="'.$date.'"');
-		return  $query->num_rows();
-	}
-	function Insert_time() {
-		$this->load->database();
-		$date=$this->input->post('date');
-		$query=$this->db->get('employee');
-		foreach ($query->result() as $row)
-		{
-			$query1 = $this->db->query('INSERT INTO timesheet(`login`,`logout`,`empnum`,`date`) VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
-		}
-	}
 	function Employee_edit() {//edit info of an employee
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
@@ -127,7 +100,9 @@ class Employee_model extends CI_Model {
 	}
 	function Employee_delete(){
 		$this->db->where('empnum',$this->input->post('empnum'));
-		$this->db->delete('employee'); 
+		$this->db->delete('employee');
+		$this->db->where('empnum',$this->input->post('empnum'));
+		$this->db->delete('timesheet'); 
 	}//delete an employee
 	
 	function duplicate_EmployeeNum($empnum){
@@ -140,6 +115,44 @@ class Employee_model extends CI_Model {
 		if($rows>0) return FALSE;
 			//employee number already exists
 		else return TRUE;
+	}
+	//HR
+	function Employee_updateTime(){
+		$login=$this->input->post('login1').':'.$this->input->post('login2').':'.$this->input->post('login3').' '.$this->input->post('login4');
+		$logout=$this->input->post('logout1').':'.$this->input->post('logout2').':'.$this->input->post('logout3').' '.$this->input->post('logout4');
+		$login=DATE("H:i:s", STRTOTIME($login));//converts 1pm to 13:00:00
+        $logout=DATE("H:i:s", STRTOTIME($logout));//converts 1pm to 13:00:00
+		$this->db->query('UPDATE timesheet SET login="'.$login.'",logout="'.$logout.'" WHERE empnum="'.$this->input->post('empnum').'" AND
+		date="'.$this->input->post('date').'"');
+	}
+	function Employee_viewalltime($cases) {
+		$this->load->database();
+		if ($cases==1)
+			$date=$this->input->post('date');
+		else if ($cases==2)
+			$date=date("Y/n/j");
+		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
+		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum ,b.login,b.logout,b.date FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
+		return $query->result();
+	}
+	function Employee_viewalltime_rows($cases) {
+		$this->load->database();
+		if ($cases==1)
+			$date=$this->input->post('date');
+		else if ($cases==2)
+			$date=date("Y/n/j");
+		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
+		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
+		return $query->num_rows();
+	}
+	function Insert_time() {
+		$this->load->database();
+		$date=$this->input->post('date');
+		$query=$this->db->get('employee');
+		foreach ($query->result() as $row)
+		{
+			$query1 = $this->db->query('INSERT INTO timesheet(`login`,`logout`,`empnum`,`date`) VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
+		}
 	}
 }
 ?>
