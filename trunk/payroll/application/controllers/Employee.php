@@ -55,10 +55,41 @@ class Employee extends CI_Controller {
 	}
 	
 	function Edit()//function for viewing the editing an employee page 
-	{		
-		$this->load->helper('form');
-		$this->load->model('Employee_model');
-		$data['query']=$this->Employee_model->Employee_edit();
+	{	
+		if(!isset($_POST['editEmp']))
+		{
+			//get all posted data from the previous viewing of Emp_edit form
+			$data['empnum'] = $_POST['empnum'];//employee number
+			$data['fname'] = $_POST['fname'];//first name
+			$data['mname'] = $_POST['mname'];//middle name
+			$data['sname'] = $_POST['sname'];//last name
+			$data['mrate'] = $_POST['mrate'];//monthly rate
+			$data['position'] = $_POST['position'];//position
+			$data['dept'] = $_POST['dept'];//department
+			$data['gender'] = $_POST['gender'];//gender
+			$data['status'] = $_POST['status'];//status
+			$data['payment_mode'] = $_POST['payment_mode'];//payment mode
+			$data['password'] = $_POST['password'];//password
+			
+			//starting date
+			$data['syear'] = $_POST['syear'];
+			$data['smonth'] = $_POST['smonth'];
+			$data['sday'] = $_POST['sday'];
+			
+			//Birthdate
+			$data['byear'] = $_POST['byear'];
+			$data['bmonth'] = $_POST['bmonth'];
+			$data['bday'] = $_POST['bday'];
+			
+			$this->load->helper('form');
+			$this->load->model('Employee_model');
+		}
+		else{
+			$this->load->helper('form');
+			$this->load->model('Employee_model');
+			$data['query']=$this->Employee_model->Employee_edit();
+		}//Edit Employee Form is executed for the 1st time
+		
 		$data['options'] = $this->Employee_model->get_status();
 		$data['months'] = $this->Employee_model->buildMonthDropdown(); 
 		$data['days'] = range(1,31);
