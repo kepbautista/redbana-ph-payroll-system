@@ -24,7 +24,7 @@ foreach($query as $row){
 	$gender= $row->gender;//GENDER
 	$status= $row->status;//STATUS
 	$pmode= $row->payment_mode;//PAYMENT MODE
-	$pwd= $row->password;//PASSWORD
+	$password= $row->password;//PASSWORD
 	$sdate = preg_split("/[\s-]+/", $row->sdate);//STARTING DATE
 	$bdate = preg_split("/[\s-]+/", $row->bdate);//BIRTH DATE
 }
@@ -37,23 +37,23 @@ foreach($query as $row){
 			<th width="100" align="left">Employee Number:</th>
 			<td>
 				<?php echo $empnum?>
-				<input type="hidden" name="empnum" id="empnum" value="<?php if(isset($query)) echo set_value('empnum',$empnum); else echo $empnum;?>" style="background-color: yellow;"/>
+				<input type="hidden" name="empnum" id="empnum" value="<?php echo $empnum;?>" style="background-color: yellow;"/>
 			</td>
 		</tr>
 		<tr>
 			<th align="left">First Name:</th>
-			<td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php if(isset($fname)) echo $fname; else echo set_value('fname'); ?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
+			<td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo $fname;?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
 		</tr>
 		<tr>
 			<th align="left">Middle Name:</th>
-			<td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php if(isset($mname)) echo $mname; else echo set_value('mname'); ?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
+			<td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo $mname;?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
 			<tr>
 			<th align="left">Last Name:</th>
-			<td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php if(isset($sname)) echo $sname; else echo set_value('sname'); ?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
+			<td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo $sname;?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
 		</tr>
 		<tr>
 			<th align="left">Monthly Rate:PHP </th>
-			<td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php if(isset($mrate)) echo $mrate; else echo set_value('mrate'); ?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
+			<td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo $mrate;?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
 		</tr>
 		<tr>
 	    <th align="left">Payment Mode:</th>
@@ -183,7 +183,7 @@ foreach($query as $row){
 		<tr>
 			<th width="100" align="left">Password:</th>
 			<td align="left">
-				<input type="text" name="password" id='password' value="<?php if(isset($pwd)) echo $pwd; else echo set_value('password'); ?>"/>
+				<input type="text" name="password" id='password' value="<?php echo $password;?>"/>
 				<input type="button" id="pwd" value="Generate"  />
 				&nbsp
 		<span class="warning" name='pword' id='pword'></span>
