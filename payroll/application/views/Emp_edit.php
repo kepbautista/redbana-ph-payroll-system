@@ -27,7 +27,6 @@ foreach($query as $row){
 	$pwd= $row->password;//PASSWORD
 	$sdate = preg_split("/[\s-]+/", $row->sdate);//STARTING DATE
 	$bdate = preg_split("/[\s-]+/", $row->bdate);//BIRTH DATE
-	echo $sdate[0];
 }
 }
 ?>
@@ -37,7 +36,8 @@ foreach($query as $row){
 		<tr>
 			<th width="100" align="left">Employee Number:</th>
 			<td>
-				<input type="text" name="empnum" id="empnum" disabled="disabled" value="<?php if(isset($query)) echo set_value('empnum',$empnum); else echo set_value('empnum');?>" style="background-color: yellow;"/>
+				<?php echo $empnum?>
+				<input type="hidden" name="empnum" id="empnum" value="<?php if(isset($query)) echo set_value('empnum',$empnum); else echo $empnum;?>" style="background-color: yellow;"/>
 			</td>
 		</tr>
 		<tr>
@@ -117,9 +117,9 @@ foreach($query as $row){
 			<td align="left">
 			<?php
 			if(!isset($bdate)){
-				$bdate[1] = set_value('bmonth');
-				$bdate[2] = set_value('bday');
-				$bdate[0] = set_value('byear');
+				$bdate[1] = $bmonth;
+				$bdate[2] = $bday;
+				$bdate[0] = $byear;
 			}
 			
 			echo form_dropdown('bmonth', $months,$bdate[1]);?>
@@ -144,9 +144,9 @@ foreach($query as $row){
 			<td align="left">
 			<?php
 			if(!isset($sdate)){
-				$sdate[1] = set_value('smonth');
-				$sdate[2] = set_value('sday');
-				$sdate[0] = set_value('syear');
+				$sdate[1] = $smonth;
+				$sdate[2] = $sday;
+				$sdate[0] = $syear;
 			}
 			
 			echo form_dropdown('smonth', $months,$sdate[1]);?>
@@ -170,10 +170,14 @@ foreach($query as $row){
 		<tr>
 			<th width="100" align="left">Status:</th>
 			<td align="left">
+			<select name="status" id="status">
 			<?php
-				if(isset($status)) form_dropdown('status', $options,$status);
-				else echo form_dropdown('status', $options,set_value('status'));
+				for($i=1;$i<count($options);$i++){
+					if ($options[$i]==$status) echo '<option value="'.$options[$i].'" SELECTED>'.$options[$i].'</option>\n';
+					echo '<option value="'.$options[$i].'">'.$options[$i].'</option>\n';
+				}
 			?>
+			</select>
 			</td>	
 		</tr>
 		<tr>
@@ -202,7 +206,7 @@ foreach($query as $row){
 		</tr>
 	</table>
 <div>
-<?php echo validation_errors(); ?>
+<?php if(!isset($query)) echo validation_errors(); ?>
 </div>
 </form>
 </body>
