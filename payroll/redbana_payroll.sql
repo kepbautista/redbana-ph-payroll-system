@@ -1,19 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 04, 2011 at 02:57 AM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
+-- Generation Time: May 08, 2011 at 01:06 PM
+-- Server version: 5.1.36
+-- PHP Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `redbana_payroll`
@@ -327,6 +321,26 @@ INSERT INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `t
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `timesheet`
+--
+
+CREATE TABLE IF NOT EXISTS `timesheet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  `empnum` varchar(50) NOT NULL,
+  `login` time NOT NULL,
+  `logout` time NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=262 ;
+
+--
+-- Dumping data for table `timesheet`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -353,6 +367,23 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `type`, `position`, `department`, `gender`, `startdate`, `paymentmode`) VALUES
 ('mary rose', 'bigata', 'garra', 'merose@gmail.com', '11111', 'mary', 'employee', '', '', '', '0000-00-00', ''),
 ('kim', 'pura', 'samaniego', 'kimsamaniego@gmail.com', '12345', 'karlene', 'superuser', '', '', '', '0000-00-00', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `variables`
+--
+
+CREATE TABLE IF NOT EXISTS `variables` (
+  `Name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `Value` double NOT NULL,
+  PRIMARY KEY (`Name`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `variables`
+--
+
 
 -- --------------------------------------------------------
 
@@ -397,16 +428,3 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
-
-CREATE TABLE IF NOT EXISTS `timesheet` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `empnum` varchar(50) NOT NULL,
-  `login` time NOT NULL,
-  `logout` time NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=262 ;
-
-
-
