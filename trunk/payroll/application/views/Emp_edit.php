@@ -37,7 +37,7 @@ foreach($query as $row){
 		<tr>
 			<th width="100" align="left">Employee Number:</th>
 			<td>
-				<input type="text" name="empnum" id="empnum" value="<?php if(isset($query)) echo set_value('empnum',$empnum); else echo set_value('empnum');?>"/>
+				<input type="text" name="empnum" id="empnum" disabled="disabled" value="<?php if(isset($query)) echo set_value('empnum',$empnum); else echo set_value('empnum');?>" style="background-color: yellow;"/>
 			</td>
 		</tr>
 		<tr>
