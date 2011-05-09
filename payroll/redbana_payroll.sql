@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `philhealth` (
   `total` double NOT NULL,
   `pes` double NOT NULL,
   `per` double NOT NULL,
-  `id` int(6) NOT NULL AUTO_INCREMENT
+  `id` int(6) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=47;
 
