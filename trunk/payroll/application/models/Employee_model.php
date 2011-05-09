@@ -95,7 +95,7 @@ class Employee_model extends CI_Model {
 		'gender'=>$this->input->post('gender'),
 		'payment_mode'=>$this->input->post('payment_mode')
 		);
-		$this->db->where('empnum',$this->input->post('hidden'));
+		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('employee',$data); 
 	}
 	function Employee_delete(){

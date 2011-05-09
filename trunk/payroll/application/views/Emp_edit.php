@@ -173,8 +173,8 @@ foreach($query as $row){
 			<select name="status" id="status">
 			<?php
 				for($i=1;$i<count($options);$i++){
-					if ($options[$i]==$status) echo '<option value="'.$options[$i].'" SELECTED>'.$options[$i].'</option>\n';
-					echo '<option value="'.$options[$i].'">'.$options[$i].'</option>\n';
+					if ($options[$i]==$status) echo '<option value="'.$i.'" SELECTED>'.$options[$i].'</option>\n';
+					echo '<option value="'.$i.'">'.$options[$i].'</option>\n';
 				}
 			?>
 			</select>
