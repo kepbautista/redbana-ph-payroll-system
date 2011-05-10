@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 08, 2011 at 01:06 PM
+-- Generation Time: May 10, 2011 at 02:29 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `philhealth` (
   `per` double NOT NULL,
   `id` int(6) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=47;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `philhealth`
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `sss` (
   `totalcont` double NOT NULL,
   `id` int(6) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=74 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
 
 --
 -- Dumping data for table `sss`
@@ -386,6 +386,8 @@ CREATE TABLE IF NOT EXISTS `variables` (
 -- Dumping data for table `variables`
 --
 
+INSERT INTO `variables` (`Name`, `Value`) VALUES
+('PagIbig', 100);
 
 -- --------------------------------------------------------
 
