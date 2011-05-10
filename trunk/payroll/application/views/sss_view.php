@@ -93,6 +93,7 @@ td.betterhover, #tabletwo tbody tr:hover
 		<td><?php echo $row->totalcont; $cnt++;?></td>
 		<td>
 		
+		<td>
 		<?php
 			$hidden=$row->id;
 			echo form_open('sss/edit'); 
