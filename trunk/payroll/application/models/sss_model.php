@@ -44,5 +44,34 @@ class Sss_model extends CI_Model {
 		$query = $this->db->getwhere('sss',array('id'=>$id));
 		return $query->row_array();        
 	}
+	
+	function SSS_insertBrackets(){
+		$N = count($_POST['rangel']);
+		
+		/*transfer post data*/
+		$rangel = $_POST['rangel'];
+		$rangeh = $_POST['rangeh'];
+		$msc = $_POST['msc'];
+		$ser = $_POST['ser'];
+		$see = $_POST['see'];
+		$stotal = $_POST['stotal'];
+		$ecer = $_POST['ecer'];
+		$ter = $_POST['ter'];
+		$tee = $_POST['tee'];
+		$ttotal = $_POST['ttotal'];
+		$totalcont = $_POST['totalcont'];
+		
+		for($i=0;$i<$N;$i++){
+			$query = "INSERT INTO `sss` VALUES 
+			('".$rangel[$i]."','".$rangeh[$i]."','"
+			.$ser[$i]."','".$see[$i]."','".$stotal[$i]."','"
+			.$ecer[$i]."','".$ter[$i]."','".$tee[$i]."','"
+			.$ttotal[$i]."','".$msc[$i]."','".$totalcont[$i]."',"
+			."'null')";
+			mysql_query($query);//insert each new bracket
+		}
+		
+		
+	}//insert SSS Brackets
 }
 ?>

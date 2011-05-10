@@ -1,18 +1,33 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>SSS Table</title>
+<title>SSS Table</title>
+<script type="text/javascript" src="<?php echo base_url();?>devtools/jquery-1.5.2"></script>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.pack.js"></script>
 <link rel="stylesheet" type="text/css" href="/cody/style.css" media="screen"/>
 <script type="text/javascript">
-
 $(document).ready(function()
 {
 	$('#tabletwo').columnHover({eachCell:true, hoverClass:'betterhover'});
-
-}
-);
+});
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#addView').hide();
+		$('#add').click(function(){
+			$.post("<?php echo base_url();?>devtools/insertBrackets.php", {
+             N: $('#brackets').val(),
+			 tableType: "sss",
+          },
+          function(data){
+                $("#insertView").html(data);
+				$("#sss_table").fadeOut();
+				$('#addView').fadeIn();
+          }
+		  );
+		});
+	});
 </script>
 
 <style type="text/css">
@@ -46,11 +61,28 @@ td.betterhover, #tabletwo tbody tr:hover
 {
 	background: LightCyan;
 }
+#insert{
+ position:absolute;
+ top:0;
+ right:0;
+ width:200px;
+}
+#sss_tables{
+ position:absolute;
+ top:0;
+ left:0;
+ width:200px;
+}
+.numeric{
+background-color: #87CEEB;
+color: navy;
+}
 </style>
 </head>
 
 <body>
 <center>
+<div name="sss_table" id="sss_table">
 <table id="tabletwo">
 	<thead>
 	<tr>
@@ -108,6 +140,20 @@ td.betterhover, #tabletwo tbody tr:hover
 ?>
 <tfoot></tfoot>
 </table>
+</div>
+
+<div id="insert" name="insert">
+	<h4>Insert Brackets</h4><br/>
+	How many brackets to insert?&nbsp&nbsp
+	<input type="text" name="brackets" id="brackets" class="numeric" size="4"/>
+	<input type="button" name="add" id="add" value="Add" />
+	<span style="color:red;"><?php if(isset($message)) echo $message;?></span>
+</div>
+<div name="addView" id="addView">
+<form name="insertBrackets" method="post"  accept-charset="utf-8" action="<?php echo site_url()?>/sss/insert">
+<span name="insertView" id="insertView">
+</form>
+</div>
 </body>
 </center>
 </html>
