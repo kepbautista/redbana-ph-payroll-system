@@ -101,5 +101,85 @@
           }
 		  );
 		});
+		$('#hphone').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#hphone').val(),
+			 vtype: "open",
+          },
+          function(data){
+			$("#telno").text(data);
+          }
+		  );
+		});
+		$('#mphone').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#mphone').val(),
+			 vtype: "open",
+          },
+          function(data){
+			$("#mobileNo").text(data);
+          }
+		  );
+		});
+		$('#address').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#address').val(),
+			 vtype: "open",
+          },
+          function(data){
+			$("#pAdd").text(data);
+          }
+		  );
+		});
+		$('#zip').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#zip').val(),
+			 vtype: "open",
+          },
+          function(data){
+			$("#zpcode").text(data);
+          }
+		  );
+		});
+		$('#sss').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#sss').val(),
+			 vtype: "sss",
+          },
+          function(data){
+			$("#sssNo").text(data);
+          }
+		  );
+		});
+		$('#tin').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#tin').val(),
+			 vtype: "tin",
+          },
+          function(data){
+			$("#tinNo").text(data);
+          }
+		  );
+		});
+		$('#pagibig').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#pagibig').val(),
+			 vtype: "pagibig",
+          },
+          function(data){
+			$("#pgNo").text(data);
+          }
+		  );
+		});
+		$('#phil').blur(function(){
+			$.post("<?php echo base_url();?>devtools/validate.php", {
+             query: $('#phil').val(),
+			 vtype: "philhealth",
+          },
+          function(data){
+			$("#phNo").text(data);
+          }
+		  );
+		});
 	});
 	</script>

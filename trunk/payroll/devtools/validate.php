@@ -15,8 +15,10 @@ function validator($q,$response){
 	//sql injections
 	
 	//input is null
-	if(strlen($q)==0)
-		$response = "Required Value.";
+	if(($_POST['vtype']!='open') && ($_POST['vtype']!='e-mail')){
+		//value is required
+		if(strlen($q)==0) $response = "Required Value.";
+	}
 		
 	return $response;
 }
@@ -56,10 +58,15 @@ function validatePword($q,$response){
 	return $response;
 }//check length of password
 
-function validateEmail($q,$response){
-	if(stripos($q,"@")===false)
-		$response = "Invalid E-mail Address";
-
+function validateEmail($email,$response){
+	if((strlen($email)>0)){
+		// check an email address is possibly valid
+		if (!preg_match("^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$^", $email)) {
+			$response = "Invalid E-mail Address!";
+			//prompt for invalid e-mail address
+		}
+	}//check if the email address entered is valid
+	
 	return $response;
 }//check validity of email address
 

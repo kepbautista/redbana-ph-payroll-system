@@ -19,6 +19,15 @@ class Employee extends CI_Controller {
 		$this->form_validation->set_rules('sname','Last Name','required|callback_script_input');
 		$this->form_validation->set_rules('mrate','Monthly Rate','required|numeric|greater_than[0]');
 		$this->form_validation->set_rules('password','Password','required|callback_script_input|min_length[10]');
+		$this->form_validation->set_rules('hphone','Home Phone Number','callback_script_input');
+		$this->form_validation->set_rules('mphone','Mobile Phone Number','callback_script_input');
+		$this->form_validation->set_rules('email','E-mail Address','valid_email|callback_script_input');
+		$this->form_validation->set_rules('address','Present Address','callback_script_input');
+		$this->form_validation->set_rules('zip','Zip Code','callback_script_input');
+		$this->form_validation->set_rules('sss','SSS Number','required|callback_script_input');
+		$this->form_validation->set_rules('tin','TIN Number','required|callback_script_input');
+		$this->form_validation->set_rules('pagibig','Pag-Ibig Number','required|callback_script_input');
+		$this->form_validation->set_rules('phil','Philhealth Number','required|callback_script_input');
 		
 	}//function for validating forms
 	
@@ -97,7 +106,15 @@ class Employee extends CI_Controller {
 		$data['type_options'] = $this->Employee_model->get_type();
 		$data['bank_options'] = $this->Employee_model->get_bank();
 		$data['user_right'] = $this->Employee_model->get_user_right();
-		$this->load->view('Emp_edit',$data);
+		
+		$this->validateForm("update");//call function for form validation
+		
+		if ($this->form_validation->run() == FALSE){
+			$this->load->view('Emp_edit',$data);
+			//validation errors are present
+		}
+		else $this->Update();//update information
+		
 	}
 	
 	function GetAll()//Getting all info of employee and 

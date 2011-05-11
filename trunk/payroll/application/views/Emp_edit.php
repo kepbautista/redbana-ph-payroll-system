@@ -202,49 +202,39 @@ foreach($query as $row){
 		</tr>
   <tr>
     <th align="right">Home Phone: </th>
-   <td><input type="text" name="hphone" id="hphone" class="textfield" size="10" value="<?php echo $hphone;?>"/></td>
+   <td><input type="text" name="hphone" id="hphone" class="textfield" size="10" value="<?php echo $hphone;?>"&nbsp<span class='warning' name='telno' id='telno'></span></td>
   </tr>
   <tr>
     <th align="right">Mobile Number:</th>
-   <td><input type="text" name="mphone" id="mphone" class="textfield" size="11" value="<?php echo $mphone;?>"/></td>
+   <td><input type="text" name="mphone" id="mphone" class="textfield" size="11" value="<?php echo $mphone;?>"&nbsp<span class='warning' name='mobileNo' id='mobileNo'></span></td>
   </tr>
   <tr>
     <th align="right">Email Address:</th>
-   <td><input type="text" name="email" id="email" class="textfield" size="25" value="<?php echo $email;?>"/></td>
+   <td><input type="text" name="email" id="email" class="textfield" size="25" value="<?php echo $email;?>"&nbsp<span class='warning' name='eMail' id='eMail'></span></td>
   </tr>
   <tr>
     <th align="right">Present Address:</th>
-   <td><input type="text" name="address" id="address" class="textfield" size="50" value="<?php echo $address;?>"/></td>
+   <td><input type="text" name="address" id="address" class="textfield" size="50" value="<?php echo $address;?>"/>&nbsp<span class='warning' name='pAdd' id='pAdd'></span></td>
   </tr>
   <tr>
     <th align="right">Zip Code:</th>
-   <td><input type="text" name="zip" id="zip" class="textfield" size="5" value="<?php echo $zip;?>"/></td>
+   <td><input type="text" name="zip" id="zip" class="textfield" size="5" value="<?php echo $zip;?>"/>&nbsp<span class='warning' name='zpcode' id='zpcode'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>SSS Number:</th>
-   <td><input type="text" name="sss" id="sss" class="textfield" size="20" value="<?php echo $sss;?>"/></td>
+   <td><input type="text" name="sss" id="sss" class="textfield" size="20" value="<?php echo $sss;?>"/>&nbsp<span class='warning' name='sssNo' id='sssNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Tin Number:</th>
-   <td><input type="text" name="tin" id="tin" class="textfield" size="20" value="<?php echo $tin;?>"/></td>
+   <td><input type="text" name="tin" id="tin" class="textfield" size="20" value="<?php echo $tin;?>"/>&nbsp<span class='warning' name='tinNo' id='tinNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Pag-ibig Number:</th>
-   <td><input type="text" name="pagibig" id="pagibig" class="textfield" size="20" value="<?php echo $pagibig;?>"/></td>
+   <td><input type="text" name="pagibig" id="pagibig" class="textfield" size="20" value="<?php echo $pagibig;?>"/>&nbsp<span class='warning' name='pgNo' id='pgNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>PhilHealth Number:</th>
-   <td><input type="text" name="phil" id="phil" class="textfield" size="20" value="<?php echo $phil;?>"/></td>
-  </tr>
-  <tr>
-    <th align="right"><font color = "red" size=+2 >*</font>Bank Name:</th>
-    <td>
-	<?php echo form_dropdown('bank_name', $bank_options,$bank);?>
-	</td>
-  </tr>
-  <tr>
-    <th align="right"><font color = "red" size=+2 >*</font>Bank Account:</th>
-   <td><input type="text" name="baccount" id="baccount" class="textfield" size="20" value="<?php echo $baccount;?>"/></td>
+   <td><input type="text" name="phil" id="phil" class="textfield" size="20" value="<?php echo $phil;?>"/>&nbsp<span class='warning' name='phNo' id='phNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Monthly Rate:PHP </th>
@@ -275,7 +265,7 @@ foreach($query as $row){
   
 </table>
 <div>
-<?php echo validation_errors(); ?>
+<?php if(!isset($query)) echo validation_errors(); ?>
 </div>
 </form>
 
