@@ -14,6 +14,20 @@ $(document).ready(function()
 </script>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$("button").click(function(){
+		var r = confirm("Are you sure you want to delete this bracket?");
+			if(r==true){ //alert($(this).val());
+				$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
+					query: $(this).val(),
+					tableType: "sss",
+				},//perform ajax to delete the bracket using mysql_query
+				function(data){
+					alert("Bracket deleted! "+data);
+					window.location.reload();//reload page to see the effect of delete
+				});
+			}
+			else alert("Bracket delete cancelled!");
+		});
 		$('#addView').hide();
 		$('#add').click(function(){
 			$.post("<?php echo base_url();?>devtools/insertBrackets.php", {
@@ -23,7 +37,8 @@ $(document).ready(function()
           function(data){
                 $("#insertView").html(data);
 				$("#sss_table").fadeOut();
-				$('#addView').fadeIn();
+				$('#addView').fadeOut();
+				$('#addView').slideDown();
           }
 		  );
 		});
@@ -90,7 +105,7 @@ color: navy;
 		<th rowspan="3"> Monthly <br /> Salary <br /> Credit </th>
 		<th colspan="7"> EMPLOYER-EMPLOYEE </th>
 		<th> SE/VM/OFW </th>
-		<th rowspan="3" colspan="2"> Edit </th>
+		<th rowspan="3" colspan="2"> Modify Brackets </th>
 		<tr>
 		<th colspan="3"> SOCIAL SECURITY </th>
 		<th> EC </th>
@@ -130,7 +145,8 @@ color: navy;
 			$hidden=$row->id;
 			echo form_open('sss/edit'); 
 			echo form_hidden('hidden', $hidden);
-			echo form_submit('mysubmit','Edit!'); 
+			echo form_submit('mysubmit','Edit!');
+			echo "<button type='button' name='delete' id='delete' value='".$row->id."'>Delete</button>";
 			echo form_close(); 
 		?></td>
 
