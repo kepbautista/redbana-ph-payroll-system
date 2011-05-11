@@ -26,25 +26,34 @@ class Employee extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Employee_model');
-		$data['options'] = $this->Employee_model->get_status();
 		$data['months'] = $this->Employee_model->buildMonthDropdown(); 
 		$data['days'] = range(1,31);
 		$data['years'] = range(1990,2020); 
-		$data['pos_options'] = array(
-                  'hr'  => 'HR',
-                  'admin'    => 'Admin',
-				  'exec'    => 'Exec'
+		$data['title'] =  array(
+                  'Mr.'  => 'Mr.',
+                  'Ms.'    => 'Ms.',
+				  'Mrs.'    => 'Mrs.'
                 );
-		$data['pmode_options'] = array(
+		$data['pmode'] =  array(
                   'Semi Monthly'  => 'Semi Monthly',
                   'Monthly'    => 'Monthly'
-				);
-		$data['dept_options'] = array(
-                  'hr'  => 'HR',
-                  'admin'    => 'Admin',
-				  'exec'    => 'Exec'
                 );
-	
+		$data['pos_options'] = $this->Employee_model->get_pos();
+		$data['civil_status'] = array(
+                  'Single'  => 'Single',
+                  'Married'    => 'Married'
+				);
+		$data['emp_status'] = array(
+                  'Active'  => 'Active',
+                  'On-Leave'    => 'On-Leave',
+				  'Terminated'    => 'Terminated',
+				  'Resigned'    => 'Resigned'
+				);
+		$data['dept_options'] = $this->Employee_model->get_dept();
+		$data['tax_options'] = $this->Employee_model->get_tax();
+		$data['type_options'] = $this->Employee_model->get_type();
+		$data['user_right'] = $this->Employee_model->get_user_right();
+		$data['bank_options'] = $this->Employee_model->get_bank();
 		$this->validateForm("insert");//call function for validating forms
 	
 		if ($this->form_validation->run() == FALSE)
@@ -56,66 +65,39 @@ class Employee extends CI_Controller {
 	
 	function Edit()//function for viewing the editing an employee page 
 	{	
-		if(!isset($_POST['editEmp']))
-		{
-			//get all posted data from the previous viewing of Emp_edit form
-			$data['empnum'] = $_POST['empnum'];//employee number
-			$data['fname'] = $_POST['fname'];//first name
-			$data['mname'] = $_POST['mname'];//middle name
-			$data['sname'] = $_POST['sname'];//last name
-			$data['mrate'] = $_POST['mrate'];//monthly rate
-			$data['position'] = $_POST['position'];//position
-			$data['dept'] = $_POST['dept'];//department
-			$data['gender'] = $_POST['gender'];//gender
-			$data['status'] = $_POST['status'];//status
-			$data['payment_mode'] = $_POST['payment_mode'];//payment mode
-			$data['password'] = $_POST['password'];//password
-			
-			//starting date
-			$data['syear'] = $_POST['syear'];
-			$data['smonth'] = $_POST['smonth'];
-			$data['sday'] = $_POST['sday'];
-			
-			//Birthdate
-			$data['byear'] = $_POST['byear'];
-			$data['bmonth'] = $_POST['bmonth'];
-			$data['bday'] = $_POST['bday'];
-			
-			$this->load->helper('form');
-			$this->load->model('Employee_model');
-		}
-		else{
-			$this->load->helper('form');
-			$this->load->model('Employee_model');
-			$data['query']=$this->Employee_model->Employee_edit();
-		}//Edit Employee Form is executed for the 1st time
 		
-		$data['options'] = $this->Employee_model->get_status();
+		$this->load->helper('form');
+		$this->load->model('Employee_model');
+		$data['query']=$this->Employee_model->Employee_edit();
 		$data['months'] = $this->Employee_model->buildMonthDropdown(); 
 		$data['days'] = range(1,31);
-		$data['pos_options'] = array(
-                  'hr'  => 'HR',
-                  'admin'    => 'Admin',
-				  'exec'    => 'Exec'
+		$data['years'] = range(1990,2020); 
+		$data['title'] =  array(
+                  'Mr.'  => 'Mr.',
+                  'Ms.'    => 'Ms.',
+				  'Mrs.'    => 'Mrs.'
                 );
-		$data['pmode_options'] = array(
+		$data['pmode'] =  array(
                   'Semi Monthly'  => 'Semi Monthly',
                   'Monthly'    => 'Monthly'
-				);
-		$data['dept_options'] = array(
-                  'hr'  => 'HR',
-                  'admin'    => 'Admin',
-				  'exec'    => 'Exec'
                 );
-		$data['years'] = range(1990,2020);
-	
-		$this->validateForm("update");//call function for form validation
-		
-		if ($this->form_validation->run() == FALSE){
-			$this->load->view('Emp_edit',$data);
-			//validation errors are present
-		}
-		else $this->Update();//update information
+		$data['pos_options'] = $this->Employee_model->get_pos();
+		$data['civil_status'] = array(
+                  'Single'  => 'Single',
+                  'Married'    => 'Married'
+				);
+		$data['emp_status'] = array(
+                  'Active'  => 'Active',
+                  'On-Leave'    => 'On-Leave',
+				  'Terminated'    => 'Terminated',
+				  'Resigned'    => 'Resigned'
+				);
+		$data['dept_options'] = $this->Employee_model->get_dept();
+		$data['tax_options'] = $this->Employee_model->get_tax();
+		$data['type_options'] = $this->Employee_model->get_type();
+		$data['bank_options'] = $this->Employee_model->get_bank();
+		$data['user_right'] = $this->Employee_model->get_user_right();
+		$this->load->view('Emp_edit',$data);
 	}
 	
 	function GetAll()//Getting all info of employee and 

@@ -9,30 +9,27 @@
 			@import "<?php echo base_url();?>/css/demo_table.css";
 		</style> 
 		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.js"></script> 
-		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.dataTables.js"></script>
+		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/css/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8"> 
 			$(document).ready(function() {
 				$('#example').dataTable();
 			} );
 		</script> 
 	</head> 
-	<body id="dt_example"> 
+	<body id="dt_example"> <center>
 	<?php  include  ("links.php");?>
 		 <div id="demo">
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
 			<thead> 
 				<tr> 
-					<th>Employee Number</th> 
-					<th>Name</th> 
-					<th>Birth Date</th> 
-					<th>Start Date</th> 
-					<th>Gender</th>
+					<th>Seq #</th> 
+					<th>Employee</th> 
+					<th>Emp No.</th> 
+					<th>Department</th> 
 					<th>Position</th>
-					<th>Department</th>
-					<th>Payment Mode</th>
-					<th>Monthly Rate</th>
+					<th>Type</th>
+					<th>Salary</th>
 					<th>Status</th>
-					<th>Password</th>
 				</tr> 
 			</thead> 
 			<tbody> 
@@ -41,21 +38,18 @@
 			{ 
 				if ($cnt%2==0)	$class="even";
 				else	$class="odd";
-				$name= $row->sname.', '.$row->fname.', '.$row->mname.'.';
+				$name= $row->title.' '.$row->fname.' '.$row->mname.' '.$row->sname.'.';
 				$emp=$row->empnum;
 			?>
-				<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
-					<td><?php echo $emp; ?></td>
+				<tr id="<?php echo $cnt ?>" class="<?php echo $class ?>">
+					<td><?php echo $cnt; ?></td>
 					<td><?php echo $name; ?></td>
-					<td><?php echo $row->bdate; ?></td>
-					<td><?php echo $row->sdate; ?></td>
-					<td><?php echo $row->gender; ?></td>
-					<td><?php echo $row->position; ?></td>
+					<td><?php echo $emp; ?></td>
 					<td><?php echo $row->dept; ?></td>
-					<td><?php echo $row->payment_mode; ?></td>
+					<td><?php echo $row->position; ?></td>
+					<td><?php echo $row->emp_type; ?></td>
 					<td><?php echo $row->mrate; ?></td>
-					<td><?php echo $row->desc; $cnt++;?></td>
-					<td><?php echo $row->password; ?></td>
+					<td><?php echo $row->emp_status; ?></td>
 					<td>
 						<?php
 						$hidden=$row->empnum;
@@ -78,20 +72,17 @@
 			</tbody>
 			<tfoot> 
 				<tr> 
-					<th>Employee Number</th> 
-					<th>Name</th> 
-					<th>Birth Date</th> 
-					<th>Start Date</th> 
-					<th>Gender</th>
+					<th>Seq #</th> 
+					<th>Employee</th> 
+					<th>Emp No.</th> 
+					<th>Department</th> 
 					<th>Position</th>
-					<th>Department</th>
-					<th>Payment Mode</th>
-					<th>Monthly Rate</th>
+					<th>Type</th>
+					<th>Salary</th>
 					<th>Status</th>
-					<th>Password</th>
 				</tr> 
 			</tfoot>  
 		</table>
-	</div>
+	</div></center>
 </body> 
 </html>

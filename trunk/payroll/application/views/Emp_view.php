@@ -7,69 +7,79 @@
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<title>Add Employee</title>
 	<?php include 'validators.php'?>
-	<?php include 'display.php'?>
+	<?php  include 'display.php'?>
 </head>
 <body>
 
-<form name="FRM" class="jNice" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/insert">
+<form name="FRM"  method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/insert">
 <?php  include  ("links.php");?>
 <table  border="0" cellspacing="2">
   <tr>
-    <th width="100" align="left">Employee Number:</th>
+    <th width="100" align="right"><font color = "red" size=+2 >*</font>Employee Number:</th>
     <td><input name="empnum" id="empnum" type="text" class="textfield" size="25" value="<?php echo set_value('empnum'); ?>"/>&nbsp<span class="warning" name="enum" id="enum"><span></td>
   </tr>
   <tr>
-    <th align="left">First Name:</th>
-    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
-  </tr>
-  <tr>
-    <th align="left">Middle Name:</th>
-    <td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo set_value('mname'); ?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
-  </tr>
-  <tr>
-    <th align="left">Last Name:</th>
-    <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo set_value('sname'); ?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
-  </tr>
-  <tr>
-    <th align="left">Monthly Rate:PHP </th>
-   <td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo set_value('mrate'); ?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
-  </tr>
-  <tr>
-    <th align="left">Payment Mode:</th>
+    <th align="right"><font color = "red" size=+2 >*</font>Title:</th>
     <td>
-	<?php echo form_dropdown('payment_mode', $pmode_options);?>
+	<?php echo form_dropdown('title', $title);?>
 	</td>
   </tr>
   <tr>
-    <th align="left">Department:</th>
+    <th align="right"><font color = "red" size=+2 >*</font>First Name:</th>
+    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo set_value('fname'); ?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Middle Name:</th>
+    <td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo set_value('mname'); ?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Last Name:</th>
+    <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo set_value('sname'); ?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>User Right</th>
+    <td>
+		<?php echo form_dropdown('user_right', $user_right,'Employee');?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Civil Status:</th>
+    <td>
+		<?php echo form_dropdown('cstatus', $civil_status);?>
+	</td>
+  </tr>
+   <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Employee Status:</th>
+    <td>
+		<?php echo form_dropdown('emp_status', $emp_status);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Payment Mode:</th>
+    <td>
+	<?php echo form_dropdown('pmode', $pmode);?>
+	</td>
+  </tr>
+   <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Department:</th>
     <td>
 		<?php echo form_dropdown('dept', $dept_options);?>
 	</td>
   </tr>
   <tr>
-    <th align="left">Position:</th>
+    <th align="right"><font color = "red" size=+2 >*</font>Position:</th>
     <td>
 	<?php echo form_dropdown('position', $pos_options);?>
     </td>
   </tr>
   <tr>
-    <th align="left">Gender:</th>
-    <td><table border="0" cellpadding="0" cellspacing="0">
-      <tr>
-        <td><label>
-          <input type="radio" name="gender" checked="checked" value="M" id="radio_0"  />
-          Male</label></td>
-      </tr>
-      <tr>
-        <td><label>
-          <input type="radio" name="gender" value="F" id="radio_1" />
-          Female</label></td>
-      </tr>
-    </table>
+    <th align="right"><font color = "red" size=+2 >*</font>Employee Type:</th>
+    <td>
+	<?php echo form_dropdown('emp_type', $type_options);?>
     </td>
   </tr>
   <tr>
-    <th align="left">Birthday:</th>
+    <th align="right"><font color = "red" size=+2 >*</font>Date Of Birth:</th>
 	<td align="left">
 	<?php
 		echo form_dropdown('bmonth', $months);?>
@@ -88,7 +98,7 @@
     </td>
   </tr>
   <tr>
-    <th align="left">Start Date:</th>
+    <th align="right"><font color = "red" size=+2 >*</font>Date Employed:</th>
 	<td align="left">
 	<?php
 	echo form_dropdown('smonth', $months);?>
@@ -106,15 +116,81 @@
 		?></select>
     </td>
   </tr>
-   <tr>
-   <th width="100" align="left">Status:</th>
-		<td align="left"><?php 
-		echo form_dropdown('status', $options);?>
-		</td>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Tax Status</th>
+    <td>
+	<?php echo form_dropdown('tax_status', $tax_options);?>
+    </td>
   </tr>
   <tr>
-   <th width="100" align="left">Password:</th>
-		<td align="left">
+    <th align="right">Gender:</th>
+    <td><table border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><label>
+          <input type="radio" name="gender" checked="checked" value="M" id="radio_0"  />
+          Male</label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input type="radio" name="gender" value="F" id="radio_1" />
+          Female</label></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <th align="right">Home Phone: </th>
+   <td><input type="text" name="hphone" id="hphone" class="textfield" size="10" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right">Mobile Number:</th>
+   <td><input type="text" name="mphone" id="mphone" class="textfield" size="11" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right">Email Address:</th>
+   <td><input type="text" name="email" id="email" class="textfield" size="25" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right">Present Address:</th>
+   <td><input type="text" name="address" id="address" class="textfield" size="50" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right">Zip Code:</th>
+   <td><input type="text" name="zip" id="zip" class="textfield" size="5" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>SSS Number:</th>
+   <td><input type="text" name="sss" id="sss" class="textfield" size="20" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Tin Number:</th>
+   <td><input type="text" name="tin" id="tin" class="textfield" size="20" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Pag-ibig Number:</th>
+   <td><input type="text" name="pagibig" id="pagibig" class="textfield" size="20" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>PhilHealth Number:</th>
+   <td><input type="text" name="phil" id="phil" class="textfield" size="20" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Bank Name:</th>
+    <td>
+	<?php echo form_dropdown('bank_name', $bank_options);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Bank Account:</th>
+   <td><input type="text" name="baccount" id="baccount" class="textfield" size="20" value=""/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Monthly Rate:PHP </th>
+   <td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo set_value('mrate'); ?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
+  </tr>
+  <tr>
+   <th width="100" align="right"><font color = "red" size=+2 >*</font>Password:</th>
+		<td align="right">
 		<input type="text" name="password" id="password"/>
 		<input type="button" id="pwd" value="Generate"/>
 		&nbsp
