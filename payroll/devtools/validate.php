@@ -2,6 +2,9 @@
 /*Redbana Payroll System
   Program Description: A PHP File for validating forms using AJAX.
 */
+
+include "dbconnection.php";
+
 function validator($q,$response){
 	//user entered a script as input
 	if((stripos($q,"script") !== false)){
@@ -70,20 +73,6 @@ function validateNumber($q,$response){
 
 	return $response;
 }
-
-/*Functions for database connections*/
-function connectdb() {
-	$con = mysql_connect("localhost","root");//create connection to the database
-	if (!$con)
-		die('Could not connect: ' . mysql_error());
-		
-	mysql_select_db("redbana_payroll", $con);//select database from user
-	return $con;
-}//connect to the database
-	
-function closeconnection($con) {
-	mysql_close($con);
-}//close database connection
 
 $connect = connectdb();//open database connection
 

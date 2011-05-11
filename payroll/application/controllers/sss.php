@@ -99,5 +99,9 @@ class Sss extends CI_Controller {
 		else if($n<0) return 2;//negative number
 		else return 0;
 	}//check if number is valid or not
+	
+	function DeleteBrackets(){
+		echo $_POST['query'];
+	}//function for deleting an sss bracket
 }
 ?>
