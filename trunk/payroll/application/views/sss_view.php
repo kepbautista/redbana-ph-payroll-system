@@ -23,7 +23,7 @@ $(document).ready(function()
 				},//perform ajax to delete the bracket using mysql_query
 				function(data){
 					alert("Bracket deleted! "+data);
-					window.location.reload();//reload page to see the effect of delete
+					window.location.href = "<?php echo site_url();?>"+"/sss/getall";//reload page to see the effect of delete
 				});
 			}
 			else alert("Bracket delete cancelled!");
