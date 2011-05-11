@@ -140,49 +140,39 @@
   </tr>
   <tr>
     <th align="right">Home Phone: </th>
-   <td><input type="text" name="hphone" id="hphone" class="textfield" size="10" value=""/></td>
+   <td><input type="text" name="hphone" id="hphone" class="textfield" size="10" value="<?php echo set_value('hphone'); ?>"/>&nbsp<span class='warning' name='telno' id='telno'></span></td>
   </tr>
   <tr>
     <th align="right">Mobile Number:</th>
-   <td><input type="text" name="mphone" id="mphone" class="textfield" size="11" value=""/></td>
+   <td><input type="text" name="mphone" id="mphone" class="textfield" size="11" value="<?php echo set_value('mphone'); ?>"/>&nbsp<span class='warning' name='mobileNo' id='mobileNo'></span></td>
   </tr>
   <tr>
     <th align="right">Email Address:</th>
-   <td><input type="text" name="email" id="email" class="textfield" size="25" value=""/></td>
+   <td><input type="text" name="email" id="email" class="textfield" size="25" value="<?php echo set_value('email'); ?>"/>&nbsp<span class='warning' name='eMail' id='eMail'></span></td>
   </tr>
   <tr>
     <th align="right">Present Address:</th>
-   <td><input type="text" name="address" id="address" class="textfield" size="50" value=""/></td>
+   <td><input type="text" name="address" id="address" class="textfield" size="50" value="<?php echo set_value('address'); ?>"/>&nbsp<span class='warning' name='pAdd' id='pAdd'></span></td>
   </tr>
   <tr>
     <th align="right">Zip Code:</th>
-   <td><input type="text" name="zip" id="zip" class="textfield" size="5" value=""/></td>
+   <td><input type="text" name="zip" id="zip" class="textfield" size="5" value="<?php echo set_value('zip'); ?>"/>&nbsp<span class='warning' name='zpcode' id='zpcode'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>SSS Number:</th>
-   <td><input type="text" name="sss" id="sss" class="textfield" size="20" value=""/></td>
+   <td><input type="text" name="sss" id="sss" class="textfield" size="20" value="<?php echo set_value('sss'); ?>"/>&nbsp<span class='warning' name='sssNo' id='sssNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Tin Number:</th>
-   <td><input type="text" name="tin" id="tin" class="textfield" size="20" value=""/></td>
+   <td><input type="text" name="tin" id="tin" class="textfield" size="20" value="<?php echo set_value('tin');?>"/>&nbsp<span class='warning' name='tinNo' id='tinNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Pag-ibig Number:</th>
-   <td><input type="text" name="pagibig" id="pagibig" class="textfield" size="20" value=""/></td>
+   <td><input type="text" name="pagibig" id="pagibig" class="textfield" size="20" value="<?php echo set_value('pagibig');?>"/>&nbsp<span class='warning' name='pgNo' id='pgNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>PhilHealth Number:</th>
-   <td><input type="text" name="phil" id="phil" class="textfield" size="20" value=""/></td>
-  </tr>
-  <tr>
-    <th align="right"><font color = "red" size=+2 >*</font>Bank Name:</th>
-    <td>
-	<?php echo form_dropdown('bank_name', $bank_options);?>
-	</td>
-  </tr>
-  <tr>
-    <th align="right"><font color = "red" size=+2 >*</font>Bank Account:</th>
-   <td><input type="text" name="baccount" id="baccount" class="textfield" size="20" value=""/></td>
+   <td><input type="text" name="phil" id="phil" class="textfield" size="20" value="<?php echo set_value('phil');?>"/>&nbsp<span class='warning' name='phNo' id='phNo'></span></td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Monthly Rate:PHP </th>
@@ -193,11 +183,6 @@
 		<td align="right">
 		<input type="text" name="password" id="password"/>
 		<input type="button" id="pwd" value="Generate"/>
-		&nbsp
-		<span class="warning" name='pword' id='pword'></span>
-		</td>
-		<td>
-		</td>
 		 <script type="text/javascript">
                 $(document).ready(function() {
                         $(":button#pwd").click(function() {
@@ -205,6 +190,8 @@
                         });
                 });
         </script>
+		<span class="warning" name='pword' id='pword'></span>
+		</td>
   </tr>   
   <tr>
     <td><input type="submit" name="Submit" id="Submit" value="Add Employee!" />
