@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 10, 2011 at 02:29 PM
+-- Generation Time: May 11, 2011 at 11:16 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,8 +12,26 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
-CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `redbana_payroll`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bank_main`
+--
+
+CREATE TABLE IF NOT EXISTS `bank_main` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `acct_no` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `bank_main`
+--
+
+INSERT INTO `bank_main` (`id`, `name`, `acct_no`) VALUES
+(2, 'BPI', 0);
 
 -- --------------------------------------------------------
 
@@ -56,6 +74,30 @@ CREATE TABLE IF NOT EXISTS `department` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dept_main`
+--
+
+CREATE TABLE IF NOT EXISTS `dept_main` (
+  `dept` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dept_main`
+--
+
+INSERT INTO `dept_main` (`dept`, `id`) VALUES
+('Localization', 1),
+('Accounting', 2),
+('Business Executive', 3),
+('HRD', 4),
+('Marketing', 5),
+('Operations', 6);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -64,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `mname` varchar(50) NOT NULL,
   `sname` varchar(50) NOT NULL,
   `fname` varchar(100) NOT NULL,
-  `type` varchar(100) NOT NULL,
+  `user_right` varchar(20) NOT NULL,
   `status` int(2) NOT NULL,
   `mrate` float NOT NULL,
   `payment_mode` varchar(20) NOT NULL,
@@ -74,6 +116,22 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `password` varchar(15) NOT NULL,
   `sdate` date NOT NULL,
   `bdate` date NOT NULL,
+  `title` varchar(10) NOT NULL,
+  `civil_status` varchar(10) NOT NULL,
+  `hphone` varchar(20) NOT NULL,
+  `mphone` varchar(20) NOT NULL,
+  `email` varchar(20) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `zipcode` varchar(10) NOT NULL,
+  `tax_status` varchar(10) NOT NULL,
+  `emp_type` varchar(20) NOT NULL,
+  `sssno` varchar(20) NOT NULL,
+  `tinno` varchar(20) NOT NULL,
+  `philno` varchar(20) NOT NULL,
+  `pagibig` varchar(50) NOT NULL,
+  `bank` varchar(10) NOT NULL,
+  `baccount` varchar(20) NOT NULL,
+  `emp_status` varchar(20) NOT NULL,
   PRIMARY KEY (`empnum`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -81,10 +139,11 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `type`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`) VALUES
-('2007-09334', 'Gesha', 'Chachimichiru', 'Dessa Yesha ', 'superuser', 8, 3457.78, 'Semi Monthly', 'hr', 'hr', 'F', 'mRYK588dje', '0000-00-00', '0000-00-00'),
-('2008-12333', 'Perez', 'Caronan', 'Robby Dave', 'hr', 7, 1256.45, 'Monthly', 'hr', 'exec', 'M', 'ae0DFOKF8C', '1992-04-03', '1992-04-03'),
-('2008-12345', 'Morena', 'Cristobal', 'Lovelie', 'exec', 3, 5300, 'Monthly', 'admin', 'admin', 'F', 'fZOCLNjRzI', '1994-04-03', '1990-02-02');
+INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`) VALUES
+('123', 'we', 'wew', 'we', '', 0, 2344, '0', 'Accounting Associate', 'Localization', 'M', 'v2GkWjjPpU', '1990-01-01', '1990-01-01', 'Mr.', 'Single', 'we', 'we', 'we', 'we', 'we', '0', 'Contractual', 'wew', 'ew', 'we', 'ewe', 'BPI', 'we', 'Active'),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', '', 0, 5000, '0', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF1', 'Regular', '111', '111', '111', '111', 'BPI', '1111', 'Active'),
+('2008-00193', 'Ilagan', 'Castiliogne', 'Marie', 'Superuser', 0, 123, '0', 'HR Associate', 'Accounting', 'F', 'Y6utXUfGpB', '1990-01-01', '1991-03-02', 'Ms.', 'Married', '123', '123', '123', '23', '123', '0', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 0, 123, '0', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Married', '123', '123', '123', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated');
 
 -- --------------------------------------------------------
 
@@ -113,6 +172,28 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 (8, 'Employed husband and husband claims exemptions of children'),
 (9, 'Employed wife whose husband is also employed or engaged in business;husband waived claim for depende'),
 (10, 'Single with qualified dependent children');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Contractual', 1),
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
 
 -- --------------------------------------------------------
 
@@ -246,6 +327,35 @@ CREATE TABLE IF NOT EXISTS `position` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pos_main`
+--
+
+CREATE TABLE IF NOT EXISTS `pos_main` (
+  `position` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `pos_main`
+--
+
+INSERT INTO `pos_main` (`position`, `id`) VALUES
+('Accounting Associate', 1),
+('Accounting Supervisor', 2),
+('Game Master', 3),
+('Graphic Artist', 4),
+('HR Associate', 5),
+('HR Manager', 7),
+('HR Supervisor', 8),
+('Marketing Associate', 9),
+('Marketing Specialist', 10),
+('Operations Team Leader', 11),
+('Web Programmer', 12);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shift`
 --
 
@@ -323,6 +433,37 @@ INSERT INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `t
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tax_status`
+--
+
+CREATE TABLE IF NOT EXISTS `tax_status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` varchar(10) NOT NULL,
+  `desc` varchar(50) NOT NULL,
+  `exemption` double NOT NULL,
+  PRIMARY KEY (`id`,`status`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+
+--
+-- Dumping data for table `tax_status`
+--
+
+INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
+(1, 'HF', 'HEAD OF THE FAMILY WITH O DEPENDENT', 250000),
+(2, 'HF1', 'HEAD OF THE FAMILY WITH 1 DEPENDENT', 33000),
+(3, 'HF2', 'HEAD OF THE FAMILY WITH 2 DEPENDENT', 41000),
+(4, 'HF3', 'HEAD OF THE FAMILY WITH 3 DEPENDENT', 49000),
+(5, 'HF3', 'HEAD OF THE FAMILY WITH 4 DEPENDENT', 57000),
+(6, 'ME', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED', 32000),
+(7, 'ME1', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 32000),
+(8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 48000),
+(9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 56000),
+(10, 'ME4', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 64000),
+(11, 'S', 'SINGLE OR EMPLOYED HUSBAND WHOSE WIFE IS ALSO EMPL', 20000);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `timesheet`
 --
 
@@ -333,12 +474,23 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `login` time NOT NULL,
   `logout` time NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=262 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=272 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
+INSERT INTO `timesheet` (`id`, `date`, `empnum`, `login`, `logout`) VALUES
+(262, '2011-05-11', '123', '00:00:00', '00:00:00'),
+(263, '2011-05-11', '2008-00198', '00:00:00', '00:00:00'),
+(264, '0000-00-00', '123', '00:00:00', '00:00:00'),
+(265, '0000-00-00', '2008-00198', '00:00:00', '00:00:00'),
+(266, '0000-00-00', '123', '00:00:00', '00:00:00'),
+(267, '0000-00-00', '2008-00198', '00:00:00', '00:00:00'),
+(268, '0000-00-00', '123', '00:00:00', '00:00:00'),
+(269, '0000-00-00', '2008-00198', '00:00:00', '00:00:00'),
+(270, '0000-00-00', '123', '00:00:00', '00:00:00'),
+(271, '0000-00-00', '2008-00198', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -369,6 +521,29 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `type`, `position`, `department`, `gender`, `startdate`, `paymentmode`) VALUES
 ('mary rose', 'bigata', 'garra', 'merose@gmail.com', '11111', 'mary', 'employee', '', '', '', '0000-00-00', ''),
 ('kim', 'pura', 'samaniego', 'kimsamaniego@gmail.com', '12345', 'karlene', 'superuser', '', '', '', '0000-00-00', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_main`
+--
+
+CREATE TABLE IF NOT EXISTS `user_main` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_right` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `user_main`
+--
+
+INSERT INTO `user_main` (`id`, `user_right`) VALUES
+(1, 'Superuser'),
+(2, 'HR'),
+(3, 'Staff'),
+(4, 'Admin'),
+(5, 'Employee');
 
 -- --------------------------------------------------------
 

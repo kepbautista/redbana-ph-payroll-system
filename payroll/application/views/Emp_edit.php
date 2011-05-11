@@ -10,76 +10,164 @@
 	<?php include 'display.php'?>	
 </head>
 <body>
-<?php  include  ("links.php");
-
+<?php  
 if(isset($query)){
 foreach($query as $row){
 	$empnum = $row->empnum;//EMPLOYEE NUMBER
 	$fname = $row->fname;//FIRST NAME
 	$mname = $row->mname;//MIDDLE NAME
 	$sname = $row->sname;//LAST NAME
+	$title1 = $row->title;//title
 	$mrate= $row->mrate;//MONTHLY RATE
 	$position= $row->position;//POSITION
 	$dept= $row->dept;//DEPARTMENT
 	$gender= $row->gender;//GENDER
-	$status= $row->status;//STATUS
-	$pmode= $row->payment_mode;//PAYMENT MODE
+	$emp_status1= $row->emp_status;
+	$cstatus= $row->civil_status;
+	$user=$row->user_right;
+	$sss= $row->sssno;//
+	$phil= $row->philno;//STATUS
+	$tin= $row->tinno;//
+	$mphone= $row->mphone;//
+	$hphone= $row->hphone;//
+	$email= $row->email;//
+	$address= $row->address;//
+	$emp_type1= $row->emp_type;//
+	$zip= $row->zipcode;//
+	$tax= $row->tax_status;//
+	$bank= $row->bank;//
+	$baccount= $row->baccount;//
+	$pagibig= $row->pagibig;//STATUS
+	$pmode1= $row->payment_mode;//PAYMENT MODE
 	$password= $row->password;//PASSWORD
 	$sdate = preg_split("/[\s-]+/", $row->sdate);//STARTING DATE
 	$bdate = preg_split("/[\s-]+/", $row->bdate);//BIRTH DATE
-}
+	}
 }
 ?>
-
-<form name="FRM" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/edit">
-	<table  border="0" cellspacing="2">
-		<tr>
-			<th width="100" align="left">Employee Number:</th>
-			<td>
-				<?php echo $empnum?>
-				<input type="hidden" name="empnum" id="empnum" value="<?php echo $empnum;?>" style="background-color: yellow;"/>
-			</td>
-		</tr>
-		<tr>
-			<th align="left">First Name:</th>
-			<td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo $fname;?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
-		</tr>
-		<tr>
-			<th align="left">Middle Name:</th>
-			<td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo $mname;?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
-			<tr>
-			<th align="left">Last Name:</th>
-			<td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo $sname;?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
-		</tr>
-		<tr>
-			<th align="left">Monthly Rate:PHP </th>
-			<td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo $mrate;?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
-		</tr>
-		<tr>
-	    <th align="left">Payment Mode:</th>
-			<td>
-				<?php 
-				if(isset($pmode)) echo form_dropdown('payment_mode', $pmode_options,$pmode);
-				else echo form_dropdown('payment_mode', $pmode_options,set_value('payment_mode'));
-				?>
-			</td>
-		</tr>
-		<tr>
-			<th align="left">Department:</th>
-			<td>
+<form name="FRM"  method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/update">
+<?php  include  ("links.php");?>
+<table  border="0" cellspacing="2">
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Title:</th>
+    <td>
+	<?php echo form_hidden('empnum', $empnum);?>
+	<?php echo form_dropdown('title', $title,$title1);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>First Name:</th>
+    <td><input type="text" name="fname" id="fname" class="textfield" size="25" value="<?php echo $fname;?>"/>&nbsp<span class="warning" name="fstname" id="fstname"></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Middle Name:</th>
+    <td><input type="text" name="mname" id="mname" class="textfield" size="25" value="<?php echo $mname;?>"/>&nbsp<span class="warning" name="midname" id="midname"></span></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Last Name:</th>
+    <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo $sname;?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>User Right</th>
+    <td>
+		<?php echo form_dropdown('user_right', $user_right,$user);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Civil Status:</th>
+    <td>
+		<?php echo form_dropdown('cstatus', $civil_status,$cstatus);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>User Right</th>
+    <td>
+		<?php echo form_dropdown('user_right', $user_right,$user);?>
+	</td>
+  </tr>
+   <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Employee Status:</th>
+    <td>
+		<?php echo form_dropdown('emp_status', $emp_status,$emp_status1);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Payment Mode:</th>
+    <td>
+	<?php echo form_dropdown('pmode', $pmode,$pmode1);?>
+	</td>
+  </tr>
+   <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Department:</th>
+    <td>
+		<?php echo form_dropdown('dept', $dept_options,$dept);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Position:</th>
+    <td>
+	<?php echo form_dropdown('position', $pos_options,$position);?>
+    </td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Employee Type:</th>
+    <td>
+	<?php echo form_dropdown('emp_type', $type_options,$emp_type1);?>
+    </td>
+  </tr>
+  <tr>
+			<th align="left">Birthday:</th>
+			<td align="left">
 			<?php
-			if(isset($dept)) echo form_dropdown('dept', $dept_options,$dept);
-			else echo form_dropdown('dept', $dept_options,set_value('dept'));
-			?>
+			if(!isset($bdate)){
+				$bdate[1] = $bmonth;
+				$bdate[2] = $bday;
+				$bdate[0] = $byear;
+			}
+			
+			echo form_dropdown('bmonth', $months,$bdate[1]);?>
+			<select name="bday" id="select">
+			<?php
+			foreach ($days as $value) { 
+				if ($value==$bdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+			}
+			?></select>
+			<select name="byear" id="select">
+			<?php
+			foreach ($years as $value) { 
+				if ($value==$bdate[0])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+			}
+			?></select>
 			</td>
 		</tr>
 		<tr>
-			<th align="left">Position:</th>
-			<td>
+			<th align="left">Date Employed:</th>
+			<td align="left">
 			<?php
-			if(isset($position)) echo form_dropdown('position', $pos_options,$position);
-			else echo form_dropdown('position', $pos_options,set_value('position'));
-			?>
+			if(!isset($sdate)){
+				$sdate[1] = $smonth;
+				$sdate[2] = $sday;
+				$sdate[0] = $syear;
+			}
+			
+			echo form_dropdown('smonth', $months,$sdate[1]);?>
+			<select name="sday" id="select">
+			<?php
+				foreach ($days as $value) { 
+				if ($value==$sdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+				}
+			?></select>
+			<select name="syear" id="select">
+			<?php
+			foreach ($years as $value)
+			{
+			if ($value==$sdate[0])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+			else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+			}
+			?></select>
 			</td>
 		</tr>
 		<tr>
@@ -112,102 +200,84 @@ foreach($query as $row){
 				</table>
 			</td>
 		</tr>
-		<tr>
-			<th align="left">Birthday:</th>
-			<td align="left">
-			<?php
-			if(!isset($bdate)){
-				$bdate[1] = $bmonth;
-				$bdate[2] = $bday;
-				$bdate[0] = $byear;
-			}
-			
-			echo form_dropdown('bmonth', $months,$bdate[1]);?>
-			<select name="bday" id="select">
-			<?php
-			foreach ($days as $value) { 
-				if ($value==$bdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
-				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
-			}
-			?></select>
-			<select name="byear" id="select">
-			<?php
-			foreach ($years as $value) { 
-				if ($value==$bdate[0])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
-				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
-			}
-			?></select>
-			</td>
-		</tr>
-		<tr>
-			<th align="left">Start Date:</th>
-			<td align="left">
-			<?php
-			if(!isset($sdate)){
-				$sdate[1] = $smonth;
-				$sdate[2] = $sday;
-				$sdate[0] = $syear;
-			}
-			
-			echo form_dropdown('smonth', $months,$sdate[1]);?>
-			<select name="sday" id="select">
-			<?php
-				foreach ($days as $value) { 
-				if ($value==$sdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
-				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
-				}
-			?></select>
-			<select name="syear" id="select">
-			<?php
-			foreach ($years as $value)
-			{
-			if ($value==$sdate[0])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
-			else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
-			}
-			?></select>
-			</td>
-		</tr>
-		<tr>
-			<th width="100" align="left">Status:</th>
-			<td align="left">
-			<select name="status" id="status">
-			<?php
-				for($i=1;$i<count($options);$i++){
-					if ($options[$i]==$status) echo '<option value="'.$i.'" SELECTED>'.$options[$i].'</option>\n';
-					echo '<option value="'.$i.'">'.$options[$i].'</option>\n';
-				}
-			?>
-			</select>
-			</td>	
-		</tr>
-		<tr>
-			<th width="100" align="left">Password:</th>
-			<td align="left">
-				<input type="text" name="password" id='password' value="<?php echo $password;?>"/>
-				<input type="button" id="pwd" value="Generate"  />
-				&nbsp
+  <tr>
+    <th align="right">Home Phone: </th>
+   <td><input type="text" name="hphone" id="hphone" class="textfield" size="10" value="<?php echo $hphone;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right">Mobile Number:</th>
+   <td><input type="text" name="mphone" id="mphone" class="textfield" size="11" value="<?php echo $mphone;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right">Email Address:</th>
+   <td><input type="text" name="email" id="email" class="textfield" size="25" value="<?php echo $email;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right">Present Address:</th>
+   <td><input type="text" name="address" id="address" class="textfield" size="50" value="<?php echo $address;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right">Zip Code:</th>
+   <td><input type="text" name="zip" id="zip" class="textfield" size="5" value="<?php echo $zip;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>SSS Number:</th>
+   <td><input type="text" name="sss" id="sss" class="textfield" size="20" value="<?php echo $sss;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Tin Number:</th>
+   <td><input type="text" name="tin" id="tin" class="textfield" size="20" value="<?php echo $tin;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Pag-ibig Number:</th>
+   <td><input type="text" name="pagibig" id="pagibig" class="textfield" size="20" value="<?php echo $pagibig;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>PhilHealth Number:</th>
+   <td><input type="text" name="phil" id="phil" class="textfield" size="20" value="<?php echo $phil;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Bank Name:</th>
+    <td>
+	<?php echo form_dropdown('bank_name', $bank_options,$bank);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Bank Account:</th>
+   <td><input type="text" name="baccount" id="baccount" class="textfield" size="20" value="<?php echo $baccount;?>"/></td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Monthly Rate:PHP </th>
+   <td><input type="text" name="mrate" id="mrate" class="textfield" size="10" value="<?php echo $mrate; ?>"/>&nbsp<span class="warning" name="monthly" id="monthly"></span></td>
+  </tr>
+  <tr>
+   <th width="100" align="right"><font color = "red" size=+2 >*</font>Password:</th>
+		<td align="right">
+		<input type="text" name="password" id="password" value="<?php echo $password;?>"/>
+		<input type="button" id="pwd" value="Generate"/>
+		&nbsp
 		<span class="warning" name='pword' id='pword'></span>
-				</td>
-			<script type="text/javascript">
+		</td>
+		<td>
+		</td>
+		 <script type="text/javascript">
                 $(document).ready(function() {
                         $(":button#pwd").click(function() {
                                 formSubmit();
                         });
                 });
-			</script>
-		</tr>   
-		<tr>
-			<td>
-				<input type="submit" name="Submit" id="Submit" value="Update!" />
-			</td>
-			<td>  
-				<input type="reset" value="Reset" />
-			</td>
-		</tr>
-	</table>
+        </script>
+  </tr>   
+  <tr>
+    <td><input type="submit" name="Submit" id="Submit" value="Update!" />
+    </td><td>  <input type="reset" value="Reset" /></td>
+  </tr>
+  
+</table>
 <div>
-<?php if(!isset($query)) echo validation_errors(); ?>
+<?php echo validation_errors(); ?>
 </div>
 </form>
+
 </body>
 </html>

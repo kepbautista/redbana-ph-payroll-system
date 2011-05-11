@@ -1,11 +1,66 @@
 <?php
 class Employee_model extends CI_Model {
+	
 	public function get_status() {//get the description of the status
         $this->db->select('id, desc');
         $this->db->from('employee_status');
         $query = $this->db->get();
         foreach($query->result_array() as $row){
             $data[$row['id']]=$row['desc'];
+        }
+        return $data;
+	}
+	public function get_bank() {//get the description of the status
+        $this->db->select('id, name');
+        $this->db->from('bank_main');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row){
+            $data[$row['name']]=$row['name'];
+        }
+        return $data;
+	}
+	public function get_user_right() {//get the description of the status
+        $this->db->select('id, user_right');
+        $this->db->from('user_main');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row){
+            $data[$row['user_right']]=$row['user_right'];
+        }
+        return $data;
+	}
+	public function get_tax() {//get the description of the status
+        $this->db->select('id, status');
+        $this->db->from('tax_status');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row){
+            $data[$row['status']]=$row['status'];
+        }
+        return $data;
+	}
+	public function get_dept() {//get the description of the status
+        $this->db->select('id, dept');
+        $this->db->from('dept_main');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row){
+            $data[$row['dept']]=$row['dept'];
+        }
+        return $data;
+	}
+	public function get_pos() {//get the description of the status
+        $this->db->select('id, position');
+        $this->db->from('pos_main');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row){
+            $data[$row['position']]=$row['position'];
+        }
+        return $data;
+	}
+	public function get_type() {//get the description of the status
+        $this->db->select('id, type');
+        $this->db->from('emp_type');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row){
+            $data[$row['type']]=$row['type'];
         }
         return $data;
 	}
@@ -28,13 +83,13 @@ class Employee_model extends CI_Model {
     }
     function Employee_getall() {//select all the info of an employee from employee table
 		$this->load->database();
-		$query = $this->db->query('SELECT a.empnum,a.fname,a.password,a.mname,a.sname,a.bdate,a.sdate,a.mrate,a.position,a.dept,b.desc,a.payment_mode,a.gender FROM employee a,employee_status b WHERE a.status=b.id');
+		$query = $this->db->query('SELECT * FROM employee');
 		return $query->result();
 	}
 	function Employee_edit() {//edit info of an employee
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
-		$sql = "SELECT `empnum`,`fname`,`password`,`mname`,`sname`,`bdate`,`sdate`,`mrate`,`position`,`dept`,`status`,`payment_mode`,`gender` FROM employee WHERE empnum = '".$empnum."'"; 	
+		$sql = "SELECT * FROM employee WHERE empnum = '".$empnum."'"; 	
 		$query=$this->db->query($sql);
 		return $query->result();
 	}
@@ -59,7 +114,6 @@ class Employee_model extends CI_Model {
         'fname'=>$this->input->post('fname'),
 		'sname'=>$this->input->post('sname'),
         'mname'=>$this->input->post('mname'),
-		'status'=>$this->input->post('status'),
         'sdate'=>$sdate,
 		'bdate'=>$bdate,
 		'password'=>$this->input->post('password'),
@@ -67,7 +121,25 @@ class Employee_model extends CI_Model {
 		'dept'=>$this->input->post('dept'),
 		'mrate'=>$this->input->post('mrate'),
 		'gender'=>$this->input->post('gender'),
-		'payment_mode'=>$this->input->post('payment_mode')
+		'user_right'=>$this->input->post('user_right'),
+		'payment_mode'=>$this->input->post('payment_mode'),
+		
+		'title'=>$this->input->post('title'),
+		'civil_status'=>$this->input->post('cstatus'),
+		'emp_status'=>$this->input->post('emp_status'),
+		'emp_type'=>$this->input->post('emp_type'),
+		'tax_status'=>$this->input->post('tax_status'),
+		'hphone'=>$this->input->post('hphone'),
+		'mphone'=>$this->input->post('mphone'),
+		'email'=>$this->input->post('email'),
+		'address'=>$this->input->post('address'),
+		'zipcode'=>$this->input->post('zip'),
+		'sssno'=>$this->input->post('sss'),
+		'tinno'=>$this->input->post('tin'),
+		'pagibig'=>$this->input->post('pagibig'),
+		'philno'=>$this->input->post('phil'),
+		'bank'=>$this->input->post('bank_name'),
+		'baccount'=>$this->input->post('baccount')
 		);
 		$this->db->insert('employee',$data); 
 	}
@@ -85,7 +157,6 @@ class Employee_model extends CI_Model {
         'fname'=>$this->input->post('fname'),
 		'sname'=>$this->input->post('sname'),
         'mname'=>$this->input->post('mname'),
-		'status'=>$this->input->post('status'),
         'sdate'=>$sdate,
 		'bdate'=>$bdate,
 		'password'=>$this->input->post('password'),
@@ -93,7 +164,25 @@ class Employee_model extends CI_Model {
 		'dept'=>$this->input->post('dept'),
 		'mrate'=>$this->input->post('mrate'),
 		'gender'=>$this->input->post('gender'),
-		'payment_mode'=>$this->input->post('payment_mode')
+		'user_right'=>$this->input->post('user_right'),
+		'payment_mode'=>$this->input->post('payment_mode'),
+		
+		'title'=>$this->input->post('title'),
+		'civil_status'=>$this->input->post('cstatus'),
+		'emp_status'=>$this->input->post('emp_status'),
+		'emp_type'=>$this->input->post('emp_type'),
+		'tax_status'=>$this->input->post('tax_status'),
+		'hphone'=>$this->input->post('hphone'),
+		'mphone'=>$this->input->post('mphone'),
+		'email'=>$this->input->post('email'),
+		'address'=>$this->input->post('address'),
+		'zipcode'=>$this->input->post('zip'),
+		'sssno'=>$this->input->post('sss'),
+		'tinno'=>$this->input->post('tin'),
+		'pagibig'=>$this->input->post('pagibig'),
+		'philno'=>$this->input->post('phil'),
+		'bank'=>$this->input->post('bank_name'),
+		'baccount'=>$this->input->post('baccount')
 		);
 		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('employee',$data); 
