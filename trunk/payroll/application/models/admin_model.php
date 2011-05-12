@@ -58,7 +58,7 @@ class Admin_model extends CI_Model
 	function validate_superuser($empnum1)
 	{
 			$this->db->where('empnum', $empnum1);
-			$this->db->where('type', "superuser");
+			$this->db->where('user_right', "superuser");
 			$query = $this->db->get('employee');	
 			if($query->num_rows == 1)return true;
 			else return false;
@@ -66,7 +66,7 @@ class Admin_model extends CI_Model
 	function validate_hr($empnum1)
 	{
 			$this->db->where('empnum', $empnum1);
-			$this->db->where('type', "hr");
+			$this->db->where('user_right', "hr");
 			$query = $this->db->get('employee');	
 			if($query->num_rows == 1)return true;
 			else return false;
@@ -74,7 +74,7 @@ class Admin_model extends CI_Model
 	function validate_accounting($empnum1)
 	{
 			$this->db->where('empnum', $empnum1);
-			$this->db->where('type', "accounting");
+			$this->db->where('user_right', "accounting");
 			$query = $this->db->get('employee');	
 			if($query->num_rows == 1)return true;
 			else return false;
@@ -82,7 +82,7 @@ class Admin_model extends CI_Model
 	function validate_emp($empnum1)
 	{
 			$this->db->where('empnum', $empnum1);
-			$this->db->where('type', "employee");
+			$this->db->where('user_right', "employee");
 			$query = $this->db->get('user');	
 			if($query->num_rows == 1)return true;
 			else return false;
@@ -90,7 +90,7 @@ class Admin_model extends CI_Model
 	function validate_supervisor($empnum1)
 	{
 			$this->db->where('empnum', $empnum1);
-			$this->db->where('type', "supervisor");
+			$this->db->where('user_right', "supervisor");
 			$query = $this->db->get('employee');	
 			if($query->num_rows == 1)return true;
 			else return false;
