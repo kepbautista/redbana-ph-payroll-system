@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 11, 2011 at 11:16 AM
+-- Generation Time: May 12, 2011 at 10:55 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,6 +12,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
+CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -98,6 +100,28 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Contractual', 1),
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -176,24 +200,31 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `emp_type`
+-- Table structure for table `leave`
 --
 
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+CREATE TABLE IF NOT EXISTS `leave` (
+  `empnum` varchar(20) NOT NULL,
+  `filedate` date NOT NULL,
+  `startdate` date NOT NULL,
+  `returndate` date NOT NULL,
+  `type` varchar(60) NOT NULL,
+  `reason` varchar(60) NOT NULL,
+  `approval` varchar(60) NOT NULL DEFAULT 'Not yet approved',
+  PRIMARY KEY (`empnum`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `emp_type`
+-- Dumping data for table `leave`
 --
 
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Contractual', 1),
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
+INSERT INTO `leave` (`empnum`, `filedate`, `startdate`, `returndate`, `type`, `reason`, `approval`) VALUES
+('1212122', '1990-01-01', '1990-01-01', '1990-01-01', 'vacation', 'qwdds', 'Not yet approved'),
+('12211', '1990-02-03', '1990-07-01', '1993-08-04', 'bereavement', 'asssd', 'Not yet approved'),
+('12222', '1990-04-01', '1990-01-01', '1990-01-08', 'bereavement', 'asa', 'Not yet approved'),
+('13333', '2011-05-11', '2011-05-15', '2011-05-27', '0000-00-00', 'sick', ''),
+('89992', '1992-03-04', '1993-03-04', '1993-04-04', 'emergency', 'i dunno', ''),
+('89999', '1992-03-04', '1993-03-04', '1993-04-04', '0000-00-00', 'i dunno', '');
 
 -- --------------------------------------------------------
 
@@ -308,25 +339,6 @@ INSERT INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `position`
---
-
-CREATE TABLE IF NOT EXISTS `position` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(128) NOT NULL,
-  `DESCRIPTION` int(255) NOT NULL,
-  PRIMARY KEY (`TITLE`),
-  KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `position`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pos_main`
 --
 
@@ -352,6 +364,25 @@ INSERT INTO `pos_main` (`position`, `id`) VALUES
 ('Marketing Specialist', 10),
 ('Operations Team Leader', 11),
 ('Web Programmer', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `position`
+--
+
+CREATE TABLE IF NOT EXISTS `position` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TITLE` varchar(128) NOT NULL,
+  `DESCRIPTION` int(255) NOT NULL,
+  PRIMARY KEY (`TITLE`),
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `position`
+--
+
 
 -- --------------------------------------------------------
 
