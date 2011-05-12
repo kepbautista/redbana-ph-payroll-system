@@ -74,6 +74,7 @@ background-color:#7A991A;
 	SuperUser Activities
 </div>
 <div style="width:80%" class="center">
+	
 	<ul>
 		<li><a href="employee/getall" class="underline">Edit employee 
 		information</a></li>
@@ -84,6 +85,13 @@ background-color:#7A991A;
 		<li><a href="#" class="underline">View calendar</a></li>
 		<li><a href="login/logout" class="underline">Sign out</a></li>
 	</ul>
+	<ul>
+		<li><a href="maintenance/userview" class="underline">User Right Maintenance</a></li>
+		<li><a href="maintenance/posview" class="underline">Position Maintenance</a></li>
+		<li><a href="maintenance/taxview" class="underline">Tax Maintenance</a></li>
+		<li><a href="maintenance/typeview" class="underline">Employment Maintenance</a></li>
+	</ul>
+	
 </div>
 </div>
 <div id="copyright" >
