@@ -83,7 +83,7 @@ class Admin_model extends CI_Model
 	{
 			$this->db->where('empnum', $empnum1);
 			$this->db->where('user_right', "employee");
-			$query = $this->db->get('user');	
+			$query = $this->db->get('employee');	
 			if($query->num_rows == 1)return true;
 			else return false;
 	}
