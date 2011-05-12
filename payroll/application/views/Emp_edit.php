@@ -45,7 +45,7 @@ foreach($query as $row){
 	}
 }
 ?>
-<form name="FRM"  method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/update">
+<form name="FRM"  method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/employee/edit">
 <?php  include  ("links.php");?>
 <table  border="0" cellspacing="2">
   <tr>
@@ -171,6 +171,10 @@ foreach($query as $row){
 			</td>
 		</tr>
 		<tr>
+			<th align="right"><font color = "red" size=+2 >*</font>Tax Status</th>
+			<td><?php echo form_dropdown('tax_status', $tax_options);?></td>
+		</tr>
+		<tr>
 			<th align="left">Gender:</th>
 			<td>
 				<table border="0" cellpadding="0" cellspacing="0">
@@ -189,12 +193,12 @@ foreach($query as $row){
 				<?php } else { ?>
 				<tr>
 					<td>
-					<label>  <input type="radio" name="gender" id="gender" checked="checked" value="M" id="radio_0"  />Male</label>
+					<label>  <input type="radio" name="gender" id="gender" checked="checked" value="M" id="gender"  />Male</label>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<label><input type="radio" name="gender" value="F" id="radio_1" />Female</label>
+						<label><input type="radio" name="gender" value="F" id="gender" />Female</label>
 					</td>
 				</tr><?php } ?>
 				</table>
