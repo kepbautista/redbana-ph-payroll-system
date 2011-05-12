@@ -74,10 +74,55 @@ class Employee extends CI_Controller {
 	
 	function Edit()//function for viewing the editing an employee page 
 	{	
+		if(!isset($_POST['editEmp']))
+		{
+			//get all information from the previous viewing of Emp_edit form
+			$data['empnum'] = $_POST['empnum'];//employee number
+			$data['fname'] = $_POST['fname'];//first name
+			$data['mname'] = $_POST['mname'];//middle name
+			$data['sname'] = $_POST['sname'];//last name
+			$data['title1'] = $_POST['title'];//title
+			$data['mrate'] = $_POST['mrate'];//monthly rate
+			$data['position'] = $_POST['position'];//position
+			$data['dept'] = $_POST['dept'];//department
+			$data['gender'] = $_POST['gender'];//gender
+			$data['emp_status1'] = $_POST['emp_status'];//employee status
+			$data['cstatus'] = $_POST['cstatus'];//civil status
+			$data['user'] = $_POST['user_right'];//user right or type of user
+			$data['sss'] = $_POST['sss'];//SSS number
+			$data['phil'] = $_POST['phil'];//Philhealth number
+			$data['tin'] = $_POST['tin'];//TIN number
+			$data['mphone'] = $_POST['mphone'];//Mobile Phone number
+			$data['hphone'] = $_POST['hphone'];//Home Phone number
+			$data['email'] = $_POST['email'];//e-mail address
+			$data['address'] = $_POST['address'];//present address
+			$data['emp_type1'] = $_POST['emp_type'];//employee type
+			$data['zip'] = $_POST['zip'];//zip code
+			$data['tax'] = $_POST['tax_status'];//tax status
+			$data['pagibig'] = $_POST['pagibig'];//Pag-Ibig Number
+			$data['pmode1'] = $_POST['pmode'];//payment mode
+			$data['password'] = $_POST['password'];//password
+			
+			//starting date
+			$data['syear'] = $_POST['syear'];
+			$data['smonth'] = $_POST['smonth'];
+			$data['sday'] = $_POST['sday'];
+			
+			//birthdate
+			$data['byear'] = $_POST['byear'];
+			$data['bmonth'] = $_POST['bmonth'];
+			$data['bday'] = $_POST['bday'];
+			
+			$this->load->helper('form');
+			$this->load->model('Employee_model');
 		
-		$this->load->helper('form');
-		$this->load->model('Employee_model');
-		$data['query']=$this->Employee_model->Employee_edit();
+		}
+		else{
+			$this->load->helper('form');
+			$this->load->model('Employee_model');
+			$data['query']=$this->Employee_model->Employee_edit();
+		}//Edit Employee Form is executed for the 1st time
+		
 		$data['months'] = $this->Employee_model->buildMonthDropdown(); 
 		$data['days'] = range(1,31);
 		$data['years'] = range(1990,2020); 
@@ -109,10 +154,9 @@ class Employee extends CI_Controller {
 		
 		$this->validateForm("update");//call function for form validation
 		
-		if ($this->form_validation->run() == FALSE){
+		if ($this->form_validation->run() == FALSE)
 			$this->load->view('Emp_edit',$data);
 			//validation errors are present
-		}
 		else $this->Update();//update information
 		
 	}
