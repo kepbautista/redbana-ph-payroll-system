@@ -18,6 +18,57 @@ USE `redbana_payroll`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `absence_reason`
+--
+
+CREATE TABLE IF NOT EXISTS `absence_reason` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TITLE` varchar(255) NOT NULL,
+  `DEDUCTIBLE` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'this will determine if it will be included in deduction from base pay',
+  `DESCRIPTION` varchar(255) NOT NULL,
+  `DEDUCTION_RATE` float DEFAULT '100' COMMENT 'this is in percent, so it means if this contains ''100'', multiply  some quantity (e.g. days absent) by 100% or (1.00)',
+  `ABSENCE_REASON_CATEGORY` int(11) DEFAULT NULL,
+  PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`) VALUES
+(6, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1),
+(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6),
+(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL),
+(7, 'LEAVE_WITHOUT_PAY', 1, '...', 100, 1),
+(13, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL),
+(11, 'SICK_LEAVE', 0, 'With pay', NULL, 5),
+(10, 'SICK_LEAVE', 1, 'Without pay', 100, 2),
+(12, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3),
+(15, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4),
+(14, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2);
+
+-- --------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `absence_reason_category` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TITLE` varchar(255) NOT NULL,
+  `DESC` varchar(255) NOT NULL DEFAULT 'NO_DESC.',
+  PRIMARY KEY (`TITLE`),
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `absence_reason_category`
+--
+
+INSERT INTO `absence_reason_category` (`ID`, `TITLE`, `DESC`) VALUES
+(1, 'ABSENCES_AND_LWOP', 'NO_DESC.'),
+(6, 'PAID_EMERGENCY_LEAVE_DAYS', 'NO_DESC.'),
+(5, 'PAID_SL_DAYS', 'NO_DESC.'),
+(4, 'PAID_VL_DAYS', 'NO_DESC.'),
+(3, 'SUSPENSION', 'NO_DESC.'),
+(2, 'VACATION_AND_SICK_LEAVE', 'NO_DESC.');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bank_main`
 --
 
@@ -252,15 +303,53 @@ INSERT INTO `payment_mode` (`ID`, `TITLE`, `DESCRIPTION`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payroll_absence`
+--
+
+CREATE TABLE IF NOT EXISTS `payroll_absence` (
+  `empnum` varchar(255) NOT NULL,
+  `payperiod` int(11) NOT NULL,
+  `payment_mode` int(11) NOT NULL,
+  `monthly_rate` float NOT NULL,
+  `daily_rate` float NOT NULL,
+  `absences_lwop_days` float NOT NULL,
+  `absences_lwop_amount` float NOT NULL,
+  `leave_sick_vacation_days` float NOT NULL,
+  `leave_sick_vacation_amount` float NOT NULL,
+  `suspension_days` float NOT NULL,
+  `suspension_amount` float NOT NULL,
+  `tardiness_min` float NOT NULL,
+  `tardiness_amount` float NOT NULL,
+  `total_amount` float NOT NULL,
+  `paid_vl_days` float NOT NULL,
+  `paid_sl_days` float NOT NULL,
+  `paid_emergency_leave_days` float NOT NULL,
+  `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `modified_by` varchar(255) NOT NULL,
+  PRIMARY KEY (`empnum`,`payperiod`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payroll_absence`
+--
+
+
+-- --------------------------------------------------------
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payperiod`
 --
 
 CREATE TABLE IF NOT EXISTS `payperiod` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `PAYMENT_MODE` int(11) NOT NULL,
   `START_DATE` date NOT NULL,
   `END_DATE` date NOT NULL,
+  `TOTAL_WORK_DAYS` float NOT NULL,
+  `FINALIZED` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -449,13 +538,39 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `shift`
 --
 
+INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`) VALUES
+(1, 1, '00:07:00', '00:16:00', 0),
+(2, 1, '00:09:00', '00:18:00', 0),
+(3, 1, '00:14:00', '00:23:00', 0),
+(4, 0, '00:23:00', '00:07:00', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `timesheet`
+--
+
+CREATE TABLE IF NOT EXISTS `timesheet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `empnum` varchar(255) NOT NULL,
+  `date_in` date NOT NULL,
+  `time_in` time NOT NULL,
+  `date_out` date NOT NULL,
+  `time_out` time NOT NULL,
+  `absence_reason` int(11) DEFAULT NULL,
+  `shift_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+
+--
+-- Dumping data for table `timesheet`
+--
 -- --------------------------------------------------------
 
 --
@@ -563,17 +678,6 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `date`, `empnum`, `login`, `logout`) VALUES
-(262, '2011-05-11', '123', '00:00:00', '00:00:00'),
-(263, '2011-05-11', '2008-00198', '00:00:00', '00:00:00'),
-(264, '0000-00-00', '123', '00:00:00', '00:00:00'),
-(265, '0000-00-00', '2008-00198', '00:00:00', '00:00:00'),
-(266, '0000-00-00', '123', '00:00:00', '00:00:00'),
-(267, '0000-00-00', '2008-00198', '00:00:00', '00:00:00'),
-(268, '0000-00-00', '123', '00:00:00', '00:00:00'),
-(269, '0000-00-00', '2008-00198', '00:00:00', '00:00:00'),
-(270, '0000-00-00', '123', '00:00:00', '00:00:00'),
-(271, '0000-00-00', '2008-00198', '00:00:00', '00:00:00');
 
 -- --------------------------------------------------------
 

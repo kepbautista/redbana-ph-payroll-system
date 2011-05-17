@@ -59,6 +59,14 @@ class Login_model extends CI_Model {
 		
 		return $result;
 	}
+	
+	function getCurrentUser()
+	{
+		$result = $this->session->userdata('empnum');
+		
+		return $result;
+	}
+	
 }//CLASS
 
 /* End of file login_model.php */
