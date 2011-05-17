@@ -538,17 +538,16 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `shift`
 --
 
 INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`) VALUES
-(1, 1, '00:07:00', '00:16:00', 0),
-(2, 1, '00:09:00', '00:18:00', 0),
-(3, 1, '00:14:00', '00:23:00', 0),
-(4, 0, '00:23:00', '00:07:00', 1);
+('', -1, '00:07:00', '00:16:00', 0),
+('', -1, '00:14:00', '00:23:00', 0),
+('', -1, '00:21:00', '00:06:00', 1);
 
 -- --------------------------------------------------------
 
