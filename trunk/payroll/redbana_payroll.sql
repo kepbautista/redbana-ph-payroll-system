@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 12, 2011 at 10:55 PM
+-- Generation Time: May 17, 2011 at 03:39 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `bank_main` (
   `name` varchar(50) NOT NULL,
   `acct_no` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `bank_main`
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `base_pay` (
   `AMOUNT` float NOT NULL,
   PRIMARY KEY (`POSITION`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `base_pay`
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `department` (
   `DESCRIPTION` varchar(255) NOT NULL,
   PRIMARY KEY (`NAME`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `department`
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `dept_main` (
   `dept` varchar(50) NOT NULL,
   `id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `dept_main`
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
   `type` varchar(50) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `emp_type`
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `baccount` varchar(20) NOT NULL,
   `emp_status` varchar(20) NOT NULL,
   PRIMARY KEY (`empnum`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `employee`
@@ -165,9 +165,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`) VALUES
 ('123', 'we', 'wew', 'we', '', 0, 2344, '0', 'Accounting Associate', 'Localization', 'M', 'v2GkWjjPpU', '1990-01-01', '1990-01-01', 'Mr.', 'Single', 'we', 'we', 'we', 'we', 'we', '0', 'Contractual', 'wew', 'ew', 'we', 'ewe', 'BPI', 'we', 'Active'),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', '', 0, 5000, '0', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF1', 'Regular', '111', '111', '111', '111', 'BPI', '1111', 'Active'),
 ('2008-00193', 'Ilagan', 'Castiliogne', 'Marie', 'Superuser', 0, 123, '0', 'HR Associate', 'Accounting', 'F', 'Y6utXUfGpB', '1990-01-01', '1991-03-02', 'Ms.', 'Married', '123', '123', '123', '23', '123', '0', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 0, 123, '0', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Married', '123', '123', '123', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated');
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 0, 123, '0', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Married', '123', '123', '123', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', '', 0, 5000, '0', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF1', 'Regular', '111', '111', '111', '111', 'BPI', '1111', 'Active');
 
 -- --------------------------------------------------------
 
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `employee_status` (
   `id` int(3) NOT NULL,
   `desc` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `employee_status`
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `leave` (
   `reason` varchar(60) NOT NULL,
   `approval` varchar(60) NOT NULL DEFAULT 'Not yet approved',
   PRIMARY KEY (`empnum`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `leave`
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `payment_mode` (
   `DESCRIPTION` varchar(255) NOT NULL,
   PRIMARY KEY (`TITLE`),
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `payment_mode`
@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `START_DATE` date NOT NULL,
   `END_DATE` date NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `permission` (
   `DESCRIPTION` int(255) NOT NULL,
   PRIMARY KEY (`NAME`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `permission`
@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `philhealth` (
   `per` double NOT NULL,
   `id` int(6) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=47 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=47 ;
 
 --
 -- Dumping data for table `philhealth`
@@ -346,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `pos_main` (
   `position` varchar(50) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `pos_main`
@@ -377,10 +377,59 @@ CREATE TABLE IF NOT EXISTS `position` (
   `DESCRIPTION` int(255) NOT NULL,
   PRIMARY KEY (`TITLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `position`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `salary`
+--
+
+CREATE TABLE IF NOT EXISTS `salary` (
+  `CutoffL` date NOT NULL,
+  `CutoffH` date NOT NULL,
+  `EmployeeNumber` varchar(50) NOT NULL,
+  `FirstName` varchar(50) NOT NULL,
+  `MiddleName` varchar(50) NOT NULL,
+  `LastName` varchar(50) NOT NULL,
+  `TaxStatus` varchar(4) NOT NULL,
+  `DepartmentCode` varchar(50) NOT NULL,
+  `DailyRate` double NOT NULL,
+  `SemiMonthlyRate` double NOT NULL,
+  `AbsencesTardiness` double NOT NULL DEFAULT '0',
+  `Overtime` double NOT NULL DEFAULT '0',
+  `Holiday` double NOT NULL DEFAULT '0',
+  `TaxRefund` double NOT NULL,
+  `NightDifferential` double NOT NULL,
+  `GrossPay` double NOT NULL,
+  `NonTax` double NOT NULL,
+  `TaxShield` double NOT NULL,
+  `TotalPay` double NOT NULL,
+  `WithholdingBasis` double NOT NULL,
+  `SemiMonthlyWithholding` double NOT NULL,
+  `SSS` double NOT NULL,
+  `Philhealth` double NOT NULL,
+  `Pagibig` double NOT NULL,
+  `PagibigLoan` double NOT NULL,
+  `SSSLoan` double NOT NULL,
+  `CompanyLoan` double NOT NULL,
+  `AdvancestoOfficer` double NOT NULL,
+  `CellphoneCharges` double NOT NULL,
+  `AdvancestoEmployee` double NOT NULL,
+  `NetPay` double NOT NULL,
+  `Remarks` varchar(100) NOT NULL,
+  `Status` varchar(50) NOT NULL,
+  KEY `EmployeeNumber` (`EmployeeNumber`),
+  KEY `EmployeeNumber_2` (`EmployeeNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `salary`
 --
 
 
@@ -397,7 +446,7 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `shift`
@@ -424,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `sss` (
   `totalcont` double NOT NULL,
   `id` int(6) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
 
 --
 -- Dumping data for table `sss`
@@ -473,7 +522,7 @@ CREATE TABLE IF NOT EXISTS `tax_status` (
   `desc` varchar(50) NOT NULL,
   `exemption` double NOT NULL,
   PRIMARY KEY (`id`,`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `tax_status`
@@ -505,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `login` time NOT NULL,
   `logout` time NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=272 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=272 ;
 
 --
 -- Dumping data for table `timesheet`
@@ -543,7 +592,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `startdate` date NOT NULL,
   `paymentmode` varchar(60) NOT NULL,
   PRIMARY KEY (`empnum`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
@@ -561,9 +610,9 @@ INSERT INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `t
 
 CREATE TABLE IF NOT EXISTS `user_main` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_right` varchar(20) NOT NULL,
+  `user_right` varchar(20) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `user_main`
@@ -583,10 +632,10 @@ INSERT INTO `user_main` (`id`, `user_right`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `variables` (
-  `Name` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `Name` varchar(20) NOT NULL,
   `Value` double NOT NULL,
   PRIMARY KEY (`Name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `variables`
@@ -613,7 +662,7 @@ CREATE TABLE IF NOT EXISTS `witholding_tax` (
   `B_MES3` float NOT NULL,
   `B_MES4` float NOT NULL,
   PRIMARY KEY (`PAYMENT_MODE_ID_FK`,`BRACKET`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `witholding_tax`
@@ -638,3 +687,13 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `salary`
+--
+ALTER TABLE `salary`
+  ADD CONSTRAINT `salary_ibfk_1` FOREIGN KEY (`EmployeeNumber`) REFERENCES `employee` (`empnum`) ON DELETE NO ACTION ON UPDATE CASCADE;
