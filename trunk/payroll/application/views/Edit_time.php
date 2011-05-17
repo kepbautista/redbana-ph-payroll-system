@@ -19,22 +19,23 @@
 		<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
 		<script language="javascript">
 			$(function(){
-				$(":submit").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
+				$(":button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 			});
 		</script>
 </head>
 <body id="dt_example">
 <div id="demo">
-	<h1><center>Edit Record for this day (<?php echo $month_s.'-'.$day_s.'-'.$year_s;?>)<center></h1>
-	<h1 align="right"><a href="<?php echo base_url();?>/index.php/employee/viewtimesheet">View Record Today</a></h1>
+	<h1><center><?php echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?><center></h1>
+	<h1 align="right"><a href="<?php echo base_url();?>/index.php/timesheet/viewtimesheet">View Record Today</a></h1>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
 					<thead> 
 						<tr> 
 							<th>Employee Number</th> 
 							<th>Name</th> 
-							<th>LOGIN</th> 
-							<th>LOGOUT</th> 
-							<th>DATE</th>
+							<th>Date of Time-in</th> 
+							<th>Time-in</th> 
+							<th>Date of Time-in</th>
+							<th>Time-out</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -50,19 +51,16 @@
 						$emp=$row->empnum;	
 						if($emp==$edit)
 						{
-							$login = preg_split("/[\s:]+/", $row->login);
-							$logout = preg_split("/[\s:]+/", $row->logout);
-							
 						?>
 						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
+							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
 							<td>
-								<?php  echo form_open('employee/UpdateTime');  ?>
-								<select name="login1" id="select"><!-- Make dropdown for hour-->
+								<?php  echo form_open('timesheet/UpdateTime');  ?>
+								<select name="time_in1" id="select"><!-- Make dropdown for hour-->
 								<?php
-								$login=DATE("g:i:s:a", STRTOTIME($row->login));
-								$log = preg_split("/[\s:]+/", $login);
+								$log = preg_split("/[\s:]+/", $row->time_in);
 								foreach ($hour as $value) 
 								{ 
 									if ($value==$log[0]) $select=" SELECTED"; else $select="";
@@ -71,7 +69,7 @@
 								}
 								?>
 								</select>
-								<select name="login2" id="select"><!-- Make dropdown for minutes-->
+								<select name="time_in2" id="select"><!-- Make dropdown for minutes-->
 								<?php
 								foreach ($minute as $value) 
 								{ 
@@ -81,7 +79,7 @@
 								}
 								?>
 								</select>
-								<select name="login3" id="select"><!-- Make dropdown for hour-->
+								<select name="time_in3" id="select"><!-- Make dropdown for hour-->
 								<?php
 								foreach ($second as $value) 
 								{ 
@@ -91,50 +89,62 @@
 								}
 								?>
 								</select>
+							</td>
+							<td><?php $date=date('M-d-Y', strtotime($row->date_out));
+								$date_out = preg_split("/[\s-]+/", $date);
+								echo form_dropdown('date_out1', $months,date('m', strtotime($row->date_out)));?>
+								<select name="date_out2" id="select">
 								<?php
-								echo form_dropdown('login4', $ampm,$log[3]);?>
+								foreach ($days as $value) { 
+									if ($value==$date_out[1])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+									else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+								}
+								?></select>
+								<select name="date_out3" id="select">
+								<?php
+								foreach ($years as $value) { 
+									if ($value==$date_out[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+									else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+								}
+								?></select>
 							</td>
 							<td>
-								<select name="logout1" id="select"><!-- Make dropdown for hour-->
+								<select name="time_out1" id="select"><!-- Make dropdown for hour-->
 								<?php
-								$logout=DATE("g:i:s:a", STRTOTIME($row->logout));
-								$logO = preg_split("/[\s:]+/", $logout);
+								$log = preg_split("/[\s:]+/", $row->time_out);
 								foreach ($hour as $value) 
 								{ 
-									if ($value==$logO[0]) $select=" SELECTED"; else $select="";
+									if ($value==$log[0]) $select=" SELECTED"; else $select="";
 									if ($value<10)echo '<option value="0'.$value.'" '.$select.'>0'.$value.'</option>\n'; 
 									else echo '<option value="'.$value.'" '.$select.'>'.$value.'</option>\n'; 
 								}
 								?>
 								</select>
-								<select name="logout2" id="select"><!-- Make dropdown for minutes-->
+								<select name="time_out2" id="select"><!-- Make dropdown for minutes-->
 								<?php
 								foreach ($minute as $value) 
 								{ 
-									if ($value==$logO[1]) $select="SELECTED"; else $select="";
+									if ($value==$log[1]) $select="SELECTED"; else $select="";
 									if ($value<10)echo '<option value="0'.$value.'" '.$select.'>0'.$value.'</option>\n'; 
 									else echo '<option value="'.$value.'" '.$select.'>'.$value.'</option>\n'; 
 								}
 								?>
 								</select>
-								<select name="logout3" id="select"><!-- Make dropdown for hour-->
+								<select name="time_out3" id="select"><!-- Make dropdown for hour-->
 								<?php
 								foreach ($second as $value) 
 								{ 
-									if ($value==$logO[2]) $select="SELECTED"; else $select="";
+									if ($value==$log[2]) $select="SELECTED"; else $select="";
 									if ($value<10)echo '<option value="0'.$value.'" '.$select.'>0'.$value.'</option>\n'; 
 									else echo '<option value="'.$value.'" '.$select.'>'.$value.'</option>\n'; 
 								}
 								?>
 								</select>
-								<?php
-								echo form_dropdown('logout4', $ampm,$logO[3]);?>
-								</td>
-							<td><?php echo $row->date; ?></td>
+							</td>
 							<td>
 								<?php
 								echo form_hidden('empnum', $emp);
-								echo form_hidden('date', $row->date);
+								echo form_hidden('date', $row->date_in);
 								echo form_submit('mysubmit','Update!'); 
 								echo form_close(); 
 								?>
@@ -145,17 +155,18 @@
 						else
 						{
 					?>
-						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
+					<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
-							<td><?php echo DATE("g:i:s a", STRTOTIME($row->login));?></td>
-							<td><?php echo DATE("g:i:s a", STRTOTIME($row->logout)) ?></td>
-							<td><?php echo $row->date; ?></td>
+							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
+							<td><?php echo $row->time_in; ?></td>
+							<td><?php echo date('M d, Y', strtotime($row->date_out)); ?></td>
+							<td><?php echo $row->time_out; ?></td>
 							<td>
 							<?php
-							echo form_open('employee/editTime'); 
+							echo form_open('timesheet/editTime'); 
 							echo form_hidden('empnum', $emp);
-							echo form_hidden('date', $row->date);
+							echo form_hidden('date', $row->date_in);
 							echo form_submit('mysubmit','Edit'); 
 							echo form_close(); 
 							?>
@@ -170,9 +181,10 @@
 						<tr> 
 							<th>Employee Number</th> 
 							<th>Name</th> 
-							<th>LOGIN</th> 
-							<th>LOGOUT</th> 
-							<th>DATE</th>
+							<th>Date of Time-in</th> 
+							<th>Time-in</th> 
+							<th>Date of Time-in</th>
+							<th>Time-out</th>
 						</tr> 
 					</tfoot>  
 				</table>
@@ -180,7 +192,7 @@
 				<?php $yrs=range(2011,2050);
 				$days=range(1,31);
 				echo "<h1>View Time sheet for other date</h1>";
-				echo form_open('employee/viewotherdate');//Once the user clicked view, it will redirect to employee/viewotherdate 
+				echo form_open('timesheet/viewotherdate');//Once the user clicked view, it will redirect to employee/viewotherdate 
 				echo form_dropdown('mos', $mos,$month_s);//make dropdown for months
 				?>
 				<select name="days" id="select"><!-- Make drodown for days-->

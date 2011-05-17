@@ -19,31 +19,23 @@
 		<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
 		<script language="javascript">
 			$(function(){
-				$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
+				$('form').jqTransform({imgPath:'<?php echo base_url();?>jqtransform/jqtransformplugin/img/'});
 			});
 		</script>
 </head>
 <body id="dt_example">
 <div id="demo">
-	<h1><center>Record for This Day (<?php echo $month_s.'-'.$day_s.'-'.$year_s;?>)</center></h1>
+	<h1><center><?php echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?></center></h1>
 	<h1 align="right"><a href="<?php echo base_url();?>/index.php/employee/viewtimesheet">View Record Today</a></h1>
-			<?php if  (($trows==0))//If there are no records on the database with the date today,,it will output a button where the user can make a record today
-			{
-			echo "There are no records for today";
-			echo form_open('Employee/Insertothertime');
-			echo form_hidden('date',$date);
-			echo form_submit('submits',"Make A Record for this date.");
-			echo form_close();
-			}
-			else { ?><!-- It will output the table of records for the date today-->
-				<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
+			<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
 					<thead> 
 						<tr> 
 							<th>Employee Number</th> 
 							<th>Name</th> 
-							<th>LOGIN</th> 
-							<th>LOGOUT</th> 
-							<th>DATE</th>
+							<th>Date of Time-in</th> 
+							<th>Time-in</th> 
+							<th>Date of Time-out</th>
+							<th>Time-out</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -60,14 +52,15 @@
 						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
-							<td><?php echo DATE("g:i:s a", STRTOTIME($row->login)) ?></td>
-							<td><?php echo DATE("g:i:s a", STRTOTIME($row->logout)); ?></td>
-							<td><?php echo $row->date; ?></td>
+							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
+							<td><?php echo $row->time_in; ?></td>
+							<td><?php echo date('M d, Y', strtotime($row->date_out)); ?></td>
+							<td><?php echo $row->time_out; ?></td>
 							<td>
 							<?php
-							echo form_open('employee/editTime'); 
+							echo form_open('timesheet/editTime'); 
 							echo form_hidden('empnum', $emp);
-							echo form_hidden('date', $row->date);
+							echo form_hidden('date', $row->date_in);
 							echo form_submit('mysubmit','Edit'); 
 							echo form_close(); 
 							?>
@@ -81,18 +74,20 @@
 						<tr> 
 							<th>Employee Number</th> 
 							<th>Name</th> 
-							<th>LOGIN</th> 
-							<th>LOGOUT</th> 
-							<th>DATE</th>
+							<th>Date of Time-in</th> 
+							<th>Time-in</th> 
+							<th>Date of Time-out</th>
+							<th>Time-out</th>
 						</tr> 
 					</tfoot>  
 				</table>
-			<?php }?>
+			
+			
 			<!-- For Viewing Other dates-->
 				<?php $yrs=range(2011,2050);
 				$days=range(1,31);
 				echo "<h1>View Time sheet for other date<h1>";
-				echo form_open('employee/viewotherdate');//Once the user clicked view, it will redirect to employee/viewotherdate 
+				echo form_open('timesheet/viewotherdate');//Once the user clicked view, it will redirect to employee/viewotherdate 
 				echo form_dropdown('mos', $mos,$month_s);//make dropdown for months
 				?>
 				<p>
