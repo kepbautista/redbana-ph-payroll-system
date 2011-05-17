@@ -53,6 +53,12 @@
 		    			echo validation_errors();
 		    			echo '</div>';
 
+		    		}
+		    		if( isset($relayThisError) )
+		    		{
+		    			echo '<div id="form_error_notice" style="width: 80%" class="center"><br/>';
+		    			echo "{$relayThisError["ERROR_CODE"]}: {$relayThisError["ERROR_MESSAGE"]}";
+		    			echo '</div>';
 		    		}		
 		    	?>
 		    	

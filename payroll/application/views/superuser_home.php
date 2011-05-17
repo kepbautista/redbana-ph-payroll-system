@@ -91,6 +91,9 @@ background-color:#7A991A;
 		<li><a href="maintenance/taxview" class="underline">Tax Maintenance</a></li>
 		<li><a href="maintenance/typeview" class="underline">Employment Maintenance</a></li>
 	</ul>
+	<ul>
+		<li><a href="AttendanceController" class="underline">Absences and Tardiness</a></li>
+	</ul>
 	
 </div>
 </div>
