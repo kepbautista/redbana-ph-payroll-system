@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 17, 2011 at 03:39 AM
+-- Generation Time: May 17, 2011 at 06:15 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,7 +12,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
-CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `redbana_payroll`;
 
 -- --------------------------------------------------------
@@ -167,6 +167,7 @@ INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `stat
 ('123', 'we', 'wew', 'we', '', 0, 2344, '0', 'Accounting Associate', 'Localization', 'M', 'v2GkWjjPpU', '1990-01-01', '1990-01-01', 'Mr.', 'Single', 'we', 'we', 'we', 'we', 'we', '0', 'Contractual', 'wew', 'ew', 'we', 'ewe', 'BPI', 'we', 'Active'),
 ('2008-00193', 'Ilagan', 'Castiliogne', 'Marie', 'Superuser', 0, 123, '0', 'HR Associate', 'Accounting', 'F', 'Y6utXUfGpB', '1990-01-01', '1991-03-02', 'Ms.', 'Married', '123', '123', '123', '23', '123', '0', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
 ('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 0, 123, '0', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Married', '123', '123', '123', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Employee', 0, 80000, '0', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
 ('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', '', 0, 5000, '0', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF1', 'Regular', '111', '111', '111', '111', 'BPI', '1111', 'Active');
 
 -- --------------------------------------------------------
@@ -400,28 +401,28 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `TaxStatus` varchar(4) NOT NULL,
   `DepartmentCode` varchar(50) NOT NULL,
   `DailyRate` double NOT NULL,
-  `SemiMonthlyRate` double NOT NULL,
+  `PayPeriodRate` double NOT NULL,
   `AbsencesTardiness` double NOT NULL DEFAULT '0',
   `Overtime` double NOT NULL DEFAULT '0',
   `Holiday` double NOT NULL DEFAULT '0',
-  `TaxRefund` double NOT NULL,
-  `NightDifferential` double NOT NULL,
-  `GrossPay` double NOT NULL,
-  `NonTax` double NOT NULL,
-  `TaxShield` double NOT NULL,
-  `TotalPay` double NOT NULL,
-  `WithholdingBasis` double NOT NULL,
-  `SemiMonthlyWithholding` double NOT NULL,
-  `SSS` double NOT NULL,
-  `Philhealth` double NOT NULL,
-  `Pagibig` double NOT NULL,
-  `PagibigLoan` double NOT NULL,
-  `SSSLoan` double NOT NULL,
-  `CompanyLoan` double NOT NULL,
-  `AdvancestoOfficer` double NOT NULL,
-  `CellphoneCharges` double NOT NULL,
-  `AdvancestoEmployee` double NOT NULL,
-  `NetPay` double NOT NULL,
+  `TaxRefund` double NOT NULL DEFAULT '0',
+  `NightDifferential` double NOT NULL DEFAULT '0',
+  `GrossPay` double NOT NULL DEFAULT '0',
+  `NonTax` double NOT NULL DEFAULT '0',
+  `TaxShield` double NOT NULL DEFAULT '0',
+  `TotalPay` double NOT NULL DEFAULT '0',
+  `WithholdingBasis` double NOT NULL DEFAULT '0',
+  `SemiMonthlyWithholding` double NOT NULL DEFAULT '0',
+  `SSS` double NOT NULL DEFAULT '0',
+  `Philhealth` double NOT NULL DEFAULT '0',
+  `Pagibig` double NOT NULL DEFAULT '0',
+  `PagibigLoan` double NOT NULL DEFAULT '0',
+  `SSSLoan` double NOT NULL DEFAULT '0',
+  `CompanyLoan` double NOT NULL DEFAULT '0',
+  `AdvancestoOfficer` double NOT NULL DEFAULT '0',
+  `CellphoneCharges` double NOT NULL DEFAULT '0',
+  `AdvancestoEmployee` double NOT NULL DEFAULT '0',
+  `NetPay` double NOT NULL DEFAULT '0',
   `Remarks` varchar(100) NOT NULL,
   `Status` varchar(50) NOT NULL,
   KEY `EmployeeNumber` (`EmployeeNumber`),
@@ -432,6 +433,8 @@ CREATE TABLE IF NOT EXISTS `salary` (
 -- Dumping data for table `salary`
 --
 
+INSERT INTO `salary` (`CutoffL`, `CutoffH`, `EmployeeNumber`, `FirstName`, `MiddleName`, `LastName`, `TaxStatus`, `DepartmentCode`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
+('2011-03-15', '2011-03-31', '2008-00196', 'Kristine Elaine', 'Perez', 'Bautista', 'S', 'Operations', 3636.36, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
 
 -- --------------------------------------------------------
 

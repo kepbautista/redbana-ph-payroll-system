@@ -89,7 +89,7 @@ class Employee_model extends CI_Model {
 	function Employee_edit() {//edit info of an employee
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
-		$sql = "SELECT * FROM employee WHERE empnum = '".$empnum."'"; 	
+		$sql = "SELECT * FROM `employee` WHERE empnum = '".$empnum."'"; 	
 		$query=$this->db->query($sql);
 		return $query->result();
 	}
@@ -211,7 +211,7 @@ class Employee_model extends CI_Model {
 		$logout=$this->input->post('logout1').':'.$this->input->post('logout2').':'.$this->input->post('logout3').' '.$this->input->post('logout4');
 		$login=DATE("H:i:s", STRTOTIME($login));//converts 1pm to 13:00:00
         $logout=DATE("H:i:s", STRTOTIME($logout));//converts 1pm to 13:00:00
-		$this->db->query('UPDATE timesheet SET login="'.$login.'",logout="'.$logout.'" WHERE empnum="'.$this->input->post('empnum').'" AND
+		$this->db->query('UPDATE `timesheet` SET login="'.$login.'",logout="'.$logout.'" WHERE empnum="'.$this->input->post('empnum').'" AND
 		date="'.$this->input->post('date').'"');
 	}
 	function Employee_viewalltime($cases) {
@@ -221,7 +221,7 @@ class Employee_model extends CI_Model {
 		else if ($cases==2)
 			$date=date("Y/n/j");
 		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
-		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum ,b.login,b.logout,b.date FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
+		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum ,b.login,b.logout,b.date FROM `timesheet` b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
 		return $query->result();
 	}
 	function Employee_viewalltime_rows($cases) {
@@ -231,7 +231,7 @@ class Employee_model extends CI_Model {
 		else if ($cases==2)
 			$date=date("Y/n/j");
 		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
-		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
+		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date FROM `timesheet` b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
 		return $query->num_rows();
 	}
 	function Insert_time() {
@@ -240,7 +240,7 @@ class Employee_model extends CI_Model {
 		$query=$this->db->get('employee');
 		foreach ($query->result() as $row)
 		{
-			$query1 = $this->db->query('INSERT INTO timesheet(`login`,`logout`,`empnum`,`date`) VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
+			$query1 = $this->db->query('INSERT INTO `timesheet`(`login`,`logout`,`empnum`,`date`) VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
 		}
 	}
 }
