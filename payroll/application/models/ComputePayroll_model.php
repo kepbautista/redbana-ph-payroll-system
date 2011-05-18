@@ -8,8 +8,8 @@ class ComputePayroll_model extends CI_Model{
 		$this->load->database();
 	}//constructor
 	
-	function selectEmployeeData($empnum,$cutoffL,$cutoffH){
-		//select data from employee table
+	function selectSalaryData($empnum,$cutoffL,$cutoffH){
+		//select data from salary table
 		$sql = "SELECT * FROM `salary` WHERE EmployeeNumber = '".$empnum.
 				"' AND CutoffL='".$cutoffL."' AND CutoffH='".$cutoffH."'";
 		
@@ -17,27 +17,51 @@ class ComputePayroll_model extends CI_Model{
 		$data = mysql_fetch_array($query);
 		
 		return $data;
-	}//select needed employee data
+	}//select needed employee data from salary table
 	
-	function getTaxStatus($info){
+	function selectEmployeeData($empnum){
+		//select data from salary table
+		$sql = "SELECT * FROM `employee` WHERE empnum='".$empnum."'";
+		
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return $data;
+	}//select needed employee data from employee table
+	
+	function getTaxStatus($empnum){
 		//select all employee data
-		$data = $this->selectEmployeeData($info[0],$info[1],$info[2]);
-		$taxStatus = $data['TaxStatus'];
+		$data = $this->selectEmployeeData($empnum);
+		$taxStatus = $data['tax_status'];
 		
 		$query = mysql_query("SELECT * FROM `tax_status` 
 				WHERE status='".$taxStatus."'");
 		
-		/**evaluate pa pala kung monthly o semi-monthly**/
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
 		
-	}
+		return $data;
+	}//get tax status of employee
+	
+	function getPayType($empnum){
+		//select all employee data
+		$data = $this->selectEmployeeData($empnum);
+		
+	
+	}//get pay type
 	
 	function computeNetPay($empnum,$cutoffL,$cutoffH){
 		//get needed information
 		$info = array($empnum,$cutoffL,$cutoffH);
 		
-		/**LAGYAN ng VALIDATION kung ano yung Current Payperiod**/
-		$pagibig = $this->pagIbig($info);//for pagibig fund
+		/**LAGYAN ng VALIDATION kung ano yung Current Payperiod
+		if evaluate pa kung semi-monthly o hindi
+		si employee semi-monthly, tingnan kung kinsenas o hindi**/
 		
+		/**evaluate pa pala kung monthly o semi-monthly
+		ang employee**/
+		
+		$pagibig = $this->pagIbig($info);//for pagibig fund
 		$gross = $this->grossPay($info);//compute Gross Pay
 		$totalPay = $this->totalPay($info);//compute Total Pay
 		$taxBasis = $this->taxBasis($info);//compute Tax Basis
@@ -48,7 +72,7 @@ class ComputePayroll_model extends CI_Model{
 	
 	function grossPay($info){
 		//select all employee data
-		$data = $this->selectEmployeeData($info[0],$info[1],$info[2]);
+		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 		
 		$gross = $data['PayPeriodRate'] - $data['AbsencesTardiness'] +
 		         $data['Overtime'] + $data['Holiday'] + $data['TaxRefund'] +
@@ -64,7 +88,7 @@ class ComputePayroll_model extends CI_Model{
 	
 	function totalPay($info){
 		//select all employee data
-		$data = $this->selectEmployeeData($info[0],$info[1],$info[2]);
+		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 	
 		$totalPay = $data['GrossPay'] + $data['NonTax'] +
 					$data['TaxShield'];
@@ -79,7 +103,7 @@ class ComputePayroll_model extends CI_Model{
 	
 	function taxBasis($info){
 		//select all employee data
-		$data = $this->selectEmployeeData($info[0],$info[1],$info[2]);
+		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 	
 		$taxBasis = $data['PayPeriodRate'] - $data['AbsencesTardiness'] +
 					$data['Overtime'] + $data['Overtime'] + $data['Holiday'] +
