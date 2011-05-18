@@ -12,13 +12,13 @@ class ComputePayroll extends CI_Controller {
 		$this->load->helper('date');
 	}
 	
-	function WithholdingCompute(){
+	function NetPay(){
 		$cutoffL = '2011-03-15';
 		$cutoffH = '2011-03-31';
 		$empnum = '2008-00196';
 	
 		$this->load->model('ComputePayroll_model');
-		$this->ComputePayroll_model->getWithholdingTax($empnum,$cutoffL,$cutoffH);
+		$this->ComputePayroll_model->computeNetPay($empnum,$cutoffL,$cutoffH);
 		
 	}//function for computing Withholding Tax
 }
