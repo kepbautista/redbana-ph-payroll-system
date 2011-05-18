@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2011 at 07:14 AM
+-- Generation Time: May 18, 2011 at 07:29 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `civil_status` varchar(10) NOT NULL,
   `hphone` varchar(20) NOT NULL,
   `mphone` varchar(20) NOT NULL,
-  `email` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `address` varchar(50) NOT NULL,
   `zipcode` varchar(10) NOT NULL,
   `tax_status` varchar(10) NOT NULL,
@@ -582,7 +582,7 @@ CREATE TABLE IF NOT EXISTS `sss` (
 --
 
 INSERT INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `tee`, `ttotal`, `msc`, `totalcont`, `id`) VALUES
-(1000, 1249.99, 70.7, 33.33, 105, 10, 80.7, 33.3, 114, 1000, 104, 45),
+(1000, 1249.99, 33.33, 33.33, 105, 10, 80.7, 33.3, 114, 1000, 104, 45),
 (1250, 1749.99, 106, 50, 156, 10, 116, 50, 166, 1500, 156, 46),
 (1750, 2249.99, 141.3, 66.7, 208, 10, 151.3, 66.7, 218, 2000, 208, 47),
 (2250, 2749.99, 176.7, 83.3, 260, 10, 186.7, 83.3, 270, 2500, 260, 48),
