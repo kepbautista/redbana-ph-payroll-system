@@ -1,0 +1,35 @@
+
+/* ------ Basic Structure ----- */
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 82.5%;
+	margin: 0px;
+	padding: 0px;
+}
+
+table, td, th
+{
+border:1px solid green;
+}
+td
+{
+height:20px;
+vertical-align:bottom;
+}
+th
+{
+background-color:green;
+color:white;
+}
+h1,a {
+
+	text-align: center;
+}
+label {
+
+	font-weight: bold;
+}
+th {
+
+	font-weight: bolder;
+}
