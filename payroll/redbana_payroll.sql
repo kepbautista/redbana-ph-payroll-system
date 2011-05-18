@@ -320,6 +320,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `START_DATE` date NOT NULL,
   `END_DATE` date NOT NULL,
   `TOTAL_WORK_DAYS` float NOT NULL,
+  `END_OF_THE_MONTH` tinyint(1) default '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
   `FINALIZED` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
