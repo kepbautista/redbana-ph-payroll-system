@@ -34,20 +34,15 @@ class ComputePayroll_model extends CI_Model{
 		$data = $this->selectEmployeeData($empnum);
 		$taxStatus = $data['tax_status'];
 		
-		$query = mysql_query("SELECT * FROM `tax_status` 
-				WHERE status='".$taxStatus."'");
-		
-		$query = mysql_query($sql);
-		$data = mysql_fetch_array($query);
-		
-		return $data;
+		return $taxStatus;
 	}//get tax status of employee
 	
-	function getPayType($empnum){
+	function getPaymentMode($empnum){
 		//select all employee data
 		$data = $this->selectEmployeeData($empnum);
+		$paymentMode = $data['payment_mode'];
 		
-	
+		return $paymentMode;
 	}//get pay type
 	
 	function computeNetPay($empnum,$cutoffL,$cutoffH){
@@ -69,6 +64,17 @@ class ComputePayroll_model extends CI_Model{
 		
 		echo $taxBasis;
 	}//perform arithmetic computations for withholding tax
+	
+	function getTaxExemption(){
+		/*GET EXEMPTION*/
+		$query = mysql_query("SELECT * FROM `tax_status` 
+				WHERE status='".$taxStatus."'");
+		
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return $data['exemption'];
+	}
 	
 	function grossPay($info){
 		//select all employee data
