@@ -20,7 +20,5 @@ $sql = "DELETE FROM `".$table."` WHERE ".$field."='".$query."'";
 mysql_query($sql);
 
 closeconnection($connect);//close database connection
-
-echo $_POST['query'];
 }
 ?>
