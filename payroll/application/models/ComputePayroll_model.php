@@ -8,10 +8,10 @@ class ComputePayroll_model extends CI_Model{
 		$this->load->database();
 	}//constructor
 	
-	function selectSalaryData($empnum,$cutoffL,$cutoffH){
+	function selectSalaryData($empnum,$start_date,$end_date){
 		//select data from salary table
 		$sql = "SELECT * FROM `salary` WHERE EmployeeNumber = '".$empnum.
-				"' AND CutoffL='".$cutoffL."' AND CutoffH='".$cutoffH."'";
+				"' AND start_date='".$start_date."' AND end_date='".$end_date."'";
 		
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
@@ -37,49 +37,71 @@ class ComputePayroll_model extends CI_Model{
 		return $taxStatus;
 	}//get tax status of employee
 	
-	function getPaymentMode($empnum){
-		$data = $this->selectEmployeeData($empnum);
+	function paymentMode($info){
+		$data = $this->selectEmployeeData($info[0]);
 		$paymentMode = $data['payment_mode'];
 		
 		return $paymentMode;
-	}//get payment mode of employee
+	}//get payment mode
 	
-	function getPayPeriodRate($info){
+	function getPayPeriodRate($info){	
 		//select all employee data
 		$data = $this->selectEmployeeData($info[0]);
 		$rate = $data['mrate'];
+		$paymentMode = $this->paymentMode($info);
 		
-		if($paymentMode=="Semi-Monthly"){
-			$rate/=2;
-			
-		}//see if payment mode is semi-monthly
+		if($paymentMode=="SEMI-MONTHLY")
+			$rate/=2;//see if payment mode is semi-monthly
 		
 		$sql = "UPDATE `salary` SET PayPeriodRate='".$rate."' WHERE 
-				EmployeeNumber='".$info[0]."' AND CutoffL='".$info[1]."' 
-				AND CutoffH='".$info[2]."'";
+				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
 		mysql_query($sql);//update Pay Period Rate
-		
-		return $rate;
 	}//get pay type
 	
-	function computeNetPay($empnum,$cutoffL,$cutoffH){
+	function endOfMonth($start_date,$end_date){
+		//select data from payperiod table
+		$sql = "SELECT * FROM `payperiod` WHERE start_date='".$start_date."'
+				AND end_date='".$end_date."'";
+		
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		if($data['END_OF_THE_MONTH']==1)
+			return true;
+		else false;
+	}//evaluate if payperiod is end of the month or not
+	
+	function computeNetPay($empnum,$start_date,$end_date){
 		//get needed information
-		$info = array($empnum,$cutoffL,$cutoffH);
+		$info = array($empnum,$start_date,$end_date);
+		$this->getPayPeriodRate($info);
 		
-		/**LAGYAN ng VALIDATION kung ano yung Current Payperiod
-		if evaluate pa kung semi-monthly o hindi
-		Ang monthly, binabayaran lang pag end-of-the-month
-		si employee semi-monthly, tingnan kung kinsenas o hindi**/
-		
-		
-		$pagibig = $this->pagIbig($info);//for pagibig fund
-		$gross = $this->grossPay($info);//compute Gross Pay
-		$totalPay = $this->totalPay($info);//compute Total Pay
-		$taxBasis = $this->taxBasis($info);//compute Tax Basis
-		$withholdingTax = $this->getTaxStatus($info);//compute Withholding Tax
-		
-		echo $taxBasis;
-	}//perform arithmetic computations for withholding tax
+		if($this->paymentMode($info)=="SEMI-MONTHLY"){
+			/**get if end of the month or not**/
+			if(!endOfMonth($start_date,$end_date)){
+				//sss & philhealth
+			}
+			else $pagibig = $this->pagIbig($info);//for pagibig fund
+			
+			/*basis for withholding tax is semi-monthly table*/
+			$taxStatus = $this->getTaxStatus($empnum);//compute Withholding Tax
+		}
+		else{
+			$pagibig = $this->pagIbig($info);//for pagibig fund
+			$taxStatus = $this->getTaxStatus($empnum);//compute Withholding Tax
+			//sss & philhealth
+			/*basis for withholding tax is monthly*/
+		}
+
+		$this->compute($info);
+	}//perform arithmetic computations for net pay
+	
+	function compute($info){
+		$this->grossPay($info);//compute Gross Pay
+		$this->totalPay($info);//compute Total Pay
+		$this->taxBasis($info);//compute Tax Basis
+	}
 	
 	function getTaxExemption(){
 		/*GET EXEMPTION*/
@@ -100,12 +122,10 @@ class ComputePayroll_model extends CI_Model{
 		         $data['Overtime'] + $data['Holiday'] + $data['TaxRefund'] +
 				 $data['NightDifferential'];
 		$sql = "UPDATE `salary` SET GrossPay='".$gross."' WHERE 
-				EmployeeNumber='".$info[0]."' AND CutoffL='".$info[1]."' 
-				AND CutoffH='".$info[2]."'";
+				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
 		
 		mysql_query($sql);//update gross pay
-		
-		return $gross;
 	}//function that computes gross pay
 	
 	function totalPay($info){
@@ -115,12 +135,10 @@ class ComputePayroll_model extends CI_Model{
 		$totalPay = $data['GrossPay'] + $data['NonTax'] +
 					$data['TaxShield'];
 		$sql = "UPDATE `salary` SET TotalPay='".$totalPay."' WHERE 
-				EmployeeNumber='".$info[0]."' AND CutoffL='".$info[1]."' 
-				AND CutoffH='".$info[2]."'";
+				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
 		
 		mysql_query($sql);//update total pay
-		
-		return $totalPay;
 	}//function for computing Total Pay
 	
 	function taxBasis($info){
@@ -132,12 +150,10 @@ class ComputePayroll_model extends CI_Model{
 					$data['NightDifferential'] - $data['SSS'] -
 					$data['Philhealth'] - $data['Pagibig'];
 		$sql = "UPDATE `salary` SET WithholdingBasis='".$taxBasis."' WHERE 
-				EmployeeNumber='".$info[0]."' AND CutoffL='".$info[1]."' 
-				AND CutoffH='".$info[2]."'";
+				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
 				
 		mysql_query($sql);//update withholding tax basis
-	
-		return $taxBasis;
 	}//compute withholding tax basis
 	
 	function pagIbig($info){
@@ -148,12 +164,10 @@ class ComputePayroll_model extends CI_Model{
 		$pagibig = $data['Value'];
 	
 		$sql = "UPDATE `salary` SET Pagibig='".$pagibig."' WHERE 
-				EmployeeNumber='".$info[0]."' AND CutoffL='".$info[1]."' 
-				AND CutoffH='".$info[2]."'";
+				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
 				
 		mysql_query($sql);//update withholding tax basis
-	
-		return $pagibig;
 	}//compute withholding tax basis
 }
 ?>

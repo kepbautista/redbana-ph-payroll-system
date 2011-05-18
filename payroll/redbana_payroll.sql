@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2011 at 06:12 AM
+-- Generation Time: May 18, 2011 at 07:14 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -323,14 +323,15 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `END_OF_THE_MONTH` tinyint(1) DEFAULT '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
   `FINALIZED` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `payperiod`
 --
 
 INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`) VALUES
-(1, 1, '2011-03-15', '2011-03-31', 17, 1, 0);
+(1, 1, '2011-03-15', '2011-03-31', 17, 1, 0),
+(2, 1, '2011-05-01', '2011-05-15', 15, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -408,7 +409,7 @@ CREATE TABLE IF NOT EXISTS `philhealth` (
 --
 
 INSERT INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`, `per`, `id`) VALUES
-(1, 4999.99, 0, 4000, 100, 50, 50, 20),
+(1, 0, 4999.99, 4000, 100, 50, 50, 20),
 (2, 5000, 5999.99, 5000, 125, 62.5, 62.5, 21),
 (3, 6000, 6999.99, 6000, 150, 75, 75, 22),
 (4, 7000, 7999.99, 7000, 175, 87.5, 87.5, 23),
@@ -491,8 +492,8 @@ CREATE TABLE IF NOT EXISTS `position` (
 --
 
 CREATE TABLE IF NOT EXISTS `salary` (
-  `CutoffL` date NOT NULL,
-  `CutoffH` date NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
   `EmployeeNumber` varchar(50) NOT NULL,
   `DailyRate` double NOT NULL,
   `PayPeriodRate` double NOT NULL,
@@ -527,8 +528,8 @@ CREATE TABLE IF NOT EXISTS `salary` (
 -- Dumping data for table `salary`
 --
 
-INSERT INTO `salary` (`CutoffL`, `CutoffH`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
-('2011-03-15', '2011-03-31', '2008-00196', 3636.36, 40000, 0, 0, 0, 0, 0, 40000, 0, 0, 40000, 39900, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', '');
+INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
+('2011-03-15', '2011-03-31', '2008-00196', 3636.36, 11000, 0, 0, 0, 0, 0, 11000, 0, 0, 11000, 10900, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', '');
 
 -- --------------------------------------------------------
 
