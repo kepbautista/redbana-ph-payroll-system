@@ -1,12 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>SSS Table</title>
+	<title> SSS Table </title>
 <script type="text/javascript" src="<?php echo base_url();?>devtools/jquery-1.5.2"></script>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.js"></script>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.pack.js"></script>
 <link rel="stylesheet" type="text/css" href="/cody/style.css" media="screen"/>
 <script type="text/javascript">
+
 $(document).ready(function()
 {
 	$('#tabletwo').columnHover({eachCell:true, hoverClass:'betterhover'});
@@ -16,14 +17,14 @@ $(document).ready(function()
 	$(document).ready(function(){
 		$("button").click(function(){
 		var r = confirm("Are you sure you want to delete this bracket?");
-			if(r==true){ //alert($(this).val());
+			if(r==true){
 				$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
 					query: $(this).val(),
 					tableType: "sss",
-				},//perform ajax to delete the bracket using mysql_query
+				},	// perform ajax to delete the bracket (row) using mysql_query
 				function(data){
 					alert("Bracket deleted! ");
-					window.location.href = "<?php echo site_url();?>"+"/sss/getall";//reload page to see the effect of delete
+					window.location.href = "<?php echo site_url();?>"+"/sss/getall";	// reload page to see the effect of deleted bracket (row)
 				});
 			}
 			else alert("Bracket delete cancelled!");
@@ -33,16 +34,16 @@ $(document).ready(function()
 			$.post("<?php echo base_url();?>devtools/insertBrackets.php", {
              N: $('#brackets').val(),
 			 tableType: "sss",
-          },
-          function(data){
-                $("#insertView").html(data);
-				$("#sss_table").fadeOut();
-				$('#addView').fadeOut();
-				$('#addView').slideDown();
-          }
-		  );
-		});
+        },
+        function(data){
+			$("#insertView").html(data);
+			$("#sss_table").fadeOut();
+			$('#addView').fadeOut();
+			$('#addView').slideDown();
+        }
+		);
 	});
+});
 </script>
 
 <style type="text/css">
@@ -53,7 +54,6 @@ table
 	border-collapse: collapse;
 	border-spacing: 0;
 	text-align: center;
-	
 }
 
 thead
@@ -77,16 +77,16 @@ td.betterhover, #tabletwo tbody tr:hover
 	background: LightCyan;
 }
 #insert{
- position:absolute;
- top:0;
- right:0;
- width:200px;
+	position:absolute;
+	top:0;
+	right:0;
+	width:200px;
 }
 #sss_tables{
- position:absolute;
- top:0;
- left:0;
- width:200px;
+	position:absolute;
+	top:0;
+	left:0;
+	width:200px;
 }
 .numeric{
 background-color: #87CEEB;
@@ -123,6 +123,7 @@ color: navy;
 		</tr>
 	</tr>
 	</thead>
+	
 <?php
 	$cnt=1;
 	foreach ($query as $row){
@@ -149,7 +150,6 @@ color: navy;
 			echo "<button type='button' name='delete' id='delete' value='".$row->id."'>Delete</button>";
 			echo form_close(); 
 		?></td>
-
 	</tr>
 <?php
 	}
@@ -159,14 +159,15 @@ color: navy;
 </div>
 
 <div id="insert" name="insert">
-	<h4>Insert Brackets</h4><br/>
+	<h4> Insert Brackets </h4> <br />
 	How many brackets to insert?&nbsp&nbsp
 	<input type="text" name="brackets" id="brackets" class="numeric" size="4"/>
-	<input type="button" name="add" id="add" value="Add" />
+	<input type="button" name="add" id="add" value="Add"/>
 	<span style="color:red;"><?php if(isset($message)) echo $message;?></span>
 </div>
+
 <div name="addView" id="addView">
-<form name="insertBrackets" method="post"  accept-charset="utf-8" action="<?php echo site_url()?>/sss/insert">
+<form name="insertBrackets" method="post" accept-charset="utf-8" action="<?php echo site_url()?>/sss/insert">
 <span name="insertView" id="insertView">
 </form>
 </div>

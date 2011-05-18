@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>Edit SSS Table</title>
+	<title> Edit SSS Table </title>
 <script type="text/javascript" src="system/application/views/jquery.columnhover.js"></script>
 <script type="text/javascript" src="system/application/views/jquery.columnhover.pack.js"></script>
 <link rel="stylesheet" type="text/css" href="system/application/views/style.css" media="screen"/>
@@ -92,7 +92,7 @@ td.betterhover, #tabletwo tbody tr:hover
 			<td><?php echo form_input('tee',$row->tee);?></td>
 			<td><?php echo form_input('ttotal',$row->ttotal);?></td>
 			<td><?php echo form_input('totalcont',$row->totalcont);?></td>
-			<td><?php echo form_submit('mysubmit','Update!');?></td>
+			<td><?php echo form_submit('mysubmit','Update');?></td>
 			<td><?php echo form_close();?></td>
 		</tr>
 		<?php

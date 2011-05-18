@@ -59,18 +59,18 @@ class Sss extends CI_Controller {
 		if(in_array(1,$flag)) $display = $display."<li>Values should be numeric.</li>";
 		if(in_array(2,$flag)) $display = $display."<li>Values should not be negative.</li>";
 		
-		if($display=="") $this->Insertdb();//add brackets is going to be successful
+		if($display=="") $this->Insertdb();	// add brackets is going to be successful
 		else{
-			$message = "<ul><li>Adding brackets not successfull.</li>".$display."</ul>";
+			$message = "<ul><li>Adding brackets not successful.</li>".$display."</ul>";
 			$this->PrintAll($message);
-		}//add brackets not succesfull
+		}	// add brackets not succesful
 		
-	}//function that will insert another bracket to the SSS Table
+	}	// function that will insert another bracket to the SSS Table
 	
 	function Insertdb(){
 		$this->load->helper('form');	// to load the url helper file
 		$this->load->model('Sss_model');	// to load a model
-		$this->Sss_model->SSS_insertBrackets();//insert the brackets
+		$this->Sss_model->SSS_insertBrackets();	// insert the brackets
 		$data['query'] = $this->Sss_model->Sss_getall();
 		$this->GetAll();
 	}
@@ -78,7 +78,7 @@ class Sss extends CI_Controller {
 	function ValidateInsert(){
 		$flag = array();
 		
-		/*Check if all fields have valid values.*/
+		// check if all fields have valid values
 		foreach($_POST['rangel'] as $value) array_push($flag,$this->CheckNumber($value));
 		foreach($_POST['rangeh'] as $value) array_push($flag,$this->CheckNumber($value));
 		foreach($_POST['msc'] as $value) array_push($flag,$this->CheckNumber($value));
@@ -92,16 +92,16 @@ class Sss extends CI_Controller {
 		foreach($_POST['totalcont'] as $value) array_push($flag,$this->CheckNumber($value));
 	
 		return $flag;
-	}//this function validates the inserted values for the brackets
+	}	// this function validates the inserted values for the brackets
 	
 	function CheckNumber($n){
-		if(!is_numeric($n)) return 1;//not a number
-		else if($n<0) return 2;//negative number
+		if(!is_numeric($n)) return 1;	// not a number
+		else if($n<0) return 2;	// negative number
 		else return 0;
-	}//check if number is valid or not
+	}	// check if number is valid or not
 	
 	function DeleteBrackets(){
 		echo $_POST['query'];
-	}//function for deleting an sss bracket
+	}	// function for deleting an sss bracket
 }
 ?>
