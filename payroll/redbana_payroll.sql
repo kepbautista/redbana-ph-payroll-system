@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2011 at 02:48 AM
+-- Generation Time: May 18, 2011 at 04:55 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -190,7 +190,6 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `sname` varchar(50) NOT NULL,
   `fname` varchar(100) NOT NULL,
   `user_right` varchar(20) NOT NULL,
-  `status` int(2) NOT NULL,
   `mrate` float NOT NULL,
   `payment_mode` varchar(20) NOT NULL,
   `position` varchar(50) NOT NULL,
@@ -222,10 +221,10 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`) VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 0, 123, '0', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Married', '123', '123', '123', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Employee', 0, 80000, '0', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', '', 0, 5000, '0', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF1', 'Regular', '111', '111', '111', '111', 'BPI', '1111', 'Active');
+INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`) VALUES
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'Semi Monthly', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'kepbautista@gmail.co', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave'),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Employee', 80000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'Monthly', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF', 'Regular', '111', '111', '111', '111', '0', '0', 'Active');
 
 -- --------------------------------------------------------
 
@@ -523,7 +522,7 @@ CREATE TABLE IF NOT EXISTS `salary` (
 --
 
 INSERT INTO `salary` (`CutoffL`, `CutoffH`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
-('2011-03-15', '2011-03-31', '2008-00196', 3636.36, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
+('2011-03-15', '2011-03-31', '2008-00196', 3636.36, 40000, 0, 0, 0, 0, 0, 40000, 0, 0, 40000, 39900, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -625,12 +624,6 @@ CREATE TABLE IF NOT EXISTS `tax_status` (
 --
 
 INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
-(1, 'HF', 'HEAD OF THE FAMILY WITH O DEPENDENT', 250000),
-(2, 'HF1', 'HEAD OF THE FAMILY WITH 1 DEPENDENT', 33000),
-(3, 'HF2', 'HEAD OF THE FAMILY WITH 2 DEPENDENT', 41000),
-(4, 'HF3', 'HEAD OF THE FAMILY WITH 3 DEPENDENT', 49000),
-(5, 'HF3', 'HEAD OF THE FAMILY WITH 4 DEPENDENT', 57000),
-(6, 'ME', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED', 32000),
 (7, 'ME1', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 32000),
 (8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 48000),
 (9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 56000),
