@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2011 at 04:55 AM
+-- Generation Time: May 18, 2011 at 06:12 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `bank` varchar(10) NOT NULL,
   `baccount` varchar(20) NOT NULL,
   `emp_status` varchar(20) NOT NULL,
-  `shift_id` int(11) NOT NULL DEFAULT 0,
+  `shift_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`empnum`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee`  VALUES
+INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
 ('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'Semi Monthly', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'kepbautista@gmail.co', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
 ('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active', 0),
 ('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'Monthly', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
@@ -320,15 +320,17 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `START_DATE` date NOT NULL,
   `END_DATE` date NOT NULL,
   `TOTAL_WORK_DAYS` float NOT NULL,
-  `END_OF_THE_MONTH` tinyint(1) default '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
+  `END_OF_THE_MONTH` tinyint(1) DEFAULT '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
   `FINALIZED` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `payperiod`
 --
 
+INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`) VALUES
+(1, 1, '2011-03-15', '2011-03-31', 17, 1, 0);
 
 -- --------------------------------------------------------
 

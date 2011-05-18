@@ -38,11 +38,28 @@ class ComputePayroll_model extends CI_Model{
 	}//get tax status of employee
 	
 	function getPaymentMode($empnum){
-		//select all employee data
 		$data = $this->selectEmployeeData($empnum);
 		$paymentMode = $data['payment_mode'];
 		
 		return $paymentMode;
+	}//get payment mode of employee
+	
+	function getPayPeriodRate($info){
+		//select all employee data
+		$data = $this->selectEmployeeData($info[0]);
+		$rate = $data['mrate'];
+		
+		if($paymentMode=="Semi-Monthly"){
+			$rate/=2;
+			
+		}//see if payment mode is semi-monthly
+		
+		$sql = "UPDATE `salary` SET PayPeriodRate='".$rate."' WHERE 
+				EmployeeNumber='".$info[0]."' AND CutoffL='".$info[1]."' 
+				AND CutoffH='".$info[2]."'";
+		mysql_query($sql);//update Pay Period Rate
+		
+		return $rate;
 	}//get pay type
 	
 	function computeNetPay($empnum,$cutoffL,$cutoffH){
@@ -51,10 +68,9 @@ class ComputePayroll_model extends CI_Model{
 		
 		/**LAGYAN ng VALIDATION kung ano yung Current Payperiod
 		if evaluate pa kung semi-monthly o hindi
+		Ang monthly, binabayaran lang pag end-of-the-month
 		si employee semi-monthly, tingnan kung kinsenas o hindi**/
 		
-		/**evaluate pa pala kung monthly o semi-monthly
-		ang employee**/
 		
 		$pagibig = $this->pagIbig($info);//for pagibig fund
 		$gross = $this->grossPay($info);//compute Gross Pay
