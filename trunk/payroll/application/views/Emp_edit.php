@@ -37,8 +37,6 @@ foreach($query as $row){
 	$emp_type1= $row->emp_type;//
 	$zip= $row->zipcode;//
 	$tax= $row->tax_status;//
-	$bank= $row->bank;//
-	$baccount= $row->baccount;//
 	$pagibig= $row->pagibig;//STATUS
 	$pmode1= $row->payment_mode;//PAYMENT MODE
 	$password= $row->password;//PASSWORD
@@ -68,12 +66,6 @@ foreach($query as $row){
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Last Name:</th>
     <td><input type="text" name="sname" id="sname" class="textfield" size="25" value="<?php echo $sname;?>"/>&nbsp<span class="warning" name="lname" id="lname"></span></td>
-  </tr>
-  <tr>
-    <th align="right"><font color = "red" size=+2 >*</font>User Right</th>
-    <td>
-		<?php echo form_dropdown('user_right', $user_right,$user);?>
-	</td>
   </tr>
   <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Civil Status:</th>

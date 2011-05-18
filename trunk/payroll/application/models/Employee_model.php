@@ -94,7 +94,16 @@ class Employee_model extends CI_Model {
 		$query = $this->db->query('SELECT * FROM employee');
 		return $query->result();
 	}
-	
+	function Employee_get($emp) {//select all the info of a specific employee
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM employee WHERE empnum = "'.$emp.'"');
+		return $query->result();
+	}
+	function Employee_getRows($emp) {//select all the info of a specific employee
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM employee WHERE empnum = "'.$emp.'"');
+		return $query->num_rows();
+	}
 	function Employee_edit() {//edit info of an employee
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
@@ -149,8 +158,6 @@ class Employee_model extends CI_Model {
 		'tinno'=>$this->input->post('tin'),
 		'pagibig'=>$this->input->post('pagibig'),
 		'philno'=>$this->input->post('phil'),
-		'bank'=>$this->input->post('bank_name'),
-		'baccount'=>$this->input->post('baccount')
 		);
 		$this->db->insert('employee',$data); 
 	}
@@ -193,8 +200,6 @@ class Employee_model extends CI_Model {
 		'tinno'=>$this->input->post('tin'),
 		'pagibig'=>$this->input->post('pagibig'),
 		'philno'=>$this->input->post('phil'),
-		'bank'=>$this->input->post('bank_name'),
-		'baccount'=>$this->input->post('baccount')
 		);
 		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('employee',$data); 

@@ -54,10 +54,11 @@
 				else	$class="odd";
 				$name= $row->title.' '.$row->fname.' '.$row->mname.' '.$row->sname.'.';
 				$emp=$row->empnum;
+				$url=base_url();
 			?>
 				<tr id="<?php echo $cnt ?>" class="<?php echo $class ?>">
 					<td><?php echo $cnt; ?></td>
-					<td><?php echo $name; ?></td>
+					<td><?php echo '<a href="'.$url.'/index.php/employee/show/'.$emp.'">'.$name.'</a>'; ?></td>
 					<td><?php echo $emp; ?></td>
 					<td><?php echo $row->dept; ?></td>
 					<td><?php echo $row->position; ?></td>
