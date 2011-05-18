@@ -19,7 +19,8 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>Error - Redbana Phils. Payroll</title>
 <style type="text/css">
-</style><link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
+</style>
+<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>

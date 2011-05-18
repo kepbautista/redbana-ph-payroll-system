@@ -94,7 +94,10 @@ background-color:#7A991A;
 	<ul>
 		<li><a href="AttendanceController" class="underline">Absences and Tardiness</a></li>
 	</ul>
-	
+	<ul>
+		<li><a href="timesheet/viewtimesheet" class="underline">View TimeSheet</a></li>
+	</ul>
+
 </div>
 </div>
 <div id="copyright" >
