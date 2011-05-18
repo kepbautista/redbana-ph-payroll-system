@@ -44,8 +44,8 @@ class Employee extends CI_Controller {
 				  'Mrs.'    => 'Mrs.'
                 );
 		$data['pmode'] =  array(
-                  'Semi Monthly'  => 'Semi Monthly',
-                  'Monthly'    => 'Monthly'
+                  'SEMI-MONTHLY'  => 'SEMI-MONTHLY',
+                  'MONTHLY' => 'MONTHLY'
                 );
 		$data['pos_options'] = $this->Employee_model->get_pos();
 		$data['civil_status'] = array(
@@ -132,8 +132,8 @@ class Employee extends CI_Controller {
 				  'Mrs.'    => 'Mrs.'
                 );
 		$data['pmode'] =  array(
-                  'Semi Monthly'  => 'Semi Monthly',
-                  'Monthly'    => 'Monthly'
+                  'SEMI-MONTHLY'  => 'SEMI-MONTHLY',
+                  'MONTHLY'    => 'MONTHLY'
                 );
 		$data['pos_options'] = $this->Employee_model->get_pos();
 		$data['civil_status'] = array(
@@ -259,53 +259,55 @@ class Employee extends CI_Controller {
 	
 	function Viewotherdate()//view the timesheet for today 
 	{
-	$this->load->helper('form');  
-	$this->load->model('Employee_model');
-	$data['date']=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
-	list($year,$month,$day) = explode('-', $data['date']);
-	$data['trows']=$this->Employee_model->Employee_viewalltime_rows(3);
-	$data['query']=$this->Employee_model->Employee_viewalltime(3);	
-	$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-	$data['year_s']=$year;
-	$data['date_today']=date("Y/n/j");
-	$data['month_s']=$month;
-	$data['day_s']=$day;
-	$this->load->view('View_otherdate',$data);
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['date']=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
+		list($year,$month,$day) = explode('-', $data['date']);
+		$data['trows']=$this->Employee_model->Employee_viewalltime_rows(3);
+		$data['query']=$this->Employee_model->Employee_viewalltime(3);	
+		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
+		$data['year_s']=$year;
+		$data['date_today']=date("Y/n/j");
+		$data['month_s']=$month;
+		$data['day_s']=$day;
+		$this->load->view('View_otherdate',$data);
 	}
+	
 	function Updatetime()//view the timesheet for today 
 	{
-	$this->load->helper('form');  
-	$this->load->model('Employee_model');
-	$this->Employee_model->Employee_updateTime();
-	list($year,$month,$day) = explode('-', $this->input->post('date'));
-	$data['query']=$this->Employee_model->Employee_viewalltime(1);	
-	$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-	$data['year_s']=$year;
-	$data['month_s']=$month;
-	$data['day_s']=$day;
-	$this->load->view('dateupdated',$data);
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$this->Employee_model->Employee_updateTime();
+		list($year,$month,$day) = explode('-', $this->input->post('date'));
+		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
+		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
+		$data['year_s']=$year;
+		$data['month_s']=$month;
+		$data['day_s']=$day;
+		$this->load->view('dateupdated',$data);
 	}
+	
 	function EditTime()//view the timesheet for today 
 	{
-	$this->load->helper('form');  
-	$this->load->model('Employee_model');
-	$data['edit']=$this->input->post('empnum');
-	$data['date']=$this->input->post('date');
-	$data['hour']=range(01,12);
-	$data['minute']=range(00,59);
-	$data['second']=range(00,59);
-	$data['ampm'] = array(
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['edit']=$this->input->post('empnum');
+		$data['date']=$this->input->post('date');
+		$data['hour']=range(01,12);
+		$data['minute']=range(00,59);
+		$data['second']=range(00,59);
+		$data['ampm'] = array(
                   'am'  => 'am',
                   'pm'    => 'pm'
 				);
-	$date=$this->input->post('date');
-	list($year,$month,$day) = explode('-', $date);
-	$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-	$data['year_s']=$year;
-	$data['month_s']=$month;
-	$data['day_s']=$day;
-	$data['query']=$this->Employee_model->Employee_viewalltime(1);	
-	$this->load->view('Edit_time',$data);
+		$date=$this->input->post('date');
+		list($year,$month,$day) = explode('-', $date);
+		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
+		$data['year_s']=$year;
+		$data['month_s']=$month;
+		$data['day_s']=$day;
+		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
+		$this->load->view('Edit_time',$data);
 	}
 }
 ?>
