@@ -13,6 +13,20 @@
 		<script type="text/javascript" charset="utf-8"> 
 			$(document).ready(function() {
 				$('#example').dataTable();
+				$("button").click(function(){
+		var r = confirm("Are you sure you want to delete this employee?");
+			if(r==true){ //alert($(this).val());
+				$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
+					query: $(this).val(),
+					tableType: "employee",
+				},//perform ajax to delete the bracket using mysql_query
+				function(data){
+					alert("Employee Number "+data+" deleted.");
+					window.location.href = "<?php echo site_url();?>"+"/employee/getall";//reload page to see the effect of delete
+				});
+			}
+			else alert("Employee delete cancelled.");
+		});
 			} );
 		</script> 
 	</head> 
@@ -59,7 +73,7 @@
 						echo form_close(); 
 						echo form_open('employee/delete'); 
 						echo form_hidden('empnum', $hidden);
-						echo form_submit('mysubmit','Delete'); 
+						echo "<button type='button' name='delete' id='delete' value='".$row->empnum."'>Delete</button>";
 						echo form_close(); 
 						
 						?>
