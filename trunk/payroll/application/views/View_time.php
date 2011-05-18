@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
 	<title>View Record </title>
+	
+		<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
 		<!-- For DATATABLES-->
 		<style type="text/css" title="currentStyle"> 
 			@import "<?php echo base_url();?>/css/demo_page.css";
@@ -17,7 +19,7 @@
 		<!-- For JQTRANSFORM-->
 		<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
 		<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
-		<script language="javascript">
+		<script type="text/javascript" >
 			$(function(){
 				$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 			});
@@ -25,7 +27,8 @@
 </head>
 <body id="dt_example">
 <div id="demo">
-	<h1><center>Record for This Day (<?php  echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?>)</center></h1>
+	<h1><span class="center">Record for This Day (<?php  echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?>)</span>
+	</h1>
 			<?php if  (($trows==0))//If there are no records on the database with the date today,,it will output a button where the user can make a record today
 			{
 			echo "There are no records for today";
@@ -42,8 +45,10 @@
 							<th>Name</th> 
 							<th>Date of Time-in</th> 
 							<th>Time-in</th> 
-							<th>Date of Time-in</th>
+							<th>Date of Time-Out</th>
 							<th>Time-out</th>
+							<th>Shift Schedule</th>
+							<th>Reason for Absence</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -55,8 +60,10 @@
 							$class="even";//identifies the 'td' class for css styling
 						else	
 							$class="odd";
-					$name= $row->sname.', '.$row->fname.', '.$row->mname.'.';
-					$emp=$row->empnum;
+							
+						$name= $row->sname.', '.$row->fname.', '.$row->mname.'.';
+						$emp=$row->empnum;
+						//echo var_dump($row);
 					?>
 						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
 							<td><?php echo $emp; ?></td>
@@ -65,7 +72,26 @@
 							<td><?php echo $row->time_in; ?></td>
 							<td><?php echo date('M d, Y', strtotime($row->date_out)); ?></td>
 							<td><?php echo $row->time_out; ?></td>
+							<td><?php echo $shifts[$row->shift_id]['START_TIME']."-". $shifts[$row->shift_id]['END_TIME']; ?></td>
 							<td>
+								<?php 
+								   if($row->absence_reason == NULL){
+								   		echo "NOT-FILLED-OUT";
+								   	}else{															   		
+								   		if( $absence_reasons[$row->absence_reason]->TO_DISPLAY_DEDUCTIBLE == '1' )
+								   		{
+									   		if( $absence_reasons[$row->absence_reason]->DEDUCTIBLE == '1' 
+										   			|| $absence_reasons[$row->absence_reason]->DEDUCTIBLE == TRUE								   			
+									   		)
+									   			echo "UNPAID ";
+									   		else
+									   			echo "PAID ";
+								   		}
+										echo $absence_reasons[$row->absence_reason]->TITLE; 										
+									}
+								?>
+							</td>
+							<td>							
 							<?php
 							echo form_open('timesheet/editTime'); 
 							echo form_hidden('empnum', $emp);
@@ -85,8 +111,10 @@
 							<th>Name</th> 
 							<th>Date of Time-in</th> 
 							<th>Time-in</th> 
-							<th>Date of Time-in</th>
+							<th>Date of Time-Out</th>
 							<th>Time-out</th>
+							<th>Shift Schedule</th>
+							<th>Reason for Absence</th>
 						</tr> 
 					</tfoot>  
 				</table>
@@ -118,6 +146,7 @@
 				</select>
 				<?php echo form_submit('mysubmit','View!'); 
 				echo form_close(); ?>
+				</p>
 </div>
 </body>
 </html>

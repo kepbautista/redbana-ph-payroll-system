@@ -16,8 +16,9 @@
 		</script> 
 		<!-- For JQTRANSFORM-->
 		<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
+		<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
-		<script language="javascript">
+		<script type="text/javascript" >
 			$(function(){
 				$(":button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 			});
@@ -25,8 +26,8 @@
 </head>
 <body id="dt_example">
 <div id="demo">
-	<h1><center><?php echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?><center></h1>
-	<h1 align="right"><a href="<?php echo base_url();?>/index.php/timesheet/viewtimesheet">View Record Today</a></h1>
+	<h1><span class="center" ><?php echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?></span></h1>
+	<h1 style="text-align:right" ><a href="<?php echo base_url();?>/index.php/timesheet/viewtimesheet">View Record Today</a></h1>
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
 					<thead> 
 						<tr> 
@@ -36,6 +37,8 @@
 							<th>Time-in</th> 
 							<th>Date of Time-in</th>
 							<th>Time-out</th>
+							<th>Shift Schedule</th>
+							<th>Reason for Absence</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -52,7 +55,7 @@
 						if($emp==$edit)
 						{
 						?>
-						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
+						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>" >
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
 							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
@@ -141,6 +144,27 @@
 								?>
 								</select>
 							</td>
+							<td><?php echo $shifts[$row->shift_id]['START_TIME']."-". $shifts[$row->shift_id]['END_TIME']; ?></td>
+							<td><!--make dropdown for absence_reason -->
+								<select name="ABSENCE_REASON">									
+						 			<?php
+						 				foreach($absence_reasons as $individ)
+						 				{
+						 					$paid_or_not = "";
+						 					if( $individ->TO_DISPLAY_DEDUCTIBLE == '1' )
+						 					{
+						 						$paid_or_not = "UNPAID ";
+						 						if( $individ->DEDUCTIBLE == '0' ){
+						 							$paid_or_not = "PAID ";
+						 						}
+						 					}
+						 			?>
+						 				<option value="<?php echo $individ->ID; ?>" ><?php echo $paid_or_not.$individ->TITLE; ?></option>
+						 			<?php
+						 				}
+						 			?>			 			
+				 				</select>
+							</td>
 							<td>
 								<?php
 								echo form_hidden('empnum', $emp);
@@ -155,13 +179,33 @@
 						else
 						{
 					?>
-					<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
+					<tr id="<?php echo $emp ?>" class="<?php echo $class ?>" >
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
 							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
 							<td><?php echo $row->time_in; ?></td>
 							<td><?php echo date('M d, Y', strtotime($row->date_out)); ?></td>
 							<td><?php echo $row->time_out; ?></td>
+							<td><?php echo $shifts[$row->shift_id]['START_TIME']."-". $shifts[$row->shift_id]['END_TIME']; ?></td>
+							<td><!-- make dropdown for absence_reason -->
+								<?php 
+								   if($row->absence_reason == NULL){
+								   		echo "NOT-FILLED-OUT";
+								   	}else{								   
+								   		if( $absence_reasons[$row->absence_reason]->TO_DISPLAY_DEDUCTIBLE == '1' )
+								   		{
+									   		if( $absence_reasons[$row->absence_reason]->DEDUCTIBLE == '1' 
+										   			|| $absence_reasons[$row->absence_reason]->DEDUCTIBLE == TRUE								   			
+									   		)
+									   			echo "UNPAID ";
+									   		else
+									   			echo "PAID ";
+								   		}
+										echo $absence_reasons[$row->absence_reason]->TITLE; 										
+									}
+								?>
+							</td>
+
 							<td>
 							<?php
 							echo form_open('timesheet/editTime'); 
@@ -185,7 +229,8 @@
 							<th>Time-in</th> 
 							<th>Date of Time-in</th>
 							<th>Time-out</th>
-						</tr> 
+							<th>Shift Schedule</th>
+							<th>Reason for Absence</th>						</tr> 
 					</tfoot>  
 				</table>
 			<center><!-- For Viewing Other dates-->

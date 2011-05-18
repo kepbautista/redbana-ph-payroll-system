@@ -57,12 +57,12 @@ class AttendanceController extends CI_Controller
 							// do you want to regenerate?
 							echo site_url();
 							echo "Already generated.<br/>";			
-							echo '<a href="'.site_url().'/AttendanceController/clearAttendanceFaultData/'.$payperiod_array[0]->ID.'" >';
+							echo '<a href="'.site_url().'/AttendanceController/clearAttendanceFaultData/1/'.$payperiod_array[0]->ID.'" >';
 							echo 'Click here if you want to delete all for this current payperiod. </a>';							
 					}else
 					{
 							echo "Not yet";
-							echo '<a href="'.site_url().'/AttendanceController/generateAttendanceFault/'.$payperiod_array[0]->ID.'/'.$payperiod_array[0]->TOTAL_WORK_DAYS.'/8" >';
+							echo '<a href="'.site_url().'/AttendanceController/generateAttendanceFault/1/'.$payperiod_array[0]->ID.'/'.$payperiod_array[0]->TOTAL_WORK_DAYS.'/8" >';
 							//echo '<a href="'.site_url().'/AttendanceController/generateAttendanceFault/'.$payperiod_array[0]->ID.'/22/8" >';
 							echo 'Click here to generate. </a>';
 					}

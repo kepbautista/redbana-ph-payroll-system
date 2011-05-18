@@ -28,25 +28,27 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `DESCRIPTION` varchar(255) NOT NULL,
   `DEDUCTION_RATE` float DEFAULT '100' COMMENT 'this is in percent, so it means if this contains ''100'', multiply  some quantity (e.g. days absent) by 100% or (1.00)',
   `ABSENCE_REASON_CATEGORY` int(11) DEFAULT NULL,
+  `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `absence_reason`
 --
 
-INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`) VALUES
-(6, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1),
-(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6),
-(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL),
-(7, 'LEAVE_WITHOUT_PAY', 1, '...', 100, 1),
-(13, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL),
-(11, 'SICK_LEAVE', 0, 'With pay', NULL, 5),
-(10, 'SICK_LEAVE', 1, 'Without pay', 100, 2),
-(12, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3),
-(15, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4),
-(14, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2);
+INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`, `TO_DISPLAY_DEDUCTIBLE`) VALUES
+(1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0),
+(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
+(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
+(2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1),
+(0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0),
+(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
+(4, 'SICK_LEAVE', 0, 'With pay', NULL, 5, 1),
+(5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1),
+(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
+(6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1),
+(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -214,6 +216,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `bank` varchar(10) NOT NULL,
   `baccount` varchar(20) NOT NULL,
   `emp_status` varchar(20) NOT NULL,
+  `shift_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`empnum`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -221,9 +224,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`) VALUES
+INSERT INTO `employee`  VALUES
 ('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'Semi Monthly', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'kepbautista@gmail.co', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave'),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Employee', 80000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
 ('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'Monthly', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF', 'Regular', '111', '111', '111', '111', '0', '0', 'Active');
 
 -- --------------------------------------------------------

@@ -224,37 +224,39 @@ class Employee extends CI_Controller {
 	
 	function Insertothertime()
 	{
-	$this->load->helper('form');  
-	$this->load->model('Employee_model');
-	$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-	$date_rows=$this->Employee_model->Employee_viewalltime_rows(1);
-	if ($date_rows==0)$this->Employee_model->insert_time();
-	$data['trows']=$this->Employee_model->Employee_viewalltime_rows(1);
-	$data['query']=$this->Employee_model->Employee_viewalltime(1);	
-	$data['date_today']=date("Y/n/j");
-	$data['date']=$this->input->post('date');
-	list($year,$month,$day) = explode('-', $data['date']);
-	$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-	$data['year_s']=$year;
-	$data['month_s']=$month;
-	$data['day_s']=$day;
-	$this->load->view('date_inserted',$data);
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
+		$date_rows=$this->Employee_model->Employee_viewalltime_rows(1);
+		if ($date_rows==0)$this->Employee_model->insert_time();
+		$data['trows']=$this->Employee_model->Employee_viewalltime_rows(1);
+		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
+		$data['date_today']=date("Y/n/j");
+		$data['date']=$this->input->post('date');
+		list($year,$month,$day) = explode('-', $data['date']);
+		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
+		$data['year_s']=$year;
+		$data['month_s']=$month;
+		$data['day_s']=$day;
+		$this->load->view('date_inserted',$data);
 	}
+	
 	function ViewTimeSheet()//view the timesheet for today 
 	{
-	$this->load->helper('form');  
-	$this->load->model('Employee_model');
-	$data['date']=date("Y-n-j");
-	$date=date("Y/n/j");
-	list($year,$month,$day) = explode('/', $date);
-	$data['trows']=$this->Employee_model->Employee_viewalltime_rows(2);
-	$data['query']=$this->Employee_model->Employee_viewalltime(2);	
-	$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-	$data['year_s']=$year;
-	$data['month_s']=$month;
-	$data['day_s']=$day;
-	$this->load->view('View_time',$data);
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['date']=date("Y-n-j");
+		$date=date("Y/n/j");
+		list($year,$month,$day) = explode('/', $date);
+		$data['trows']=$this->Employee_model->Employee_viewalltime_rows(2);
+		$data['query']=$this->Employee_model->Employee_viewalltime(2);	
+		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
+		$data['year_s']=$year;
+		$data['month_s']=$month;
+		$data['day_s']=$day;
+		$this->load->view('View_time',$data);
 	}
+	
 	function Viewotherdate()//view the timesheet for today 
 	{
 	$this->load->helper('form');  

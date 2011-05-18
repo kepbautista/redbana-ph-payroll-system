@@ -7,6 +7,7 @@
 			@import "<?php echo base_url();?>/css/demo_page.css";
 			@import "<?php echo base_url();?>/css/demo_table.css";
 		</style> 
+		<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.js"></script> 
 		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8"> 
@@ -17,7 +18,7 @@
 		<!-- For JQTRANSFORM-->
 		<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
 		<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
-		<script language="javascript">
+		<script type="text/javascript" >
 			$(function(){
 				$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 			});
@@ -25,8 +26,8 @@
 </head>
 <body id="dt_example">
 <div id="demo">
-	<h1><center><?php echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?></center></h1>
-	<h1 align="right"><a href="<?php echo base_url();?>/index.php/timesheet/viewtimesheet">View Record Today</a></h1>
+	<h1><span class="center" ><?php echo date('M d, Y', strtotime($year_s.'-'.$month_s.'-'.$day_s));?></span></h1>
+	<h1 style="text-align:right"><a href="<?php echo base_url();?>/index.php/timesheet/viewtimesheet">View Record Today</a></h1>
 			<?php if  (($trows==0))//If there are no records on the database with the date today,,it will output a button where the user can make a record today
 			{
 			echo "There are no records for today";
@@ -45,6 +46,8 @@
 							<th>Time-in</th> 
 							<th>Date of Time-in</th>
 							<th>Time-out</th>
+							<th>Shift Schedule</th>
+							<th>Reason for Absence</th>	
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -66,6 +69,26 @@
 							<td><?php echo $row->time_in; ?></td>
 							<td><?php echo date('M d, Y', strtotime($row->date_out)); ?></td>
 							<td><?php echo $row->time_out; ?></td>
+							<td><?php echo $shifts[$row->shift_id]['START_TIME']."-". $shifts[$row->shift_id]['END_TIME']; ?></td>
+							<td><!--make dropdown for absence_reason -->
+								<?php 
+								   if($row->absence_reason == NULL){
+								   		echo "NOT-FILLED-OUT";
+								   	}else{								   
+								   		if( $absence_reasons[$row->absence_reason]->TO_DISPLAY_DEDUCTIBLE == '1' )
+								   		{
+									   		if( $absence_reasons[$row->absence_reason]->DEDUCTIBLE == '1' 
+										   			|| $absence_reasons[$row->absence_reason]->DEDUCTIBLE == TRUE								   			
+									   		)
+									   			echo "UNPAID ";
+									   		else
+									   			echo "PAID ";
+								   		}
+										echo $absence_reasons[$row->absence_reason]->TITLE; 										
+									}
+								?>	 							 			
+							</td>
+
 							<td>
 							<?php
 							echo form_open('timesheet/editTime'); 
@@ -88,6 +111,8 @@
 							<th>Time-in</th> 
 							<th>Date of Time-in</th>
 							<th>Time-out</th>
+							<th>Shift Schedule</th>
+							<th>Reason for Absence</th>
 						</tr> 
 					</tfoot>  
 				</table>
@@ -119,6 +144,7 @@
 				</select>
 				<?php echo form_submit('mysubmit','View!'); 
 				echo form_close(); ?>
+				</p>
 </div>
 </body>
 </html>

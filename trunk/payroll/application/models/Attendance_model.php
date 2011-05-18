@@ -618,6 +618,59 @@ class Attendance_model extends CI_Model
 		}
 	}
 	
+	function getAbsenceReasons()
+	{
+		/*
+			made | abe | 17MAY2011_2331
+			
+			returns NULL if no content gotten from dB
+			else    ARRAY of the rows in the dB
+		*/
+		$sql_x = "SELECT * FROM `absence_reason` ORDER BY `id` ASC";
+		$rows_result = $this->db->query( $sql_x, array() )->result();
+		
+		$returnThisArray = array();
+		
+		if( empty($rows_result) ) 
+		{
+			die("ABSENCE REASONS are empty. Please fill it out first.");
+			//return NULL;
+		}
+		
+		foreach($rows_result as $indiv)
+		{
+			$returnThisArray[$indiv->ID] = $indiv;
+		}
+		
+		return $returnThisArray;
+	}
+	
+	function getAbsenceReasonCategory()
+	{
+		/*
+			made | abe | 18MAY2011_1142
+			
+			returns NULL if no content gotten from dB
+			else    ARRAY of the rows in the dB
+		*/
+		$sql_x = "SELECT * FROM `absence_reason_category` ORDER BY `id` ASC";
+		$rows_result = $this->db->query( $sql_x, array() )->result();
+		
+		$returnThisArray = array();
+		
+		if( empty($rows_result) ) 
+		{
+			die("ABSENCE REASONS CATEGORY are empty. Please fill it out first.");
+			//return NULL;
+		}
+		
+		foreach($rows_result as $indiv)
+		{
+			$returnThisArray[$indiv->ID] = $indiv;
+		}
+		
+		return $returnThisArray;
+	}
 }//class
 
 /* End of file Attendance_model.php */
