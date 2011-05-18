@@ -62,7 +62,6 @@ class Employee extends CI_Controller {
 		$data['tax_options'] = $this->Employee_model->get_tax();
 		$data['type_options'] = $this->Employee_model->get_type();
 		$data['user_right'] = $this->Employee_model->get_user_right();
-		$data['bank_options'] = $this->Employee_model->get_bank();
 		$this->validateForm("insert");//call function for validating forms
 	
 		if ($this->form_validation->run() == FALSE)
@@ -149,7 +148,6 @@ class Employee extends CI_Controller {
 		$data['dept_options'] = $this->Employee_model->get_dept();
 		$data['tax_options'] = $this->Employee_model->get_tax();
 		$data['type_options'] = $this->Employee_model->get_type();
-		$data['bank_options'] = $this->Employee_model->get_bank();
 		$data['user_right'] = $this->Employee_model->get_user_right();
 		
 		$this->validateForm("update");//call function for form validation
@@ -167,6 +165,14 @@ class Employee extends CI_Controller {
 		$this->load->model('Employee_model');
 		$data['query']=$this->Employee_model->Employee_getall();
 		$this->load->view('Emp_viewall',$data);
+	}
+	function Show($empnum)//Getting all info of employee and 
+	{
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['query']=$this->Employee_model->Employee_get($empnum);
+		$data['rows']=$this->Employee_model->Employee_getRows($empnum);
+		$this->load->view('profile',$data);
 	}
 	
 	function Delete()//deletes an employee
