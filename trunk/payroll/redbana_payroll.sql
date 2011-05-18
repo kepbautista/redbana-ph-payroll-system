@@ -225,9 +225,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee`  VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'Semi Monthly', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'kepbautista@gmail.co', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave'),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'Monthly', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF', 'Regular', '111', '111', '111', '111', '0', '0', 'Active');
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'Semi Monthly', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'kepbautista@gmail.co', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active', 0),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'Monthly', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
 
 -- --------------------------------------------------------
 
