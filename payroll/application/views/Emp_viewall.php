@@ -55,11 +55,11 @@
 						$hidden=$row->empnum;
 						echo form_open('employee/edit'); 
 						echo form_hidden('empnum', $emp);
-						echo form_submit('editEmp','Edit!'); 
+						echo form_submit('editEmp','Edit'); 
 						echo form_close(); 
 						echo form_open('employee/delete'); 
 						echo form_hidden('empnum', $hidden);
-						echo form_submit('mysubmit','Delete!'); 
+						echo form_submit('mysubmit','Delete'); 
 						echo form_close(); 
 						
 						?>
