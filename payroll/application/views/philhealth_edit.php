@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>Edit PHILHEALTH Table</title>
+	<title> Edit PhilHealth Table </title>
 <script type="text/javascript" src="system/application/views/jquery.columnhover.js"></script>
 <script type="text/javascript" src="system/application/views/jquery.columnhover.pack.js"></script>
 <link rel="stylesheet" type="text/css" href="system/application/views/style.css" media="screen"/>
@@ -44,7 +44,6 @@ td.betterhover, #tableone tbody tr:hover
 {
 	background: LightCyan;
 }
-
 </style>
 </head>
 
@@ -76,7 +75,7 @@ td.betterhover, #tableone tbody tr:hover
 			<td colspan="2"><?php echo form_input('total',$row->total);?></td>
 			<td colspan="2"><?php echo form_input('pes',$row->pes);?></td>
 			<td colspan="2"><?php echo form_input('per',$row->per);?></td>
-			<td><?php echo form_submit('mysubmit','Update!');?></td>
+			<td><?php echo form_submit('mysubmit','Update');?></td>
 			<td><?php echo form_close();?></td>
 		</tr>
 		<?php

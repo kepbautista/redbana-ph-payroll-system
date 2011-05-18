@@ -19,7 +19,9 @@ class Sss_model extends CI_Model {
 		$trows = $this->db->query('SELECT `rangel`,`rangeh`,`msc`,`ser`,`see`,`stotal`,`ecer`,`ter`,`tee`,`ttotal`,`totalcont` FROM sss GROUP BY `rangel`');
 		return $trows->num_rows();
 	}
-	function Sss_update(){
+	
+	function Sss_update()
+	{
 		$this->load->database();	// loads and initializes the database class
 		$data = array(
         'rangel'=>$this->input->post('rangel'),
@@ -40,7 +42,7 @@ class Sss_model extends CI_Model {
 	
 	function get($id)
 	{
-		$this->load->database();	
+		$this->load->database();	// loads and initializes the database class	
 		$query = $this->db->getwhere('sss',array('id'=>$id));
 		return $query->row_array();        
 	}
@@ -48,7 +50,7 @@ class Sss_model extends CI_Model {
 	function SSS_insertBrackets(){
 		$N = count($_POST['rangel']);
 		
-		/*transfer post data*/
+		// transfer post data
 		$rangel = $_POST['rangel'];
 		$rangeh = $_POST['rangeh'];
 		$msc = $_POST['msc'];
@@ -68,10 +70,8 @@ class Sss_model extends CI_Model {
 			.$ecer[$i]."','".$ter[$i]."','".$tee[$i]."','"
 			.$ttotal[$i]."','".$msc[$i]."','".$totalcont[$i]."',"
 			."'null')";
-			mysql_query($query);//insert each new bracket
+			mysql_query($query);	// insert each new bracket
 		}
-		
-		
-	}//insert SSS Brackets
+	}	// insert SSS Brackets
 }
 ?>

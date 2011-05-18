@@ -39,16 +39,13 @@ function addSSS($N,$response){
 	
 	$response = $response."</table><input type='submit' name='addBrackets' id='addBrackets' value='Add Brackets'>";
 	return $response;
-}//function for output of SSS Bracket fields
+}	// function for output of SSS Bracket fields
 
-//get post information
-$N = $_POST['N'];
+$N = $_POST['N'];	// get post information
 $tType = $_POST['tableType'];
+$response = "";	// initialize $response variable
 
-$response = "";//initialize $response variable
-
-/*evaluate if input is a number*/
-if(!is_numeric($N))
+if(!is_numeric($N))	// evaluate if input is a number
 	$response = "<h3>Input is not a number.</h3>";
 if($N<=0)
 	$response = "<h3>Input number should be greater than zero.</h3>";
@@ -59,7 +56,5 @@ if($response == ""){
 					break;
 	}
 }
-
-echo $response;//return response
-
+echo $response;	// return response
 ?>
