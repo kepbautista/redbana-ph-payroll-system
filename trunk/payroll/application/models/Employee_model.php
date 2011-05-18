@@ -5,56 +5,62 @@ class Employee_model extends CI_Model {
         $this->db->select('id, desc');
         $this->db->from('employee_status');
         $query = $this->db->get();
-        foreach($query->result_array() as $row){
+        foreach($query->result_array() as $row)
             $data[$row['id']]=$row['desc'];
-        }
+        
         return $data;
 	}
+	
 	public function get_bank() {//get the description of the status
         $this->db->select('id, name');
         $this->db->from('bank_main');
         $query = $this->db->get();
-        foreach($query->result_array() as $row){
+        foreach($query->result_array() as $row)
             $data[$row['name']]=$row['name'];
-        }
+        
         return $data;
 	}
+	
 	public function get_user_right() {//get the description of the status
         $this->db->select('id, user_right');
         $this->db->from('user_main');
         $query = $this->db->get();
-        foreach($query->result_array() as $row){
+        foreach($query->result_array() as $row)
             $data[$row['user_right']]=$row['user_right'];
-        }
+        
         return $data;
 	}
+	
 	public function get_tax() {//get the description of the status
         $this->db->select('id, status');
         $this->db->from('tax_status');
         $query = $this->db->get();
-        foreach($query->result_array() as $row){
+        foreach($query->result_array() as $row)
             $data[$row['status']]=$row['status'];
-        }
+        
         return $data;
 	}
+	
 	public function get_dept() {//get the description of the status
         $this->db->select('id, dept');
         $this->db->from('dept_main');
         $query = $this->db->get();
-        foreach($query->result_array() as $row){
+        foreach($query->result_array() as $row)
             $data[$row['dept']]=$row['dept'];
-        }
+        
         return $data;
 	}
+	
 	public function get_pos() {//get the description of the status
         $this->db->select('id, position');
         $this->db->from('pos_main');
         $query = $this->db->get();
-        foreach($query->result_array() as $row){
+        foreach($query->result_array() as $row)
             $data[$row['position']]=$row['position'];
-        }
+        
         return $data;
 	}
+	
 	public function get_type() {//get the description of the status
         $this->db->select('id, type');
         $this->db->from('emp_type');
@@ -64,6 +70,7 @@ class Employee_model extends CI_Model {
         }
         return $data;
 	}
+	
 	function buildMonthDropdown()//builds month dropdown for date
     {
         $month=array(
@@ -81,11 +88,13 @@ class Employee_model extends CI_Model {
             '12'=>'December');
         return $month;
     }
+	
     function Employee_getall() {//select all the info of an employee from employee table
 		$this->load->database();
 		$query = $this->db->query('SELECT * FROM employee');
 		return $query->result();
 	}
+	
 	function Employee_edit() {//edit info of an employee
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
@@ -93,13 +102,15 @@ class Employee_model extends CI_Model {
 		$query=$this->db->query($sql);
 		return $query->result();
 	}
+	
 	function Employee_numrows() {//count number of rows
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
 		$query = $this->db->get_where('employee',array('empnum'=>$empnum));
 		return $query->num_rows();
 	}
-	function Employee_Insert(){
+	
+	function Employee_Insert(){//insert employee information to the database
 	
 		$sday=$this->input->post('sday');
 		$smonth=$this->input->post('smonth');
@@ -122,7 +133,7 @@ class Employee_model extends CI_Model {
 		'mrate'=>$this->input->post('mrate'),
 		'gender'=>$this->input->post('gender'),
 		'user_right'=>$this->input->post('user_right'),
-		'payment_mode'=>$this->input->post('payment_mode'),
+		'payment_mode'=>$this->input->post('pmode'),
 		
 		'title'=>$this->input->post('title'),
 		'civil_status'=>$this->input->post('cstatus'),
@@ -143,6 +154,7 @@ class Employee_model extends CI_Model {
 		);
 		$this->db->insert('employee',$data); 
 	}
+	
 	function Employee_update(){
 		$sday=$this->input->post('sday');
 		$smonth=$this->input->post('smonth');
@@ -165,7 +177,7 @@ class Employee_model extends CI_Model {
 		'mrate'=>$this->input->post('mrate'),
 		'gender'=>$this->input->post('gender'),
 		'user_right'=>$this->input->post('user_right'),
-		'payment_mode'=>$this->input->post('payment_mode'),
+		'payment_mode'=>$this->input->post('pmode'),
 		
 		'title'=>$this->input->post('title'),
 		'civil_status'=>$this->input->post('cstatus'),
@@ -187,6 +199,7 @@ class Employee_model extends CI_Model {
 		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('employee',$data); 
 	}
+	
 	function Employee_delete(){
 		$this->db->where('empnum',$this->input->post('empnum'));
 		$this->db->delete('employee');
@@ -214,6 +227,7 @@ class Employee_model extends CI_Model {
 		$this->db->query('UPDATE `timesheet` SET login="'.$login.'",logout="'.$logout.'" WHERE empnum="'.$this->input->post('empnum').'" AND
 		date="'.$this->input->post('date').'"');
 	}
+	
 	function Employee_viewalltime($cases) {
 		$this->load->database();
 		if ($cases==1)
@@ -234,6 +248,7 @@ class Employee_model extends CI_Model {
 		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date FROM `timesheet` b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
 		return $query->num_rows();
 	}
+	
 	function Insert_time() {
 		$this->load->database();
 		$date=$this->input->post('date');
