@@ -10,7 +10,22 @@
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
 	<script language="javascript">
-	
+		$(document).ready(function(){
+			$("button").click(function(){
+			var r = confirm("Are you sure you want to delete this bracket?");
+				if(r==true){
+					$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
+						query: $(this).val(),
+						tableType: "pos_main",
+				},//perform ajax to delete the bracket using mysql_query
+				function(data){
+					alert("Bracket deleted! ");
+					window.location.href = "<?php echo site_url();?>"+"/maintenance/posview";//reload page to see the effect of delete
+				});
+				}
+					else alert("Bracket delete cancelled!");
+			});
+		});
 		$(function(){
 			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 		});
@@ -46,7 +61,7 @@
 					echo form_open('maintenance/posdelete'); 
 					echo form_hidden('id', $row->id);
 					echo form_hidden('position', $row->position);
-					echo form_submit('mysubmit','Delete'); 
+					echo "<button type='button' name='delete' id='delete' value='".$row->id."'>Delete</button>"; 
 					echo form_close();
 				?>
 				</td>
