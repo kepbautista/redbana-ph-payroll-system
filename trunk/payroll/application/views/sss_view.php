@@ -22,7 +22,7 @@ $(document).ready(function()
 					tableType: "sss",
 				},//perform ajax to delete the bracket using mysql_query
 				function(data){
-					alert("Bracket deleted! "+data);
+					alert("Bracket deleted! ");
 					window.location.href = "<?php echo site_url();?>"+"/sss/getall";//reload page to see the effect of delete
 				});
 			}
@@ -145,7 +145,7 @@ color: navy;
 			$hidden=$row->id;
 			echo form_open('sss/edit'); 
 			echo form_hidden('hidden', $hidden);
-			echo form_submit('mysubmit','Edit!');
+			echo form_submit('mysubmit','Edit');
 			echo "<button type='button' name='delete' id='delete' value='".$row->id."'>Delete</button>";
 			echo form_close(); 
 		?></td>
