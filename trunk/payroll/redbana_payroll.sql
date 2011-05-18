@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 17, 2011 at 06:15 AM
+-- Generation Time: May 18, 2011 at 02:48 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -32,6 +32,10 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
+--
+-- Dumping data for table `absence_reason`
+--
+
 INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`) VALUES
 (6, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1),
 (9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6),
@@ -45,6 +49,10 @@ INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUC
 (14, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2);
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `absence_reason_category`
+--
 
 CREATE TABLE IF NOT EXISTS `absence_reason_category` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -215,8 +223,6 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `status`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`) VALUES
-('123', 'we', 'wew', 'we', '', 0, 2344, '0', 'Accounting Associate', 'Localization', 'M', 'v2GkWjjPpU', '1990-01-01', '1990-01-01', 'Mr.', 'Single', 'we', 'we', 'we', 'we', 'we', '0', 'Contractual', 'wew', 'ew', 'we', 'ewe', 'BPI', 'we', 'Active'),
-('2008-00193', 'Ilagan', 'Castiliogne', 'Marie', 'Superuser', 0, 123, '0', 'HR Associate', 'Accounting', 'F', 'Y6utXUfGpB', '1990-01-01', '1991-03-02', 'Ms.', 'Married', '123', '123', '123', '23', '123', '0', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
 ('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 0, 123, '0', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Married', '123', '123', '123', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', 'BPI', '123', 'Terminated'),
 ('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Employee', 0, 80000, '0', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active'),
 ('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', '', 0, 5000, '0', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF1', 'Regular', '111', '111', '111', '111', 'BPI', '1111', 'Active');
@@ -303,6 +309,27 @@ INSERT INTO `payment_mode` (`ID`, `TITLE`, `DESCRIPTION`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payperiod`
+--
+
+CREATE TABLE IF NOT EXISTS `payperiod` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `PAYMENT_MODE` int(11) NOT NULL,
+  `START_DATE` date NOT NULL,
+  `END_DATE` date NOT NULL,
+  `TOTAL_WORK_DAYS` float NOT NULL,
+  `FINALIZED` tinyint(1) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `payperiod`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payroll_absence`
 --
 
@@ -331,28 +358,6 @@ CREATE TABLE IF NOT EXISTS `payroll_absence` (
 
 --
 -- Dumping data for table `payroll_absence`
---
-
-
--- --------------------------------------------------------
--- --------------------------------------------------------
-
---
--- Table structure for table `payperiod`
---
-
-CREATE TABLE IF NOT EXISTS `payperiod` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `PAYMENT_MODE` int(11) NOT NULL,
-  `START_DATE` date NOT NULL,
-  `END_DATE` date NOT NULL,
-  `TOTAL_WORK_DAYS` float NOT NULL,
-  `FINALIZED` tinyint(1) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `payperiod`
 --
 
 
@@ -484,11 +489,6 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `CutoffL` date NOT NULL,
   `CutoffH` date NOT NULL,
   `EmployeeNumber` varchar(50) NOT NULL,
-  `FirstName` varchar(50) NOT NULL,
-  `MiddleName` varchar(50) NOT NULL,
-  `LastName` varchar(50) NOT NULL,
-  `TaxStatus` varchar(4) NOT NULL,
-  `DepartmentCode` varchar(50) NOT NULL,
   `DailyRate` double NOT NULL,
   `PayPeriodRate` double NOT NULL,
   `AbsencesTardiness` double NOT NULL DEFAULT '0',
@@ -522,8 +522,8 @@ CREATE TABLE IF NOT EXISTS `salary` (
 -- Dumping data for table `salary`
 --
 
-INSERT INTO `salary` (`CutoffL`, `CutoffH`, `EmployeeNumber`, `FirstName`, `MiddleName`, `LastName`, `TaxStatus`, `DepartmentCode`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
-('2011-03-15', '2011-03-31', '2008-00196', 'Kristine Elaine', 'Perez', 'Bautista', 'S', 'Operations', 3636.36, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
+INSERT INTO `salary` (`CutoffL`, `CutoffH`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
+('2011-03-15', '2011-03-31', '2008-00196', 3636.36, 40000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -538,38 +538,17 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `shift`
 --
 
 INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`) VALUES
-(null, -1, '00:07:00', '00:16:00', 0),
-(null, -1, '00:14:00', '00:23:00', 1),
-(null, -1, '00:21:00', '00:06:00', 2);
+(1, -1, '00:07:00', '00:16:00', 0),
+(2, -1, '00:14:00', '00:23:00', 1),
+(3, -1, '00:21:00', '00:06:00', 2);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `timesheet`
---
-
-CREATE TABLE IF NOT EXISTS `timesheet` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `empnum` varchar(255) NOT NULL,
-  `date_in` date NOT NULL,
-  `time_in` time NOT NULL,
-  `date_out` date NOT NULL,
-  `time_out` time NOT NULL,
-  `absence_reason` int(11) DEFAULT NULL,
-  `shift_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
-
---
--- Dumping data for table `timesheet`
---
 -- --------------------------------------------------------
 
 --
@@ -666,12 +645,15 @@ INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
 
 CREATE TABLE IF NOT EXISTS `timesheet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `empnum` varchar(50) NOT NULL,
-  `login` time NOT NULL,
-  `logout` time NOT NULL,
+  `empnum` varchar(255) NOT NULL,
+  `date_in` date NOT NULL,
+  `time_in` time NOT NULL,
+  `date_out` date NOT NULL,
+  `time_out` time NOT NULL,
+  `absence_reason` int(11) DEFAULT NULL,
+  `shift_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=272 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
 
 --
 -- Dumping data for table `timesheet`
