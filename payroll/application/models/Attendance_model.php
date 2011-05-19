@@ -312,10 +312,14 @@ class Attendance_model extends CI_Model
 		return $obj_result;
 	}//insertComputation
 
-	function areAbsences_and_Late_Already_Generated($payperiod)
+	function areAbsences_and_Late_Already_Generated($payperiod, $payment_mode)
 	{
-		$sql_x =  "SELECT * from `payroll_absence` WHERE `payperiod` = ?";
-		$obj_result = $this->db->query( $sql_x, array($payperiod) );
+		/*
+			abe | 18may2011 | changed | added 2nd param
+		*/
+		
+		$sql_x =  "SELECT * from `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ?";
+		$obj_result = $this->db->query( $sql_x, array($payperiod, $payment_mode) );
 	
 		return ($obj_result->num_rows != NULL || $obj_result->num_rows != 0);
 	}
@@ -351,7 +355,7 @@ class Attendance_model extends CI_Model
 		
 		*/
 		
-		if( $this->areAbsences_and_Late_Already_Generated($payperiod) )	// later, an 'overwrite?' condition should be considered
+		if( $this->areAbsences_and_Late_Already_Generated($payperiod, $payment_mode) )	// later, an 'overwrite?' condition should be considered
 		{
 			$result_to_be_returned["validation_errors"][] = array(
 				'ERROR_CODE' => 201,
@@ -572,6 +576,47 @@ class Attendance_model extends CI_Model
 		return $date_in_SQL;
 	}
 	
+	function convert_Date_To_EU_Format($date)
+	{
+		/*	made | abe | 18MAY2011_1413
+			
+			ACCEPTS ONLY date in the format 'YYYY-MM-DD', all numbers
+			
+			returns NULL if string submitted has anomaly. 
+			
+			returns STRING date in 'DD-MMM-YYYY' format where MMM is the first 3 letters of months.
+		*/
+		$returnThis = array('result' => false, 'ERROR_CODE' => NULL, 'ERROR_TITLE' => NULL, 'ERROR_MESSAGE' => NULL);
+		
+		if( strlen($date) !=  10 )
+		{
+			$returnThis['ERROR_CODE'] = '0xUNDEFINED';
+			$returnThis['ERROR_TITLE'] = 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS';
+			$returnThis['ERROR_MESSAGE'] = 'The date submitted should be composed exactly of 10 characters.';
+			die($returnThis);
+		}		
+		$date[4] = $date[7] = '-';
+		$month=array(
+            '01'=>'Jan',
+            '02'=>'Feb',
+            '03'=>'Mar',
+            '04'=>'Apr',
+            '05'=>'May',
+            '06'=>'Jun',
+            '07'=>'Jul',
+            '08'=>'Aug',
+            '09'=>'Sep',
+            '10'=>'Oct',
+            '11'=>'Nov',
+            '12'=>'Dec'
+		);
+		list($sql_year, $sql_month, $sql_day) = explode('-', $date);
+		$month_in_word = $month[$sql_month];
+		
+		return($sql_day."-".$month_in_word."-".$sql_year);		
+	}
+	
+	
 	function isCurrentDate_on_a_payPeriod()
 	{
 		/*
@@ -585,7 +630,7 @@ class Attendance_model extends CI_Model
 			return true;			
 	}
 				
-	function deleteAttendanceFaultData_thisPayPeriod( $payperiod )
+	function deleteAttendanceFaultData_thisPayPeriod( $payperiod, $payment_mode )
 	{
 		/*		
 			made | abe | 16may2011_0045
@@ -593,8 +638,8 @@ class Attendance_model extends CI_Model
 		RETURNS: BOOLEAN indicating if the query has been successful
 		*/
 		
-		$sql_x = "delete FROM `payroll_absence` WHERE `payperiod` = ? ";		
-		$obj_result = $this->db->query( $sql_x, array($payperiod) );
+		$sql_x = "delete FROM `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ? ";		
+		$obj_result = $this->db->query( $sql_x, array($payperiod, $payment_mode) );
 		
 		return $obj_result;
 	}
@@ -604,17 +649,22 @@ class Attendance_model extends CI_Model
 		/*
 		
 			returns NULL if no content gotten from dB
-			else    ARRAY of the rows in the dB
+			else  ASSOCIATIVE  ARRAY of the rows in the dB
 		*/
 		$sql_x = "SELECT * FROM `payment_mode` ORDER BY `id` ASC";
 		$rows_result = $this->db->query( $sql_x, array() )->result();
+		$returnThis = array();
 		
 		if( empty($rows_result) ) 
 		{
 			return NULL;
 		}else
 		{
-			return $rows_result;
+			foreach($rows_result as $x)
+			{
+				$returnThis[$x->ID] = $x;
+			}
+			return $returnThis;
 		}
 	}
 	
