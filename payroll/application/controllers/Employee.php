@@ -45,6 +45,7 @@ class Employee extends CI_Controller {
                 );
 		$data['pmode'] = $this->Employee_model->getPmode(); 
 		$data['pos_options'] = $this->Employee_model->get_pos();
+		$data['shift_id'] = $this->Employee_model->get_shift();
 		$data['civil_status'] = array(
                   'Single'  => 'Single',
                   'Married'    => 'Married'
@@ -94,6 +95,7 @@ class Employee extends CI_Controller {
 			$data['address'] = $_POST['address'];//present address
 			$data['emp_type1'] = $_POST['emp_type'];//employee type
 			$data['zip'] = $_POST['zip'];//zip code
+			$data['shift'] = $_POST['shift_id'];//zip code
 			$data['tax'] = $_POST['tax_status'];//tax status
 			$data['pagibig'] = $_POST['pagibig'];//Pag-Ibig Number
 			$data['pmode1'] = $_POST['pmode'];//payment mode
@@ -143,6 +145,7 @@ class Employee extends CI_Controller {
 		$data['tax_options'] = $this->Employee_model->get_tax();
 		$data['type_options'] = $this->Employee_model->get_type();
 		$data['user_right'] = $this->Employee_model->get_user_right();
+		$data['shift_id'] = $this->Employee_model->get_shift();
 		
 		$this->validateForm("update");//call function for form validation
 		

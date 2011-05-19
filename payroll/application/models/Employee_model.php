@@ -20,6 +20,15 @@ class Employee_model extends CI_Model {
         
         return $data;
 	}
+	public function get_shift() {//get the description of the status
+        $this->db->select('ID,START_TIME,END_TIME');
+        $this->db->from('shift');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row)
+            $data[$row['ID']]=$row['ID'].'.) '.$row['START_TIME'].'-'.$row['END_TIME'];
+        
+        return $data;
+	}
 	public function getPmode() {//get the options for payment mode
         $this->db->select('id, title');
         $this->db->from('payment_mode');
@@ -143,6 +152,7 @@ class Employee_model extends CI_Model {
         'fname'=>$this->input->post('fname'),
 		'sname'=>$this->input->post('sname'),
         'mname'=>$this->input->post('mname'),
+		'shift_id'=>$this->input->post('shift_id'),
         'sdate'=>$sdate,
 		'bdate'=>$bdate,
 		'password'=>$this->input->post('password'),
@@ -183,7 +193,8 @@ class Employee_model extends CI_Model {
 		$data = array(
 		'empnum'=>$this->input->post('empnum'),
         'fname'=>$this->input->post('fname'),
-		'sname'=>$this->input->post('sname'),
+		'shift_id'=>$this->input->post('shift_id'),
+        'sname'=>$this->input->post('sname'),
         'mname'=>$this->input->post('mname'),
         'sdate'=>$sdate,
 		'bdate'=>$bdate,
