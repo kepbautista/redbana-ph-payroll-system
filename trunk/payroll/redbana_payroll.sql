@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2011 at 06:01 AM
+-- Generation Time: May 19, 2011 at 08:16 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
 ('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'SEMI-MONTHLY', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'SEMI-MONTHLY', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'paranaque', '171', 'ME1', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active', 0),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'SEMI-MONTHLY', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
 ('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'SEMI-MONTHLY', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
 
 -- --------------------------------------------------------
@@ -434,7 +434,7 @@ INSERT INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`,
 (24, 27000, 27999.99, 27000, 675, 337.5, 337.5, 43),
 (25, 28000, 28999.99, 28000, 700, 350, 350, 44),
 (26, 29000, 29999.99, 29000, 725, 362.5, 362.5, 45),
-(27, 30000, 50000, 30000, 750, 375, 375, 46);
+(27, 30000, 500000, 30000, 750, 375, 375, 46);
 
 -- --------------------------------------------------------
 
@@ -609,7 +609,7 @@ INSERT INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `t
 (13250, 13749.99, 954, 450, 1404, 10, 964, 450, 1414, 13500, 1404, 70),
 (13750, 14249.99, 989.3, 466.7, 1456, 10, 999.3, 466.7, 1466, 14000, 1456, 71),
 (14250, 14749.99, 1024.7, 483.3, 1508, 10, 1034.7, 483.3, 1518, 14500, 1508, 72),
-(14750, 10749.99, 1060, 500, 1560, 30, 1090, 500, 1590, 15000, 1560, 73);
+(14750, 500000, 1060, 500, 1560, 30, 1090, 500, 1590, 15000, 1560, 73);
 
 -- --------------------------------------------------------
 
@@ -756,20 +756,20 @@ CREATE TABLE IF NOT EXISTS `witholding_tax` (
 --
 
 INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINITE`, `EXEMPTION_PERCENT`, `A_Z`, `A_SME`, `B_MES1`, `B_MES2`, `B_MES3`, `B_MES4`) VALUES
-(1, 0, -1, -1, 0, 50, 75, 100, 125, 150),
+(1, 0, 0, 0, 0, 50, 75, 100, 125, 150),
 (1, 1, 0, 0, 1, 1, 1, 1, 1, 1),
 (1, 2, 0, 5, 0, 2083, 3125, 4167, 5208, 6250),
 (1, 3, 20.83, 10, 417, 2500, 3542, 4583, 5625, 6667),
-(1, 4, 104.17, 15, 1250, 3333, 4375, 5417, 6458, 7501),
+(1, 4, 104.17, 15, 1250, 3333, 4375, 5417, 6458, 7500),
 (1, 5, 354.17, 20, 2917, 5000, 6042, 7083, 8125, 9167),
-(1, 6, 432.69, 25, 2692, 3654, 4135, 4615, 5096, 5577),
+(1, 6, 937.5, 25, 5833, 7917, 8958, 10000, 11042, 12083),
 (1, 7, 2083.33, 30, 10417, 12500, 13542, 14583, 15625, 16667),
 (1, 8, 5208.33, 32, 20833, 22917, 23958, 25000, 26042, 27083),
-(2, 0, -1, -1, 0, 50, 75, 100, 125, 150),
+(2, 0, 0, 0, 0, 50, 75, 100, 125, 150),
 (2, 1, 0, 0, 1, 1, 1, 1, 1, 1),
 (2, 2, 0, 5, 0, 4167, 6250, 8333, 10417, 12500),
 (2, 3, 41.67, 10, 833, 5000, 7083, 9167, 11250, 13333),
-(2, 4, 208.33, 15, 2500, 6667, 0, 0, 0, 0),
+(2, 4, 208.33, 15, 2500, 6667, 8750, 10833, 12917, 15000),
 (2, 5, 708.33, 20, 5833, 10000, 12083, 14167, 16250, 18333),
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),

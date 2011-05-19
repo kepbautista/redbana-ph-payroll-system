@@ -88,7 +88,7 @@ class ComputePayroll_model extends CI_Model{
 				AND rangeh>='".$monthlyRate."'";
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
-		
+				
 		return $data['total'];
 	}//get monthly contribution for Philhealth
 	
@@ -170,6 +170,7 @@ class ComputePayroll_model extends CI_Model{
 			*/
 		}
 		
+		echo "<br/>".$taxStatus;
 		$this->compute($info);
 	}//perform arithmetic computations for net pay
 	
