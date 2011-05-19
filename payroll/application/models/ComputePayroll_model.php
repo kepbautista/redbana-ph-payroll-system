@@ -171,13 +171,26 @@ class ComputePayroll_model extends CI_Model{
 		}
 		
 		echo "<br/>".$taxStatus;
-		$this->compute($info);
+		$this->compute($info,$taxStatus);
+		
 	}//perform arithmetic computations for net pay
 	
-	function compute($info){
+	function findNumber($string){
+		foreach(str_split($string) as $value)
+			if(is_numeric($value)) return true;
+		
+		return false;
+	}
+	
+	function computeWithholdingTax($taxStatus,$taxBasis,$info){
+		//$sql = "SELECT MAX(".$taxStatus.")
+	}//compute wittholding tax status
+	
+	function compute($info,$taxStatus){
 		$this->grossPay($info);//compute Gross Pay
 		$this->totalPay($info);//compute Total Pay
-		$this->taxBasis($info);//compute Tax Basis
+		$taxBasis = $this->taxBasis($info);//compute Tax Basis
+		$this->computeWithholdingTax($taxStatus,$taxBasis,$info);
 	}
 	
 	function dailyRate($info){
@@ -248,6 +261,8 @@ class ComputePayroll_model extends CI_Model{
 				AND end_date='".$info[2]."'";
 				
 		mysql_query($sql);//update withholding tax basis
+		
+		return $taxBasis;
 	}//compute withholding tax basis
 }
 ?>
