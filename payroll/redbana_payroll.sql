@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2011 at 08:16 AM
+-- Generation Time: May 19, 2011 at 11:28 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,8 +12,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
-CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -161,27 +159,6 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `emp_type`
---
-
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `emp_type`
---
-
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `employee`
 --
 
@@ -255,6 +232,27 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 (8, 'Employed husband and husband claims exemptions of children'),
 (9, 'Employed wife whose husband is also employed or engaged in business;husband waived claim for depende'),
 (10, 'Single with qualified dependent children');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
 
 -- --------------------------------------------------------
 
@@ -439,6 +437,25 @@ INSERT INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `position`
+--
+
+CREATE TABLE IF NOT EXISTS `position` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TITLE` varchar(128) NOT NULL,
+  `DESCRIPTION` int(255) NOT NULL,
+  PRIMARY KEY (`TITLE`),
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `position`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pos_main`
 --
 
@@ -463,25 +480,6 @@ INSERT INTO `pos_main` (`position`, `id`) VALUES
 ('Marketing Associate', 9),
 ('Operations Team Leader', 11),
 ('Manager', 12);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `position`
---
-
-CREATE TABLE IF NOT EXISTS `position` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(128) NOT NULL,
-  `DESCRIPTION` int(255) NOT NULL,
-  PRIMARY KEY (`TITLE`),
-  KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `position`
---
-
 
 -- --------------------------------------------------------
 
@@ -697,6 +695,8 @@ INSERT INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `t
 CREATE TABLE IF NOT EXISTS `user_main` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_right` varchar(20) CHARACTER SET latin1 NOT NULL,
+  `privilege` varchar(50) NOT NULL,
+  `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
@@ -704,12 +704,12 @@ CREATE TABLE IF NOT EXISTS `user_main` (
 -- Dumping data for table `user_main`
 --
 
-INSERT INTO `user_main` (`id`, `user_right`) VALUES
-(2, 'HR'),
-(3, 'Staff'),
-(4, 'Admin'),
-(5, 'Employee'),
-(9, 'Superuser');
+INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
+(2, 'HR', '', 0),
+(3, 'Staff', '', 0),
+(4, 'Admin', '', 0),
+(5, 'Employee', '', 0),
+(9, 'Superuser', '', 0);
 
 -- --------------------------------------------------------
 
