@@ -22,12 +22,19 @@ class ComputePayroll_model extends CI_Model{
 	function selectEmployeeData($empnum){
 		//select data from salary table
 		$sql = "SELECT * FROM `employee` WHERE empnum='".$empnum."'";
-		
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
 		
 		return $data;
 	}//select needed employee data from employee table
+	
+	function getMonthlyRate($empnum){
+		$sql = "SELECT * FROM `employee` WHERE empnum='".$empnum."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return $data['mrate'];
+	}//get monthly rate of employee
 	
 	function getTaxStatus($empnum){
 		//select all employee data
@@ -46,8 +53,7 @@ class ComputePayroll_model extends CI_Model{
 	
 	function getPayPeriodRate($info){	
 		//select all employee data
-		$data = $this->selectEmployeeData($info[0]);
-		$rate = $data['mrate'];
+		$rate = $this->getMonthlyRate($info[0]);
 		$paymentMode = $this->paymentMode($info);
 		
 		if($paymentMode=="SEMI-MONTHLY")
@@ -57,6 +63,8 @@ class ComputePayroll_model extends CI_Model{
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";
 		mysql_query($sql);//update Pay Period Rate
+		
+		return $rate;
 	}//get pay type
 	
 	function endOfMonth($start_date,$end_date){
@@ -72,28 +80,96 @@ class ComputePayroll_model extends CI_Model{
 		else false;
 	}//evaluate if payperiod is end of the month or not
 	
+	function getPhilhealth($empnum){
+		$monthlyRate = $this->getMonthlyRate($empnum);//get monthly rate
+		
+		$sql = "SELECT total FROM `philhealth` 
+			    WHERE rangel<='".$monthlyRate."'
+				AND rangeh>='".$monthlyRate."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return $data['total'];
+	}//get monthly contribution for Philhealth
+	
+	function getSSS($empnum){
+		$monthlyRate = $this->getMonthlyRate($empnum);//get monthly rate
+	
+		$sql = "SELECT tee FROM `sss` 
+			    WHERE rangel<='".$monthlyRate."'
+				AND rangeh>='".$monthlyRate."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return $data['tee'];
+	}//get monthly contribution for SSS
+	
+	function getPagIbig($info){
+		//get the value for pagibig
+		$sql = "SELECT * FROM `variables` WHERE Name='pagibig'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$pagibig = $data['Value'];
+	
+		return $pagibig;
+	}//compute withholding tax basis
+	
+	function governmentContribs($info,$sss,$philhealth,$pagibig){	
+		echo "Philhealth=".$philhealth."<br/>SSS=".$sss
+			."<br/>Pagibig=".$pagibig;
+		
+		$sql = "UPDATE `salary` SET SSS='".$sss."',
+				Philhealth='".$philhealth."',
+				Pagibig='".$pagibig."' WHERE 
+				EmployeeNumber='".$info[0]."' AND 
+				start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
+				
+		mysql_query($sql);
+	}//get values from SSS and Philhealth tables
+	
 	function computeNetPay($empnum,$start_date,$end_date){
+		//initialize gov't contribs to zero
+		$sss = $philhealth = $pagibig = 0;
+	
 		//get needed information
 		$info = array($empnum,$start_date,$end_date);
 		$this->getPayPeriodRate($info);
 		
+		$this->dailyRate($info);//compute daily rate
+		
 		if($this->paymentMode($info)=="SEMI-MONTHLY"){
 			/**get if end of the month or not**/
-			if(!endOfMonth($start_date,$end_date)){
-				//sss & philhealth
+			if(!$this->endOfMonth($start_date,$end_date)){
+				$sss = $this->getSSS($empnum);//sss contributions
+				$philhealth = $this->getPhilhealth($empnum);//philhealth contributions
 			}
-			else $pagibig = $this->pagIbig($info);//for pagibig fund
+			else $pagibig = $this->getPagIbig($info);//for pagibig contributions
 			
-			/*basis for withholding tax is semi-monthly table*/
-			$taxStatus = $this->getTaxStatus($empnum);//compute Withholding Tax
+			//call function for Government Dues
+			$this->governmentContribs($info,$sss,$philhealth,$pagibig);
+			
+			$taxStatus = $this->getTaxStatus($empnum);//get Tax Status
+			
+			/*basis for withholding tax is semi-monthly table
+			  dito ilalagay
+			*/
 		}
 		else{
-			$pagibig = $this->pagIbig($info);//for pagibig fund
+			$philhealth = $this->getPhilhealth($empnum);//sss contributions
+			$sss = $this->getSSS($empnum);//philhealth contributions
+			$pagibig = $this->getPagIbig($info);//for pagibig contributions
+			
+			//call function for Government Dues
+			$this->governmentContribs($info,$sss,$philhealth,$pagibig);
+			
 			$taxStatus = $this->getTaxStatus($empnum);//compute Withholding Tax
-			//sss & philhealth
-			/*basis for withholding tax is monthly*/
+			
+			/*basis for withholding tax is monthly
+			  dito ilalagay
+			*/
 		}
-
+		
 		$this->compute($info);
 	}//perform arithmetic computations for net pay
 	
@@ -102,6 +178,24 @@ class ComputePayroll_model extends CI_Model{
 		$this->totalPay($info);//compute Total Pay
 		$this->taxBasis($info);//compute Tax Basis
 	}
+	
+	function dailyRate($info){
+		$monthlyRate = $this->getMonthlyRate($info[0]);//get monthly rate
+		
+		//look for number of working days in a month
+		$sql = "SELECT * FROM `variables` WHERE Name='WorkingDaysPerMonth'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$N = $data['Value'];
+		
+		$dailyRate = $monthlyRate/$N;//compute daily Rate
+		
+		$sql = "UPDATE `salary` SET DailyRate='".$dailyRate."' WHERE 
+				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
+				AND end_date='".$info[2]."'";
+		mysql_query($sql);//update gross pay
+		
+	}//function for computing daily rate
 	
 	function getTaxExemption(){
 		/*GET EXEMPTION*/
@@ -124,7 +218,6 @@ class ComputePayroll_model extends CI_Model{
 		$sql = "UPDATE `salary` SET GrossPay='".$gross."' WHERE 
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";
-		
 		mysql_query($sql);//update gross pay
 	}//function that computes gross pay
 	
@@ -150,20 +243,6 @@ class ComputePayroll_model extends CI_Model{
 					$data['NightDifferential'] - $data['SSS'] -
 					$data['Philhealth'] - $data['Pagibig'];
 		$sql = "UPDATE `salary` SET WithholdingBasis='".$taxBasis."' WHERE 
-				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
-				AND end_date='".$info[2]."'";
-				
-		mysql_query($sql);//update withholding tax basis
-	}//compute withholding tax basis
-	
-	function pagIbig($info){
-		//get the value for pagibig
-		$sql = "SELECT * FROM `variables` WHERE Name='pagibig'";
-		$query = mysql_query($sql);
-		$data = mysql_fetch_array($query);
-		$pagibig = $data['Value'];
-	
-		$sql = "UPDATE `salary` SET Pagibig='".$pagibig."' WHERE 
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";
 				
