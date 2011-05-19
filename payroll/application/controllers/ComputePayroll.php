@@ -13,8 +13,8 @@ class ComputePayroll extends CI_Controller {
 	}
 	
 	function NetPay(){
-		$cutoffL = '2011-03-15';
-		$cutoffH = '2011-03-31';
+		$cutoffL = '2011-05-01';
+		$cutoffH = '2011-05-15';
 		$empnum = '2008-00196';
 	
 		$this->load->model('ComputePayroll_model');
