@@ -86,8 +86,8 @@ class witholdingTaxController extends CI_Controller
 					/*set validation rules*/
 					$this->form_validation->set_rules('exemption_definite','Exemption Definite','numeric','required|greater_than[-2]');
 					$this->form_validation->set_rules('exemption_percent','Exemption Percent','numeric','required|greater_than[-2]');
-					$this->form_validation->set_rules('a_z','Z','numeric','required|greater_than[-2]');
-					$this->form_validation->set_rules('a_sme','S/ME','required|greater_than[-2]');
+					$this->form_validation->set_rules('a_z','Z','numeric','required|greater_than[0]');
+					$this->form_validation->set_rules('a_sme','S/ME','required|greater_than[0]');
 					$this->form_validation->set_rules('b_mes1','ME1/S1','numeric','required|greater_than[0]');
 					$this->form_validation->set_rules('b_mes2','ME2/S2','numeric','required|greater_than[0]');
 					$this->form_validation->set_rules('b_mes3','ME3/S3','numeric','required|greater_than[0]');
