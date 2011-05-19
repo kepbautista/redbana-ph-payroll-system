@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 18, 2011 at 07:29 AM
+-- Generation Time: May 19, 2011 at 06:01 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `absence_reason`
@@ -175,7 +175,6 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
 --
 
 INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Contractual', 1),
 ('Probational', 2),
 ('Regular', 3),
 ('Project Based', 4);
@@ -225,9 +224,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'Semi Monthly', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'kepbautista@gmail.co', '123', '123', 'HF', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'Semi Monthly', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.co', 'paranaque', '171', 'HF', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active', 0),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'Monthly', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.', 'paranaque', '1700', 'HF', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'SEMI-MONTHLY', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'SEMI-MONTHLY', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'paranaque', '171', 'ME1', 'Contractual', '12', '12', '12', '12', '0', '0', 'Active', 0),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'SEMI-MONTHLY', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
 
 -- --------------------------------------------------------
 
@@ -462,9 +461,8 @@ INSERT INTO `pos_main` (`position`, `id`) VALUES
 ('HR Manager', 7),
 ('HR Supervisor', 8),
 ('Marketing Associate', 9),
-('Marketing Specialist', 10),
 ('Operations Team Leader', 11),
-('Web Programmer', 12);
+('Manager', 12);
 
 -- --------------------------------------------------------
 
@@ -507,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `TaxShield` double NOT NULL DEFAULT '0',
   `TotalPay` double NOT NULL DEFAULT '0',
   `WithholdingBasis` double NOT NULL DEFAULT '0',
-  `SemiMonthlyWithholding` double NOT NULL DEFAULT '0',
+  `WithholdingTax` double NOT NULL DEFAULT '0',
   `SSS` double NOT NULL DEFAULT '0',
   `Philhealth` double NOT NULL DEFAULT '0',
   `Pagibig` double NOT NULL DEFAULT '0',
@@ -528,8 +526,9 @@ CREATE TABLE IF NOT EXISTS `salary` (
 -- Dumping data for table `salary`
 --
 
-INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `SemiMonthlyWithholding`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
-('2011-03-15', '2011-03-31', '2008-00196', 3636.36, 11000, 0, 0, 0, 0, 0, 11000, 0, 0, 11000, 10900, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', '');
+INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
+('2011-03-15', '2011-03-31', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', ''),
+('2011-05-01', '2011-05-15', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4858.3, 0, 366.7, 275, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -575,7 +574,7 @@ CREATE TABLE IF NOT EXISTS `sss` (
   `totalcont` double NOT NULL,
   `id` int(6) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=74 ;
 
 --
 -- Dumping data for table `sss`
@@ -631,7 +630,6 @@ CREATE TABLE IF NOT EXISTS `tax_status` (
 --
 
 INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
-(7, 'ME1', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 32000),
 (8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 48000),
 (9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 56000),
 (10, 'ME4', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 64000),
@@ -653,7 +651,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `absence_reason` int(11) DEFAULT NULL,
   `shift_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `timesheet`
@@ -700,18 +698,18 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_right` varchar(20) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `user_main`
 --
 
 INSERT INTO `user_main` (`id`, `user_right`) VALUES
-(1, 'Superuser'),
 (2, 'HR'),
 (3, 'Staff'),
 (4, 'Admin'),
-(5, 'Employee');
+(5, 'Employee'),
+(9, 'Superuser');
 
 -- --------------------------------------------------------
 
@@ -730,7 +728,8 @@ CREATE TABLE IF NOT EXISTS `variables` (
 --
 
 INSERT INTO `variables` (`Name`, `Value`) VALUES
-('PagIbig', 100);
+('PagIbig', 100),
+('WorkingDaysPerMonth', 22);
 
 -- --------------------------------------------------------
 
