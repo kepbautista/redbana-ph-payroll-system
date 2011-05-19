@@ -28,6 +28,7 @@
 		});
 		$(function(){
 			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
+			$("#button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
 		});
 	</script>
 </head>
@@ -61,11 +62,10 @@
 					echo form_open('maintenance/userdelete'); 
 					echo form_hidden('id', $row->id);
 					echo form_hidden('user_right', $row->user_right);
-					echo "<button type='button' name='delete' id='delete' value='".$row->id."'>Delete</button>";
+					echo "<button type='button' name='delete' id='button' value='".$row->id."'>Delete</button>";
 					echo form_close();
 				?>
 				</td>
-
 			</tr>
 			<?php 
 			$cnt++;} ?>

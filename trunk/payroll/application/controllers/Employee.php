@@ -171,7 +171,14 @@ class Employee extends CI_Controller {
 		$data['rows']=$this->Employee_model->Employee_getRows($empnum);
 		$this->load->view('profile',$data);
 	}
-	
+	function Privilege($user)//Getting all info of employee and 
+	{
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['query']=$this->Employee_model->get_privilege($user);
+		$data['rows']=$this->Employee_model->get_privilegeRows($user);
+		$this->load->view('privilege',$data);
+	}
 	function Delete()//deletes an employee
 	{
 		$this->load->helper('form');  
@@ -180,7 +187,6 @@ class Employee extends CI_Controller {
 		$data['query']=$this->Employee_model->Employee_getall();
 		$this->load->view('Emp_viewall',$data);
 	}
-	
 	function InsertDb()//insert an employee info to the database then redirect for viewing all employee page
 	{
 		$this->load->helper('form');  
