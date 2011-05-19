@@ -42,21 +42,99 @@ class Payperiod_model extends CI_Model
 	{
 		/*
 			abe | 17MAY2011_1440
-			if there is no argument passed to this, the default value '1' / 'SEMI-MONTHLY' is
-			assigned to payment mode,
-			
-			!!!! however, make it dynamic so that we determine first from the dB what index is 'SEMI-MONTHLY'
-			as it might change.
+				if there is no argument passed to this, the default value '1' / 'SEMI-MONTHLY' is
+				assigned to payment mode,
+				
+				!!!! however, make it dynamic so that we determine first from the dB what index is 'SEMI-MONTHLY'
+				as it might change.
+			abe | changed | 18MAY2011_1325
+				now just called get_All_PayPeriods(..)			
 		*/
-		
-		$sql_x = "SELECT * FROM `payperiod` WHERE `payment_mode` = ? ORDER BY `END_DATE` DESC ";			
-		$allPayPeriod = $this->db->query($sql_x, array($payment_mode) )->result();
-		if( empty ($allPayPeriod) )	
+				
+		$allPayPeriod = $this->get_All_PayPeriods( $payment_mode );
+		if( count($allPayPeriod) < 1 )	
 		{	return  NULL;			}
 		else		
-		{	return $allPayPeriod[0];	}
+		{	
+			/*
+				Because in some tables, entries start with '1', not 0
+			*/
+			if( isset($allPayPeriod[0]) )
+				return $allPayPeriod[0];	
+			else 
+				return $allPayPeriod[1];
+		}
 		
 	}
+	
+	function get_All_PayPeriods($payment_mode = NULL)
+	{
+		/*
+			abe | 18MAY2011_1318
+			if there is no argument passed to this, all payperiods regardless of payment_mode will be gotten.						
+			
+			RETURNS
+			NULL - if no dB entries gotten
+			ARRAY - of the dB entries gotten directly accessible via numerical indices
+		*/
+		$rows_result;		
+		$returnThis = array();
+		
+		if( $payment_mode == NULL )
+		{
+			$sql_x = "SELECT * from `payperiod` ORDER BY `payment_mode` and `END_DATE` DESC ";
+			$rows_result = $this->db->query($sql_x)->result();
+		}else
+		{			
+			$sql_x = "SELECT * from `payperiod` where `payment_mode` = ? ORDER BY `END_DATE` DESC";
+			$rows_result = $this->db->query($sql_x, array($payment_mode) )->result();
+		}
+		//die(var_dump($rows_result));
+		if( empty($rows_result) )
+		{	return NULL;			}
+		else
+		{	
+			foreach($rows_result as $x) $returnThis[$x->ID] = $x;
+			
+			/*foreach($rows_result as $x)			
+				$abcd = array();
+				foreach($x as $y)
+					$abcd[$y->TITLE]
+			*/
+			return $returnThis;	
+		}		
+	}//get_All_PayPeriods
+	
+	function y_get_All_PayPeriods($payment_mode = NULL)
+	{
+		/*
+			abe | 18MAY2011_1318
+			if there is no argument passed to this, all payperiods regardless of payment_mode will be gotten.						
+			
+			RETURNS
+			NULL - if no dB entries gotten
+			OBJECT - of the dB entries gotten directly accessible via numerical indices
+		*/
+		$obj_result;		
+		$returnThis = array();
+		
+		if( $payment_mode == NULL )
+		{
+			$sql_x = "SELECT * from `payperiod` ORDER BY `payment_mode` and `END_DATE` DESC ";
+			$obj_result = $this->db->query($sql_x, array());
+		}else
+		{
+			$sql_x = "SELECT * from `payperiod` where `payment_mode` = ? ORDER BY `END_DATE` DESC";
+			$obj_result = $this->db->query($sql_x, array($payment_mode) );
+		}
+		//die(var_dump($rows_result));
+		if( $obj_result->num_rows == 0 )
+		{	return NULL;			}
+		else
+		{							
+			return $obj_result;	
+		}		
+	}//get_All_PayPeriods
 	
 	function add_new_PayPeriod($payment_mode, $start_date, $end_date, $workingDays)
 	{
@@ -65,7 +143,7 @@ class Payperiod_model extends CI_Model
 		$end_date[4] = '-';	
 		$end_date[7] = '-';
 		
-		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, FALSE) ";			
+		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, FALSE, FALSE) ";			
 		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays) );
 	
 		$check_it = $this->get_Last_PayPeriod($payment_mode);
