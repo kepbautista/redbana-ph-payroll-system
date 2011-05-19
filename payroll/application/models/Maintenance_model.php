@@ -50,12 +50,19 @@ class Maintenance_model extends CI_Model {
 		$this->db->query('UPDATE user_main SET user_right="'.$user.'" WHERE id="'.$id.'"');
 	}
 	function User_delete(){//delete a department
-		$this->db->where('id',$this->input->post('id'));
-		$this->db->delete('user_main'); 
+		//$this->db->where('id',$this->input->post('id'));
+		//$this->db->delete('user_main');
+		$this->db->query('DROP TABLE `'.$this->input->post('user_right').'`');
 	}
 	function User_insert(){//insert department
 		$data=$this->input->post('user');
 		$this->db->query('INSERT INTO user_main(`user_right`) VALUES ("'.$data.'")');
+		$this->db->query('CREATE TABLE IF NOT EXISTS `'.$data.'` (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+		`privilege` varchar(50) NOT NULL,
+		PRIMARY KEY (`id`)
+		) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+		');
 	}
 	//Employee Type Maintenance
 	function Type_getall() {//select all the list of employee type

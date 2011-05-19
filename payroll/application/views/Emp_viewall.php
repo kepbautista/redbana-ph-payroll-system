@@ -37,7 +37,8 @@
 			<thead> 
 				<tr> 
 					<th>Seq #</th> 
-					<th>Employee</th> 
+					<th>Employee</th>
+					<th>Access Right</th>
 					<th>Emp No.</th> 
 					<th>Department</th> 
 					<th>Position</th>
@@ -59,6 +60,7 @@
 				<tr id="<?php echo $cnt ?>" class="<?php echo $class ?>">
 					<td><?php echo $cnt; ?></td>
 					<td><?php echo '<a href="'.$url.'/index.php/employee/show/'.$emp.'">'.$name.'</a>'; ?></td>
+					<td><?php echo '<a href="'.$url.'/index.php/employee/privilege/'.$row->user_right.'">'.$row->user_right.'</a>'; ?></td>
 					<td><?php echo $emp; ?></td>
 					<td><?php echo $row->dept; ?></td>
 					<td><?php echo $row->position; ?></td>
@@ -89,6 +91,7 @@
 				<tr> 
 					<th>Seq #</th> 
 					<th>Employee</th> 
+					<th>Access Right</th>
 					<th>Emp No.</th> 
 					<th>Department</th> 
 					<th>Position</th>
