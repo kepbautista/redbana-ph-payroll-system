@@ -3,14 +3,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
 	<title>Position Maintenance</title>
-	
 	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/demo.css" type="text/css" media="all" />
-	
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
 	<script language="javascript">
+	$(function(){
+			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
+			$(":button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
+		});
 		$(document).ready(function(){
+				$(":button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
+		
+		
 			$("button").click(function(){
 			var r = confirm("Are you sure you want to delete this bracket?");
 				if(r==true){
@@ -26,9 +31,7 @@
 					else alert("Bracket delete cancelled!");
 			});
 		});
-		$(function(){
-			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		});
+		
 	</script>
 </head>
 <body id="dt_example">
