@@ -20,7 +20,16 @@ class Employee_model extends CI_Model {
         
         return $data;
 	}
-	
+	public function getPmode() {//get the options for payment mode
+        $this->db->select('id, title');
+        $this->db->from('payment_mode');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row)
+            $data[$row['title']]=$row['title'];
+        
+        return $data;
+	}
+
 	public function get_user_right() {//get the description of the status
         $this->db->select('id, user_right');
         $this->db->from('user_main');

@@ -43,10 +43,7 @@ class Employee extends CI_Controller {
                   'Ms.'    => 'Ms.',
 				  'Mrs.'    => 'Mrs.'
                 );
-		$data['pmode'] =  array(
-                  'SEMI-MONTHLY'  => 'SEMI-MONTHLY',
-                  'MONTHLY' => 'MONTHLY'
-                );
+		$data['pmode'] = $this->Employee_model->getPmode(); 
 		$data['pos_options'] = $this->Employee_model->get_pos();
 		$data['civil_status'] = array(
                   'Single'  => 'Single',
@@ -130,10 +127,7 @@ class Employee extends CI_Controller {
                   'Ms.'    => 'Ms.',
 				  'Mrs.'    => 'Mrs.'
                 );
-		$data['pmode'] =  array(
-                  'SEMI-MONTHLY'  => 'SEMI-MONTHLY',
-                  'MONTHLY'    => 'MONTHLY'
-                );
+		$data['pmode'] = $this->Employee_model->getPmode(); 
 		$data['pos_options'] = $this->Employee_model->get_pos();
 		$data['civil_status'] = array(
                   'Single'  => 'Single',
