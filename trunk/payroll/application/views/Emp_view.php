@@ -50,6 +50,12 @@
 		<?php echo form_dropdown('cstatus', $civil_status);?>
 	</td>
   </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Shift Hours:</th>
+    <td>
+		<?php echo form_dropdown('shift_id', $shift_id);?>
+	</td>
+  </tr>
    <tr>
     <th align="right"><font color = "red" size=+2 >*</font>Employee Status:</th>
     <td>

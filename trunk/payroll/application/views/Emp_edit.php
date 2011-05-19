@@ -37,6 +37,7 @@ foreach($query as $row){
 	$emp_type1= $row->emp_type;//
 	$zip= $row->zipcode;//
 	$tax= $row->tax_status;//
+	$shift= $row->shift_id;//
 	$pagibig= $row->pagibig;//STATUS
 	$pmode1= $row->payment_mode;//PAYMENT MODE
 	$password= $row->password;//PASSWORD
@@ -71,6 +72,12 @@ foreach($query as $row){
     <th align="right"><font color = "red" size=+2 >*</font>Civil Status:</th>
     <td>
 		<?php echo form_dropdown('cstatus', $civil_status,$cstatus);?>
+	</td>
+  </tr>
+  <tr>
+    <th align="right"><font color = "red" size=+2 >*</font>Shift Hours:</th>
+    <td>
+		<?php echo form_dropdown('shift_id', $shift_id,$shift);?>
 	</td>
   </tr>
   <tr>
