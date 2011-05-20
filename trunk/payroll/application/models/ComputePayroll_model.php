@@ -83,13 +83,13 @@ class ComputePayroll_model extends CI_Model{
 	function getPhilhealth($empnum){
 		$monthlyRate = $this->getMonthlyRate($empnum);//get monthly rate
 		
-		$sql = "SELECT total FROM `philhealth` 
+		$sql = "SELECT pes FROM `philhealth` 
 			    WHERE rangel<='".$monthlyRate."'
 				AND rangeh>='".$monthlyRate."'";
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
 				
-		return $data['total'];
+		return $data['pes'];
 	}//get monthly contribution for Philhealth
 	
 	function getSSS($empnum){
@@ -134,9 +134,9 @@ class ComputePayroll_model extends CI_Model{
 	
 		//get needed information
 		$info = array($empnum,$start_date,$end_date);
-		$this->getPayPeriodRate($info);
-		
+		$this->getPayPeriodRate($info);//get Rate for current PayPeriod
 		$this->dailyRate($info);//compute daily rate
+		
 		
 		if($this->paymentMode($info)=="SEMI-MONTHLY"){
 			/**get if end of the month or not**/
@@ -148,12 +148,6 @@ class ComputePayroll_model extends CI_Model{
 			
 			//call function for Government Dues
 			$this->governmentContribs($info,$sss,$philhealth,$pagibig);
-			
-			$taxStatus = $this->getTaxStatus($empnum);//get Tax Status
-			
-			/*basis for withholding tax is semi-monthly table
-			  dito ilalagay
-			*/
 		}
 		else{
 			$philhealth = $this->getPhilhealth($empnum);//sss contributions
@@ -162,14 +156,9 @@ class ComputePayroll_model extends CI_Model{
 			
 			//call function for Government Dues
 			$this->governmentContribs($info,$sss,$philhealth,$pagibig);
-			
-			$taxStatus = $this->getTaxStatus($empnum);//compute Withholding Tax
-			
-			/*basis for withholding tax is monthly
-			  dito ilalagay
-			*/
 		}
 		
+		$taxStatus = $this->getTaxStatus($empnum);//get Tax Status
 		echo "<br/>".$taxStatus;
 		$this->compute($info,$taxStatus);
 		
@@ -181,15 +170,77 @@ class ComputePayroll_model extends CI_Model{
 		return false;
 	}//check if a string contains a number
 	
-	function computeWithholdingTax($taxStatus,$taxBasis,$info){
-		//$sql = "SELECT MAX(".$taxStatus.")
-	}//compute wittholding tax status
+	function getWithholdingStatus($taxStatus){
+		switch($taxStatus){
+			case 'Z': $status = 'A_Z';
+					  break;
+			case 'S': $status = 'A_SME';
+					  break;
+			case 'ME': $status = 'A_SME';
+					  break;
+			case 'S1': $status = 'B_MES1';
+					  break;
+			case 'ME1': $status = 'B_MES1';
+					  break;
+			case 'S2': $status = 'B_MES2';
+					  break;
+			case 'ME2': $status = 'B_MES2';
+					  break;
+			case 'S3': $status = 'B_MES3';
+					  break;
+			case 'ME3': $status = 'B_MES3';
+					  break;
+			case 'S4': $status = 'B_MES4';
+					  break;
+			case 'ME4': $status = 'B_MES4';
+					  break;
+		}
+		
+		return $status;
+	}//get tax status from tax bracket
+	
+	function computeWithholdingTax($taxStatus,$taxBasis,$info,$paymentMode){
+		//get Payment Mode ID
+		if($paymentMode=="SEMI-MONTHLY")
+			$pmodeID = 1;
+		else $pmodeID = 2;
+	
+		//get status for withholding tax table
+		$status = $this->getWithholdingStatus($taxStatus);
+	
+		/*get withholding tax bracket*/
+		$sql = "SELECT MAX(".$status.") FROM `witholding_tax` 
+				WHERE ".$status."<='".$taxBasis."' AND 
+				PAYMENT_MODE_ID_FK='".$pmodeID."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$taxBracket = $data['MAX('.$status.')'];
+		$over = $taxBasis - $taxBracket;
+		
+		//get Exemption Definite & Percentage
+		$sql = "SELECT EXEMPTION_DEFINITE,EXEMPTION_PERCENT FROM 
+				`witholding_tax` WHERE ".$status."='".$taxBracket."' 
+				AND PAYMENT_MODE_ID_FK='".$pmodeID."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$percent = $data['EXEMPTION_PERCENT']/100;
+		$definite = $data['EXEMPTION_DEFINITE'];
+		
+		//compute withholding tax
+		$withholdingTax = $definite + ($over*$percent);
+		$sql = "UPDATE `salary` SET WithholdingTax='".$withholdingTax."' 
+				WHERE EmployeeNumber='".$info[0]."' AND 
+				start_date='".$info[1]."' AND end_date='".$info[2]."'";
+		mysql_query($sql);//update withholding tax
+	}//compute wittholding tax
 	
 	function compute($info,$taxStatus){
 		$this->grossPay($info);//compute Gross Pay
 		$this->totalPay($info);//compute Total Pay
 		$taxBasis = $this->taxBasis($info);//compute Tax Basis
-		$this->computeWithholdingTax($taxStatus,$taxBasis,$info);
+		$this->computeWithholdingTax($taxStatus,$taxBasis,$info,$this->paymentMode($info));
+		
+		/*compute netpay here*/
 	}
 	
 	function dailyRate($info){
@@ -258,7 +309,6 @@ class ComputePayroll_model extends CI_Model{
 		$sql = "UPDATE `salary` SET WithholdingBasis='".$taxBasis."' WHERE 
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";
-				
 		mysql_query($sql);//update withholding tax basis
 		
 		return $taxBasis;
