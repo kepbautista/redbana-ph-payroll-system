@@ -26,9 +26,6 @@
 					else alert("Bracket delete cancelled!");
 			});
 		});
-		$(function(){
-			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		});
 	</script>
 </head>
 <body id="dt_example">
