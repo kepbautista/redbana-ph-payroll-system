@@ -9,6 +9,8 @@ $table = $_POST['tableType'];
 switch($table){
 	case 'employee': $field = 'empnum';
 					 break;
+	case 'user_main': $field = 'user_right';
+					 break;
 			default: $field = 'id';
 					 break;
 }
