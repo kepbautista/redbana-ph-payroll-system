@@ -41,7 +41,9 @@ class Maintenance_model extends CI_Model {
 	//User Maintenance
 	function User_getall() {//select all the list of position
 		$this->load->database();
-		$query = $this->db->query('SELECT * FROM user_main');
+		$query = $this->db->query('
+SELECT `user_right`, `id` FROM user_main WHERE user_right NOT IN 
+    (SELECT `user_right` FROM user_main AS t GROUP BY user_right HAVING COUNT( `user_right` ) > 1)');
 		return $query->result();
 	}
 	function User_update(){//Update a department
@@ -56,13 +58,8 @@ class Maintenance_model extends CI_Model {
 	}
 	function User_insert(){//insert department
 		$data=$this->input->post('user');
-		$this->db->query('INSERT INTO user_main(`user_right`) VALUES ("'.$data.'")');
-		$this->db->query('CREATE TABLE IF NOT EXISTS `'.$data.'` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`privilege` varchar(50) NOT NULL,
-		PRIMARY KEY (`id`)
-		) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-		');
+		$this->db->query('INSERT INTO user_main(`user_right`,`privilege`) VALUES ("'.$data.'","addemp")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`privilege`) VALUES ("'.$data.'","viewemp")');
 	}
 	//Employee Type Maintenance
 	function Type_getall() {//select all the list of employee type
