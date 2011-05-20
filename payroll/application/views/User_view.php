@@ -57,7 +57,7 @@
 				<?php
 					echo form_open('maintenance/userdelete'); 
 					echo form_hidden('user_right', $row->user_right);
-					echo "<button type='button' name='delete' id='button' value='".$row->user_right."'>Delete</button>";
+					echo "<button type='button' name='delete' id='delete' value='".$row->user_right."'>Delete</button>";
 					echo form_close();
 				?>
 				</td>

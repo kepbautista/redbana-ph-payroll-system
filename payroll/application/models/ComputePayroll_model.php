@@ -10,8 +10,10 @@ class ComputePayroll_model extends CI_Model{
 	
 	function selectSalaryData($empnum,$start_date,$end_date){
 		//select data from salary table
-		$sql = "SELECT * FROM `salary` WHERE EmployeeNumber = '".$empnum.
-				"' AND start_date='".$start_date."' AND end_date='".$end_date."'";
+		$sql = "SELECT * FROM `salary` WHERE 
+				EmployeeNumber = '".$empnum.
+				"' AND start_date='".$start_date."' 
+				AND end_date='".$end_date."'";
 		
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
@@ -240,7 +242,22 @@ class ComputePayroll_model extends CI_Model{
 		$taxBasis = $this->taxBasis($info);//compute Tax Basis
 		$this->computeWithholdingTax($taxStatus,$taxBasis,$info,$this->paymentMode($info));
 		
-		/*compute netpay here*/
+		/**COMPUTE NET PAY**/
+		//select data from salary table
+		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
+		$netpay = $data['TotalPay'] - ($data["WithholdingTax"]
+				 + $data['SSS'] + $data['Philhealth']
+				 + $data['Pagibig'] + $data['PagibigLoan']
+				 + $data['SSSLoan'] + $data['CompanyLoan']
+				 + $data['AdvancestoOfficer']+ $data['CellphoneCharges'] 
+				 + $data['AdvancestoEmployee']);
+		echo "(".$netpay.")";
+		
+		$sql = "UPDATE `salary` SET Netpay='".$netpay."' WHERE 
+				EmployeeNumber='".$info[0]."' AND 
+				start_date='".$info[1]."' AND 
+				end_date='".$info[2]."'";
+		mysql_query($sql);
 	}
 	
 	function dailyRate($info){
