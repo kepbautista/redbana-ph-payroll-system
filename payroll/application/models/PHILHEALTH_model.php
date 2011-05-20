@@ -43,7 +43,7 @@ class Philhealth_model extends CI_Model {
 		return $query->row_array();
 	}
 
-	function PHILHEALTH_insertBrackets(){
+	function PHILHEALTH_insertPHBrackets(){
 		$N = count($_POST['bracket']);
 		
 		// transfer post data

@@ -69,7 +69,7 @@ class Philhealth extends CI_Controller {
 	function Insertdb(){
 		$this->load->helper('form');	// to load the url helper file
 		$this->load->model('Philhealth_model');	// to load a model
-		$this->Philhealth_model->PHILHEALTH_insertBrackets();	// insert the brackets
+		$this->Philhealth_model->PHILHEALTH_insertPHBrackets();	// insert the brackets
 		$data['query'] = $this->Philhealth_model->Philhealth_getall();
 		$this->GetAll();
 	}
