@@ -1,5 +1,5 @@
 <?php
-/** File Name: insertBrackets.php
+/** File Name: insertPHBrackets.php
 	Program Description: Count number of brackets to be added
 	and return input fields that with respect to the that number.
 **/

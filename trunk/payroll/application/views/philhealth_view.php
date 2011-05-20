@@ -4,8 +4,8 @@
 	<title> PhilHealth Table </title>
 <script type="text/javascript" src="<?php echo base_url();?>devtools/jquery-1.5.2"></script>
 <script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.js"></script>
-<script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.pack.js "></script>
-<link rel="stylesheet" type="text/css" href="/cody/style.css" media="screen" />
+<script type="text/javascript" src="<?php echo base_url()?>/js/jquery.columnhover.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="/cody/style.css" media="screen"/>
 <script type="text/javascript">
 
 $(document).ready(function()
@@ -24,7 +24,7 @@ $(document).ready(function()
 					tableType: "philhealth",
 				},	// perform ajax here to delete the bracket (row) using mysql_query
 				function(data){
-					alert("Bracket deleted! "+data);
+					alert("Bracket deleted! ");
 					window.location.href = "<?php echo site_url();?>"+"/philhealth/getall";	// reload page to see the effect of the deleted bracket (row)
 				});
 			}
@@ -103,7 +103,7 @@ color: navy;
 	<thead>
 	<tr>
 		<th rowspan="3"> Monthly <br /> Salary <br /> Bracket </th>
-		<th rowspan="3" colspan="3">  Monthly Salary Range </th>
+		<th rowspan="3" colspan="3">c  Monthly Salary Range </th>
 		<th rowspan="3" colspan="2"> Salary Base <br /> (SB) </th>
 		<th rowspan="3" colspan="2"> Total Monthly <br /> Contributions </th>
 		<th rowspan="3" colspan="2"> Employee Share <br /> (EeS) <br /> (EeS = 0.5 x TMC) </th>
@@ -144,7 +144,7 @@ color: navy;
 <div id="insert" name="insert">
 	<h4> Insert Brackets </h4> <br />
 	How many brackets to insert?&nbsp&nbsp
-	<input type="text" name="brackets" id="brackets" class="numeric" size"4"/>
+	<input type="text" name="brackets" id="brackets" class="numeric" size="4"/>
 	<input type="button" name="add" id="add" value="Add"/>
 	<span style="color:red;"><?php if(isset($message)) echo $message;?></span>
 </div>
