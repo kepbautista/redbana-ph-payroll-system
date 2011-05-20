@@ -26,10 +26,7 @@
 					else alert("Bracket delete cancelled!");
 			});
 		});
-		$(function(){
-			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-			$("#button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		});
+		
 	</script>
 </head>
 <body id="dt_example">
@@ -51,7 +48,6 @@
 				<td>
 				<?php
 					echo form_open('maintenance/useredit'); 
-					echo form_hidden('id', $row->id);
 					echo form_hidden('user', $row->user_right);
 					echo form_submit('mysubmit','Edit'); 
 					echo form_close();
@@ -60,9 +56,8 @@
 				<td>
 				<?php
 					echo form_open('maintenance/userdelete'); 
-					echo form_hidden('id', $row->id);
 					echo form_hidden('user_right', $row->user_right);
-					echo "<button type='button' name='delete' id='button' value='".$row->id."'>Delete</button>";
+					echo "<button type='button' name='delete' id='button' value='".$row->user_right."'>Delete</button>";
 					echo form_close();
 				?>
 				</td>

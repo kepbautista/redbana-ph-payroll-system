@@ -41,15 +41,12 @@ class Maintenance_model extends CI_Model {
 	//User Maintenance
 	function User_getall() {//select all the list of position
 		$this->load->database();
-		$query = $this->db->query('
-SELECT `user_right`, `id` FROM user_main WHERE user_right NOT IN 
-    (SELECT `user_right` FROM user_main AS t GROUP BY user_right HAVING COUNT( `user_right` ) > 1)');
+		$query = $this->db->query('SELECT DISTINCT `user_right` FROM user_main');
 		return $query->result();
 	}
 	function User_update(){//Update a department
 		$user=$this->input->post('user');
-		$id=$this->input->post('id');		
-		$this->db->query('UPDATE user_main SET user_right="'.$user.'" WHERE id="'.$id.'"');
+		$this->db->query('UPDATE user_main SET user_right="'.$user.'" WHERE user_right="'.$this->input->post('hidden').'"');
 	}
 	function User_delete(){//delete a department
 		//$this->db->where('id',$this->input->post('id'));
