@@ -119,7 +119,7 @@ class Employee_model extends CI_Model {
 	}
 	function get_privilege($user_right) {//select all the info of a specific employee
 		$this->load->database();
-		$query = $this->db->query('SELECT * FROM "'.$user_right.'"');
+		$query = $this->db->query('SELECT * FROM user_main WHERE user_right = "'.$user_right.'"');
 		return $query->result();
 	}
 	function get_privilegeRows($user_right)
