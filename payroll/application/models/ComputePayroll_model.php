@@ -178,9 +178,8 @@ class ComputePayroll_model extends CI_Model{
 	function findNumber($string){
 		foreach(str_split($string) as $value)
 			if(is_numeric($value)) return true;
-		
 		return false;
-	}
+	}//check if a string contains a number
 	
 	function computeWithholdingTax($taxStatus,$taxBasis,$info){
 		//$sql = "SELECT MAX(".$taxStatus.")

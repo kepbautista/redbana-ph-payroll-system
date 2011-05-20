@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2011 at 11:28 PM
+-- Generation Time: May 20, 2011 at 03:02 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,6 +12,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
+CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `absence_reason`
@@ -60,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason_category` (
   `DESC` varchar(255) NOT NULL DEFAULT 'NO_DESC.',
   PRIMARY KEY (`TITLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `absence_reason_category`
@@ -159,6 +161,27 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -236,27 +259,6 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `emp_type`
---
-
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `emp_type`
---
-
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `leave`
 --
 
@@ -320,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `END_OF_THE_MONTH` tinyint(1) DEFAULT '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
   `FINALIZED` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -357,7 +359,7 @@ CREATE TABLE IF NOT EXISTS `payroll_absence` (
   `last_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modified_by` varchar(255) NOT NULL,
   PRIMARY KEY (`empnum`,`payperiod`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `payroll_absence`
@@ -437,25 +439,6 @@ INSERT INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `position`
---
-
-CREATE TABLE IF NOT EXISTS `position` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(128) NOT NULL,
-  `DESCRIPTION` int(255) NOT NULL,
-  PRIMARY KEY (`TITLE`),
-  KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `position`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pos_main`
 --
 
@@ -480,6 +463,25 @@ INSERT INTO `pos_main` (`position`, `id`) VALUES
 ('Marketing Associate', 9),
 ('Operations Team Leader', 11),
 ('Manager', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `position`
+--
+
+CREATE TABLE IF NOT EXISTS `position` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `TITLE` varchar(128) NOT NULL,
+  `DESCRIPTION` int(255) NOT NULL,
+  PRIMARY KEY (`TITLE`),
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `position`
+--
+
 
 -- --------------------------------------------------------
 
@@ -541,7 +543,7 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `shift`
@@ -649,7 +651,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `absence_reason` int(11) DEFAULT NULL,
   `shift_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `timesheet`
