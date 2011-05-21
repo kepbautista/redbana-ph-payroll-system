@@ -202,7 +202,7 @@
 		</td>
   </tr>   
   <tr>
-    <td><input type="submit" name="Submit" id="Submit" value="Add Employee!" />
+    <td><input type="submit" name="Submit" id="Submit" value="Add Employee" />
     </td><td>  <input type="reset" value="Reset" /></td>
   </tr>
   
