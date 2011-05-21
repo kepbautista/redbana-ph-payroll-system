@@ -73,6 +73,10 @@ class Login_model extends CI_Model {
 		if ($type==1) return true;
 		else return false;
 	}
+	function permission($type){
+		$query = $this->db->query('SELECT `type`,`privilege` FROM user_main WHERE user_right = "'.$this->session->userdata('userType').'" ');
+		return $query;
+	}
 }//CLASS
 
 /* End of file login_model.php */
