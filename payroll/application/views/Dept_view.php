@@ -3,10 +3,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
 	<title>Department Maintenance</title>
-	
 	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/demo.css" type="text/css" media="all" />
-	
+	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
+	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
+	<script language="javascript">
+	$(document).ready(function(){
+			$("button").click(function(){
+			var r = confirm("Are you sure you want to delete this bracket?");
+				if(r==true){
+					$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
+						query: $(this).val(),
+						tableType: "dept_main",
+				},//perform ajax to delete the bracket using mysql_query
+				function(data){
+					alert("Bracket deleted! ");
+					window.location.href = "<?php echo site_url();?>"+"/maintenance/deptview";//reload page to see the effect of delete
+				});
+				}
+					else alert("Bracket delete cancelled!");
+			});
+		});
+	</script>
 </head>
 <body id="dt_example">
 	<div id="demo">
@@ -38,7 +56,7 @@
 					echo form_open('maintenance/deptdelete'); 
 					echo form_hidden('id', $row->id);
 					echo form_hidden('dept', $row->dept);
-					echo form_submit('mysubmit','Delete'); 
+					echo "<button type='button' name='delete' id='delete' value='".$row->id."'>Delete</button>"; 
 					echo form_close();
 				?>
 				</td>
@@ -56,6 +74,8 @@
 			echo form_input('dept',"");
 			echo form_submit('mysubmit','Insert'); 
 			echo form_close();
+			echo "<span style='color:red; text-align:center'>"
+				 .validation_errors()."</span>";
 		?>
 	</div>
 </body>

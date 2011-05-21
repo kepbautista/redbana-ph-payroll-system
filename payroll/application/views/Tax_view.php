@@ -86,6 +86,8 @@
 			echo form_input('ex',"");
 			echo form_submit('mysubmit','Insert'); 
 			echo form_close();
+			echo "<span style='color:red; text-align:center'>"
+				 .validation_errors()."</span>";
 		?>
 	</div>
 </body>

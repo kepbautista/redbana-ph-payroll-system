@@ -76,6 +76,8 @@
 			echo form_input('type',"");
 			echo form_submit('mysubmit','Insert'); 
 			echo form_close();
+			echo "<span style='color:red; text-align:center'>"
+				 .validation_errors()."</span>";
 		?>
 	</div>
 </body>

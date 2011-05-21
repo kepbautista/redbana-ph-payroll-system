@@ -100,5 +100,65 @@ class Maintenance_model extends CI_Model {
 		$ex=$this->input->post('ex');
 		$this->db->query('INSERT INTO tax_status(`status`,`desc`,`exemption`) VALUES ("'.$status.'","'.$desc.'","'.$ex.'")');
 	}
+	
+	function duplicate_Type($str){
+		//search if type is existing
+		$query = mysql_query("SELECT * from `emp_type` WHERE type LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
+	
+		if($rows>0) return FALSE;
+			//type already exists
+		else return TRUE;
+	}//check if duplicate employee type
+	
+	function duplicate_usertype($str){
+		//search if user right is existing
+		$query = mysql_query("SELECT * from `user_main` WHERE user_right LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
+	
+		if($rows>0) return FALSE;
+			//user right already exists
+		else return TRUE;
+	}//check if duplicate user right
+	
+	function duplicate_positiontype($str){
+		//search if position is existing
+		$query = mysql_query("SELECT * from `pos_main` WHERE position LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
+	
+		if($rows>0) return FALSE;
+			//position already exists
+		else return TRUE;
+	}//check if duplicate position
+	
+	function duplicate_department($str){
+		//search if department is existing
+		$query = mysql_query("SELECT * from `dept_main` WHERE dept LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
+	
+		if($rows>0) return FALSE;
+			//department already exists
+		else return TRUE;
+	}//check if duplicate department
+	
+	function duplicate_taxstatus($str){
+		//search if position is existing
+		$query = mysql_query("SELECT * from `tax_status` WHERE status LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
+	
+		if($rows>0) return FALSE;
+			//department already exists
+		else return TRUE;
+	}//check if duplicate department
 }
 ?>
