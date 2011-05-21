@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 21, 2011 at 04:32 AM
+-- Generation Time: May 21, 2011 at 04:36 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -639,17 +639,7 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (3, 'Staff', '', 0),
 (4, 'Admin', '', 0),
 (5, 'Employee', '', 0),
-(9, 'Superuser', '', 0),
-(10, 'HR', 'addemp', 0),
-(11, 'HR', 'viewemp', 0),
-(12, 'HR', 'addemp', 0),
-(13, 'HR', 'viewemp', 0),
-(14, 'HR', 'addemp', 0),
-(15, 'HR', 'viewemp', 0),
-(16, 'HR', 'addemp', 0),
-(17, 'HR', 'viewemp', 0),
-(18, 'HR', 'addemp', 0),
-(19, 'HR', 'viewemp', 0);
+(9, 'Superuser', '', 0);
 
 -- --------------------------------------------------------
 
