@@ -8,6 +8,35 @@ class Maintenance extends CI_Controller {
 		$this->load->helper('date');
 	}
 	
+	function validateForm($type){
+		//load form validation library
+		$this->load->library('form_validation');
+		
+		switch($type){
+		case 'user': $this->form_validation->set_rules($type,'User Right',
+				'required|callback_script_input|callback_duplicate_usertype');
+				break;
+		case 'position': $this->form_validation->set_rules($type,'Position',
+				'required|callback_script_input|callback_duplicate_positiontype');
+				break;
+		case 'dept': $this->form_validation->set_rules($type,'Department',
+				'required|callback_script_input|callback_duplicate_department');
+				break;
+		case 'type': $this->form_validation->set_rules($type,'Employee Type',
+				'required|callback_script_input|callback_duplicate_type');
+				break;
+		case 'taxstatus': $this->form_validation->set_rules('status','Tax Status',
+				'required|callback_script_input|callback_duplicate_taxstatus');
+						  $this->form_validation->set_rules('desc','Description',
+				'required|callback_script_input');
+						  $this->form_validation->set_rules('ex','Exemption',
+				'required|numeric|greater_than[0]');
+				break;
+				
+		}
+		
+	}//function for validating forms
+	
 	//department maintenance
 	function Deptview()//main page of department maintenance
 	{	
@@ -30,8 +59,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->Dept_update();	
+		
+		$this->validateForm('dept');
 		$data['query']=$this->Maintenance_model->Dept_getall();	
+		
+		if($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Dept_update();
+			//validation errors are NOT present
+		
 		$this->load->view('Dept_view',$data);
 	}
 	
@@ -39,8 +74,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->Dept_insert();	
+		
+		$this->validateForm('dept');
 		$data['query']=$this->Maintenance_model->Dept_getall();	
+		
+		if($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Dept_insert();
+			//validation errors
+			
 		$this->load->view('Dept_view',$data);
 	}
 	
@@ -75,8 +116,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->Pos_update();	
-		$data['query']=$this->Maintenance_model->Pos_getall();	
+		
+		$this->validateForm('position');
+		$data['query']=$this->Maintenance_model->Pos_getall();
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Pos_update();	
+			//validation errors are NOT present
+			
 		$this->load->view('Pos_view',$data);
 	}
 	
@@ -84,8 +131,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->Pos_insert();	
-		$data['query']=$this->Maintenance_model->Pos_getall();	
+		
+		$this->validateForm('position');
+		$data['query']=$this->Maintenance_model->Pos_getall();
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Pos_insert();	
+			//validation errors are NOT present
+			
 		$this->load->view('Pos_view',$data);
 	}
 	
@@ -120,8 +173,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->User_update();	
-		$data['query']=$this->Maintenance_model->User_getall();	
+		
+		$this->validateForm('user');
+		$data['query']=$this->Maintenance_model->User_getall();
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->User_update();
+			//validation errors are NOT present
+			
 		$this->load->view('User_view',$data);
 	}
 	
@@ -129,8 +188,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->User_insert();	
-		$data['query']=$this->Maintenance_model->User_getall();	
+		
+		$this->validateForm('user');		
+		$data['query']=$this->Maintenance_model->User_getall();
+		
+		if($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->User_insert();
+			//validation errors are NOT present
+		
 		$this->load->view('User_view',$data);
 	}
 	
@@ -164,9 +229,15 @@ class Maintenance extends CI_Controller {
 	function TypeUpdate()//main page of department maintenance
 	{	
 		$this->load->helper('form');  
-		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->Type_update();	
+		$this->load->model('Maintenance_model');	
+		
+		$this->validateForm('type');
 		$data['query']=$this->Maintenance_model->Type_getall();	
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Type_update();
+			//validation errors are NOT present
+		
 		$this->load->view('Type_view',$data);
 	}
 	
@@ -175,10 +246,13 @@ class Maintenance extends CI_Controller {
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
 		
-		if ($this->input->post('type')!="")
-			$this->Maintenance_model->Type_insert();
-			
+		$this->validateForm('type');
 		$data['query']=$this->Maintenance_model->Type_getall();	
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Type_insert();
+			//validation errors are NOT present
+			
 		$this->load->view('Type_view',$data);
 	}
 	
@@ -213,8 +287,14 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->Tax_update();	
-		$data['query']=$this->Maintenance_model->Tax_getall();	
+		
+		$this->validateForm('taxstatus');
+		$data['query']=$this->Maintenance_model->Tax_getall();
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Tax_update();
+			//validation errors are NOT present
+		
 		$this->load->view('Tax_view',$data);
 	}
 	
@@ -223,9 +303,13 @@ class Maintenance extends CI_Controller {
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
 		
-		//if ($this->input->post('status')!="" && $this->input->post('ex')!="" && $this->input->post('desc')!="")
-		$this->Maintenance_model->Tax_insert();	
-		$data['query']=$this->Maintenance_model->Tax_getall();	
+		$this->validateForm('taxstatus');
+		$data['query']=$this->Maintenance_model->Tax_getall();
+		
+		if ($this->form_validation->run() == TRUE)
+			$this->Maintenance_model->Tax_insert();
+			//validation errors are NOT present
+		
 		$this->load->view('Tax_view',$data);
 	}
 	
@@ -237,5 +321,69 @@ class Maintenance extends CI_Controller {
 		$data['query']=$this->Maintenance_model->Tax_getall();	
 		$this->load->view('Tax_view',$data);
 	}
+	
+	function duplicate_type($str){	
+		$this->load->helper('form'); 
+		$this->load->model('Maintenance_model');
+		$response = $this->Maintenance_model->duplicate_Type($str);
+		
+		$this->form_validation->set_message('duplicate_type','"'.$str.'" %s already exists.');
+		
+		return $response;
+	}//check if duplicate type
+	
+	function duplicate_usertype($str){	
+		$this->load->helper('form'); 
+		$this->load->model('Maintenance_model');
+		$response = $this->Maintenance_model->duplicate_usertype($str);
+		
+		$this->form_validation->set_message('duplicate_usertype','"'.$str.'" %s already exists.');
+		
+		return $response;
+	}//check if duplicate user type
+	
+	function duplicate_positiontype($str){	
+		$this->load->helper('form'); 
+		$this->load->model('Maintenance_model');
+		$response = $this->Maintenance_model->duplicate_positiontype($str);
+		
+		$this->form_validation->set_message('duplicate_positiontype','"'.$str.'" %s already exists.');
+		
+		return $response;
+	}//check if duplicate position type
+	
+	function duplicate_department($str){	
+		$this->load->helper('form'); 
+		$this->load->model('Maintenance_model');
+		$response = $this->Maintenance_model->duplicate_department($str);
+		
+		$this->form_validation->set_message('duplicate_department','"'.$str.'" %s already exists.');
+		
+		return $response;
+	}//check if duplicate position typefunction duplicate_department($str){
+
+	function duplicate_taxstatus($str){	
+		$this->load->helper('form'); 
+		$this->load->model('Maintenance_model');
+		$response = $this->Maintenance_model->duplicate_taxstatus($str);
+		
+		$this->form_validation->set_message('duplicate_taxstatus','"'.$str.'" %s already exists.');
+		
+		return $response;
+	}//check if duplicate tax status		
+	
+	function script_input($str){
+		$response = TRUE;
+	
+		//user entered a script as input
+		if((stripos($str,"script") !== false)){
+			if((stripos($str,"<") !== false) && (stripos($str,">") !== false)){
+				$this->form_validation->set_message('script_input', 'Invalid &ltscript&gt&lt/script&gt input for %s');
+				$response = FALSE;
+			}
+		}	
+		return $response;
+	}//check if user entered a script as input
+	
 }
 ?>

@@ -216,9 +216,7 @@ class Employee extends CI_Controller {
 		}	
 		return $response;
 	}//check if user entered a script as input
-	
-	/**SQL INJECTIONS!**/
-	
+		
 	function duplicate_empnum($str){	
 		$this->load->helper('form'); 
 		$this->load->model('Employee_model');

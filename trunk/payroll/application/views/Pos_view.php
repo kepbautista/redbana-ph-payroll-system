@@ -8,14 +8,7 @@
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/requiered/jquery.js" ></script>
 	<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
 	<script language="javascript">
-	$(function(){
-			$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-			$(":button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		});
-		$(document).ready(function(){
-				$(":button").jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-		
-		
+	$(document).ready(function(){
 			$("button").click(function(){
 			var r = confirm("Are you sure you want to delete this bracket?");
 				if(r==true){
@@ -31,7 +24,6 @@
 					else alert("Bracket delete cancelled!");
 			});
 		});
-		
 	</script>
 </head>
 <body id="dt_example">
@@ -82,6 +74,8 @@
 			echo form_input('position',"");
 			echo form_submit('mysubmit','Insert'); 
 			echo form_close();
+			echo "<span style='color:red; text-align:center'>"
+				 .validation_errors()."</span>";
 		?>
 	</div>
 </body>

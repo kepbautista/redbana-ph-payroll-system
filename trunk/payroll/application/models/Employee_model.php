@@ -260,6 +260,7 @@ class Employee_model extends CI_Model {
 			//employee number already exists
 		else return TRUE;
 	}
+	
 	//HR
 	function Employee_updateTime(){
 		$login=$this->input->post('login1').':'.$this->input->post('login2').':'.$this->input->post('login3').' '.$this->input->post('login4');

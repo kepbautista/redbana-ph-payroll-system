@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 20, 2011 at 03:02 AM
+-- Generation Time: May 21, 2011 at 04:32 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -79,64 +79,6 @@ INSERT INTO `absence_reason_category` (`ID`, `TITLE`, `DESC`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bank_main`
---
-
-CREATE TABLE IF NOT EXISTS `bank_main` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `acct_no` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `bank_main`
---
-
-INSERT INTO `bank_main` (`id`, `name`, `acct_no`) VALUES
-(2, 'BPI', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `base_pay`
---
-
-CREATE TABLE IF NOT EXISTS `base_pay` (
-  `ID` int(11) NOT NULL,
-  `POSITION` varchar(244) NOT NULL,
-  `AMOUNT` float NOT NULL,
-  PRIMARY KEY (`POSITION`),
-  KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `base_pay`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `department`
---
-
-CREATE TABLE IF NOT EXISTS `department` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(128) NOT NULL,
-  `DESCRIPTION` varchar(255) NOT NULL,
-  PRIMARY KEY (`NAME`),
-  KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `department`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `dept_main`
 --
 
@@ -168,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
   `type` varchar(50) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `emp_type`
@@ -192,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `fname` varchar(100) NOT NULL,
   `user_right` varchar(20) NOT NULL,
   `mrate` float NOT NULL,
-  `payment_mode` int(1) NOT NULL DEFAULT 1,
+  `payment_mode` int(1) NOT NULL DEFAULT '1',
   `position` varchar(50) NOT NULL,
   `dept` varchar(50) NOT NULL,
   `gender` varchar(1) NOT NULL,
@@ -319,22 +261,21 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `START_DATE` date NOT NULL,
   `END_DATE` date NOT NULL,
   `TOTAL_WORK_DAYS` float NOT NULL,
-  `END_OF_THE_MONTH` tinyint(1) DEFAULT 0 COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
-  `FINALIZED` tinyint(1) NOT NULL DEFAULT 0,
-  `FINALIZED_BY` varchar(255) default NULL ,
-  `FINALIZED_DATE` TIMESTAMP NULL default NULL,
+  `END_OF_THE_MONTH` tinyint(1) DEFAULT '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
+  `FINALIZED` tinyint(1) NOT NULL DEFAULT '0',
+  `FINALIZED_BY` varchar(255) DEFAULT NULL,
+  `FINALIZED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `payperiod`
 --
 
-INSERT INTO `payperiod` VALUES
+INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`) VALUES
 (1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL),
 (2, 1, '2011-04-24', '2011-05-07', 11, 0, 0, NULL, NULL),
 (3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL);
-
 
 -- --------------------------------------------------------
 
@@ -450,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `pos_main` (
   `position` varchar(50) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `pos_main`
@@ -467,25 +408,6 @@ INSERT INTO `pos_main` (`position`, `id`) VALUES
 ('Marketing Associate', 9),
 ('Operations Team Leader', 11),
 ('Manager', 12);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `position`
---
-
-CREATE TABLE IF NOT EXISTS `position` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `TITLE` varchar(128) NOT NULL,
-  `DESCRIPTION` int(255) NOT NULL,
-  PRIMARY KEY (`TITLE`),
-  KEY `ID` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `position`
---
-
 
 -- --------------------------------------------------------
 
@@ -706,7 +628,7 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `privilege` varchar(50) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `user_main`
@@ -717,7 +639,17 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (3, 'Staff', '', 0),
 (4, 'Admin', '', 0),
 (5, 'Employee', '', 0),
-(9, 'Superuser', '', 0);
+(9, 'Superuser', '', 0),
+(10, 'HR', 'addemp', 0),
+(11, 'HR', 'viewemp', 0),
+(12, 'HR', 'addemp', 0),
+(13, 'HR', 'viewemp', 0),
+(14, 'HR', 'addemp', 0),
+(15, 'HR', 'viewemp', 0),
+(16, 'HR', 'addemp', 0),
+(17, 'HR', 'viewemp', 0),
+(18, 'HR', 'addemp', 0),
+(19, 'HR', 'viewemp', 0);
 
 -- --------------------------------------------------------
 
