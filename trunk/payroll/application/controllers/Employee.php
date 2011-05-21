@@ -171,14 +171,6 @@ class Employee extends CI_Controller {
 		$data['rows']=$this->Employee_model->Employee_getRows($empnum);
 		$this->load->view('profile',$data);
 	}
-	function Privilege($user)//Getting all info of employee and 
-	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['query']=$this->Employee_model->get_privilege($user);
-		$data['rows']=$this->Employee_model->get_privilegeRows($user);
-		$this->load->view('privilege',$data);
-	}
 	function Delete()//deletes an employee
 	{
 		$this->load->helper('form');  
@@ -316,5 +308,23 @@ class Employee extends CI_Controller {
 		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
 		$this->load->view('Edit_time',$data);
 	}
+	function Privilege($user)//Getting all info of employee and 
+	{
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$data['user']=$user;
+		$data['query']=$this->Employee_model->get_privilege($user);
+		$data['query1']=$this->Employee_model->get_privilege($user);
+		$data['rows']=$this->Employee_model->get_privilegeRows($user);
+		$this->load->view('privilege',$data);
+	}
+	function insertPriv()//Getting all info of employee and 
+	{
+		$this->load->helper('form');  
+		$this->load->model('Employee_model');
+		$this->Employee_model->insert_privilege($_POST['user']);
+		//$this->load->view('privilege',$data);
+	}
+	
 }
 ?>

@@ -52,9 +52,7 @@ class Employee_model extends CI_Model {
 	}
 
 	public function get_user_right() {//get the description of the status
-        $this->db->select('id, user_right');
-        $this->db->from('user_main');
-        $query = $this->db->get();
+        $query = $this->db->query('SELECT DISTINCT `user_right` FROM user_main');
         foreach($query->result_array() as $row)
             $data[$row['user_right']]=$row['user_right'];
         
@@ -128,17 +126,6 @@ class Employee_model extends CI_Model {
 		$this->load->database();
 		$query = $this->db->query('SELECT * FROM employee WHERE empnum = "'.$emp.'"');
 		return $query->result();
-	}
-	function get_privilege($user_right) {//select all the info of a specific employee
-		$this->load->database();
-		$query = $this->db->query('SELECT * FROM user_main WHERE user_right = "'.$user_right.'"');
-		return $query->result();
-	}
-	function get_privilegeRows($user_right)
-	{
-		$this->load->database();
-		$query = $this->db->query('SELECT * FROM user_main WHERE user_right = "'.$user_right.'"');
-		return $query->num_rows();
 	}
 	function Employee_getRows($emp) {//select all the info of a specific employee
 		$this->load->database();
@@ -351,7 +338,75 @@ class Employee_model extends CI_Model {
 
 		return $returnThisArray;		
 	}//getAllEmployees_eligible...
-	
+	function insert_privilege($user) {//select all the info of a specific employee
+		if (isset($_POST['position'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="position"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="position"'); 
+		if (isset($_POST['allleave'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="allleave"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="allleave"'); 
+		if (isset($_POST['viewemp'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="viewemp"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="viewemp"'); 
+		if (isset($_POST['editemp'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="editemp"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="editemp"'); 
+		if (isset($_POST['addemp'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="addemp"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="addemp"'); 
+		if (isset($_POST['accleave'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="accleave"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="accleave"'); 
+		if (isset($_POST['taxstatus'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="taxstatus"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="taxstatus"'); 
+		if (isset($_POST['shift'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="shift"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="shift"'); 
+		if (isset($_POST['sss'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="sss"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="sss"'); 
+		if (isset($_POST['phil'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="phil"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="phil"'); 
+		if (isset($_POST['wth'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="wth"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="wth"'); 
+		if (isset($_POST['viewpay'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="viewpay"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="viewpay"'); 
+		if (isset($_POST['leave'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="leave"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="leave"'); 
+		if (isset($_POST['dept'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="dept"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="dept"'); 
+	}
+	function get_privilege($user_right) {//select all the info of a specific employee
+		$this->load->database();
+		$query = $this->db->query('SELECT `privilege` FROM user_main WHERE user_right = "'.$user_right.'" AND type="1"');
+		return $query->result();
+	}
+	function get_privilegeRows($user_right)
+	{
+		$this->load->database();
+		$query = $this->db->query('SELECT DISTINCT `privilege`  FROM user_main WHERE user_right = "'.$user_right.'"');
+		return $query->num_rows();
+	}
 	
 	
 }//class
