@@ -705,6 +705,37 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
 
+
+INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
+(20, 'superuser', 'viewemp', 1),
+(21, 'superuser', 'editemp', 1),
+(22, 'superuser', 'addemp', 1),
+(23, 'superuser', 'allleave', 1),
+(24, 'superuser', 'accleave', 1),
+(25, 'superuser', 'position', 1),
+(26, 'superuser', 'dept', 1),
+(27, 'superuser', 'taxstatus', 1),
+(28, 'superuser', 'shift', 1),
+(29, 'superuser', 'sss', 1),
+(30, 'superuser', 'phil', 1),
+(31, 'superuser', 'wth', 1),
+(32, 'superuser', 'viewpay', 1),
+(33, 'superuser', 'leave', 1),
+(34, 'employee', 'viewemp', 0),
+(35, 'employee', 'editemp', 0),
+(36, 'employee', 'addemp', 0),
+(37, 'employee', 'allleave', 0),
+(38, 'employee', 'accleave', 0),
+(39, 'employee', 'position', 0),
+(40, 'employee', 'dept', 0),
+(41, 'employee', 'taxstatus', 0),
+(42, 'employee', 'shift', 0),
+(43, 'employee', 'sss', 0),
+(44, 'employee', 'phil', 0),
+(45, 'employee', 'wth', 0),
+(46, 'employee', 'viewpay', 1),
+(47, 'employee', 'leave', 1);
+
 --
 -- Constraints for dumped tables
 --
