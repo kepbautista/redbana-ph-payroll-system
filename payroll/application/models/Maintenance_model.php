@@ -52,11 +52,23 @@ class Maintenance_model extends CI_Model {
 		//$this->db->where('id',$this->input->post('id'));
 		//$this->db->delete('user_main');
 		$this->db->query('DROP TABLE `'.$this->input->post('user_right').'`');
-	}
+	}	
 	function User_insert(){//insert department
-		$data = mysql_real_escape_string($this->input->post('user'));
-		$this->db->query('INSERT INTO user_main(`user_right`,`privilege`) VALUES ("'.$data.'","addemp")');
-		$this->db->query('INSERT INTO user_main(`user_right`,`privilege`) VALUES ("'.$data.'","viewemp")');
+		$data=$this->input->post('user');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","viewemp")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","editemp")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","addemp")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","allleave")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","accleave")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","position")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","dept")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","taxstatus")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","shift")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","sss")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","phil")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","wth")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","viewpay")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","leave")');
 	}
 	//Employee Type Maintenance
 	function Type_getall() {//select all the list of employee type
