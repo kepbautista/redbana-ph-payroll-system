@@ -24,17 +24,17 @@ class Sss_model extends CI_Model {
 	{
 		$this->load->database();	// loads and initializes the database class
 		$data = array(
-        'rangel'=>$this->input->post('rangel'),
-        'rangeh'=>$this->input->post('rangeh'),
-		'msc'=>$this->input->post('msc'),
-        'ser'=>$this->input->post('ser'),
-        'see'=>$this->input->post('see'),
-        'stotal'=>$this->input->post('stotal'),
-		'ecer'=>$this->input->post('ecer'),
-		'ter'=>$this->input->post('ter'),
-		'tee'=>$this->input->post('tee'),
-		'ttotal'=>$this->input->post('ttotal'),
-        'totalcont'=>$this->input->post('totalcont')
+        'rangel' => mysql_real_escape_string($this->input->post('rangel')),
+        'rangeh' => mysql_real_escape_string($this->input->post('rangeh')),
+		'msc' => mysql_real_escape_string($this->input->post('msc')),
+        'ser' => mysql_real_escape_string($this->input->post('ser')),
+        'see' => mysql_real_escape_string($this->input->post('see')),
+        'stotal' => mysql_real_escape_string($this->input->post('stotal')),
+		'ecer' => mysql_real_escape_string($this->input->post('ecer')),
+		'ter' => mysql_real_escape_string($this->input->post('ter')),
+		'tee' => mysql_real_escape_string($this->input->post('tee')),
+		'ttotal' => mysql_real_escape_string($this->input->post('ttotal')),
+        'totalcont' => mysql_real_escape_string($this->input->post('totalcont'))
 		);
 		$this->db->where('id',$this->input->post('hidden'));
 		$this->db->update('sss',$data);  
@@ -51,17 +51,17 @@ class Sss_model extends CI_Model {
 		$N = count($_POST['rangel']);
 		
 		// transfer post data
-		$rangel = $_POST['rangel'];
-		$rangeh = $_POST['rangeh'];
-		$msc = $_POST['msc'];
-		$ser = $_POST['ser'];
-		$see = $_POST['see'];
-		$stotal = $_POST['stotal'];
-		$ecer = $_POST['ecer'];
-		$ter = $_POST['ter'];
-		$tee = $_POST['tee'];
-		$ttotal = $_POST['ttotal'];
-		$totalcont = $_POST['totalcont'];
+		$rangel = mysql_real_escape_string($_POST['rangel']);
+		$rangeh = mysql_real_escape_string($_POST['rangeh']);
+		$msc = mysql_real_escape_string($_POST['msc']);
+		$ser = mysql_real_escape_string($_POST['ser']);
+		$see = mysql_real_escape_string($_POST['see']);
+		$stotal = mysql_real_escape_string($_POST['stotal']);
+		$ecer = mysql_real_escape_string($_POST['ecer']);
+		$ter = mysql_real_escape_string($_POST['ter']);
+		$tee = mysql_real_escape_string($_POST['tee']);
+		$ttotal = mysql_real_escape_string($_POST['ttotal']);
+		$totalcont = mysql_real_escape_string($_POST['totalcont']);
 		
 		for($i=0;$i<$N;$i++){
 			$query = "INSERT INTO `sss` VALUES 

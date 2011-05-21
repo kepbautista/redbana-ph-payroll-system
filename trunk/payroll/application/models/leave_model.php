@@ -28,43 +28,43 @@ class Leave_model extends CI_Model {
 
 	function Leave_numrows() {//count number of rows
 		$this->load->database();
-		$empnum=$this->input->post('empnum');
+		$empnum = mysql_real_escape_string($this->input->post('empnum'));
 		$query = $this->db->get_where('leave',array('empnum'=>$empnum));
 		return $query->num_rows();
 	}
 	function Leave_Insert(){
 		
-		$fday=$this->input->post('fday');
-		$fmonth=$this->input->post('fmonth');
-		$fyear=$this->input->post('fyear');
-		$sday=$this->input->post('sday');
-		$smonth=$this->input->post('smonth');
-		$syear=$this->input->post('syear');
-		$rday=$this->input->post('rday');
-		$rmonth=$this->input->post('rmonth');
-		$ryear=$this->input->post('ryear');
-		$filedate=$fyear . '-' . $fmonth. '-' . $fday;
-		$startdate=$syear . '-' . $smonth. '-' . $sday;
-		$returndate=$ryear . '-' . $rmonth. '-' . $rday;
+		$fday = mysql_real_escape_string($this->input->post('fday'));
+		$fmonth = mysql_real_escape_string($this->input->post('fmonth'));
+		$fyear = mysql_real_escape_string($this->input->post('fyear'));
+		$sday = mysql_real_escape_string($this->input->post('sday'));
+		$smonth = mysql_real_escape_string($this->input->post('smonth'));
+		$syear = mysql_real_escape_string($this->input->post('syear'));
+		$rday = mysql_real_escape_string($this->input->post('rday'));
+		$rmonth = mysql_real_escape_string($this->input->post('rmonth'));
+		$ryear = mysql_real_escape_string($this->input->post('ryear'));
+		$filedate = $fyear.'-'.$fmonth.'-'.$fday;
+		$startdate = $syear.'-'.$smonth.'-'.$sday;
+		$returndate = $ryear.'-'.$rmonth.'-'.$rday;
 		$data = array(
-		'empnum'=>$this->input->post('empnum'),
-		'filedate'=>$filedate,       
-	    'startdate'=>$startdate,
-		'returndate'=>$returndate,
-		'type'=>$this->input->post('type'),
-		'reason'=>$this->input->post('reason'),
+		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
+		'filedate' => $filedate,       
+	    'startdate' => $startdate,
+		'returndate' => $returndate,
+		'type' => mysql_real_escape_string($this->input->post('type')),
+		'reason' => mysql_real_escape_string($this->input->post('reason')),
 		);
 		$this->db->insert('leave',$data); 
 	}
 	function Leave_approve(){
 		$data = array(
-		'empnum'=>$this->input->post('empnum'),
-		'filedate'=>$filedate,       
-	    'startdate'=>$startdate,
-		'returndate'=>$returndate,
-		'type'=>$this->input->post('type'),
-		'reason'=>$this->input->post('reason'),
-		'approval'=>$this->input->post('approval')
+		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
+		'filedate' => $filedate,       
+	    'startdate' => $startdate,
+		'returndate' => $returndate,
+		'type' => mysql_real_escape_string($this->input->post('type')),
+		'reason' => mysql_real_escape_string($this->input->post('reason')),
+		'approval' => mysql_real_escape_string($this->input->post('approval'))
 		);
 		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('leave',$data); 

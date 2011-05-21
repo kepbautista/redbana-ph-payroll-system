@@ -20,27 +20,31 @@ class Timesheet_model extends CI_Model {
 	function Timesheet_viewalltime($cases) {
 		$this->load->database();
 		if ($cases==1)
-			$date=$this->input->post('date');
+			$date = mysql_real_escape_string($this->input->post('date'));
 		else if ($cases==2)
-			$date=date("Y-n-j");
-		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
+			$date = date("Y-n-j");
+		else $date = mysql_real_escape_string($this->input->post('yrs'))
+					.'-'.mysql_real_escape_string($this->input->post('mos'))
+					.'-'.mysql_real_escape_string($this->input->post('days'));
 		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,a.shift_id,b.absence_reason,b.empnum ,b.time_in,b.time_out,b.date_in,b.date_out FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date_in="'.$date.'"');	
 		return $query->result();
 	}
 	function Timesheet_viewalltime_rows($cases) {
 		$this->load->database();
 		if ($cases==1)
-			$date=$this->input->post('date');
+			$date = $this->input->post('date');
 		else if ($cases==2)
-			$date=date("Y/n/j");
-		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
+			$date = date("Y/n/j");
+		else $date = mysql_real_escape_string($this->input->post('yrs')).
+					'-'.mysql_real_escape_string($this->input->post('mos'))
+					.'-'.mysql_real_escape_string($this->input->post('days'));
 		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum ,b.time_in,b.time_out,b.date_in,b.date_out FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date_in="'.$date.'"');	
 		return $query->num_rows();
 	}
 	function Insert_time() {
 		$this->load->database();
-		$date=$this->input->post('date');
-		$query=$this->db->get('employee');
+		$date = mysql_real_escape_string($this->input->post('date'));
+		$query = $this->db->get('employee');
 		foreach ($query->result() as $row)
 		{
 			$query1 = $this->db->query('INSERT INTO timesheet(`date_in`,`time_in`,`date_out`,`time_out`,`empnum`) VALUES("'.$date.'","00:00:00","'.$date.'","00:00:00","'.$row->empnum.'")');
@@ -48,18 +52,24 @@ class Timesheet_model extends CI_Model {
 	}
 	function Update()
 	{
-		$emp=$this->input->post('empnum');
-		$absence_reason = $this->input->post('ABSENCE_REASON');
+		$emp = mysql_real_escape_string($this->input->post('empnum'));
+		$absence_reason = mysql_real_escape_string($this->input->post('ABSENCE_REASON'));
 		//die(var_dump($absence_reason));
-		$time_in=$this->input->post('time_in1').':'.$this->input->post('time_in2').':'.$this->input->post('time_in3');
-		$time_out=$this->input->post('time_out1').':'.$this->input->post('time_out2').':'.$this->input->post('time_out3');
-		$date_out= date("Y-m-d", mktime(0, 0, 0, $this->input->post('date_out1'), $this->input->post('date_out2'), $this->input->post('date_out3')));
+		$time_in = mysql_real_escape_string($this->input->post('time_in1')).
+					':'.mysql_real_escape_string($this->input->post('time_in2'))
+					.':'.mysql_real_escape_string($this->input->post('time_in3'));
+		$time_out = mysql_real_escape_string($this->input->post('time_out1'))
+					.':'.mysql_real_escape_string($this->input->post('time_out2'))
+					.':'.mysql_real_escape_string($this->input->post('time_out3'));
+		$date_out = date("Y-m-d", mktime(0, 0, 0, mysql_real_escape_string($this->input->post('date_out1')),
+					mysql_real_escape_string($this->input->post('date_out2')),
+					mysql_real_escape_string($this->input->post('date_out3'))));
 		//echo mktime($this->input->post('time_out1'),$this->input->post('time_out2'),$this->input->post('time_out3'));
 	//$time_in= DATE("H:i:s", STRTOTIME($time_in));
 	//$time_out= DATE("H:i:s", STRTOTIME($time_out));
 	//	echo $date_out;
 	//echo $time_in.'\n'.$time_out.'\n'.$date_out;
-		$this->db->query('UPDATE timesheet SET absence_reason="'.$absence_reason.'",date_out="'.$date_out.'",time_out="'.$time_out.'",time_in="'.$time_in.'" WHERE empnum="'.$emp.'" AND date_in="'.$this->input->post('date').'"');
+		$this->db->query('UPDATE timesheet SET absence_reason="'.$absence_reason.'",date_out="'.$date_out.'",time_out="'.$time_out.'",time_in="'.$time_in.'" WHERE empnum="'.$emp.'" AND date_in="'.mysql_real_escape_string($this->input->post('date')).'"');
 		/**$data = array(
 		'time_in'=>STRTOTIME($time_in),
         'time_out'=>STRTOTIME($time_out),

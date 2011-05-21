@@ -35,7 +35,8 @@ class Login_model extends CI_Model {
 	function validate()
 	{
 	
-		$query = $this->fetch_User($this->input->post('empnum'), $this->input->post('password'));
+		$query = $this->fetch_User(mysql_real_escape_string($this->input->post('empnum')),
+				mysql_real_escape_string($this->input->post('password')));
 		
 		if($query->num_rows == 1)
 		{

@@ -24,13 +24,13 @@ class Philhealth_model extends CI_Model {
 	{
 		$this->load->database();	// loads and initializes the database class
 		$data = array(
-		'bracket'=>$this->input->post('bracket'),
-		'rangel'=>$this->input->post('rangel'),
-		'rangeh'=>$this->input->post('rangeh'),
-		'base'=>$this->input->post('base'),
-		'total'=>$this->input->post('total'),
-		'pes'=>$this->input->post('pes'),
-		'per'=>$this->input->post('per')
+		'bracket' => mysql_real_escape_string($this->input->post('bracket')),
+		'rangel' => mysql_real_escape_string($this->input->post('rangel')),
+		'rangeh' => mysql_real_escape_string($this->input->post('rangeh')),
+		'base' => mysql_real_escape_string($this->input->post('base')),
+		'total' => mysql_real_escape_string($this->input->post('total')),
+		'pes' => mysql_real_escape_string($this->input->post('pes')),
+		'per' => mysql_real_escape_string($this->input->post('per'))
 		);
 		$this->db->where('id',$this->input->post('hidden'));
 		$this->db->update('philhealth',$data);  
@@ -47,13 +47,13 @@ class Philhealth_model extends CI_Model {
 		$N = count($_POST['bracket']);
 		
 		// transfer post data
-		$bracket = $_POST['bracket'];
-		$rangel = $_POST['rangel'];
-		$rangeh = $_POST['rangeh'];
-		$base = $_POST['base'];
-		$total = $_POST['total'];
-		$pes = $_POST['pes'];
-		$per = $_POST['per'];
+		$bracket = mysql_real_escape_string($_POST['bracket']);
+		$rangel = mysql_real_escape_string($_POST['rangel']);
+		$rangeh = mysql_real_escape_string($_POST['rangeh']);
+		$base = mysql_real_escape_string($_POST['base']);
+		$total = mysql_real_escape_string($_POST['total']);
+		$pes = mysql_real_escape_string($_POST['pes']);
+		$per = mysql_real_escape_string($_POST['per']);
 		
 		for($i=0;$i<$N;$i++){
 			$query = "INSERT INTO `philhealth` VALUES

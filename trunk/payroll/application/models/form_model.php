@@ -39,9 +39,9 @@ class Form_model extends CI_Model {
 function validate($name,$qty, $remarks)
 	{
 		
-		$this->db->where('name', $this->input->post('name'));
-		$this->db->where('qty', $this->input->post('qty'));
-		$this->db->where('remarks', $this->input->post('remarks'));
+		$this->db->where('name', mysql_real_escape_string($this->input->post('name')));
+		$this->db->where('qty', mysql_real_escape_string($this->input->post('qty')));
+		$this->db->where('remarks', mysql_real_escape_string($this->input->post('remarks')));
 		$query = $this->db->get('form');
 		
 		if($query->num_rows == 1)
