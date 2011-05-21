@@ -12,6 +12,10 @@ class ComputePayroll extends CI_Controller {
 		$this->load->helper('date');
 	}
 	
+	function PayrollInfoView(){
+		$this->load->view('ComputePayroll_view');
+	}
+	
 	function NetPay(){
 		$cutoffL = '2011-05-01';
 		$cutoffH = '2011-05-15';
