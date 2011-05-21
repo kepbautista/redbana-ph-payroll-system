@@ -30,7 +30,7 @@ class Super extends CI_Controller {
 						   'fname' => $this->session->userData('fname'),
 						   'mname' => $this->session->userData('mname')
 			);
-			
+			$data['sql']=$this->login_model->permission($this->session->userData('userType'));
 			$this->load->view('superuser_home', $data);					
 		}
 		else
