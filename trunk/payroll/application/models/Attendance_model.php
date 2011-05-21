@@ -9,7 +9,7 @@ class Attendance_model extends CI_Model
 	}
 
 	function getAbsences
-	( $payperiod = NULL, $dateFrom = NULL, $dateTo = NULL )
+	( $payperiod = NULL, $dateFrom = NULL, $dateTo = NULL, $payment_mode = NULL )
 	{
 		/*
 			If $payperiod is not null, it will be preferred.
@@ -61,7 +61,7 @@ class Attendance_model extends CI_Model
 			abe | 10may2011 2030 | i am making my own fetch all function so far
 				since I'm not sure of Employee_model->Employee_getall()
 		*/		
-		$employees = $this->getAllEmployees()->result();		
+		$employees = $this->getAllEmployees($payment_mode)->result();		
 		if( empty ($employees) )
 		{			
 			$theResult["error_code"] = -3;
@@ -117,7 +117,7 @@ class Attendance_model extends CI_Model
 	}
 	
 	function getTardiness
-	( $payperiod = NULL, $dateFrom = NULL, $dateTo = NULL )
+	( $payperiod = NULL, $dateFrom = NULL, $dateTo = NULL, $payment_mode = NULL )
 	{
 		/*
 			If $payperiod is not null, it will be preferred.
@@ -168,7 +168,7 @@ class Attendance_model extends CI_Model
 			abe | 10may2011 2030 | i am making my own fetch all function so far
 				since I'm not sure of Employee_model->Employee_getall()
 		*/		
-		$employees = $this->getAllEmployees()->result();		
+		$employees = $this->getAllEmployees($payment_mode)->result();		
 		if( empty ($employees) )
 		{			
 			$theResult["error_code"] = -3;
@@ -184,10 +184,10 @@ class Attendance_model extends CI_Model
 			*	pull all records between the dates, inclusive,  specified for the employee
 			*/					
 			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $dateFrom, $dateTo)->result();
-					
+			
 			foreach($daily_attendance as $daily_attendance_each_day)
 			{																			
-				//get shift id from it's table				
+				//get shift id from its table				
 				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();
 				
 				if( empty ($shift_info) )
@@ -196,43 +196,48 @@ class Attendance_model extends CI_Model
 					$theResult["error_message"] = "INVALID SHIFT ID.";
 					return $theResult;
 				}
-				
+								
 				/*
-				*	if absence_reason is NULL, means person is not absent.
+				*	if absence_reason is 0, means person is not absent.
 				*	and we only compute the late if start_time of that person for the day
 				*	is later than what should be for his/her shift
 				*/
-				if( $daily_attendance_each_day->absence_reason == NULL
+				//echo var_Dump($shift_info);
+				//echo $daily_attendance_each_day->empnum."babababa_".$daily_attendance_each_day->time_in.".____".$shift_info[0]->START_TIME."||".$daily_attendance_each_day->absence_reason."<br/>";
+				if( ( $daily_attendance_each_day->absence_reason == NULL or $daily_attendance_each_day->absence_reason == '0' )
 					and
-					( $daily_attendance_each_day->time_in > $shift_info[0]->START_TIME) 
+					( strtotime($daily_attendance_each_day->time_in) > strtotime($shift_info[0]->START_TIME) ) 
 				)
 				{
-					$tardiness_count += ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) );					
-				}
+					//echo "haha_ ".$tardiness_count."<br/>";
+					$tardiness_count += ( ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) ) / 60 );					
+				}								
 			}//foreach daily_attendance...
 			
 			//at the end of sifting through the days, store it to some variable
 			$emp_tardiness_result[$emp_x->empnum] = $tardiness_count; 
+			
+			//echo var_dump($emp_tardiness_result[$emp_x->empnum]);
+			
 		}//foreach (employees
-	
-		
+			
 		//prep up the final results
 		$theResult['result_array'] = $emp_tardiness_result;
 		$theResult['error_code'] = 0;
-		$theResult['error_message'] = 'success';
+		$theResult['error_message'] = 'SUCCESS';
 				
 		return($theResult);
 	}//getTardiness(..)
 	
-	function getAllEmployees()
+	function getAllEmployees($payment_mode = 1)
 	/*
 		gets all employees from the employee table.
 		 		 
 		RETURNS: OBJECT containing the MySQL results or NULL, if no entry exists in the dB
 	*/
 	{
-		$sql_x = "SELECT * from `employee`";			
-		$obj_result = $this->db->query($sql_x);
+		$sql_x = "SELECT * from `employee` WHERE `payment_mode` = ?";			
+		$obj_result = $this->db->query($sql_x, array($payment_mode) );
 		
 		return $obj_result;
 	}
@@ -316,12 +321,13 @@ class Attendance_model extends CI_Model
 	{
 		/*
 			abe | 18may2011 | changed | added 2nd param
+			abe | 20may2011_1059 | changed | fixed return logic
 		*/
 		
 		$sql_x =  "SELECT * from `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ?";
 		$obj_result = $this->db->query( $sql_x, array($payperiod, $payment_mode) );
-	
-		return ($obj_result->num_rows != NULL || $obj_result->num_rows != 0);
+		
+		return ($obj_result->num_rows != 0);
 	}
 	
 	function generateAbsences_and_Late($payment_mode, $payperiod, $defaultWorkingDays, $defaultHoursPerDay = 8)
@@ -338,6 +344,7 @@ class Attendance_model extends CI_Model
 			['validation_errors'] = (array) 
 						=> array with indexes ['ERROR_CODE'],['ERROR_TITLE'],['DESCRIPTION']
 		*/
+		
 		$result_to_be_returned = array(
 			"result" => false, "validation_errors" => array()		
 		);
@@ -366,7 +373,7 @@ class Attendance_model extends CI_Model
 		}		
 		
 		//get employee details first
-		$employees_data = $this->Attendance_model->getAllEmployees()->result();
+		$employees_data = $this->Attendance_model->getAllEmployees($payment_mode)->result();
 
 		if( empty ($employees_data) )
 		{
@@ -374,8 +381,8 @@ class Attendance_model extends CI_Model
 			//redirect('/errorWhatever');
 		}
 		
-		$absences_data = $this->Attendance_model->getAbsences($payperiod, ``, ``);
-		$tardiness_data = $this->Attendance_model->getTardiness($payperiod, ``, ``);		
+		$absences_data = $this->Attendance_model->getAbsences($payperiod, ``, ``, $payment_mode);
+		$tardiness_data = $this->Attendance_model->getTardiness($payperiod, ``, ``, $payment_mode);		
 		
 		//check absences data
 		if($absences_data['error_code'] != 0)
@@ -388,6 +395,7 @@ class Attendance_model extends CI_Model
 		{
 			die("tardiness DATA ERROR: ".$tardiness_data['error_message']);
 		}
+		//DIE(VAR_DUMP($tardiness_data));
 		
 		foreach($employees_data as $employee_individual)
 		{	
@@ -473,12 +481,13 @@ class Attendance_model extends CI_Model
 				echo "No data for tardiness of {.$employee_individual->empnum}";
 				//further error handling
 			}
-								
+			echo var_dump(($tardiness_data['result_array'][$employee_individual->empnum]));					
 			/*
 				COMPUTATION SECTION
 			*/
 			$absences_and_lwop_amount = $absences_and_lwop * $daily_rate;
 			$vacation_and_sick_leave_amount = $vacation_and_sick_leave * $daily_rate;
+			$suspension_amount = $suspension * $daily_rate;
 			// if you are searching for suspension, it seems that it is not deductible.
 			
 			/*	abe | 12may2011
@@ -491,6 +500,7 @@ class Attendance_model extends CI_Model
 			/*
 				DISPLAY RESULT SECTION. should be erased upon finalization.
 			*/
+			/*
 			echo $daily_rate."|".($defaultHoursPerDay * $tardiness_count);
 			echo "FOR ".$employee_individual->empnum."<br/>";
 			echo "ABSENCES/LWOP: ".$absences_and_lwop."|".$absences_and_lwop_amount."<br/>";
@@ -498,7 +508,8 @@ class Attendance_model extends CI_Model
 			echo "Suspension: ".$suspension."|".$suspension_amount."<br/>";
 			echo "Tardiness	   : ".$tardiness_count."|".$tardiness_amount."<br/>";			
 			echo $this->login_model->getCurrentUser();
-											
+			*/
+						
 			$result_to_be_returned['result'] = $this->insertComputation
 			(
 				$employee_individual->empnum,
@@ -522,21 +533,19 @@ class Attendance_model extends CI_Model
 				$this->login_model->getCurrentUser()
 			);
 			
-			$result_to_be_returned['validation_errors'][] = array( 
+			
+			
+			if( $result_to_be_returned['result'] == FALSE )			
+			{
+				$result_to_be_returned['validation_errors'][] = array( 
 				'ERROR_CODE' => 200,
 				'ERROR_TITLE' => 'INSERTION_FINAL_ERROR',
 				'DESCRIPTION' => 'Cannot insert ATTENDANCE_FAULT_DATA for '.$employee_individual->empnum." ",
-			);
-			
-			if( $result_to_be_returned['result'] )
-			{
-				 echo "Successfully inserted.";
-			}else
-			{
-				echo "Failed to insert.";
+				);
 			}
 			
-			echo 'reiterating...<br/><br/>';
+			//echo 'reiterating...<br/><br/>';
+			
 		}//foreach(employees)
 		
 		return $result_to_be_returned;
@@ -638,7 +647,7 @@ class Attendance_model extends CI_Model
 		RETURNS: BOOLEAN indicating if the query has been successful
 		*/
 		
-		$sql_x = "delete FROM `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ? ";		
+		$sql_x = "DELETE FROM `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ? ";		
 		$obj_result = $this->db->query( $sql_x, array($payperiod, $payment_mode) );
 		
 		return $obj_result;
@@ -721,6 +730,85 @@ class Attendance_model extends CI_Model
 		
 		return $returnThisArray;
 	}
+	
+	function areThere_AbsenceAndTardiness_of_Employee_during_Payperiod($empnum = NULL, $payperiod_obj)
+	{
+		/*
+			abe | made | 19MAY2011_1333 |
+		*/
+		
+		if( 
+			$empnum == NULL  or $payperiod_obj == NULL
+		)
+		{
+			die("areThere_AbsenceAndTardiness_of_Employee_during_Payperiod: NO EMPLOYEE/PAYMENT_MODE/PAYPERIOD SUBMITTED.");
+		}
+				
+		$sql_x = "SELECT * FROM `timesheet` WHERE  `empnum` = ? AND `date_in` >= ? AND `date_in` <= ?";
+		$obj_result = $this->db->query($sql_x, array($empnum, $payperiod_obj->START_DATE, $payperiod_obj->END_DATE) );
+		 
+		return ($obj_result->num_rows != 0);
+	}
+	
+	function getAttendanceFaults($payperiod, $payment_mode)
+	{
+		/*
+			abe | made | 20MAY2011_1147
+		*/
+		
+		$sql_x = "SELECT * FROM `payroll_absence` WHERE `payperiod` = ? AND `payment_mode` = ?";
+		$rows_result = $this->db->query($sql_x, array($payperiod, $payment_mode) )->result();
+
+		return $rows_result;
+	}
+	
+	function computeTotal_AttendanceFaults($data)
+	{
+		/*
+			abe | made | 20MAY2011_1149
+	
+			COMPUTES FOR THE SUM OF THE 'SUMMABLE' items
+			during a payperiod
+		*/
+		$theData = array(
+			'absences_lwop_days' => array( 'title' => "Absences and Leave without Pay Days"  , 'value' => (float) 0.0 ),
+			'absences_lwop_amount' => array( 'title' => "Absences and Leave without Pay Amount" , 'value' => (float) 0.0),
+			'leave_sick_vacation_days' => array( 'title' => "Sick and Vacation Leave Days ", 'value' => (float) 0.0),
+			'leave_sick_vacation_amount' => array( 'title' => "Sick and Vacation Leave Amount" , 'value' => (float) 0.0),
+			'suspension_days' => array( 'title' => "Suspension Days" , 'value' => (float) 0.0),
+			'suspension_amount' => array ( 'title' => "Suspension  Amount" , 'value' =>(float) 0.0),
+			'tardiness_min' => array( 'title' => "Tardiness in Minutes " , 'value' => (float) 0.0),
+			'tardiness_amount' => array( 'title' => "Total Tardiness Amount" , 'value' => (float) 0.0),
+			'total_amount' => array( 'title' => "Total Amount of Productivity Lost" , 'value' => (float) 0.0),
+			'paid_vl_days' => array( 'title' => "Total Paid Vacation Leave Days"  , 'value' => (float) 0.0),
+			'paid_sl_days' => array( 'title' => "Total Paid Sick Leave Days" , 'value' => (float) 0.0),
+			'paid_emergency_leave_days' => array( 'title' => "Total Paid Emergency Leave Days" , 'value' => (float) 0.0)
+		);
+		
+		if( (isset($data) and !empty($data) ) == FALSE )
+		{
+			return array();
+		}
+
+		foreach($data as $each_employee_data)
+		{			
+			$theData['absences_lwop_days']['value'] += floatval($each_employee_data->absences_lwop_days);
+			$theData['absences_lwop_amount']['value'] += floatval($each_employee_data->absences_lwop_amount);
+			$theData['leave_sick_vacation_days']['value'] += floatval($each_employee_data->leave_sick_vacation_days);
+			$theData['leave_sick_vacation_amount']['value'] += floatval($each_employee_data->leave_sick_vacation_amount);
+			$theData['suspension_days']['value'] += floatval($each_employee_data->suspension_days);
+			$theData['suspension_amount']['value'] += floatval($each_employee_data->suspension_amount);
+			$theData['tardiness_min']['value'] += floatval($each_employee_data->tardiness_min);
+			$theData['tardiness_amount']['value'] += floatval($each_employee_data->tardiness_amount);
+			$theData['total_amount']['value'] += floatval($each_employee_data->total_amount);
+			$theData['paid_vl_days']['value'] += floatval($each_employee_data->paid_vl_days);
+			$theData['paid_sl_days']['value'] += floatval($each_employee_data->paid_sl_days);
+			$theData['paid_emergency_leave_days']['value'] += floatval($each_employee_data->paid_emergency_leave_days);		
+		}
+		
+		return $theData;
+	}
+	
 }//class
 
 /* End of file Attendance_model.php */

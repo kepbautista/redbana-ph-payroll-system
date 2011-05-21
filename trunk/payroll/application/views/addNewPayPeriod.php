@@ -83,6 +83,10 @@
 </div>
 <div class="center" style="width:80%">
 <div  style="width:30%; float:left" >
+	<?php
+		if($payment_mode_specified)
+		{
+	?>
 	<span>
 		The latest PayPeriod Info: <br/><br/>
 		<?php if($lastPayPeriod != NULL) { ?>
@@ -95,6 +99,10 @@
 		}
 		?>
 	</span>
+	<?php
+		}//if($payment_mode_specified)
+	?>
+
 	<br/><br/>
 	<?php echo form_open('PayperiodController/addPayPeriod_Process'); ?>		
 		<table>
@@ -108,7 +116,22 @@
 		 </tr>
 		 <tr>
 		 	<td>Working Days</td>
-		 	<td><input type="text" name="WORKING_DAYS" value="<?php if(set_value('WORKING_DAYS') == "") echo "11"; else echo set_value('WORKING_DAYS'); ?>" /></td>
+		 	<td><input type="text" name="WORKING_DAYS" value="<?php 
+		 		if(set_value('WORKING_DAYS') == "")
+		 		{
+		 			if(isset($payment_mode))
+		 			{
+		 			 if($payment_mode != 2)
+		 			 	echo 11;
+		 			 else
+		 			 	echo 22;
+		 			}else{
+		 				echo 11;
+		 			}
+		 		}else{
+		 			 echo set_value('WORKING_DAYS'); 
+		 		}
+		 	?>" /></td>
 		 </tr>
 		 <?php
 		 	if($payment_modes != NULL)
@@ -117,7 +140,11 @@
 			 <tr>
 			 	<td>Payment Mode</td>
 			 	<td> 
-			 		<select name="PAYMENT_MODE">
+		 	    <?php
+		 	  	 if( ! $payment_mode_specified)
+		 	  	 {
+		 	    ?>
+			 	<select name="PAYMENT_MODE">
 			 			<?php
 			 				foreach($payment_modes as $individ)
 			 				{
@@ -126,7 +153,16 @@
 			 			<?php
 			 				}
 			 			?>			 			
-			 		</select>
+		 		</select>
+		 		<?php
+		 			}else{
+		 		?>		 			
+		 			<select name="PAYMENT_MODE" visible="false">
+							<option value="<?php echo $payment_mode; ?>" selected="selected" ><?php echo $payment_modes[$payment_mode]->TITLE; ?></option>
+					</select>
+		 		<?php
+		 			}
+		 		?>
 			 	</td>
 			 </tr>
 		 <?php
@@ -134,7 +170,7 @@
 		 ?>
 		</table>
 		<input type="submit" value="Insert New Payperiod" />
-	</form>	
+<?php	echo form_close();	?>
 </div>
 </div>
 </div>

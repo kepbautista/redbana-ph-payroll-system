@@ -25,62 +25,30 @@ class AttendanceController extends CI_Controller
 	}
 	
 	function index()
-	{
+	{			
+		$this->load->model('Payment_mode');
 		
-		//$this->load->view("GenerateAbsences_and_Late_View");
-		//$this->generateAttendanceFault('', '', '');
+		$data['payment_modes'] = $this->Payment_mode->get_All_PaymentModes();				
 		
-		//is current date found on an entry in `payperiod`
-		if ( $this->Attendance_model->isCurrentDate_on_a_payPeriod() )
-		{	
-			//is there any generated list for this payperiod?			
-			$obj_result = $this->Payperiod_model->pull_Payperiod_This_Date_Falls( $this->Attendance_model->getCurrentDate_MySQL_Format() );			
-				
-			if($obj_result == NULL)
+		foreach( $data['payment_modes'] as $individ )
+		{			
+			$data['payperiods'][$individ->ID] = $this->Payperiod_model->get_All_PayPeriods($individ->ID, "DESC");
+						
+			if( $data['payperiods'][$individ->ID] != NULL )
 			{
-				//someone deleted the payperiod table so fast. put error in here.
-			}else
-			{
-				if( $obj_result->num_rows() > 1 )
+				foreach( $data['payperiods'][$individ->ID] as $individual_payperiods)
 				{
-					//error, why two payperiods with the same date inclusive, there should be only one?
-				}else
-				{
-					$payperiod_array = $obj_result->result();
-					
-					/*
-						the concerned 'row' in the SQL table is accessible by index 0
-						see if for this payperiod, there is at least one data generated for absences and tardiness
-					*/
-					if ( $this->Attendance_model->areAbsences_and_Late_Already_Generated( $payperiod_array[0]->ID ) )
-					{
-							// do you want to regenerate?
-							echo site_url();
-							echo "Already generated.<br/>";			
-							echo '<a href="'.site_url().'/AttendanceController/clearAttendanceFaultData/1/'.$payperiod_array[0]->ID.'" >';
-							echo 'Click here if you want to delete all for this current payperiod. </a>';							
-					}else
-					{
-							echo "Not yet";
-							echo '<a href="'.site_url().'/AttendanceController/generateAttendanceFault/1/'.$payperiod_array[0]->ID.'/'.$payperiod_array[0]->TOTAL_WORK_DAYS.'/8" >';
-							//echo '<a href="'.site_url().'/AttendanceController/generateAttendanceFault/'.$payperiod_array[0]->ID.'/22/8" >';
-							echo 'Click here to generate. </a>';
-					}
-					
-					//now try if there is already existing attendance record then.
+					if($individual_payperiods == NULL) continue;
+					$data['payperiods_already_generated'][$individ->ID][$individual_payperiods->ID] = $this->Attendance_model->areAbsences_and_Late_Already_Generated($individual_payperiods->ID, $individ->ID );				
 				}
-				
-				//die(var_dump( $payperiod_array ));
 			}
-		}else
-		{	//not found, ask is time correct or do you want to generate payperiod now?
-			$data['date_today'] =  $this->Attendance_model->getCurrentDate_European_Union_Format();
-			$data['lastPayPeriod'] = $this->Payperiod_model->get_Last_PayPeriod();		
-			$this->load->view('AttendanceFault_CannotFindDate_In_PayPeriod', $data);
-		}
+			
+		}		
+				
+		$this->load->view('AttendanceFaultHome', $data);			
 	}
 	
-	function regenerateAttendanceFaultData ($payperiod = NULL)
+	function regenerateAttendanceFaultData ($payperiod = NULL, $payment_mode = NULL)
 	{
 		// abe | made | 17MAY2011_1437
 		
@@ -89,20 +57,14 @@ class AttendanceController extends CI_Controller
 			"ERROR_CODE" => NULL,
 			"ERROR_MESSAGE" => NULL
 		);
-	
-		if( $payperiod == NULL )
-		{
-			$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
-			$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
-			die(var_dump($validation_errors));
-			//$this->load->view('login_view');
-		}
-		
+			
+		$payperiod = $this->input->post('PAYPERIOD');
+		$payment_mode = $this->input->post('PAYMENT_MODE');
 		/*
 			though in the view (AttendanceController) this shouldn't be accessible if there is no payperiod data in the DB
 			a user can access this via his/her browser's history, so, safety net.
 		*/
-		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod();
+		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod($payment_mode);	
 		if($lastPayPeriod == NULL)
 		{
 			$validation_errors["ERROR_CODE"] = "NO_PAYPERIOD_DATA";
@@ -111,16 +73,15 @@ class AttendanceController extends CI_Controller
 			//$this->load->view('???');
 		}else
 		{
-			$this->clearAttendanceFaultData($lastPayPeriod->ID);
-			$this->generateAttendanceFault('1', $lastPayPeriod->ID, $lastPayPeriod->TOTAL_WORK_DAYS, 8);
-			
-			die("Successfully regenerated.");
-			
+			$this->clearAttendanceFaultData($lastPayPeriod->ID, $payment_mode);
+			$mode['present_progressive'] = 'regenerating';
+			$mode['past'] = 'regenerated';
+			$data['generation_result'] = $this->generateAttendanceFault($payment_mode, $lastPayPeriod->ID, 8, $mode);						
 		}	
 	}
 	
 	
-	function clearAttendanceFaultData( $payperiod = NULL )
+	function clearAttendanceFaultData( $payperiod = NULL, $payment_mode = NULL )
 	{
 		$validation_errors = array(
 			"RESULT" => false, 
@@ -135,44 +96,72 @@ class AttendanceController extends CI_Controller
 			die(var_dump($validation_errors));
 			//$this->load->view('login_view');
 		}
-		$this->Attendance_model->deleteAttendanceFaultData_thisPayPeriod( $payperiod );
-		if( $this->Attendance_model->areAbsences_and_Late_Already_Generated( $payperiod ) == FALSE)
+		$this->Attendance_model->deleteAttendanceFaultData_thisPayPeriod( $payperiod, $payment_mode );
+		if( $this->Attendance_model->areAbsences_and_Late_Already_Generated( $payperiod, $payment_mode ) == FALSE)
 		{
-			echo "Successfully deleted.";
+			//echo "Successfully deleted.";
+		}else
+		{
+			//echo 'not deleted.';
 		}
 	}
 		
 	function generateAttendanceFault
-	(	
-		$payment_mode = NULL,
-		$payperiod = NULL, 
-		$defaultWorkingDays = NULL,
-		$defaultWorkingHours = NULL
-	)
+	($payment_mode = NULL, $payperiod = NULL, $WORKING_HOURS = 8, $mode = array() )
 	{
-	$validation_errors = array(
-		"RESULT" => false, 
-		"ERROR_CODE" => NULL,
-		"ERROR_MESSAGE" => NULL
-	);
-	
-	if( $payment_mode == NULL||
-		$payperiod == NULL || 
-		$defaultWorkingDays == NULL ||
-		$defaultWorkingHours == NULL
-	)
-	{
-		$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
-		$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
-		die(var_dump($validation_errors));
-		//$this->load->view('login_view');
-	}				
-		$this->Attendance_model->generateAbsences_and_Late($payment_mode, $payperiod, $defaultWorkingDays, $defaultWorkingHours);
+		$validation_errors = array(
+			"RESULT" => false, 
+			"ERROR_CODE" => NULL,
+			"ERROR_MESSAGE" => NULL
+		);
+		
+		if($payperiod == NULL)  $payperiod = $this->input->post('PAYPERIOD');
+		if($payment_mode == NULL) $payment_mode = $this->input->post('PAYMENT_MODE');
+		
+		if( !$payment_mode or !$payperiod )
+		{
+			$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
+			$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
+			die(var_dump($validation_errors));
+			//$this->load->view('login_view');
+		}				
 		
 		
+		$payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);		
+		if( empty($mode) )
+		{
+			$mode['present_progressive'] = 'generating';
+			$mode['past'] = 'generated';
+		}
+		$data['generation_result'] = $this->Attendance_model->generateAbsences_and_Late($payment_mode, $payperiod, $payperiod_obj->TOTAL_WORK_DAYS, 8);
+		$data['mode'] = $mode;
+		
+		$this->loadGenerationResult($data);
 	}
 			
+	private function loadGenerationResult($data)
+	{
+		$this->load->view('generateAttendanceFaultResult', $data);
+	}
 	
+	function viewAttendanceFaultData($payperiod = NULL, $payment_mode = NULL)
+	{
+		if($payperiod == NULL)  $payperiod = $this->input->post('PAYPERIOD');
+		if($payment_mode == NULL) $payment_mode = $this->input->post('PAYMENT_MODE');
+		
+		if( !$payment_mode or !$payperiod )
+		{
+			$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
+			$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
+			die(var_dump($validation_errors));
+			//$this->load->view('login_view');
+		}	
+		
+		$data['payperiod_obj'] = $payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);	
+		$data['result'] = $this->Attendance_model->getAttendanceFaults($payperiod, $payment_mode);
+		$data['statistics'] = $this->Attendance_model->computeTotal_AttendanceFaults($data['result']);
+		$this->load->view('viewAttendanceFaultResult', $data);
+	}
 
 }//class
 

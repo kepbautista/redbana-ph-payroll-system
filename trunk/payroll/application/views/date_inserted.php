@@ -58,7 +58,7 @@
 							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
 							<td><?php echo $row->time_in; ?></td>
 							<td><?php echo date('M d, Y', strtotime($row->date_out)); ?></td>
-							<td><?php echo $row->time_out; ?></td>
+							<td><?php echo $row->time_out; ?></td>							
 							<td><?php echo $shifts[$row->shift_id]['START_TIME']."-". $shifts[$row->shift_id]['END_TIME']; ?></td>
 							<td><!--make dropdown for absence_reason -->
 								<?php 
