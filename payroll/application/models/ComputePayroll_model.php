@@ -1,4 +1,8 @@
 <?php
+/**File Name: ComputePayroll_model.php
+   Program Description: Payroll Computations invloving database
+**/
+
 class ComputePayroll_model extends CI_Model{
 	function __construct()
 	{
@@ -7,6 +11,39 @@ class ComputePayroll_model extends CI_Model{
 		$this->load->helper('date');
 		$this->load->database();
 	}//constructor
+	
+	function getPayPeriods(){
+		$query = $this->db->query('SELECT * FROM `payperiod`
+				 ORDER BY START_DATE');
+		
+		foreach($query->result_array() as $value)
+			$data[$value['ID']] = $value['START_DATE']." to ".$value['END_DATE'];
+		
+		return $data;
+	}//function for getting all existing payperiod
+	
+	function getPaymentModes(){
+		$query = $this->db->query('SELECT * FROM `payment_mode`
+				 ORDER BY ID');
+		
+		foreach($query->result_array() as $value)
+			$data[$value['ID']] = $value['TITLE'];
+		
+		return $data;
+	}//function for getting all payment modes
+	
+	function payrollFinalized($payperiod){
+		$sql = "SELECT FINALIZED FROM `payperiod`
+				WHERE id='".$payperiod."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		if($data['FINALIZED']==1)
+			return false;
+		else
+			return true;
+	
+	}//function for checking in the database if payroll is finalized
 	
 	function selectSalaryData($empnum,$start_date,$end_date){
 		//select data from salary table

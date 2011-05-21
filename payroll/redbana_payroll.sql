@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 21, 2011 at 04:36 AM
+-- Generation Time: May 21, 2011 at 03:02 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `FINALIZED_BY` varchar(255) DEFAULT NULL,
   `FINALIZED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -469,7 +469,7 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `shift`
@@ -628,7 +628,7 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `privilege` varchar(50) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=90 ;
 
 --
 -- Dumping data for table `user_main`
@@ -639,7 +639,49 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (3, 'Staff', '', 0),
 (4, 'Admin', '', 0),
 (5, 'Employee', '', 0),
-(9, 'Superuser', '', 0);
+(9, 'Superuser', '', 0),
+(20, 'superuser', 'viewemp', 1),
+(21, 'superuser', 'editemp', 1),
+(22, 'superuser', 'addemp', 1),
+(23, 'superuser', 'allleave', 1),
+(24, 'superuser', 'accleave', 1),
+(25, 'superuser', 'position', 1),
+(26, 'superuser', 'dept', 1),
+(27, 'superuser', 'taxstatus', 1),
+(28, 'superuser', 'shift', 1),
+(29, 'superuser', 'sss', 1),
+(30, 'superuser', 'phil', 1),
+(31, 'superuser', 'wth', 1),
+(32, 'superuser', 'viewpay', 1),
+(33, 'superuser', 'leave', 1),
+(34, 'employee', 'viewemp', 0),
+(35, 'employee', 'editemp', 0),
+(36, 'employee', 'addemp', 0),
+(37, 'employee', 'allleave', 0),
+(38, 'employee', 'accleave', 0),
+(39, 'employee', 'position', 0),
+(40, 'employee', 'dept', 0),
+(41, 'employee', 'taxstatus', 0),
+(42, 'employee', 'shift', 0),
+(43, 'employee', 'sss', 0),
+(44, 'employee', 'phil', 0),
+(45, 'employee', 'wth', 0),
+(46, 'employee', 'viewpay', 1),
+(47, 'employee', 'leave', 1),
+(76, 's', 'viewemp', 0),
+(77, 's', 'editemp', 0),
+(78, 's', 'addemp', 0),
+(79, 's', 'allleave', 0),
+(80, 's', 'accleave', 0),
+(81, 's', 'position', 0),
+(82, 's', 'dept', 0),
+(83, 's', 'taxstatus', 0),
+(84, 's', 'shift', 0),
+(85, 's', 'sss', 0),
+(86, 's', 'phil', 0),
+(87, 's', 'wth', 0),
+(88, 's', 'viewpay', 1),
+(89, 's', 'leave', 1);
 
 -- --------------------------------------------------------
 
@@ -704,37 +746,6 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
-
-INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
-(20, 'superuser', 'viewemp', 1),
-(21, 'superuser', 'editemp', 1),
-(22, 'superuser', 'addemp', 1),
-(23, 'superuser', 'allleave', 1),
-(24, 'superuser', 'accleave', 1),
-(25, 'superuser', 'position', 1),
-(26, 'superuser', 'dept', 1),
-(27, 'superuser', 'taxstatus', 1),
-(28, 'superuser', 'shift', 1),
-(29, 'superuser', 'sss', 1),
-(30, 'superuser', 'phil', 1),
-(31, 'superuser', 'wth', 1),
-(32, 'superuser', 'viewpay', 1),
-(33, 'superuser', 'leave', 1),
-(34, 'employee', 'viewemp', 0),
-(35, 'employee', 'editemp', 0),
-(36, 'employee', 'addemp', 0),
-(37, 'employee', 'allleave', 0),
-(38, 'employee', 'accleave', 0),
-(39, 'employee', 'position', 0),
-(40, 'employee', 'dept', 0),
-(41, 'employee', 'taxstatus', 0),
-(42, 'employee', 'shift', 0),
-(43, 'employee', 'sss', 0),
-(44, 'employee', 'phil', 0),
-(45, 'employee', 'wth', 0),
-(46, 'employee', 'viewpay', 1),
-(47, 'employee', 'leave', 1);
 
 --
 -- Constraints for dumped tables
