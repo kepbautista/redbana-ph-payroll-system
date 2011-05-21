@@ -5,6 +5,7 @@ class Payperiod_model extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->helper( array('form','url') );		
 	}
 
 	function pull_PayPeriod_Info( $payperiod_id )
@@ -17,11 +18,31 @@ class Payperiod_model extends CI_Model
 		*/
 		
 		//get date inclusives during the payperiod specified from database
-		$sql_x = "SELECT * from `payperiod` WHERE id = ? ";			
+		$sql_x = "SELECT * from `payperiod` WHERE `id` = ? ";			
 		$obj_result = $this->db->query( $sql_x, array($payperiod_id) );
 		
 		return $obj_result;
 	}
+	
+	function pull_PayPeriod_Info_X( $payperiod_id, $payment_mode )
+	{
+		/*		
+			made | abe | 19may2011_1253, differs from the 'without X' function because
+			this will return ARRAY or NULL
+			
+		RETURNS: OBJECT containing the first MySQL results row, index is the payperiod->ID ;
+				 NULL, if no entry exists in the dB
+		*/
+		
+		//get date inclusives during the payperiod specified from database
+		$sql_x = "SELECT * from `payperiod` WHERE `id` = ? AND `payment_mode` = ?";			
+		$rows_result = $this->db->query( $sql_x, array($payperiod_id, $payment_mode) )->result();
+		
+		if( empty($rows_result) )
+		{	return NULL;	}
+
+		return $rows_result[0];
+	}//_X
 
 	function pull_Payperiod_This_Date_Falls($date_in_SQL)
 	{
@@ -49,25 +70,24 @@ class Payperiod_model extends CI_Model
 				as it might change.
 			abe | changed | 18MAY2011_1325
 				now just called get_All_PayPeriods(..)			
+			abe | changed | 19MAY2011_1117
+				came back to it's own SQL execution
 		*/
 				
-		$allPayPeriod = $this->get_All_PayPeriods( $payment_mode );
-		if( count($allPayPeriod) < 1 )	
-		{	return  NULL;			}
-		else		
-		{	
-			/*
-				Because in some tables, entries start with '1', not 0
-			*/
-			if( isset($allPayPeriod[0]) )
-				return $allPayPeriod[0];	
-			else 
-				return $allPayPeriod[1];
+		$sql_x = "SELECT * FROM `payperiod` WHERE `payment_mode` = ? ORDER BY (CURRENT_DATE - `END_DATE`) ASC";
+		$rows_result = $this->db->query($sql_x, array($payment_mode) )->result();
+		
+		if( empty($rows_result) )
+		{
+			return  NULL;
+		}else
+		{
+			return $rows_result[0];
 		}
 		
 	}
 	
-	function get_All_PayPeriods($payment_mode = NULL)
+	function get_All_PayPeriods($payment_mode = NULL, $sort_order = "ASC")
 	{
 		/*
 			abe | 18MAY2011_1318
@@ -80,62 +100,32 @@ class Payperiod_model extends CI_Model
 		$rows_result;		
 		$returnThis = array();
 		
+		$sort_order = strtoupper($sort_order);
+		if( ! ($sort_order == "ASC" or $sort_order == "DESC") )
+		{
+			die("get_Last_PayPeriod: INVALID SORTING METHOD.");
+		}
+								
 		if( $payment_mode == NULL )
 		{
-			$sql_x = "SELECT * from `payperiod` ORDER BY `payment_mode` and `END_DATE` DESC ";
+			$sql_x = "SELECT * from `payperiod` ORDER BY `payment_mode` and `END_DATE` ".$sort_order;
 			$rows_result = $this->db->query($sql_x)->result();
 		}else
 		{			
-			$sql_x = "SELECT * from `payperiod` where `payment_mode` = ? ORDER BY `END_DATE` DESC";
+			$sql_x = "SELECT * from `payperiod` where `payment_mode` = ? ORDER BY `END_DATE` ".$sort_order;
 			$rows_result = $this->db->query($sql_x, array($payment_mode) )->result();
 		}
-		//die(var_dump($rows_result));
+		
 		if( empty($rows_result) )
 		{	return NULL;			}
 		else
 		{	
-			foreach($rows_result as $x) $returnThis[$x->ID] = $x;
+			foreach($rows_result as $x) $returnThis[$x->ID] = $x;					
 			
-			/*foreach($rows_result as $x)			
-				$abcd = array();
-				foreach($x as $y)
-					$abcd[$y->TITLE]
-			*/
 			return $returnThis;	
 		}		
 	}//get_All_PayPeriods
-	
-	function y_get_All_PayPeriods($payment_mode = NULL)
-	{
-		/*
-			abe | 18MAY2011_1318
-			if there is no argument passed to this, all payperiods regardless of payment_mode will be gotten.						
 			
-			RETURNS
-			NULL - if no dB entries gotten
-			OBJECT - of the dB entries gotten directly accessible via numerical indices
-		*/
-		$obj_result;		
-		$returnThis = array();
-		
-		if( $payment_mode == NULL )
-		{
-			$sql_x = "SELECT * from `payperiod` ORDER BY `payment_mode` and `END_DATE` DESC ";
-			$obj_result = $this->db->query($sql_x, array());
-		}else
-		{
-			$sql_x = "SELECT * from `payperiod` where `payment_mode` = ? ORDER BY `END_DATE` DESC";
-			$obj_result = $this->db->query($sql_x, array($payment_mode) );
-		}
-		//die(var_dump($rows_result));
-		if( $obj_result->num_rows == 0 )
-		{	return NULL;			}
-		else
-		{							
-			return $obj_result;	
-		}		
-	}//get_All_PayPeriods
-	
 	function add_new_PayPeriod($payment_mode, $start_date, $end_date, $workingDays)
 	{
 		$start_date[4] = '-';	
@@ -143,7 +133,7 @@ class Payperiod_model extends CI_Model
 		$end_date[4] = '-';	
 		$end_date[7] = '-';
 		
-		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, FALSE, FALSE) ";			
+		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, FALSE, FALSE, NULL, NULL) ";			
 		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays) );
 	
 		$check_it = $this->get_Last_PayPeriod($payment_mode);
@@ -155,6 +145,23 @@ class Payperiod_model extends CI_Model
 		);
 	}
 	
+	function finalizePayPeriod($payment_mode = NULL, $payperiod = NULL, $currentUser = NULL)
+	{
+		$result = array
+		(			
+			"result" => false,
+			"ERROR_CODE" => 0,
+			"ERROR_TITLE" => NULL,
+			"ERROR_MESSAGE" => NULL
+		);
+		
+		$sql_x = "UPDATE `payperiod` SET `FINALIZED` = '1',`FINALIZED_BY` = ?,`FINALIZED_DATE` = CURRENT_TIMESTAMP WHERE `id` = ? AND `payment_mode` = ?";
+		$sql_result = $this->db->query($sql_x, array($currentUser, $payperiod, $payment_mode) );
+		
+		$result['result'] = TRUE;
+		
+		return $result;
+	}
 	
 	
 }

@@ -1,6 +1,12 @@
 <?php
 class Employee_model extends CI_Model {
 	
+	function __construct()
+	{
+		parent::__construct();		
+		$this->load->model('Payperiod_model');
+	}
+	
 	public function get_status() {//get the description of the status
         $this->db->select('id, desc');
         $this->db->from('employee_status');
@@ -294,5 +300,39 @@ class Employee_model extends CI_Model {
 			$query1 = $this->db->query('INSERT INTO `timesheet`(`login`,`logout`,`empnum`,`date`) VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
 		}
 	}
-}
+	
+	function getAllEmployees_eligible_this_PayPeriod($payperiod_obj = NULL, $payment_mode = NULL)
+	{
+		/*
+			made | abe | 19MAY2011_1242
+			changed | abe | 19MAY2011_1415 | $payperiod_obj is now the first param, MySQL obj, row directly accessible
+			returns NULL if no gotten from dB
+			returns ARRAY of objects gotten from dB, where the indices are the employees' nums
+		*/
+		$returnThisArray = array();
+		
+		if( $payperiod_obj == NULL  or $payment_mode == NULL)
+		{
+			die("getAllEmployees_eligible_this_PayPeriod: NO PAYMENT MODE or PAYPERIOD SPECIFIED.");
+			//redirect('wherever');
+		}
+		
+		/*
+			no more determining if payperiods is empty here, i think the user
+			won't arrive here without specifying a valid payperiod
+		*/				
+		$sql_x = "SELECT * from `employee` WHERE `sdate` <= ?"; 
+		$rows_result = $this->db->query($sql_x, array($payperiod_obj->END_DATE) )->result();
+		
+		if( empty($rows_result) )
+		{	return NULL;	}
+		
+		foreach($rows_result as $each_employee) $returnThisArray[$each_employee->empnum]  = $each_employee;				
+
+		return $returnThisArray;		
+	}//getAllEmployees_eligible...
+	
+	
+	
+}//class
 ?>

@@ -28,11 +28,21 @@ class PayperiodController extends CI_Controller
 	
 	}
 	
-	function addPayPeriod()
+	function addPayPeriod($payment_mode = NULL)
 	{
-		$data['lastPayPeriod'] = $this->Payperiod_model->get_Last_PayPeriod(1);		
+		
+		if($payment_mode == NULL)
+		{
+			$data['payment_mode_specified'] = FALSE;
+		}else{
+			$data['lastPayPeriod'] = $this->Payperiod_model->get_Last_PayPeriod($payment_mode);							
+			$data['payment_mode_specified'] = TRUE;
+			$data['payment_mode'] = $payment_mode;
+		}
+		
 		$data['payment_modes'] = $this->Attendance_model->getPaymentModes();
 		$this->load->view('addNewPayPeriod', $data);
+		
 	}
 	
 		
@@ -40,7 +50,7 @@ class PayperiodController extends CI_Controller
 	{
 		$this->load->library('form_validation');
 		$start_date = strtotime( $this->input->post('START_DATE') );
-		$end_date =  strtotime( $this->input->post('END_DATE') );
+		$end_date =  strtotime( $this->input->post('END_DATE') );		 
 		
 		//setup validation rules.		
 		$this->form_validation->set_rules('START_DATE', 'Start Date', 'callback_startDate_check');
@@ -81,7 +91,7 @@ class PayperiodController extends CI_Controller
 	function startDate_check($str)
 	{
 		
-		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod();
+		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod( $this->input->post('payment_mode') );
 	
 		if($str == ""){ 
 			$this->form_validation->set_message('startDate_check', 'Start Date cannot be blank.');		
@@ -111,7 +121,7 @@ class PayperiodController extends CI_Controller
 	
 	function endDate_check($str)
 	{
-		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod();
+		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod( $this->input->post('payment_mode') );
 		
 		if($str == ""){
 			$this->form_validation->set_message('endDate_check', 'End Date cannot be blank.');		
@@ -203,6 +213,91 @@ class PayperiodController extends CI_Controller
 		$returnThis['result'] = TRUE;		
 		return $returnThis;
 	}
+	
+	function finalizePayPeriod()
+	{
+		//$this->Payperiod_model->finalizePayPeriod();
+	
+		/*
+			made | abe | 19may2011_1235
+		*/
+		$missing_in_TimeSheet = array();
+		$there_is_entry_for_payperiod = TRUE;		
+		$payperiod_lapsed = TRUE;
+		$this->load->model('Employee_model');	//only used here, move to __construct() if used by multiple functions already
+		$payperiod = $this->input->post('PAYPERIOD');
+		$payment_mode = $this->input->post('PAYMENT_MODE');				
+		
+		$payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X( $payperiod, $payment_mode );				
+		$eligible_employees = $this->Employee_model->getAllEmployees_eligible_this_PayPeriod($payperiod_obj, $payment_mode);
+		
+		//determine if each and every employee eligible does have an entry in timesheet
+		foreach( $eligible_employees as $each_employee)
+		{							
+			if( 				
+			  ! $this->Attendance_model->areThere_AbsenceAndTardiness_of_Employee_during_Payperiod($each_employee->empnum, $payperiod_obj)
+			  and ($each_employee->payment_mode == $payment_mode)
+			)
+			{
+				$missing_in_TimeSheet[] = $each_employee->empnum;
+			}					
+		}//foreach					
+		$data['payperiod'] = $payperiod;
+		$data['payperiod_obj'] = $payperiod_obj;
+		$data['payment_mode'] = $payment_mode;
+		$data['eligible_employees'] = $eligible_employees;
+		$data['payperiod_lapsed'] = FALSE;
+		
+		$payperiod_of_today = $this->Payperiod_model->pull_Payperiod_This_Date_Falls( $this->Attendance_model->getCurrentDate_MySQL_Format() )->result();
+		
+		//checks if today is within the payperiod, if so, display appropriate message
+		if( !empty($payperiod_of_today) ) $data['payperiod_lapsed'] = ($payperiod == $payperiod_of_today[0]->ID);				
+		
+		if( !empty($missing_in_TimeSheet) )
+		{
+			$data['missing_in_TimeSheet'] = $missing_in_TimeSheet;
+			$this->load->view("payperiodFinalizeDisplayAnomalies", $data);
+		}else{
+			$this->finalizePayPeriod_askConfirmation();
+		}
+	}
+
+	function finalizePayPeriod_askConfirmation($data = NULL)
+	{	
+		if($data == NULL)	//this is true, if this was accessed from view("payperiodFinalizeDisplayAnomalies")
+		{
+			$data['payperiod'] = $this->input->post('PAYPERIOD');
+			$data['payment_mode'] = $this->input->post('PAYMENT_MODE');
+		}
+		
+		$this->load->view('payperiodFinalizeConfirm', $data);
+	}
+	
+	function finalizePayPeriod_Confirmed()
+	{
+		$result;		
+		$this->load->model('Login_model');
+	
+		$payperiod = $this->input->post('PAYPERIOD');
+		$payment_mode = $this->input->post('PAYMENT_MODE');				
+		
+		if( !$payperiod or ! $payment_mode )
+		{
+			die("You should not access this thing directly.");
+		}
+		
+	
+				
+		$result = $this->Payperiod_model->finalizePayPeriod(
+			$payment_mode,
+			$payperiod,
+			$this->Login_model->getCurrentUser()
+		);
+		
+		$data['result'] = $result['result'];
+		$this->load->view('payperiodFinalizeResult', $data);				
+	}
+	
 }//class
 
 /* End of file PayperiodController.php */

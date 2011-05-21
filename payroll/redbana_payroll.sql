@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `fname` varchar(100) NOT NULL,
   `user_right` varchar(20) NOT NULL,
   `mrate` float NOT NULL,
-  `payment_mode` varchar(20) NOT NULL,
+  `payment_mode` int(1) NOT NULL DEFAULT 1,
   `position` varchar(50) NOT NULL,
   `dept` varchar(50) NOT NULL,
   `gender` varchar(1) NOT NULL,
@@ -224,9 +224,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 'SEMI-MONTHLY', 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 'SEMI-MONTHLY', 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 'SEMI-MONTHLY', 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 1, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 1, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
 
 -- --------------------------------------------------------
 
@@ -319,18 +319,22 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `START_DATE` date NOT NULL,
   `END_DATE` date NOT NULL,
   `TOTAL_WORK_DAYS` float NOT NULL,
-  `END_OF_THE_MONTH` tinyint(1) DEFAULT '0' COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
-  `FINALIZED` tinyint(1) NOT NULL,
+  `END_OF_THE_MONTH` tinyint(1) DEFAULT 0 COMMENT 'Used for charges, e.g. like PAG-IBIG which requires deduction during end-of-the-months',
+  `FINALIZED` tinyint(1) NOT NULL DEFAULT 0,
+  `FINALIZED_BY` varchar(255) default NULL ,
+  `FINALIZED_DATE` TIMESTAMP NULL default NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `payperiod`
 --
 
-INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`) VALUES
-(1, 1, '2011-03-15', '2011-03-31', 17, 1, 0),
-(2, 1, '2011-05-01', '2011-05-15', 15, 0, 0);
+INSERT INTO `payperiod` VALUES
+(1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL),
+(2, 1, '2011-04-24', '2011-05-07', 11, 0, 0, NULL, NULL),
+(3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -543,16 +547,18 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `shift`
 --
 
 INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`) VALUES
-(1, -1, '00:07:00', '00:16:00', 0),
-(2, -1, '00:14:00', '00:23:00', 1),
-(3, -1, '00:21:00', '00:06:00', 2);
+(0, -1, '09:00:00', '18:00:00', 0),
+(1, -1, '07:00:00', '16:00:00', 0),
+(4, -1, '09:00:00', '18:00:00', 0),
+(5, -1, '15:00:00', '00:00:00', 1),
+(6, -1, '23:00:00', '08:00:00', 1);
 
 -- --------------------------------------------------------
 
