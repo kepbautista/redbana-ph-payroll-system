@@ -1,4 +1,10 @@
 <?php
+/*File Name: Employee_model.php
+  Program Description: Database Queries that basically modifies
+					   information in the `employee` table
+  Use mysql_real_escape_string() function in phpmysql to avoid
+  SQL Injections.
+*/
 class Employee_model extends CI_Model {
 	
 	function __construct()
@@ -156,87 +162,87 @@ class Employee_model extends CI_Model {
 	
 	function Employee_Insert(){//insert employee information to the database
 	
-		$sday=$this->input->post('sday');
-		$smonth=$this->input->post('smonth');
-		$syear=$this->input->post('syear');
-		$bday=$this->input->post('bday');
-		$bmonth=$this->input->post('bmonth');
-		$byear=$this->input->post('byear');
-		$sdate=$syear . '-' . $smonth. '-' . $sday;
-		$bdate=$byear . '-' . $bmonth. '-' . $bday;
+		$sday = mysql_real_escape_string($this->input->post('sday'));
+		$smonth = mysql_real_escape_string($this->input->post('smonth'));
+		$syear = mysql_real_escape_string($this->input->post('syear'));
+		$bday = mysql_real_escape_string($this->input->post('bday'));
+		$bmonth = mysql_real_escape_string($this->input->post('bmonth'));
+		$byear = $this->input->post('byear');
+		$sdate = $syear.'-'.$smonth.'-'.$sday;
+		$bdate = $byear.'-'.$bmonth.'-'.$bday;
 		$data = array(
-		'empnum'=>$this->input->post('empnum'),
-        'fname'=>$this->input->post('fname'),
-		'sname'=>$this->input->post('sname'),
-        'mname'=>$this->input->post('mname'),
-		'shift_id'=>$this->input->post('shift_id'),
-        'sdate'=>$sdate,
-		'bdate'=>$bdate,
-		'password'=>$this->input->post('password'),
-		'position'=>$this->input->post('position'),
-		'dept'=>$this->input->post('dept'),
-		'mrate'=>$this->input->post('mrate'),
-		'gender'=>$this->input->post('gender'),
-		'user_right'=>$this->input->post('user_right'),
-		'payment_mode'=>$this->input->post('pmode'),
+		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
+        'fname' => mysql_real_escape_string($this->input->post('fname')),
+		'sname' => mysql_real_escape_string($this->input->post('sname')),
+        'mname' => mysql_real_escape_string($this->input->post('mname')),
+		'shift_id' => mysql_real_escape_string($this->input->post('shift_id')),
+        'sdate' => $sdate,
+		'bdate' => $bdate,
+		'password' => mysql_real_escape_string($this->input->post('password')),
+		'position' => mysql_real_escape_string($this->input->post('position')),
+		'dept' => mysql_real_escape_string($this->input->post('dept')),
+		'mrate' => mysql_real_escape_string($this->input->post('mrate')),
+		'gender' => mysql_real_escape_string($this->input->post('gender')),
+		'user_right' => mysql_real_escape_string($this->input->post('user_right')),
+		'payment_mode' => mysql_real_escape_string($this->input->post('pmode')),
 		
-		'title'=>$this->input->post('title'),
-		'civil_status'=>$this->input->post('cstatus'),
-		'emp_status'=>$this->input->post('emp_status'),
-		'emp_type'=>$this->input->post('emp_type'),
-		'tax_status'=>$this->input->post('tax_status'),
-		'hphone'=>$this->input->post('hphone'),
-		'mphone'=>$this->input->post('mphone'),
-		'email'=>$this->input->post('email'),
-		'address'=>$this->input->post('address'),
-		'zipcode'=>$this->input->post('zip'),
-		'sssno'=>$this->input->post('sss'),
-		'tinno'=>$this->input->post('tin'),
-		'pagibig'=>$this->input->post('pagibig'),
-		'philno'=>$this->input->post('phil'),
+		'title' => mysql_real_escape_string($this->input->post('title')),
+		'civil_status' => mysql_real_escape_string($this->input->post('cstatus')),
+		'emp_status' => mysql_real_escape_string($this->input->post('emp_status')),
+		'emp_type' => mysql_real_escape_string($this->input->post('emp_type')),
+		'tax_status' => mysql_real_escape_string($this->input->post('tax_status')),
+		'hphone' => mysql_real_escape_string($this->input->post('hphone')),
+		'mphone'=> mysql_real_escape_string($this->input->post('mphone')),
+		'email' => mysql_real_escape_string($this->input->post('email')),
+		'address' => mysql_real_escape_string($this->input->post('address')),
+		'zipcode' => mysql_real_escape_string($this->input->post('zip')),
+		'sssno' => mysql_real_escape_string($this->input->post('sss')),
+		'tinno' => mysql_real_escape_string($this->input->post('tin')),
+		'pagibig' => mysql_real_escape_string($this->input->post('pagibig')),
+		'philno' => mysql_real_escape_string($this->input->post('phil')),
 		);
 		$this->db->insert('employee',$data); 
 	}
 	
 	function Employee_update(){
-		$sday=$this->input->post('sday');
-		$smonth=$this->input->post('smonth');
-		$syear=$this->input->post('syear');
-		$bday=$this->input->post('bday');
-		$bmonth=$this->input->post('bmonth');
-		$byear=$this->input->post('byear');
-		$sdate=$syear . '-' . $smonth. '-' . $sday;
-		$bdate=$byear . '-' . $bmonth. '-' . $bday;
+		$sday = mysql_real_escape_string($this->input->post('sday'));
+		$smonth = mysql_real_escape_string($this->input->post('smonth'));
+		$syear = mysql_real_escape_string($this->input->post('syear'));
+		$bday = mysql_real_escape_string($this->input->post('bday'));
+		$bmonth = mysql_real_escape_string($this->input->post('bmonth'));
+		$byear = mysql_real_escape_string($this->input->post('byear'));
+		$sdate = $syear.'-'.$smonth.'-'.$sday;
+		$bdate = $byear.'-'.$bmonth.'-'.$bday;
 		$data = array(
-		'empnum'=>$this->input->post('empnum'),
-        'fname'=>$this->input->post('fname'),
-		'shift_id'=>$this->input->post('shift_id'),
-        'sname'=>$this->input->post('sname'),
-        'mname'=>$this->input->post('mname'),
-        'sdate'=>$sdate,
-		'bdate'=>$bdate,
-		'password'=>$this->input->post('password'),
-		'position'=>$this->input->post('position'),
-		'dept'=>$this->input->post('dept'),
-		'mrate'=>$this->input->post('mrate'),
-		'gender'=>$this->input->post('gender'),
-		'user_right'=>$this->input->post('user_right'),
-		'payment_mode'=>$this->input->post('pmode'),
+		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
+        'fname' => mysql_real_escape_string($this->input->post('fname')),
+		'shift_id' => mysql_real_escape_string($this->input->post('shift_id')),
+        'sname' => mysql_real_escape_string($this->input->post('sname')),
+        'mname' => mysql_real_escape_string($this->input->post('mname')),
+        'sdate' => $sdate,
+		'bdate' => $bdate,
+		'password' => mysql_real_escape_string($this->input->post('password')),
+		'position' => mysql_real_escape_string($this->input->post('position')),
+		'dept' => mysql_real_escape_string($this->input->post('dept')),
+		'mrate' => mysql_real_escape_string($this->input->post('mrate')),
+		'gender' => mysql_real_escape_string($this->input->post('gender')),
+		'user_right' => mysql_real_escape_string($this->input->post('user_right')),
+		'payment_mode' => mysql_real_escape_string($this->input->post('pmode')),
 		
-		'title'=>$this->input->post('title'),
-		'civil_status'=>$this->input->post('cstatus'),
-		'emp_status'=>$this->input->post('emp_status'),
-		'emp_type'=>$this->input->post('emp_type'),
-		'tax_status'=>$this->input->post('tax_status'),
-		'hphone'=>$this->input->post('hphone'),
-		'mphone'=>$this->input->post('mphone'),
-		'email'=>$this->input->post('email'),
-		'address'=>$this->input->post('address'),
-		'zipcode'=>$this->input->post('zip'),
-		'sssno'=>$this->input->post('sss'),
-		'tinno'=>$this->input->post('tin'),
-		'pagibig'=>$this->input->post('pagibig'),
-		'philno'=>$this->input->post('phil'),
+		'title' => mysql_real_escape_string($this->input->post('title')),
+		'civil_status' => mysql_real_escape_string($this->input->post('cstatus')),
+		'emp_status' => mysql_real_escape_string($this->input->post('emp_status')),
+		'emp_type' => mysql_real_escape_string($this->input->post('emp_type')),
+		'tax_status' => mysql_real_escape_string($this->input->post('tax_status')),
+		'hphone' => mysql_real_escape_string($this->input->post('hphone')),
+		'mphone' => mysql_real_escape_string($this->input->post('mphone')),
+		'email' => mysql_real_escape_string($this->input->post('email')),
+		'address' => mysql_real_escape_string($this->input->post('address')),
+		'zipcode' => mysql_real_escape_string($this->input->post('zip')),
+		'sssno' => mysql_real_escape_string($this->input->post('sss')),
+		'tinno' => mysql_real_escape_string($this->input->post('tin')),
+		'pagibig' => mysql_real_escape_string($this->input->post('pagibig')),
+		'philno' => mysql_real_escape_string($this->input->post('phil')),
 		);
 		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('employee',$data); 
@@ -263,42 +269,55 @@ class Employee_model extends CI_Model {
 	
 	//HR
 	function Employee_updateTime(){
-		$login=$this->input->post('login1').':'.$this->input->post('login2').':'.$this->input->post('login3').' '.$this->input->post('login4');
-		$logout=$this->input->post('logout1').':'.$this->input->post('logout2').':'.$this->input->post('logout3').' '.$this->input->post('logout4');
-		$login=DATE("H:i:s", STRTOTIME($login));//converts 1pm to 13:00:00
-        $logout=DATE("H:i:s", STRTOTIME($logout));//converts 1pm to 13:00:00
+		$login = mysql_real_escape_string($this->input->post('login1'))
+				.':'.mysql_real_escape_string($this->input->post('login2'))
+				.':'.mysql_real_escape_string($this->input->post('login3'))
+				.' '.mysql_real_escape_string($this->input->post('login4'));
+		$logout = mysql_real_escape_string($this->input->post('logout1'))
+				.':'.mysql_real_escape_string($this->input->post('logout2'))
+				.':'.mysql_real_escape_string($this->input->post('logout3'))
+				.' '.mysql_real_escape_string($this->input->post('logout4'));
+		$login = DATE("H:i:s", STRTOTIME($login));//converts 1pm to 13:00:00
+        $logout = DATE("H:i:s", STRTOTIME($logout));//converts 1pm to 13:00:00
 		$this->db->query('UPDATE `timesheet` SET login="'.$login.'",logout="'.$logout.'" WHERE empnum="'.$this->input->post('empnum').'" AND
-		date="'.$this->input->post('date').'"');
+		date="'.mysql_real_escape_string($this->input->post('date')).'"');
 	}
 	
 	function Employee_viewalltime($cases) {
 		$this->load->database();
 		if ($cases==1)
-			$date=$this->input->post('date');
+			$date = mysql_real_escape_string($this->input->post('date'));
 		else if ($cases==2)
-			$date=date("Y/n/j");
-		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
+			$date = date("Y/n/j");
+		else $date = mysql_real_escape_string($this->input->post('yrs'))
+					.'-'.mysql_real_escape_string($this->input->post('mos'))
+					.'-'.mysql_real_escape_string($this->input->post('days'));
 		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum ,b.login,b.logout,b.date FROM `timesheet` b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
 		return $query->result();
 	}
+	
 	function Employee_viewalltime_rows($cases) {
 		$this->load->database();
 		if ($cases==1)
-			$date=$this->input->post('date');
+			$date = mysql_real_escape_string($this->input->post('date'));
 		else if ($cases==2)
-			$date=date("Y/n/j");
-		else $date=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
-		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date FROM `timesheet` b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
+			$date = date("Y/n/j");
+		else $date = mysql_real_escape_string($this->input->post('yrs'))
+					.'-'.mysql_real_escape_string($this->input->post('mos'))
+					.'-'.mysql_real_escape_string($this->input->post('days'));
+		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum,b.login,b.logout,b.date 
+				FROM `timesheet` b,employee a WHERE b.empnum=a.empnum AND b.date="'.$date.'"');	
 		return $query->num_rows();
 	}
 	
 	function Insert_time() {
 		$this->load->database();
-		$date=$this->input->post('date');
-		$query=$this->db->get('employee');
+		$date = mysql_real_escape_string($this->input->post('date'));
+		$query = $this->db->get('employee');
 		foreach ($query->result() as $row)
 		{
-			$query1 = $this->db->query('INSERT INTO `timesheet`(`login`,`logout`,`empnum`,`date`) VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
+			$query1 = $this->db->query('INSERT INTO `timesheet`(`login`,`logout`,`empnum`,`date`)
+					  VALUES("00:00:00","00:00:00","'.$row->empnum.'","'.$date.'")');
 		}
 	}
 	

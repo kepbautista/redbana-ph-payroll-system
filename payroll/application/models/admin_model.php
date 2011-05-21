@@ -18,7 +18,21 @@ class Admin_model extends CI_Model
 	
 	function submit_posted_data($fname, $mname, $sname, $eadd, $empnum,$password,$status,$mrate,$payment_mode,$position,$dept,$gender,$sdate,$bdate,$type) {
 	// db is initialized in the controller, to interact with the database.
-		$data = array('fname'=>$this->input->post('fname'),'mname'=>$this->input->post('mname'),'sname'=>$this->input->post('sname'), 'email'=>$this->input->post('eadd'), 'empnum'=>$this->input->post('empnum'), 'password'=>$this->input->post('password'),'status'=>$this->input->post('status'), 'mrate'=>$this->input->post('mrate'),'payment_mode'=>$this->input->post('payment_mode'),'position'=>$this->input->post('position'),'dept'=>$this->input->post('dept'),'gender'=>$this->input->post('gender'),'sdate'=>$this->input->post('sdate'),'bdate'=>$this->input->post('bdate')); 
+		$data = array(
+				'fname' => mysql_real_escape_string($this->input->post('fname')),
+				'mname' => mysql_real_escape_string($this->input->post('mname')),
+				'sname' => mysql_real_escape_string($this->input->post('sname')),
+				'email' => mysql_real_escape_string($this->input->post('eadd')),
+				'empnum' => mysql_real_escape_string($this->input->post('empnum')),
+				'password' => mysql_real_escape_string($this->input->post('password')),
+				'status' => mysql_real_escape_string($this->input->post('status')),
+				'mrate' => mysql_real_escape_string($this->input->post('mrate')),
+				'payment_mode' => mysql_real_escape_string($this->input->post('payment_mode')),
+				'position' => mysql_real_escape_string($this->input->post('position')),
+				'dept' => mysql_real_escape_string($this->input->post('dept')),
+				'gender' => mysql_real_escape_string($this->input->post('gender')),
+				'sdate' => mysql_real_escape_string($this->input->post('sdate')),
+				'bdate' => mysql_real_escape_string($this->input->post('bdate'))); 
 		$this->db->insert('employee',$data);
 		
 	}
