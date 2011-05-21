@@ -85,67 +85,28 @@
 			$query = $this->login_model->fetch_User($this->input->post('empnum'), $this->input->post('password'));
 			$obj_temp = $query->result();
 			
-			$data['sname'] = $obj_temp[0]->sname;
-			$data['fname'] = $obj_temp[0]->fname;
-			$data['mname'] = $obj_temp[0]->mname;
-			
-			$check_super = $this->admin_model->validate_superuser( $empnum );
-			$check_hr = $this->admin_model->validate_hr( $empnum );
-			$check_accounting = $this->admin_model->validate_accounting( $empnum );
-			$check_emp = $this->admin_model->validate_emp( $empnum );
-			$check_supervisor = $this->admin_model->validate_supervisor( $empnum );
-			
-			if($check_super)
+			if ($query->num_rows ==1)
 			{
-				$data['userType'] = 'super';			
+				$data['sname'] = $obj_temp[0]->sname;
+				$data['fname'] = $obj_temp[0]->fname;
+				$data['mname'] = $obj_temp[0]->mname;
+				$data['userType'] = $obj_temp[0]->user_right;	
+				$this->session->set_userdata($data);
+				redirect('super');
 			}
-			else if($check_hr)  				
+			else
 			{
-				$data['userType'] = 'hr';			
+				//echo "wrong pas"; // incorrect username or password
+				$data['incorrect_credentials'] = true;
+				$this->load->view('login_view', $data);	
 			}
-			else if($check_accounting) 				
-			{
-				$data['userType'] = 'accounting';
-			}
-			else if($check_emp)				
-			{
-				$data['userType'] = 'employee';				
-			}
-			else if($check_supervisor) 				
-			{
-				$data['userType'] = 'supervisor';
-			}
-				
-			$this->session->set_userdata($data);
-			$this->redirect_To();
 		}//login
-		
-		function redirect_To()
-		{
-			$userType = $this->session->userdata('userType');
-					
-			switch($userType)
-			{
-				case 'super': 
-							redirect('super'); break;
-				case 'hr':	
-							redirect('hr'); break;
-				case 'accounting':
-							redirect('accounting'); break;
-				case 'employee': 
-							redirect('employee_home'); break;
-				case 'supervisor':
-							redirect('supervisor'); break;
-				default:
-							$this->load->view('login_view');			
-							break;
-			}//switch
-		}//redirect_To
-		
+	
 		function logout(){
 			$this->session->sess_destroy();
 			redirect('login');
 		}
+		
 			
 	}
 ?>

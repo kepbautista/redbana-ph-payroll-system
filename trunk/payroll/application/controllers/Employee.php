@@ -6,12 +6,12 @@ class Employee extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->helper('date');
+		$this->load->library('session');	
+		
 	}
-	
 	function validateForm($type){
 		//load form validation library
 		$this->load->library('form_validation');
-	
 		//form validation rules for employee information
 		if($type=="insert") $this->form_validation->set_rules('empnum','Employee Number',	'required|callback_script_input|callback_duplicate_empnum');
 		$this->form_validation->set_rules('fname','First Name','required|callback_script_input');
@@ -35,38 +35,48 @@ class Employee extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Employee_model');
-		$data['months'] = $this->Employee_model->buildMonthDropdown(); 
-		$data['days'] = range(1,31);
-		$data['years'] = range(1990,2020); 
-		$data['title'] =  array(
-                  'Mr.'  => 'Mr.',
-                  'Ms.'    => 'Ms.',
-				  'Mrs.'    => 'Mrs.'
-                );
-		$data['pmode'] = $this->Employee_model->getPmode(); 
-		$data['pos_options'] = $this->Employee_model->get_pos();
-		$data['shift_id'] = $this->Employee_model->get_shift();
-		$data['civil_status'] = array(
-                  'Single'  => 'Single',
-                  'Married'    => 'Married'
-				);
-		$data['emp_status'] = array(
-                  'Active'  => 'Active',
-                  'On-Leave'    => 'On-Leave',
-				  'Terminated'    => 'Terminated',
-				  'Resigned'    => 'Resigned'
-				);
-		$data['dept_options'] = $this->Employee_model->get_dept();
-		$data['tax_options'] = $this->Employee_model->get_tax();
-		$data['type_options'] = $this->Employee_model->get_type();
-		$data['user_right'] = $this->Employee_model->get_user_right();
-		$this->validateForm("insert");//call function for validating forms
-	
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Emp_view',$data);
-			//validation errors are present
-		else $this->InsertDb();//insert data
-	
+		$this->load->model('login_model');
+		
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("addemp"))
+			{
+			$data['months'] = $this->Employee_model->buildMonthDropdown(); 
+			$data['days'] = range(1,31);
+			$data['years'] = range(1990,2020); 
+			$data['title'] =  array(
+	                  'Mr.'  => 'Mr.',
+	                  'Ms.'    => 'Ms.',
+					  'Mrs.'    => 'Mrs.'
+	                );
+			$data['pmode'] = $this->Employee_model->getPmode(); 
+			$data['pos_options'] = $this->Employee_model->get_pos();
+			$data['shift_id'] = $this->Employee_model->get_shift();
+			$data['civil_status'] = array(
+	                  'Single'  => 'Single',
+	                  'Married'    => 'Married'
+					);
+			$data['emp_status'] = array(
+	                  'Active'  => 'Active',
+	                  'On-Leave'    => 'On-Leave',
+					  'Terminated'    => 'Terminated',
+					  'Resigned'    => 'Resigned'
+					);
+			$data['dept_options'] = $this->Employee_model->get_dept();
+			$data['tax_options'] = $this->Employee_model->get_tax();
+			$data['type_options'] = $this->Employee_model->get_type();
+			$data['user_right'] = $this->Employee_model->get_user_right();
+			$this->validateForm("insert");//call function for validating forms
+		
+			if ($this->form_validation->run() == FALSE)
+				$this->load->view('Emp_view',$data);
+				//validation errors are present
+			else $this->InsertDb();//insert data
+			}else echo "no permission";
+			}
+		else
+			redirect('login');
+
 	}
 	
 	function Edit()//function for viewing the editing an employee page 

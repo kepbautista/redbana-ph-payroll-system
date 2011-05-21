@@ -37,7 +37,6 @@ class Login_model extends CI_Model {
 	
 		$query = $this->fetch_User(mysql_real_escape_string($this->input->post('empnum')),
 				mysql_real_escape_string($this->input->post('password')));
-		
 		if($query->num_rows == 1)
 		{
 			return true;
@@ -67,7 +66,13 @@ class Login_model extends CI_Model {
 		
 		return $result;
 	}
-	
+	function can_Access($type){
+		$query = $this->db->query('SELECT `type` FROM user_main WHERE user_right = "'.$this->session->userdata('userType').'" AND privilege="'.$type.'"');
+		foreach ($query->result() as $row)
+		$type=$row->type;
+		if ($type==1) return true;
+		else return false;
+	}
 }//CLASS
 
 /* End of file login_model.php */
