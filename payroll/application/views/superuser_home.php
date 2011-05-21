@@ -60,6 +60,19 @@ background-color:#7A991A;
 	<p id="whatareyoudoing">Welcome 
 		<?php
 			echo $userData['empNum']."&nbsp;|&nbsp;".$userData['fname']." ".$userData['mname']."&nbsp;".$userData['sname']." ! ";
+			function can_Access($type,$query)
+			{
+				$result=false;
+				foreach ($query->result() as $row)
+				{
+					if (($row->privilege ==$type) &&($row->type==1) )
+					{
+						$result=true;
+						break;
+					}
+				}
+				return $result;
+			}
 		?>		
 	</p>
 </div>
@@ -74,30 +87,38 @@ background-color:#7A991A;
 	SuperUser Activities
 </div>
 <div style="width:80%" class="center">
-	
-	<ul>
-		<li><a href="employee/getall" class="underline">Edit employee 
-		information</a></li>
-		<li><a href="#" class="underline">View payroll</a></li>
-		<li><a href="sss/getall" class="underline">Edit SSS table</a></li>
-		<li><a href="#" class="underline">Edit PhilHealth table</a></li>
-		<li><a href="witholdingtaxcontroller" class="underline">Edit Witholding Tax Table</a></li>
-		<li><a href="#" class="underline">View calendar</a></li>
-		<li><a href="login/logout" class="underline">Sign out</a></li>
-	</ul>
-	<ul>
-		<li><a href="maintenance/userview" class="underline">User Right Maintenance</a></li>
-		<li><a href="maintenance/posview" class="underline">Position Maintenance</a></li>
-		<li><a href="maintenance/taxview" class="underline">Tax Maintenance</a></li>
-		<li><a href="maintenance/typeview" class="underline">Employment Maintenance</a></li>
-	</ul>
-	<ul>
-		<li><a href="AttendanceController" class="underline">Absences and Tardiness</a></li>
-	</ul>
-	<ul>
-		<li><a href="timesheet/viewtimesheet" class="underline">View TimeSheet</a></li>
-	</ul>
-
+	<?php
+		echo "<ul>";
+		if (can_Access("addemp",$sql))
+			echo "<li><a href='employee/insert' class='underline'>Add Employee Information</a></li>";
+		if (can_Access("editemp",$sql))
+			echo "<li><a href='employee/insert' class='underline'>Edit Employee Information</a></li>";
+		if (can_Access("viewemp",$sql))
+			echo "<li><a href='employee/insert' class='underline'>View All Employee</a></li>";
+		if (can_Access("sss",$sql))
+			echo "<li><a href='employee/insert' class='underline'>SSS Table</a></li>";
+		if (can_Access("phil",$sql))
+			echo "<li><a href='employee/insert' class='underline'>Philhealth Table</a></li>";
+		if (can_Access("wth",$sql))
+			echo "<li><a href='witholdingtaxcontroller' class='underline'>Withholding Tax Table</a></li>";
+		if (can_Access("position",$sql))
+			echo "<li><a href='maintenance/posview' class='underline'>Position Maintenance</a></li>";
+		if (can_Access("taxstatus",$sql))
+			echo "<li><a href='maintenance/taxview' class='underline'>Tax Status Maintenance</a></li>";
+		if (can_Access("shift",$sql))
+			echo "<li><a href='' class='underline'>Shift Maintenance</a></li>";
+		if (can_Access("dept",$sql))
+			echo "<li><a href='maintenance/deptview' class='underline'>Department Maintenance</a></li>";
+		if (can_Access("allleave",$sql))
+			echo "<li><a href='' class='underline'>View All Leave</a></li>";
+		if (can_Access("accleave",$sql))
+			echo "<li><a href='' class='underline'>Accept Leave</a></li>";
+		if (can_Access("viewpay",$sql))
+			echo "<li><a href='' class='underline'>View Payslip</a></li>";
+		if (can_Access("leave",$sql))
+			echo "<li><a href='' class='underline'>File a leave</a></li>";
+		echo "<li><a href='login/logout' class='underline'>Sign out</a></li></ul>";
+	?>
 </div>
 </div>
 <div id="copyright" >
