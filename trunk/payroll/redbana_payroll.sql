@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 21, 2011 at 03:02 PM
+-- Generation Time: May 23, 2011 at 04:22 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -12,8 +12,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
-CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -31,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `absence_reason`
@@ -41,6 +39,7 @@ INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUC
 (1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0),
 (9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
 (8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
+(11, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0),
 (2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1),
 (0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0),
 (10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
@@ -48,8 +47,7 @@ INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUC
 (5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1),
 (3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
 (6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1),
-(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1),
-(11, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0);
+(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -100,27 +98,6 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 ('HRD', 4),
 ('Marketing', 5),
 ('Operations', 6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `emp_type`
---
-
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
-
---
--- Dumping data for table `emp_type`
---
-
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
 
 -- --------------------------------------------------------
 
@@ -202,6 +179,27 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `leave`
 --
 
@@ -276,10 +274,10 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
 -- Dumping data for table `payperiod`
 --
 
-INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`) VALUES
-(1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL),
-(2, 1, '2011-04-24', '2011-05-07', 11, 0, 1, '2008-00196', '2011-05-22 17:10:02'),
-(3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL);
+INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
+(1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL, 0, NULL, NULL),
+(2, 1, '2011-04-24', '2011-05-07', 11, 0, 1, '2008-00196', '2011-05-22 17:10:02', 0, NULL, NULL),
+(3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -592,11 +590,10 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`) VALUES
-(1, '2008-00195', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', 0, 0),
-(2, '2008-00196', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0),
-(3, '2008-00198', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0);
-
+INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `undertime`, `overtime`, `night_diff`) VALUES
+(1, '2008-00195', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', 0, 0, NULL, NULL, NULL),
+(2, '2008-00196', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0, NULL, NULL, NULL),
+(3, '2008-00198', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -640,18 +637,13 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `privilege` varchar(50) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=90 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=116 ;
 
 --
 -- Dumping data for table `user_main`
 --
 
 INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
-(2, 'HR', '', 0),
-(3, 'Staff', '', 0),
-(4, 'Admin', '', 0),
-(5, 'Employee', '', 0),
-(9, 'Superuser', '', 0),
 (20, 'superuser', 'viewemp', 1),
 (21, 'superuser', 'editemp', 1),
 (22, 'superuser', 'addemp', 1),
@@ -680,20 +672,14 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (45, 'employee', 'wth', 0),
 (46, 'employee', 'viewpay', 1),
 (47, 'employee', 'leave', 1),
-(76, 's', 'viewemp', 0),
-(77, 's', 'editemp', 0),
-(78, 's', 'addemp', 0),
-(79, 's', 'allleave', 0),
-(80, 's', 'accleave', 0),
-(81, 's', 'position', 0),
-(82, 's', 'dept', 0),
-(83, 's', 'taxstatus', 0),
-(84, 's', 'shift', 0),
-(85, 's', 'sss', 0),
-(86, 's', 'phil', 0),
-(87, 's', 'wth', 0),
-(88, 's', 'viewpay', 1),
-(89, 's', 'leave', 1);
+(90, 'superuser', 'timesheet', 1),
+(91, 'superuser', 'type', 1),
+(92, 'superuser', 'access', 1),
+(93, 'employee', 'access', 0),
+(94, 'employee', 'type', 0),
+(95, 'employee', 'timesheet', 0),
+(96, 'superuser', 'user', 1),
+(97, 'employee', 'user', 0);
 
 -- --------------------------------------------------------
 

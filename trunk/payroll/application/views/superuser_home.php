@@ -105,10 +105,14 @@ background-color:#7A991A;
 			echo "<li><a href='maintenance/posview' class='underline'>Position Maintenance</a></li>";
 		if (can_Access("taxstatus",$sql))
 			echo "<li><a href='maintenance/taxview' class='underline'>Tax Status Maintenance</a></li>";
+		if (can_Access("user",$sql))
+			echo "<li><a href='maintenance/userview' class='underline'>User Right Maintenance</a></li>";
 		if (can_Access("shift",$sql))
 			echo "<li><a href='' class='underline'>Shift Maintenance</a></li>";
 		if (can_Access("dept",$sql))
 			echo "<li><a href='maintenance/deptview' class='underline'>Department Maintenance</a></li>";
+		if (can_Access("type",$sql))
+			echo "<li><a href='maintenance/typeview' class='underline'>Employment Type Maintenance</a></li>";
 		if (can_Access("allleave",$sql))
 			echo "<li><a href='' class='underline'>View All Leave</a></li>";
 		if (can_Access("accleave",$sql))
@@ -117,7 +121,13 @@ background-color:#7A991A;
 			echo "<li><a href='' class='underline'>View Payslip</a></li>";
 		if (can_Access("leave",$sql))
 			echo "<li><a href='' class='underline'>File a leave</a></li>";
+		if (can_Access("timesheet",$sql))
+		{
+			echo "<li><a href='timesheet/viewtimesheet' class='underline'>View TimeSheet</a></li>";
+			echo "<li><a href='AttendanceController' class='underline'>Absences and Tardiness</a></li>";
+		}
 		echo "<li><a href='login/logout' class='underline'>Sign out</a></li></ul>";
+		
 	?>
 </div>
 </div>
