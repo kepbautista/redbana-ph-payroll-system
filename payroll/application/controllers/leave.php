@@ -42,6 +42,88 @@ class Leave extends CI_Controller {
 	
 	}
 	
+	function Accepted()
+	{
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$this->Leave_model->Leave_approved();
+		$data['query']=$this->Leave_model->Leave_getall();
+		$this->load->view('Leave_all',$data);
+	}
+	
+	function Approve()//function for viewing the editing an employee page 
+	{	
+		if(!isset($_POST['editEmp']))
+		{
+			//get all information from the previous viewing of Emp_edit form
+			$data['empnum'] = $_POST['empnum'];//employee number
+			$data['type'] = $_POST['type'];//first name
+			$data['reason'] = $_POST['reason'];//middle name
+			$data['approval'] = $_POST['approval'];//last name
+			
+			//file date
+			$data['fyear'] = $_POST['fyear'];
+			$data['fmonth'] = $_POST['fmonth'];
+			$data['fday'] = $_POST['fday'];
+						
+			//starting date
+			$data['syear'] = $_POST['syear'];
+			$data['smonth'] = $_POST['smonth'];
+			$data['sday'] = $_POST['sday'];
+			
+			//birthdate
+			$data['ryear'] = $_POST['ryear'];
+			$data['rmonth'] = $_POST['rmonth'];
+			$data['rday'] = $_POST['rday'];
+			
+			$this->load->helper('form');
+			$this->load->model('Leave_model');
+		}
+		else{
+			$this->load->helper('form');
+			$this->load->model('Leave_model');
+			$data['query']=$this->Leave_model->Leave_edit();
+			}
+		
+		$data['months'] = $this->Leave_model->buildMonthDropdown(); 
+		$data['days'] = range(1,31);
+		$data['years'] = range(1990,2020); 
+		$data['type_options'] = array(
+                 'vacation' => 'Vacation',
+				 'sick' => 'Sick',
+				 'emergency' => 'Emergency',
+				 'bereavement' => 'Bereavement',
+				 'maternity' => 'Maternity',
+				 'paternity' => 'Paternity',
+				 'leave without pay' => 'Leave Without Pay'
+                );
+		$this->validateForm("update");//call function for form validation
+		
+		if ($this->form_validation->run() == FALSE)
+			$this->load->view('Leave_approve',$data);
+			//validation errors are present
+		else $this->Update();//update information
+		
+	}
+	
+	function Delete()//deletes an employee
+	{
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$this->Leave_model->Leave_delete();
+		$data['query']=$this->Leave_model->Leave_getall();
+		$this->load->view('Leave_all',$data);
+	}
+	
+	function Update()//update an employee info
+	{
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$this->Leave_model->Leave_update();
+		$data['query']=$this->Leave_model->Leave_getall();
+		$this->load->view('leave_viewall',$data);
+	}
+	
 	function GetAll()//Getting all info of employee and 
 	{
 		$this->load->helper('form');  
@@ -55,8 +137,8 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_insert();
-		$data['query']=$this->Leave_model->Leave_getall();
-		$this->load->view('leave_viewall',$data);
+		$data['query']=$this->Leave_model->Leave_getinfo();
+		$this->load->view('leave_all', $data);
 	}
 	
 	function script_input($str){
@@ -71,6 +153,10 @@ class Leave extends CI_Controller {
 		}	
 		return $response;
 	}//check if user entered a script as input
+	
+	function redirect_success(){
+	$this->load->view('leave_success');
+	}
 	
 	/**SQL INJECTIONS!**/
 	//HR
