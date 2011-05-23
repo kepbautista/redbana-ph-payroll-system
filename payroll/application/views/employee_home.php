@@ -18,8 +18,9 @@ Welcome employee! :)
 			
     <ul>    	
     	<li><a href="#" class="underline">View payslip</a></li>
-		<li><a href="#" class="underline">File a leave</a></li>
-		<li><a href="#" class="underline">Profile</a></li>
+		<li><a href="leave/insert" class="underline">File a leave</a></li>
+		<li><a href="leave/empview" class="underline">View previously filed leaves</a></li>
+		
     </ul>
 
 </div>
