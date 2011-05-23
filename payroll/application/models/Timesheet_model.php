@@ -17,6 +17,15 @@ class Timesheet_model extends CI_Model {
             '12'=>'Dec');
         return $month;
     }
+	function get_desc() {//get the description of the status
+        $this->db->select('id, title');
+        $this->db->from('daily_desc');
+        $query = $this->db->get();
+        foreach($query->result_array() as $row)
+            $data[$row['id']]=$row['title'];
+        return $data;
+	}
+
 	function Timesheet_viewalltime($cases) {
 		$this->load->database();
 		if ($cases==1)
@@ -47,7 +56,7 @@ class Timesheet_model extends CI_Model {
 		$query = $this->db->get('employee');
 		foreach ($query->result() as $row)
 		{
-			$query1 = $this->db->query('INSERT INTO timesheet(`date_in`,`time_in`,`date_out`,`time_out`,`empnum`) VALUES("'.$date.'","00:00:00","'.$date.'","00:00:00","'.$row->empnum.'")');
+			$query1 = $this->db->query('INSERT INTO timesheet(`date_in`,`time_in`,`date_out`,`time_out`,`empnum`,`type`) VALUES("'.$date.'","00:00:00","'.$date.'","00:00:00","'.$row->empnum.'","'.$_POST['type'].'")');
 		}
 	}
 	function Update()
