@@ -140,7 +140,8 @@ class Maintenance extends CI_Controller {
 		$this->Maintenance_model->Pos_delete();	
 		$data['query']=$this->Maintenance_model->Pos_getall();	
 		$this->load->view('Pos_view',$data);
-	}	
+	}
+	
 	//User maintenance
 	function Userview()//main page of department maintenance
 	{	
@@ -163,28 +164,35 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
+		$data['query']=$this->Maintenance_model->User_getall();	
 		
 		$this->validateForm('user');
 		
 		if ($this->form_validation->run() == TRUE)
-		{
 			$this->Maintenance_model->User_update();
-			redirect('maintenance/userview');
-		}
+		
+		$this->load->view('User_view',$data);
 	}
 	
 	function UserInsert()//main page of department maintenance
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
+		$data['query']=$this->Maintenance_model->User_getall();
 		
 		$this->validateForm('user');		
 		
-		if($this->form_validation->run() == TRUE)
-		{
-			$this->Maintenance_model->User_insert();
-			redirect('maintenance/userview');
-		}
+		if($this->form_validation->run() == FALSE)
+			$this->load->view('User_view',$data);
+		else $this->InsertUser();
+	}
+	
+	function InsertUser(){
+		$this->load->helper('form');  
+		$this->load->model('Maintenance_model');
+		$this->Maintenance_model->User_insert();
+		$data['query']=$this->Maintenance_model->User_getall();
+		$this->load->view('User_view',$data);
 	}
 	
 	function UserDelete()//main page of department maintenance

@@ -34,10 +34,7 @@ function validateEmpNum($q,$response){
 	if($rows>0)
 		$response = "Employee Number already exists.";
 		//employee number already exists
-	//else
-	/**VALIDATE EMPLOYEE NUMBER FORMAT
-							here!!!**/
-	
+		
 	return $response;
 }//function for validating employee number format
 
