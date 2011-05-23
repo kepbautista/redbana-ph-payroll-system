@@ -144,9 +144,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 1, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 1, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 3, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 3, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 3, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
 
 -- --------------------------------------------------------
 
@@ -470,21 +470,23 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `START_TIME` time NOT NULL,
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
+  `NIGHT_DIFF` time NOT NULL DEFAULT '00:00:00',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`) VALUES
-(0, -1, '09:00:00', '18:00:00', 0),
-(1, -1, '07:00:00', '16:00:00', 0),
-(4, -1, '09:00:00', '18:00:00', 0),
-(5, -1, '15:00:00', '00:00:00', 1),
-(6, -1, '23:00:00', '08:00:00', 1);
-
--- --------------------------------------------------------
+INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`, `NIGHT_DIFF`) VALUES
+('', -1, '00:00:00', '09:00:00', 0, '05:00:00'),
+('', -1, '07:00:00', '16:00:00', 0, '00:00:00'),
+('', -1, '09:00:00', '18:00:00', 0, '00:00:00'),
+('', -1, '14:00:00', '23:00:00', 0, '05:00:00'),
+('', -1, '15:00:00', '00:00:00', 1, '02:00:00'),
+('', -1, '21:00:00', '06:00:00', 1, '07:00:00'),
+('', -1, '23:00:00', '08:00:00', 1, '06:00:00');
+-----------------------------------------------------------
 
 --
 -- Table structure for table `sss`
@@ -580,9 +582,10 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `time_out` time NOT NULL,
   `absence_reason` int(11) DEFAULT NULL,
   `shift_id` int(11) NOT NULL,
-  `undertime` time DEFAULT NULL,
-  `overtime` time DEFAULT NULL,
-  `night_diff` time DEFAULT NULL,
+  `tardiness` time DEFAULT '00:00:00',
+  `undertime` time DEFAULT '00:00:00',
+  `overtime` time DEFAULT '00:00:00',
+  `night_diff` time DEFAULT '00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
