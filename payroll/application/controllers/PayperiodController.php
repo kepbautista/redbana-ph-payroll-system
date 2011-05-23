@@ -221,6 +221,7 @@ class PayperiodController extends CI_Controller
 		/*
 			made | abe | 19may2011_1235
 		*/
+		$stillErrors = TRUE;
 		$missing_in_TimeSheet = array();
 		$there_is_entry_for_payperiod = TRUE;		
 		$payperiod_lapsed = TRUE;
@@ -253,7 +254,7 @@ class PayperiodController extends CI_Controller
 		//checks if today is within the payperiod, if so, display appropriate message
 		if( !empty($payperiod_of_today) ) $data['payperiod_lapsed'] = ($payperiod == $payperiod_of_today[0]->ID);				
 		
-		if( !empty($missing_in_TimeSheet) )
+		if( !empty($missing_in_TimeSheet) ||  !empty($payperiod_of_today) )
 		{
 			$data['missing_in_TimeSheet'] = $missing_in_TimeSheet;
 			$this->load->view("payperiodFinalizeDisplayAnomalies", $data);

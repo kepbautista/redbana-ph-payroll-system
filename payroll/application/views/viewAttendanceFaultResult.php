@@ -18,8 +18,8 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>View Attendance Fault Data - Redbana Phils. Payroll</title>
-<style type="text/css">
-</style><link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>assets/css/specialtable.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -31,21 +31,20 @@
 		<li class="nav"><a id="nav" href="<?php echo base_url(); ?>">Home</a></li>
 	</ul>
 </div>
-<div id="container" class="center" >
+<div id="container_longer1" class="center" >
 	<div id="article_SpecificDetail" class="center" >
 		View Attendance Faults for This Pay Period (<?php echo $payperiod_obj->START_DATE." - ".$payperiod_obj->END_DATE;  ?>)
 	</div>
-	<div class="center" >
+	<div class="center" id="div_within_div"  >
 		<?php
 			if( empty($result) )
 			{
 				echo "No data yet for this Pay Period and Payment Mode.<br/><br>";
 				echo "Go back to home and click Generate.<br/>";				
 			}else
-			{
-				echo "<strong>Statistics<strong>";
+			{   echo '<p class="table_title" >Statistics</p>';
 		?>
-				<table border="1">
+				<table border="1" class="sample" >
 					<thead>
 						<tr>
 							<th>Name</th>							
@@ -65,29 +64,28 @@
 					
 					</tbody>
 				</table>
-				<br/><br/>
-				<strong>Each Employee Data</strong>
-				<table border="1">
+				</div>
+				<div>
+				<p class="table_title" >Each Employee Data</p>;
+				<table border="1" class="sample">
 					<thead>
 						<tr>
 							<th>EmpNum</th>							
 							<th>Name</th>
 							<th>Monthly Rate</th>
 							<th>Daily Rate</th>
-							<th>Days - Absences &amp; Lwop</th>
-							<th>Amount - Absences &amp; Lwop</th>
-							<th>Days - Sick &amp; Leave</th>
-							<th>Amount - Sick &amp; Leave</th>
-							<th>Days - Suspension</th>
-							<th>Amount - Suspension</th>
-							<th>Minutes - Tardiness</th>
-							<th>Amount - Tardiness</th>
+							<th>Absences &amp; Lwop</th>
+							<th>Amount</th>
+							<th>Sick and Vacation Leave</th>
+							<th>Amount</th>
+							<th>Suspension</th>
+							<th>Amount</th>
+							<th>Tardiness in Minutes</th>
+							<th>Amount</th>
 							<th>Total Amount</th>
 							<th>Paid VL days</th>
 							<th>Paid SL days</th>
-							<th>Paid Emergency Leave Days</th>
-							<th>Generated</th>
-							<th>Modified by</th>					
+							<th>Paid Emergency Leave Days</th>							
 						</tr>
 					</thead>
 					<tbody>
@@ -96,7 +94,10 @@
 					 ?>
 						<tr>
 							<td><?php echo $each_employee->empnum; ?></td>	
-							<td>COMING SOON</td>						
+							<td>
+								<?php echo strtoupper($employees[$each_employee->empnum]->sname.", ".$employees[$each_employee->empnum]->fname); ?>
+							
+							</td>						
 							<td><?php echo $each_employee->monthly_rate; ?></td>
 							<td><?php echo $each_employee->daily_rate; ?></td>
 							<td><?php echo $each_employee->absences_lwop_days; ?></td>
@@ -110,10 +111,7 @@
 							<td><?php echo $each_employee->total_amount; ?></td>
 							<td><?php echo $each_employee->paid_vl_days; ?></td>
 							<td><?php echo $each_employee->paid_sl_days; ?></td>		
-							<td><?php echo $each_employee->paid_emergency_leave_days; ?></td>
-							<td><?php echo $each_employee->last_update; ?></td>
-							<td><?php echo $each_employee->modified_by; ?></td>
-
+							<td><?php echo $each_employee->paid_emergency_leave_days; ?></td>				
 						</tr>
 					<?php	}
 					?>
@@ -123,7 +121,7 @@
 				<br/><br/>
 		<?php
 			}			
-		echo '<a href="'.base_url().'index.php/AttendanceController" >'.form_button('meowx', 'Go back to Attendance Fault Center').'</a>';
+		echo '<br/><br/><center><a href="'.base_url().'index.php/AttendanceController" class="center_pure" >'.form_button('meowx', 'Go back to Attendance Fault Center').'</a></center>';
 		?>		
 	 </div>
 	 <br/>

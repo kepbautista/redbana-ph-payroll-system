@@ -48,7 +48,8 @@ INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUC
 (5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1),
 (3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
 (6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1),
-(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1);
+(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1),
+(11, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -265,8 +266,11 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `FINALIZED` tinyint(1) NOT NULL DEFAULT '0',
   `FINALIZED_BY` varchar(255) DEFAULT NULL,
   `FINALIZED_DATE` timestamp NULL DEFAULT NULL,
+  `PAYROLL_FINALIZED` tinyint(1) NOT NULL DEFAULT '0',
+  `PAYROLL_FINALIZED_BY` varchar(255) DEFAULT NULL,
+  `PAYROLL_FINALIZED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -274,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
 
 INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`) VALUES
 (1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL),
-(2, 1, '2011-04-24', '2011-05-07', 11, 0, 0, NULL, NULL),
+(2, 1, '2011-04-24', '2011-05-07', 11, 0, 1, '2008-00196', '2011-05-22 17:10:02'),
 (3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -578,12 +582,20 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `time_out` time NOT NULL,
   `absence_reason` int(11) DEFAULT NULL,
   `shift_id` int(11) NOT NULL,
+  `undertime` time DEFAULT NULL,
+  `overtime` time DEFAULT NULL,
+  `night_diff` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `timesheet`
 --
+
+INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`) VALUES
+(1, '2008-00195', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', 0, 0),
+(2, '2008-00196', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0),
+(3, '2008-00198', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0);
 
 
 -- --------------------------------------------------------

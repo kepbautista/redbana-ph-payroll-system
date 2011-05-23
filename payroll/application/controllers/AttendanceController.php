@@ -10,7 +10,8 @@ class AttendanceController extends CI_Controller
 		$this->load->helper(array('form','url') );		
 		$this->load->model('login_model');
 		$this->load->model('Attendance_model');		
-		$this->load->model('Payperiod_model');		
+		$this->load->model('Payperiod_model');	
+		$this->load->model('Employee_model');
 		
 		if( ! $this->login_model->isUser_LoggedIn() ) 
 		{
@@ -159,7 +160,11 @@ class AttendanceController extends CI_Controller
 		
 		$data['payperiod_obj'] = $payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);	
 		$data['result'] = $this->Attendance_model->getAttendanceFaults($payperiod, $payment_mode);
-		$data['statistics'] = $this->Attendance_model->computeTotal_AttendanceFaults($data['result']);
+		$data['statistics'] = $this->Attendance_model->computeTotal_AttendanceFaults($data['result']);		
+		if( !empty($data['result']) )
+		{
+			$data['employees'] = $this->Employee_model->get_Employees_Associative();
+		}
 		$this->load->view('viewAttendanceFaultResult', $data);
 	}
 

@@ -1,0 +1,28 @@
+table.sample {
+	border-width: 1px;
+	border-spacing: 0px;
+	border-style: solid;
+	border-color: blue;
+	border-collapse: separate;
+	background-color: rgb(255, 255, 240);
+	margin-left: auto;
+	margin-right: auto;
+	width: 65%;
+	-moz-border-radius: 3px 3px 3px 3px;
+}
+table.sample th {
+	border-width: thin;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	background-color: rgb(255, 255, 240);
+	-moz-border-radius: 3px 3px 3px 3px;
+}
+table.sample td {
+	border-width: thin;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	background-color: rgb(255, 255, 240);
+	-moz-border-radius: 3px 3px 3px 3px;
+}

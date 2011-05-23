@@ -119,7 +119,7 @@ class Employee_model extends CI_Model {
 	
     function Employee_getall() {//select all the info of an employee from employee table
 		$this->load->database();
-		$query = $this->db->query('SELECT * FROM employee');
+		$query = $this->db->query('SELECT * FROM `employee`');
 		return $query->result();
 	}
 	function Employee_get($emp) {//select all the info of a specific employee
@@ -408,6 +408,23 @@ class Employee_model extends CI_Model {
 		return $query->num_rows();
 	}
 	
+	function get_Employees_Associative()
+	{
+		$employees = $this->Employee_getall();
+		$returnThisArray = array();
+		
+		if( empty($employees) )
+		{
+			return NULL;
+		}else
+		
+		foreach($employees as $each_emp)
+		{
+			$returnThisArray[$each_emp->empnum] = $each_emp;
+		}
+		
+		return $returnThisArray;
+	}
 	
 }//class
 ?>
