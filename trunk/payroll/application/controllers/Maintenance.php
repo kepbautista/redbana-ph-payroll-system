@@ -7,6 +7,7 @@ class Maintenance extends CI_Controller {
 		$this->load->helper('date');
 		$this->load->helper('form');
 		$this->load->model('Maintenance_model');
+		$this->load->model('login_model');
 	}
 	
 	function validateForm($type){
@@ -46,48 +47,96 @@ class Maintenance extends CI_Controller {
 	//department maintenance
 	function Deptview()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Dept_getall();	
-		$this->load->view('Dept_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("dept"))
+			{
+				$data['query']=$this->Maintenance_model->Dept_getall();	
+				$this->load->view('Dept_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function DeptEdit()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Dept_getall();	
-		$data['edit']=$this->input->post('dept');
-		$this->load->view('Dept_edit',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("dept"))
+			{
+				$data['query']=$this->Maintenance_model->Dept_getall();	
+				$data['edit']=$this->input->post('dept');
+				$this->load->view('Dept_edit',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function DeptUpdate()//main page of department maintenance
 	{
-		$data['query'] = $this->Maintenance_model->Dept_getall();
-		$this->validateForm('dept');
-		
-		if($this->form_validation->run() == FALSE)
-			$this->load->view('Dept_view',$data);
-			//validation errors are present
-		else $this->UpdateDept();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("dept"))
+			{
+				$data['query'] = $this->Maintenance_model->Dept_getall();
+				$this->validateForm('dept');
+				
+				if($this->form_validation->run() == FALSE)
+					$this->load->view('Dept_view',$data);
+					//validation errors are present
+				else $this->UpdateDept();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}	
 	function DeptInsert()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Dept_getall();
-		$this->validateForm('dept');
-		
-		if($this->form_validation->run() == FALSE)
-			$this->load->view('Dept_view',$data);
-			//validation errors are present
-		else $this->InsertDept();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("dept"))
+			{
+				$data['query'] = $this->Maintenance_model->Dept_getall();
+				$this->validateForm('dept');
+				
+				if($this->form_validation->run() == FALSE)
+					$this->load->view('Dept_view',$data);
+					//validation errors are present
+				else $this->InsertDept();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function UpdateDept(){
-		$this->Maintenance_model->Dept_update();
-		$data['query'] = $this->Maintenance_model->Dept_getall();
-		$this->load->view('Dept_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("dept"))
+			{
+				$this->Maintenance_model->Dept_update();
+				$data['query'] = $this->Maintenance_model->Dept_getall();
+				$this->load->view('Dept_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for updating a department
 	
 	function InsertDept(){
-		$this->Maintenance_model->Dept_insert();
-		$data['query'] = $this->Maintenance_model->Dept_getall();
-		$this->load->view('Dept_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("dept"))
+			{
+				$this->Maintenance_model->Dept_insert();
+				$data['query'] = $this->Maintenance_model->Dept_getall();
+				$this->load->view('Dept_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for adding a department
 	
 	//positon maintenance
