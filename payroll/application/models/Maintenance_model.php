@@ -116,7 +116,28 @@ class Maintenance_model extends CI_Model {
 		$ex = mysql_real_escape_string($this->input->post('ex'));
 		$this->db->query('INSERT INTO tax_status(`status`,`desc`,`exemption`) VALUES ("'.$status.'","'.$desc.'","'.$ex.'")');
 	}
-	
+	function day_getall() {//select all the list of department
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM daily_desc');
+		return $query->result();
+	}
+	function day_update(){//Update a department
+		$title = mysql_real_escape_string($this->input->post('title'));
+		$id = mysql_real_escape_string($this->input->post('id'));
+		$desc = mysql_real_escape_string($this->input->post('desc'));
+		$payrate = mysql_real_escape_string($this->input->post('payrate'));
+		$this->db->query('UPDATE `daily_desc` SET `title`="'.$title.'", `desc`="'.$desc.'", `payrate`="'.$payrate.'" WHERE `id`="'.$id.'"');
+	}
+	function day_delete(){//delete a department
+		$this->db->where('id',mysql_real_escape_string($this->input->post('id')));
+		$this->db->delete('daily_desc'); 
+	}
+	function day_insert(){//insert department
+		$title = mysql_real_escape_string($this->input->post('title'));
+		$desc = mysql_real_escape_string($this->input->post('desc'));
+		$payrate = mysql_real_escape_string($this->input->post('payrate'));
+		$this->db->query('INSERT INTO daily_desc(`title`,`desc`,`payrate`) VALUES ("'.$title.'","'.$desc.'","'.$payrate.'")');
+	}
 	function duplicate_Type($str){
 		//search if type is existing
 		$query = mysql_query("SELECT * from `emp_type` WHERE type LIKE '".$str."'");
@@ -128,7 +149,17 @@ class Maintenance_model extends CI_Model {
 			//type already exists
 		else return TRUE;
 	}//check if duplicate employee type
+	function duplicate_daytype($str){
+		//search if user right is existing
+		$query = mysql_query("SELECT * from `daiy_desc` WHERE title LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
 	
+		if($rows>0) return FALSE;
+			//user right already exists
+		else return TRUE;
+	}
 	function duplicate_usertype($str){
 		//search if user right is existing
 		$query = mysql_query("SELECT * from `user_main` WHERE user_right LIKE '".$str."'");
