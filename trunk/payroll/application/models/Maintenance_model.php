@@ -70,6 +70,7 @@ class Maintenance_model extends CI_Model {
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","access")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","user")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","type")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","day")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","timesheet")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","viewpay")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","leave")');
@@ -151,11 +152,13 @@ class Maintenance_model extends CI_Model {
 	}//check if duplicate employee type
 	function duplicate_daytype($str){
 		//search if user right is existing
-		$query=$this->db->query('SELECT * FROM `daily_desc` WHERE `title`="'.$str.'"');
-		$rows =$query->num_rows();
+		$query = mysql_query("SELECT * from `daiy_desc` WHERE title LIKE '".$str."'");
+		
+		//count number of rows produced by the query
+		$rows = mysql_num_rows($query);
 	
 		if($rows>0) return FALSE;
-			//day type already exists
+			//user right already exists
 		else return TRUE;
 	}
 	function duplicate_usertype($str){

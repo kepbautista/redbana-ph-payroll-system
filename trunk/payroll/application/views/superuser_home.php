@@ -84,7 +84,7 @@ background-color:#7A991A;
 </div>-->
 <div id="container" class="center" >
 <div id="article_SpecificDetail" class="center" style="width:80%">
-	SuperUser Activities
+	 Activities
 </div>
 <div style="width:80%" class="center">
 	<?php
@@ -94,11 +94,11 @@ background-color:#7A991A;
 		if (can_Access("editemp",$sql))
 			echo "<li><a href='employee/insert' class='underline'>Edit Employee Information</a></li>";
 		if (can_Access("viewemp",$sql))
-			echo "<li><a href='employee/insert' class='underline'>View All Employee</a></li>";
+			echo "<li><a href='employee/getall' class='underline'>View All Employee</a></li>";
 		if (can_Access("sss",$sql))
-			echo "<li><a href='employee/insert' class='underline'>SSS Table</a></li>";
+			echo "<li><a href='sss/getall' class='underline'>SSS Table</a></li>";
 		if (can_Access("phil",$sql))
-			echo "<li><a href='employee/insert' class='underline'>Philhealth Table</a></li>";
+			echo "<li><a href='philhealth/getall' class='underline'>Philhealth Table</a></li>";
 		if (can_Access("wth",$sql))
 			echo "<li><a href='witholdingtaxcontroller' class='underline'>Withholding Tax Table</a></li>";
 		if (can_Access("position",$sql))
@@ -107,6 +107,8 @@ background-color:#7A991A;
 			echo "<li><a href='maintenance/taxview' class='underline'>Tax Status Maintenance</a></li>";
 		if (can_Access("user",$sql))
 			echo "<li><a href='maintenance/userview' class='underline'>User Right Maintenance</a></li>";
+		if (can_Access("day",$sql))
+			echo "<li><a href='maintenance/dayview' class='underline'>Type Of Day Maintenance</a></li>";
 		if (can_Access("shift",$sql))
 			echo "<li><a href='' class='underline'>Shift Maintenance</a></li>";
 		if (can_Access("dept",$sql))

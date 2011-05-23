@@ -13,6 +13,7 @@
 	</head>
 <body id="dt_example">
 	<?php
+	echo $user;
 	if ($rows==0)
 	{
 		echo "<h1>Sorry,No such user right exist.</h1>";
@@ -35,12 +36,12 @@
 		return $result;
 		}
 		echo form_open('employee/insertPriv'); 
-		echo form_hidden('user',$user); 
 		?>
 		<table>
 			<tr><th colspan=2>Manipulate Employee Details</th></tr>
 			<tr>
 				<td ><?php
+						echo form_hidden('user',$user);
 						if (set("allleave",$query)==1){
 							echo form_checkbox('allleave','allleave','TRUE'); echo form_label('View all File leave', 'allleave');}
 						else{
@@ -65,6 +66,21 @@
 							echo form_checkbox('editemp','editemp','true');echo form_label('Edit Employee Details', 'editemp');}
 						else{
 							echo form_checkbox('editemp','editemp');echo form_label('Edit Employee Details', 'editemp');}?>
+				</td>
+			</tr>
+			<tr><th colspan=2>Critical Privileges</th></tr>
+			<tr>
+				<td ><?php
+						if (set("timesheet",$query)==1){
+							echo form_checkbox('timesheet','timesheet','TRUE'); echo form_label('Timesheet Actions', 'timesheet');}
+						else{
+							echo form_checkbox('timesheet','timesheet'); echo form_label('Timesheet Actions', 'timesheet');}?>
+				</td>
+				<td ><?php 
+						if (set("access",$query)==1){
+							echo form_checkbox('access','access','true'); echo form_label('Distribute access right', 'access');}
+						else{
+							echo form_checkbox('access','access'); echo form_label('Distribute access right', 'access');}?>
 				</td>
 			</tr>
 			<tr >
@@ -124,6 +140,26 @@
 						else{
 							echo form_checkbox('wth','wth');echo form_label('Withholding Tax Table', 'wth');}?>
 				</td>
+				<td><?php
+						if (set("user",$query)==1){
+							echo form_checkbox('use','user','true');echo form_label('User Right Maintenance', 'user');}
+						else{
+							echo form_checkbox('use','user');echo form_label('User Right Maintenance', 'user');}?>
+				</td>
+			</tr>
+			<tr>
+				<td><?php
+						if (set("type",$query)==1){
+							echo form_checkbox('type','type','true');echo form_label('Employment Type Maintenance', 'type');}
+						else{
+							echo form_checkbox('type','type');echo form_label('Employment Type Maintenance', 'type');}?>
+				</td>
+				<td><?php
+						if (set("day",$query)==1){
+							echo form_checkbox('day','day','true');echo form_label('Type of Day Table', 'day');}
+						else{
+							echo form_checkbox('day','day');echo form_label('Type of Day Table', 'day');}?>
+				</td>
 			</tr>
 			<tr><th colspan=2>Default </th></tr>
 			<tr>
@@ -143,6 +179,7 @@
 		</table>
 	<?php 
 		echo form_submit('mysubmit','Submit'); 
+		echo form_reset('reset','Reset'); 
 		echo form_close();}
 	?>
 </body>
