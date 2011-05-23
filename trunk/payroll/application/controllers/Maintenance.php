@@ -1,6 +1,5 @@
 <?php
 class Maintenance extends CI_Controller {
-
 	function __construct()
 	{
 		parent::__construct();
@@ -31,8 +30,7 @@ class Maintenance extends CI_Controller {
 				'required|callback_script_input');
 						  $this->form_validation->set_rules('ex','Exemption',
 				'required|numeric|greater_than[0]');
-				break;
-				
+				break;	
 		}
 		
 	}//function for validating forms
@@ -59,30 +57,25 @@ class Maintenance extends CI_Controller {
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
-		
 		$this->validateForm('dept');
-		$data['query']=$this->Maintenance_model->Dept_getall();	
-		
 		if($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Dept_update();
-			//validation errors are NOT present
-		
-		$this->load->view('Dept_view',$data);
-	}
-	
+			redirect('maintenance/deptview');
+		}
+	}	
 	function DeptInsert()//main page of department maintenance
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('dept');
-		$data['query']=$this->Maintenance_model->Dept_getall();	
 		
 		if($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Dept_insert();
-			//validation errors
-			
-		$this->load->view('Dept_view',$data);
+			redirect('maintenance/deptview');
+		}	
 	}
 	
 	function DeptDelete()//main page of department maintenance
@@ -118,13 +111,12 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('position');
-		$data['query']=$this->Maintenance_model->Pos_getall();
 		
 		if ($this->form_validation->run() == TRUE)
+		{	
 			$this->Maintenance_model->Pos_update();	
-			//validation errors are NOT present
-			
-		$this->load->view('Pos_view',$data);
+			redirect('maintenance/posview');
+		}
 	}
 	
 	function PosInsert()//main page of department maintenance
@@ -133,13 +125,12 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('position');
-		$data['query']=$this->Maintenance_model->Pos_getall();
 		
 		if ($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Pos_insert();	
-			//validation errors are NOT present
-			
-		$this->load->view('Pos_view',$data);
+			redirect('maintenance/posview');
+		}
 	}
 	
 	function PosDelete()//main page of department maintenance
@@ -149,8 +140,7 @@ class Maintenance extends CI_Controller {
 		$this->Maintenance_model->Pos_delete();	
 		$data['query']=$this->Maintenance_model->Pos_getall();	
 		$this->load->view('Pos_view',$data);
-	}
-	
+	}	
 	//User maintenance
 	function Userview()//main page of department maintenance
 	{	
@@ -175,13 +165,12 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('user');
-		$data['query']=$this->Maintenance_model->User_getall();
 		
 		if ($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->User_update();
-			//validation errors are NOT present
-			
-		$this->load->view('User_view',$data);
+			redirect('maintenance/userview');
+		}
 	}
 	
 	function UserInsert()//main page of department maintenance
@@ -190,13 +179,12 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('user');		
-		$data['query']=$this->Maintenance_model->User_getall();
 		
 		if($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->User_insert();
-			//validation errors are NOT present
-		
-		$this->load->view('User_view',$data);
+			redirect('maintenance/userview');
+		}
 	}
 	
 	function UserDelete()//main page of department maintenance
@@ -231,14 +219,12 @@ class Maintenance extends CI_Controller {
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');	
 		
-		$this->validateForm('type');
-		$data['query']=$this->Maintenance_model->Type_getall();	
-		
+		$this->validateForm('type');	
 		if ($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Type_update();
-			//validation errors are NOT present
-		
-		$this->load->view('Type_view',$data);
+			redirect('maintenance/typeview');
+		}
 	}
 	
 	function TypeInsert()//main page of department maintenance
@@ -247,13 +233,12 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('type');
-		$data['query']=$this->Maintenance_model->Type_getall();	
 		
 		if ($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Type_insert();
-			//validation errors are NOT present
-			
-		$this->load->view('Type_view',$data);
+			redirect('maintenance/typeview');
+		}
 	}
 	
 	function TypeDelete()//main page of department maintenance
@@ -289,28 +274,25 @@ class Maintenance extends CI_Controller {
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('taxstatus');
-		$data['query']=$this->Maintenance_model->Tax_getall();
 		
 		if ($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Tax_update();
-			//validation errors are NOT present
-		
-		$this->load->view('Tax_view',$data);
-	}
-	
+			redirect('maintenance/taxview');
+		}
+	}	
 	function TaxInsert()//main page of department maintenance
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Maintenance_model');
 		
 		$this->validateForm('taxstatus');
-		$data['query']=$this->Maintenance_model->Tax_getall();
 		
 		if ($this->form_validation->run() == TRUE)
+		{
 			$this->Maintenance_model->Tax_insert();
-			//validation errors are NOT present
-		
-		$this->load->view('Tax_view',$data);
+			redirect('maintenance/taxview');
+		}
 	}
 	
 	function TaxDelete()//main page of department maintenance
