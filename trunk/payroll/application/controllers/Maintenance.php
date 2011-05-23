@@ -26,6 +26,12 @@ class Maintenance extends CI_Controller {
 		case 'type': $this->form_validation->set_rules($type,'Employee Type',
 				'required|callback_script_input|callback_duplicate_type');
 				break;
+		case 'day': 
+					$this->form_validation->set_rules('desc','Description',
+				'required|callback_script_input');
+						  $this->form_validation->set_rules('payrate','Payrate',
+				'required|numeric|greater_than[0]');
+				break;
 		case 'taxstatus': $this->form_validation->set_rules('status','Tax Status',
 				'required|callback_script_input');
 						  $this->form_validation->set_rules('desc','Description',
@@ -274,7 +280,64 @@ class Maintenance extends CI_Controller {
 		$data['query']=$this->Maintenance_model->Tax_getall();
 		$this->load->view('Tax_view',$data);
 	}//function for adding a tax status
+	//Daily Description
+	function dayview()//main page of department maintenance
+	{	
+		$this->load->helper('form');  
+		$this->load->model('Maintenance_model');
+		$data['query']=$this->Maintenance_model->day_getall();	
+		$this->load->view('day_view',$data);
+	}
 	
+	function dayEdit()//main page of department maintenance
+	{	
+		$this->load->helper('form');  
+		$this->load->model('Maintenance_model');
+		$data['query']=$this->Maintenance_model->day_getall();	
+		$data['edit']=$this->input->post('title');
+		$this->load->view('day_edit',$data);
+	}
+	
+	function dayUpdate()//main page of department maintenance
+	{	
+		$this->load->helper('form');  
+		$data['query'] = $this->Maintenance_model->day_getall();
+		$this->load->model('Maintenance_model');	
+		$this->validateForm('day');	
+		if ($this->form_validation->run() == FALSE)
+			$this->load->view('day_view',$data);
+			//validation errors are present
+		else $this->UpdateDay();
+	}
+	function dayInsert()//main page of department maintenance
+	{	
+		$this->load->helper('form');  
+		$data['query'] = $this->Maintenance_model->day_getall();
+		$this->load->model('Maintenance_model');
+		$this->validateForm('day');
+		if ($this->form_validation->run() == FALSE)
+			$this->load->view('day_view',$data);
+			//validation errors are present
+		else $this->InsertDay();
+	}
+	function UpdateDay(){
+		$this->Maintenance_model->day_update();
+		$data['query']=$this->Maintenance_model->day_getall();
+		$this->load->view('day_view',$data);
+	}//function for updating type of day
+	function InsertDay(){
+		$this->Maintenance_model->day_insert();
+		$data['query']=$this->Maintenance_model->day_getall();
+		$this->load->view('day_view',$data);
+	}//function for inserting type of day
+	function dayDelete()//main page of department maintenance
+	{	
+		$this->load->helper('form');  
+		$this->load->model('Maintenance_model');
+		$this->Maintenance_model->day_delete();	
+		$data['query']=$this->Maintenance_model->day_getall();	
+		$this->load->view('day_view',$data);
+	}
 	function duplicate_type($str){
 		$response = $this->Maintenance_model->duplicate_Type($str);	
 		$this->form_validation->set_message('duplicate_type','"'.$str.'" %s already exists.');
@@ -286,7 +349,11 @@ class Maintenance extends CI_Controller {
 		$this->form_validation->set_message('duplicate_usertype','"'.$str.'" %s already exists.');
 		return $response;
 	}//check if duplicate user type
-	
+	function duplicate_daytype($str){	
+		$response = $this->Maintenance_model->duplicate_daytype($str);
+		$this->form_validation->set_message('duplicate_daytype','"'.$str.'" %s already exists.');
+		return $response;
+	}
 	function duplicate_positiontype($str){	
 		$response = $this->Maintenance_model->duplicate_positiontype($str);
 		$this->form_validation->set_message('duplicate_positiontype','"'.$str.'" %s already exists.');
