@@ -6,6 +6,30 @@ class Leave extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->helper('date');
+		$this->load->library('session');
+	}
+	
+	function index() {
+		/* changed | abe | 06may2011_0030 : changed this condition in if so that the login_model is called, as part of 'Object-oriented approach',
+											rather than calling the session data directly
+		*/							
+		$this->load->model('login_model');
+		
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			$data['userData'] = array(
+						   'empNum' => $this->session->userData('empnum'),
+						   'sname' => $this->session->userData('sname'), 
+						   'fname' => $this->session->userData('fname'),
+						   'mname' => $this->session->userData('mname')
+			);
+			$data['sql']=$this->login_model->permission($this->session->userData('userType'));
+			$this->load->view('superuser_home_x', $data);					
+		}
+		else
+			redirect('login');
+			
+			
 	}
 
 	function validateForm($type){
@@ -39,7 +63,6 @@ class Leave extends CI_Controller {
 			$this->load->view('leave_view',$data);
 			//validation errors are present
 		else $this->InsertDb();//insert data
-	
 	}
 	
 	function Accepted()
@@ -47,7 +70,24 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_approved();
-		$data['query']=$this->Leave_model->Leave_getall();
+		$data['query']=$this->Leave_model->Leave_getinfo();
+		$this->load->view('Leave_all',$data);
+	}
+	
+	function Empview()
+	{
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$data['query']=$this->Leave_model->Empview();
+		$this->load->view('Leave_empviewall',$data);
+	}
+	
+	function Not_approved()
+	{
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$this->Leave_model->Leave_notapproved();
+		$data['query']=$this->Leave_model->Leave_getinfo();
 		$this->load->view('Leave_all',$data);
 	}
 	
@@ -114,6 +154,7 @@ class Leave extends CI_Controller {
 		$data['query']=$this->Leave_model->Leave_getall();
 		$this->load->view('Leave_all',$data);
 	}
+	
 	
 	function Update()//update an employee info
 	{
