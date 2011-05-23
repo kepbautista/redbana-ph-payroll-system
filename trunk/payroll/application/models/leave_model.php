@@ -1,5 +1,11 @@
 <?php
 class Leave_model extends CI_Model {
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->library('session');
+	}
 	
 	function buildMonthDropdown()//builds month dropdown for date
     {
@@ -76,18 +82,26 @@ class Leave_model extends CI_Model {
 		$this->db->insert('leave',$data); 
 	}
 	function Leave_approved(){
-		$this->db->where('empnum',$this->input->post('empnum'));
+		//$this->db->where('empnum',$this->input->post('empnum'));
+		$app = "approved";
 		$row = $this->db->where('empnum',$this->input->post('empnum'));
-		$data = array(
-		'empnum'=>$row->empnum,
-		'filedate'=>$row->filedate,       
-	    'startdate'=>$row->startdate,
-		'returndate'=>$row->returndate,
-		'type'=>$row->type,
-		'reason'=>$row->reason,
-		'approval'=>"approved"
-		);
-		$this->db->update('leave',$data); 
+		$sql_x = 'UPDATE `leave` SET `approval` = ? WHERE `empnum` = ? AND `filedate` = ?';
+		$this->db->query($sql_x, array($app, $this->input->post('empnum'),$this->input->post('filedate') ) );
+	}
+	function Leave_notapproved(){
+		$this->db->where('empnum',$this->input->post('empnum'));
+		$app = "not approved";
+		$row = $this->db->where('empnum',$this->input->post('empnum'));
+		$sql_x = 'UPDATE `leave` SET `approval` = ? WHERE `empnum` = ? AND `filedate` = ?';
+		$this->db->query($sql_x, array($app, $this->input->post('empnum'),$this->input->post('filedate') ) );
+	}
+	function Empview()
+	{
+		$emp = $this->session->userdata('empnum');
+		$sql_x = 'SELECT * FROM `leave` WHERE `empnum` = ?';
+		$query = $this->db->query($sql_x, array($emp));
+		if(empty($query)) return NULL;
+		else return $query->result();
 	}
 }
 ?>
