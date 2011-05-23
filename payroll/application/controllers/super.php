@@ -31,7 +31,7 @@ class Super extends CI_Controller {
 						   'mname' => $this->session->userData('mname')
 			);
 			$data['sql']=$this->login_model->permission($this->session->userData('userType'));
-			$this->load->view('superuser_home_x', $data);					
+			$this->load->view('superuser_home', $data);					
 		}
 		else
 			redirect('login');

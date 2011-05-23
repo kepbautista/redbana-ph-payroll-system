@@ -67,6 +67,10 @@ class Maintenance_model extends CI_Model {
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","sss")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","phil")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","wth")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","access")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","user")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","type")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","timesheet")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","viewpay")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","leave")');
 	}
