@@ -20,53 +20,73 @@ class Leave_model extends CI_Model {
     }
     function Leave_getall() {//select all the info of an employee from employee table
 		$this->load->database();
-		//$data['result']=$this->db->get('leave');
-		//return $data['result'];
 		$query = $this->db->get('leave');
 		return $query->result();
 	}
+	
+	function Leave_edit() {
+		$this->load->database();
+		$empnum=$this->input->post('empnum');
+		$query = $this->db->query('SELECT * FROM `employee` `a`, `leave` `b` WHERE `b`.`empnum`=`a`.`empnum` AND `a`.`empnum`="'.$empnum.'"');	
+		return $query->result();
+	}
 
+	function Leave_delete(){
+		$this->db->where('empnum',$this->input->post('empnum'));
+		$this->db->delete('leave');
+	}//delete an employee
+	
+	function Leave_getinfo(){
+		$this->load->database();
+		//$sql_execute = "SELECT * FROM `leave` , `employee` WHERE `leave`.`empnum` = ' ".$this->input->post('empnum')." ' LIMIT 0 , 30";
+		$query = $this->db->query('SELECT * FROM `employee` `a`, `leave` `b` WHERE `b`.`empnum`=`a`.`empnum`');	
+		return $query->result();
+	}
+
+	/*
+	*/
 	function Leave_numrows() {//count number of rows
 		$this->load->database();
-		$empnum = mysql_real_escape_string($this->input->post('empnum'));
+		$empnum=$this->input->post('empnum');
 		$query = $this->db->get_where('leave',array('empnum'=>$empnum));
 		return $query->num_rows();
 	}
 	function Leave_Insert(){
 		
-		$fday = mysql_real_escape_string($this->input->post('fday'));
-		$fmonth = mysql_real_escape_string($this->input->post('fmonth'));
-		$fyear = mysql_real_escape_string($this->input->post('fyear'));
-		$sday = mysql_real_escape_string($this->input->post('sday'));
-		$smonth = mysql_real_escape_string($this->input->post('smonth'));
-		$syear = mysql_real_escape_string($this->input->post('syear'));
-		$rday = mysql_real_escape_string($this->input->post('rday'));
-		$rmonth = mysql_real_escape_string($this->input->post('rmonth'));
-		$ryear = mysql_real_escape_string($this->input->post('ryear'));
-		$filedate = $fyear.'-'.$fmonth.'-'.$fday;
-		$startdate = $syear.'-'.$smonth.'-'.$sday;
-		$returndate = $ryear.'-'.$rmonth.'-'.$rday;
+		$fday=$this->input->post('fday');
+		$fmonth=$this->input->post('fmonth');
+		$fyear=$this->input->post('fyear');
+		$sday=$this->input->post('sday');
+		$smonth=$this->input->post('smonth');
+		$syear=$this->input->post('syear');
+		$rday=$this->input->post('rday');
+		$rmonth=$this->input->post('rmonth');
+		$ryear=$this->input->post('ryear');
+		$filedate=$fyear . '-' . $fmonth. '-' . $fday;
+		$startdate=$syear . '-' . $smonth. '-' . $sday;
+		$returndate=$ryear . '-' . $rmonth. '-' . $rday;
 		$data = array(
-		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
-		'filedate' => $filedate,       
-	    'startdate' => $startdate,
-		'returndate' => $returndate,
-		'type' => mysql_real_escape_string($this->input->post('type')),
-		'reason' => mysql_real_escape_string($this->input->post('reason')),
+		'empnum'=>$this->input->post('empnum'),
+		'filedate'=>$filedate,       
+	    'startdate'=>$startdate,
+		'returndate'=>$returndate,
+		'type'=>$this->input->post('type'),
+		'reason'=>$this->input->post('reason'),
 		);
 		$this->db->insert('leave',$data); 
 	}
-	function Leave_approve(){
+	function Leave_approved(){
+		$this->db->where('empnum',$this->input->post('empnum'));
+		$row = $this->db->where('empnum',$this->input->post('empnum'));
 		$data = array(
-		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
-		'filedate' => $filedate,       
-	    'startdate' => $startdate,
-		'returndate' => $returndate,
-		'type' => mysql_real_escape_string($this->input->post('type')),
-		'reason' => mysql_real_escape_string($this->input->post('reason')),
-		'approval' => mysql_real_escape_string($this->input->post('approval'))
+		'empnum'=>$row->empnum,
+		'filedate'=>$row->filedate,       
+	    'startdate'=>$row->startdate,
+		'returndate'=>$row->returndate,
+		'type'=>$row->type,
+		'reason'=>$row->reason,
+		'approval'=>"approved"
 		);
-		$this->db->where('empnum',$_POST['empnum']);
 		$this->db->update('leave',$data); 
 	}
 }
