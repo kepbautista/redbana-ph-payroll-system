@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 23, 2011 at 06:24 AM
+-- Generation Time: May 23, 2011 at 05:07 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -19,8 +19,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `absence_reason`
 --
 
-CREATE DATABASE IF NOT EXISTS `redbana_payroll`;
-
 CREATE TABLE IF NOT EXISTS `absence_reason` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TITLE` varchar(255) NOT NULL,
@@ -31,25 +29,25 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `absence_reason`
 --
 
-INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`, `TO_DISPLAY_DEDUCTIBLE`) VALUES
-(0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0),
+REPLACE INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`, `TO_DISPLAY_DEDUCTIBLE`) VALUES
 (1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0),
+(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
+(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
+(12, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0),
 (2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1),
-(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
+(0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0),
+(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
 (4, 'SICK_LEAVE', 0, 'With pay', NULL, 5, 1),
 (5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1),
+(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
 (6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1),
-(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1),
-(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
-(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
-(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
-(12, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0);
+(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -69,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason_category` (
 -- Dumping data for table `absence_reason_category`
 --
 
-INSERT INTO `absence_reason_category` (`ID`, `TITLE`, `DESC`) VALUES
+REPLACE INTO `absence_reason_category` (`ID`, `TITLE`, `DESC`) VALUES
 (1, 'ABSENCES_AND_LWOP', 'NO_DESC.'),
 (6, 'PAID_EMERGENCY_LEAVE_DAYS', 'NO_DESC.'),
 (5, 'PAID_SL_DAYS', 'NO_DESC.'),
@@ -89,13 +87,13 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
   `desc` varchar(100) NOT NULL,
   `payrate` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `daily_desc`
 --
 
-INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
+REPLACE INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
 (1, 'Regular Work', 'Regular Holiday', 100),
 (2, 'Regular Holiday', 'Regular Holiday', 200),
 (3, 'Special Holiday', 'Special Holiday', 300);
@@ -116,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `dept_main` (
 -- Dumping data for table `dept_main`
 --
 
-INSERT INTO `dept_main` (`dept`, `id`) VALUES
+REPLACE INTO `dept_main` (`dept`, `id`) VALUES
 ('Localization', 1),
 ('Accounting', 2),
 ('Business Executive', 3),
@@ -168,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
+REPLACE INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
 ('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 11123, 1, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
 ('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
 ('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 1, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
@@ -189,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `employee_status` (
 -- Dumping data for table `employee_status`
 --
 
-INSERT INTO `employee_status` (`id`, `desc`) VALUES
+REPLACE INTO `employee_status` (`id`, `desc`) VALUES
 (1, 'Married Employee whose spouse is unemployed'),
 (2, 'Married Employee whose spouse is a non-resident citizen receiving income from foreign sources'),
 (3, 'Married Employee whose spouse is engaged in business'),
@@ -217,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
 -- Dumping data for table `emp_type`
 --
 
-INSERT INTO `emp_type` (`type`, `id`) VALUES
+REPLACE INTO `emp_type` (`type`, `id`) VALUES
 ('Probational', 2),
 ('Regular', 3),
 ('Project Based', 4);
@@ -243,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `leave` (
 -- Dumping data for table `leave`
 --
 
-INSERT INTO `leave` (`empnum`, `filedate`, `startdate`, `returndate`, `type`, `reason`, `approval`) VALUES
+REPLACE INTO `leave` (`empnum`, `filedate`, `startdate`, `returndate`, `type`, `reason`, `approval`) VALUES
 ('1212122', '1990-01-01', '1990-01-01', '1990-01-01', 'vacation', 'qwdds', 'Not yet approved'),
 ('12211', '1990-02-03', '1990-07-01', '1993-08-04', 'bereavement', 'asssd', 'Not yet approved'),
 ('12222', '1990-04-01', '1990-01-01', '1990-01-08', 'bereavement', 'asa', 'Not yet approved'),
@@ -269,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `payment_mode` (
 -- Dumping data for table `payment_mode`
 --
 
-INSERT INTO `payment_mode` (`ID`, `TITLE`, `DESCRIPTION`) VALUES
+REPLACE INTO `payment_mode` (`ID`, `TITLE`, `DESCRIPTION`) VALUES
 (2, 'MONTHLY', 'EVERY MONTH'),
 (1, 'SEMI-MONTHLY', 'EVERY KINSENAS');
 
@@ -299,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
 -- Dumping data for table `payperiod`
 --
 
-INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
+REPLACE INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
 (1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL, 0, NULL, NULL),
 (2, 1, '2011-04-24', '2011-05-07', 11, 0, 1, '2008-00196', '2011-05-22 17:10:02', 0, NULL, NULL),
 (3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL, 0, NULL, NULL);
@@ -379,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `philhealth` (
 -- Dumping data for table `philhealth`
 --
 
-INSERT INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`, `per`, `id`) VALUES
+REPLACE INTO `philhealth` (`bracket`, `rangel`, `rangeh`, `base`, `total`, `pes`, `per`, `id`) VALUES
 (1, 0, 4999.99, 4000, 100, 50, 50, 20),
 (2, 5000, 5999.99, 5000, 125, 62.5, 62.5, 21),
 (3, 6000, 6999.99, 6000, 150, 75, 75, 22),
@@ -424,7 +422,7 @@ CREATE TABLE IF NOT EXISTS `pos_main` (
 -- Dumping data for table `pos_main`
 --
 
-INSERT INTO `pos_main` (`position`, `id`) VALUES
+REPLACE INTO `pos_main` (`position`, `id`) VALUES
 ('Accounting Associate', 1),
 ('Accounting Supervisor', 2),
 ('Game Master', 3),
@@ -479,7 +477,7 @@ CREATE TABLE IF NOT EXISTS `salary` (
 -- Dumping data for table `salary`
 --
 
-INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
+REPLACE INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
 ('2011-03-15', '2011-03-31', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', ''),
 ('2011-05-01', '2011-05-15', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4858.3, 0, 366.7, 275, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
 
@@ -497,13 +495,13 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   `NIGHT_DIFF` time NOT NULL DEFAULT '00:00:00',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`, `NIGHT_DIFF`) VALUES
+REPLACE INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`, `NIGHT_DIFF`) VALUES
 (0, -1, '00:00:00', '09:00:00', 0, '05:00:00'),
 (1, -1, '07:00:00', '16:00:00', 0, '00:00:00'),
 (2, -1, '09:00:00', '18:00:00', 0, '00:00:00'),
@@ -511,6 +509,12 @@ INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW
 (4, -1, '15:00:00', '00:00:00', 1, '02:00:00'),
 (5, -1, '21:00:00', '06:00:00', 1, '07:00:00'),
 (6, -1, '23:00:00', '08:00:00', 1, '06:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sss`
+--
 
 CREATE TABLE IF NOT EXISTS `sss` (
   `rangel` double NOT NULL,
@@ -532,7 +536,7 @@ CREATE TABLE IF NOT EXISTS `sss` (
 -- Dumping data for table `sss`
 --
 
-INSERT INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `tee`, `ttotal`, `msc`, `totalcont`, `id`) VALUES
+REPLACE INTO `sss` (`rangel`, `rangeh`, `ser`, `see`, `stotal`, `ecer`, `ter`, `tee`, `ttotal`, `msc`, `totalcont`, `id`) VALUES
 (1000, 1249.99, 33.33, 33.33, 105, 10, 80.7, 33.3, 114, 1000, 104, 45),
 (1250, 1749.99, 106, 50, 156, 10, 116, 50, 166, 1500, 156, 46),
 (1750, 2249.99, 141.3, 66.7, 208, 10, 151.3, 66.7, 218, 2000, 208, 47),
@@ -581,7 +585,7 @@ CREATE TABLE IF NOT EXISTS `tax_status` (
 -- Dumping data for table `tax_status`
 --
 
-INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
+REPLACE INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
 (8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 48000),
 (9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 56000),
 (10, 'ME4', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 64000),
@@ -614,16 +618,16 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `undertime`, `overtime`, `night_diff`, `type`) VALUES
-(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
-(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, NULL, NULL, NULL, '1');
+REPLACE INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`) VALUES
+(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
+(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1');
 
 -- --------------------------------------------------------
 
@@ -651,7 +655,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `type`, `position`, `department`, `gender`, `startdate`, `paymentmode`) VALUES
+REPLACE INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `type`, `position`, `department`, `gender`, `startdate`, `paymentmode`) VALUES
 ('mary rose', 'bigata', 'garra', 'merose@gmail.com', '11111', 'mary', 'employee', '', '', '', '0000-00-00', ''),
 ('kim', 'pura', 'samaniego', 'kimsamaniego@gmail.com', '12345', 'karlene', 'superuser', '', '', '', '0000-00-00', '');
 
@@ -667,13 +671,13 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `privilege` varchar(50) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=152 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
 
 --
 -- Dumping data for table `user_main`
 --
 
-INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
+REPLACE INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (20, 'superuser', 'viewemp', 1),
 (21, 'superuser', 'editemp', 1),
 (22, 'superuser', 'addemp', 1),
@@ -692,7 +696,7 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (35, 'employee', 'editemp', 0),
 (36, 'employee', 'addemp', 0),
 (37, 'employee', 'allleave', 0),
-(38, 'employee', 'accleave', 0),
+(38, 'employee', 'accleave', 1),
 (39, 'employee', 'position', 0),
 (40, 'employee', 'dept', 0),
 (41, 'employee', 'taxstatus', 0),
@@ -705,11 +709,13 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (90, 'superuser', 'timesheet', 1),
 (91, 'superuser', 'type', 1),
 (92, 'superuser', 'access', 1),
-(93, 'employee', 'access', 0),
+(93, 'employee', 'access', 1),
 (94, 'employee', 'type', 0),
-(95, 'employee', 'timesheet', 0),
+(95, 'employee', 'timesheet', 1),
 (96, 'superuser', 'user', 1),
-(97, 'employee', 'user', 0);
+(97, 'employee', 'user', 0),
+(152, 'superuser', 'day', 1),
+(153, 'employee', 'day', 0);
 
 -- --------------------------------------------------------
 
@@ -727,7 +733,7 @@ CREATE TABLE IF NOT EXISTS `variables` (
 -- Dumping data for table `variables`
 --
 
-INSERT INTO `variables` (`Name`, `Value`) VALUES
+REPLACE INTO `variables` (`Name`, `Value`) VALUES
 ('PagIbig', 100),
 ('WorkingDaysPerMonth', 22);
 
@@ -755,7 +761,7 @@ CREATE TABLE IF NOT EXISTS `witholding_tax` (
 -- Dumping data for table `witholding_tax`
 --
 
-INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINITE`, `EXEMPTION_PERCENT`, `A_Z`, `A_SME`, `B_MES1`, `B_MES2`, `B_MES3`, `B_MES4`) VALUES
+REPLACE INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINITE`, `EXEMPTION_PERCENT`, `A_Z`, `A_SME`, `B_MES1`, `B_MES2`, `B_MES3`, `B_MES4`) VALUES
 (1, 0, 0, 0, 0, 50, 75, 100, 125, 150),
 (1, 1, 0, 0, 1, 1, 1, 1, 1, 1),
 (1, 2, 0, 5, 0, 2083, 3125, 4167, 5208, 6250),
@@ -774,24 +780,6 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
-
-CREATE TABLE IF NOT EXISTS `daily_desc` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
-  `desc` varchar(100) NOT NULL,
-  `payrate` double NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `daily_desc`
---
-
-INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
-(1, 'Regular Work', 'Regular Holiday', 100),
-(2, 'Regular Holiday', 'Regular Holiday', 200),
-(3, 'Special Holiday', 'Special Holiday', 300);
 
 --
 -- Constraints for dumped tables
