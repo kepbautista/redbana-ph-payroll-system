@@ -83,36 +83,6 @@ foreach($query as $row){
    <td>	<?php echo $approval;?></td>
   
   </tr>
-  <tr>
-    <td>
-						<?php
-						$hidden=$empnum;
-						$hidden2=$fdate;
-						
-						echo form_open('leave/not_approved'); 
-						echo form_hidden('empnum', $hidden);
-						echo form_hidden('filedate', $fdate);
-						echo form_submit('sub','walalangto'); 
-						echo form_close(); 
-						
-						echo form_open('leave/accepted'); 
-						echo form_hidden('empnum', $hidden);
-						echo form_hidden('filedate', $fdate);
-						echo form_submit('mysubmit','APPROVE'); 
-						echo form_close(); 
-							
-						echo form_open('leave/not_approved'); 
-						echo form_hidden('empnum', $hidden);
-						echo form_hidden('filedate', $fdate);
-						echo form_submit('mysubmit','DENY'); 
-						echo form_close(); 
-						
-
-											
-					?>
-    </td>
-
-  </tr>
   
 </table>
 </form>
