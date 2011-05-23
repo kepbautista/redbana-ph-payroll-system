@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 23, 2011 at 04:22 AM
+-- Generation Time: May 23, 2011 at 06:24 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -74,6 +74,29 @@ INSERT INTO `absence_reason_category` (`ID`, `TITLE`, `DESC`) VALUES
 (4, 'PAID_VL_DAYS', 'NO_DESC.'),
 (3, 'SUSPENSION', 'NO_DESC.'),
 (2, 'VACATION_AND_SICK_LEAVE', 'NO_DESC.');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `daily_desc`
+--
+
+CREATE TABLE IF NOT EXISTS `daily_desc` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL,
+  `desc` varchar(100) NOT NULL,
+  `payrate` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `daily_desc`
+--
+
+INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
+(1, 'Regular Work', 'Regular Holiday', 100),
+(2, 'Regular Holiday', 'Regular Holiday', 200),
+(3, 'Special Holiday', 'Special Holiday', 300);
 
 -- --------------------------------------------------------
 
@@ -586,17 +609,24 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `undertime` time DEFAULT '00:00:00',
   `overtime` time DEFAULT '00:00:00',
   `night_diff` time DEFAULT '00:00:00',
+  `type` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `undertime`, `overtime`, `night_diff`) VALUES
-(1, '2008-00195', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', 0, 0, NULL, NULL, NULL),
-(2, '2008-00196', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0, NULL, NULL, NULL),
-(3, '2008-00198', '2011-04-25', '00:00:00', '2011-04-25', '00:00:00', NULL, 0, NULL, NULL, NULL);
+INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `undertime`, `overtime`, `night_diff`, `type`) VALUES
+(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, NULL, NULL, NULL, '1'),
+(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, NULL, NULL, NULL, '1');
 
 -- --------------------------------------------------------
 
@@ -640,7 +670,7 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `privilege` varchar(50) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=116 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=152 ;
 
 --
 -- Dumping data for table `user_main`
@@ -747,6 +777,24 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
+
+
+CREATE TABLE IF NOT EXISTS `daily_desc` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL,
+  `desc` varchar(100) NOT NULL,
+  `payrate` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `daily_desc`
+--
+
+INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
+(1, 'Regular Work', 'Regular Holiday', 100),
+(2, 'Regular Holiday', 'Regular Holiday', 200),
+(3, 'Special Holiday', 'Special Holiday', 300);
 
 --
 -- Constraints for dumped tables
