@@ -19,6 +19,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `absence_reason`
 --
 
+CREATE DATABASE IF NOT EXISTS `redbana_payroll`;
+
 CREATE TABLE IF NOT EXISTS `absence_reason` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `TITLE` varchar(255) NOT NULL,
@@ -29,25 +31,25 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `absence_reason`
 --
 
 INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`, `TO_DISPLAY_DEDUCTIBLE`) VALUES
-(1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0),
-(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
-(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
-(11, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0),
-(2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1),
 (0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0),
-(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
+(1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0),
+(2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1),
+(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
 (4, 'SICK_LEAVE', 0, 'With pay', NULL, 5, 1),
 (5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1),
-(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
 (6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1),
-(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1);
+(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1),
+(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
+(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
+(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
+(12, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -167,9 +169,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 123, 3, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 3, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 3, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
+('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 11123, 1, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
+('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 1, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
 
 -- --------------------------------------------------------
 
@@ -502,18 +504,13 @@ CREATE TABLE IF NOT EXISTS `shift` (
 --
 
 INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`, `NIGHT_DIFF`) VALUES
-('', -1, '00:00:00', '09:00:00', 0, '05:00:00'),
-('', -1, '07:00:00', '16:00:00', 0, '00:00:00'),
-('', -1, '09:00:00', '18:00:00', 0, '00:00:00'),
-('', -1, '14:00:00', '23:00:00', 0, '05:00:00'),
-('', -1, '15:00:00', '00:00:00', 1, '02:00:00'),
-('', -1, '21:00:00', '06:00:00', 1, '07:00:00'),
-('', -1, '23:00:00', '08:00:00', 1, '06:00:00');
------------------------------------------------------------
-
---
--- Table structure for table `sss`
---
+(0, -1, '00:00:00', '09:00:00', 0, '05:00:00'),
+(1, -1, '07:00:00', '16:00:00', 0, '00:00:00'),
+(2, -1, '09:00:00', '18:00:00', 0, '00:00:00'),
+(3, -1, '14:00:00', '23:00:00', 0, '05:00:00'),
+(4, -1, '15:00:00', '00:00:00', 1, '02:00:00'),
+(5, -1, '21:00:00', '06:00:00', 1, '07:00:00'),
+(6, -1, '23:00:00', '08:00:00', 1, '06:00:00');
 
 CREATE TABLE IF NOT EXISTS `sss` (
   `rangel` double NOT NULL,

@@ -201,16 +201,17 @@ class Attendance_model extends CI_Model
 				*	if absence_reason is 0, means person is not absent.
 				*	and we only compute the late if start_time of that person for the day
 				*	is later than what should be for his/her shift
-				*/
-				//echo var_Dump($shift_info);
-				//echo $daily_attendance_each_day->empnum."babababa_".$daily_attendance_each_day->time_in.".____".$shift_info[0]->START_TIME."||".$daily_attendance_each_day->absence_reason."<br/>";
-				if( ( $daily_attendance_each_day->absence_reason == NULL or $daily_attendance_each_day->absence_reason == '0' )
+				*/				
+				if( ( $daily_attendance_each_day->absence_reason == NULL 
+					  or $daily_attendance_each_day->absence_reason == '0')
 					and
 					( strtotime($daily_attendance_each_day->time_in) > strtotime($shift_info[0]->START_TIME) ) 
 				)
-				{
-					//echo "haha_ ".$tardiness_count."<br/>";
-					$tardiness_count += ( ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) ) / 60 );					
+				{	
+					$today_tardiness = ( ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) ) / 60 );					
+					$this->update_Today("TARDINESS", $daily_attendance_each_day, "MIN", $today_tardiness);
+					$tardiness_count += $today_tardiness;
+					
 				}								
 			}//foreach daily_attendance...
 			
@@ -240,6 +241,7 @@ class Attendance_model extends CI_Model
 		$obj_result = $this->db->query($sql_x, array($payment_mode) );
 		
 		return $obj_result;
+		
 	}
 	
 	private function pullAttendanceRecord
@@ -334,6 +336,7 @@ class Attendance_model extends CI_Model
 	{
 		/*
 			abe | 11MAY2011 1335 | attention on $defaultWorkingDays - shouldn't it be included in `payperiod`?
+				| 23MAY2011_1423 | now done to include UT, OT and night diff
 			furtherwork:
 			perform checking first if nasa dB na yung record:
 				are there settings like: prompt, no, or overwrite?
@@ -383,6 +386,9 @@ class Attendance_model extends CI_Model
 		
 		$absences_data = $this->Attendance_model->getAbsences($payperiod, ``, ``, $payment_mode);
 		$tardiness_data = $this->Attendance_model->getTardiness($payperiod, ``, ``, $payment_mode);		
+		
+		
+		
 		
 		//check absences data
 		if($absences_data['error_code'] != 0)
@@ -817,6 +823,393 @@ class Attendance_model extends CI_Model
 		$employees = $this->getAllEmployees($payperiod_obj->payment_mode)->result();		
 		
 		
+	}
+	
+	function update_Today($whatField, $theTimeSheetObject, $passed_is_what = "MIN", $theNumber)
+	{
+	/*
+		made | abe | 23MAY2011_1112H
+		
+		PARAMETERS:
+		$whatField - what field of the row to be updated may take on: tardiness|undertime|overtime|night_diff
+		$theTimeSheetObject - the row concerned. this contains the data where we want to insert $theNumber
+		$passed_is_what - is $theNumber in MIN|HRS|SEC?
+		$theNumber - should be integer.
+	*/
+	
+		$theResult = array(
+			"result" => false,
+			"ERROR_CODE" => NULL,
+			"ERROR_TITLE" => NULL,
+			"ERROR_MESSAGE" => NULL
+		);
+		
+		$updateThisField = "";
+		//die(var_dump($theTimeSheetObject));
+		if($theTimeSheetObject == NULL)
+		{
+			$theResult['ERROR_CODE'] = 0x000;
+			$theResult['ERROR_TITLE'] = "NON_EXISTENT_TIMESHEET";
+			$theResult['ERROR_MESSAGE'] = "You have tried to update a TIMESHEET that does not exist.";
+			return $theResult;
+		}
+	
+		switch(strtoupper($whatField))
+		{
+			case "TARDINESS"	: $updateThisField = "tardiness" ; break;
+			case "UNDERTIME"	: $updateThisField = "undertime" ; break;
+			case "OVERTIME"		: $updateThisField = "overtime" ; break;
+			case "NIGHT_DIFF"	: $updateThisField = "night_diff" ; break;
+			default:	
+				$theResult['ERROR_CODE'] = 0x000;
+				$theResult['ERROR_TITLE'] = "UNKNOWN_FIELD";
+				$theResult['ERROR_MESSAGE'] = "You have tried to update a field that does not exist.";
+				return $theResult;
+		}
+		$sql_x = "UPDATE `timesheet` SET `".$updateThisField."` = ? WHERE `timesheet`.`id` = ?";		
+		$theResult['result'] = $this->db->query($sql_x, array( $this->convert_to_Time($passed_is_what, $theNumber), $theTimeSheetObject->id) );	
+	}
+	
+	function convert_to_Time($passed_is_what, $theTimeCount)
+	{
+		/*
+		made | abe | 23MAY2011_1122H
+		
+			PARAMETERS:
+			
+			$passed_is_what = string, takes on "MIN|SEC|HRS"
+			$theTimeCount = self-explanatory
+			
+			RETURNS TIME FORMAT IN STRING: HH:MM:SS
+		*/
+		$hours = 0;
+		$mins = 0;
+		$secs = 0;
+		$returnThisTime = 0;
+		
+		switch(strtoupper($passed_is_what))
+		{
+			case "HRS"	: 
+				$secs = $theTimeCount *= 3600;
+			case "MIN"	: 				
+				$secs = $theTimeCount *= 60;			
+			case "SEC"	: 
+				$secs = $theTimeCount;
+				$hours = floor($secs / 3600);
+				$secs = $secs % 3600;
+				$mins = floor($secs / 60);
+				$secs = $secs % 60; 				
+				break;										
+			default:					
+				return "00:00:00";
+		}						
+				
+		return $hours.":".$mins.":".$secs;
+	}
+	
+	function get_OverTime
+	( $payperiod = NULL, $payment_mode = NULL)
+	{
+		/*
+			abe | made | 23MAY2011_1216
+			for this, ditched the DateFrom and DateTo options, only $payperiod considered
+		*/
+		
+		$employee_OT_count = NULL;
+		$employee_OT_Data = array();
+		
+		$theResult = array("error_code" => NULL,
+						   "error_message" => NULL,
+							"result_array" => NULL
+		);
+		
+		if($payperiod == NULL || $payment_mode == NULL)
+		{
+			$theResult["error_code"] = -1;
+			$theResult["ERROR_MESSAGE"] = "PAYPERIOD/PAYMENT_MODE NOT SPECIFIED";
+			return $theResult;
+		}
+		
+		//get date inclusives during the payperiod specified from database			
+		$obj_result = $this->Payperiod_model->pull_PayPeriod_Info($payperiod);
+							
+		if($obj_result->num_rows == 0)
+		{
+			$theResult["error_code"] = -2;
+			$theResult["error_message"] = "Pay period does not exist";
+			return $theResult;
+		}
+		$payperiod_obj = $obj_result->result();
+		
+		/*			now pull-all employees
+			
+			abe | 10may2011 2030 | i am making my own fetch all function so far
+				since I'm not sure of Employee_model->Employee_getall()
+		*/		
+		$employees = $this->getAllEmployees($payment_mode)->result();		
+		if( empty ($employees) )
+		{			
+			$theResult["error_code"] = -3;
+			$theResult["error_message"] = "No employee so far.";
+			return $theResult;
+		}		
+					
+		foreach($employees as $emp_x)
+		{								
+			$overtime_count = 0;		//initialize, in mins
+			
+			/*
+			*	pull all records between the dates, inclusive,  specified for the employee
+			*/								
+			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE)->result();
+			
+			foreach($daily_attendance as $daily_attendance_each_day)
+			{																			
+				//get shift id from its table				
+				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();				
+				if( empty ($shift_info) )
+				{
+					$theResult["error_code"] = -4;
+					$theResult["error_message"] = "INVALID SHIFT ID.";
+					die(var_dump($theResult));
+					//return $theResult;
+				}
+								
+				/*
+				*	if absence_reason is 0, means person is not absent.
+				*	and we only compute the late if start_time of that person for the day
+				*	is later than what should be for his/her shift
+				*/										
+				if( ( $daily_attendance_each_day->absence_reason == NULL 
+					  or $daily_attendance_each_day->absence_reason == '0')
+					and
+					( strtotime($daily_attendance_each_day->time_out) > strtotime($shift_info[0]->END_TIME)  ) 
+				)
+				{						
+					$overtime_today = ( strtotime($daily_attendance_each_day->time_out) - strtotime($shift_info[0]->END_TIME)) / 60 ;					
+					$this->update_Today("OVERTIME", $daily_attendance_each_day, "MIN", $overtime_today);
+					$overtime_count += $overtime_today;
+				}								
+			}//foreach daily_attendance...
+			
+			//at the end of sifting through the days, store it to some variable			
+			$employee_OT_Data[$emp_x->empnum] = $overtime_count;								
+		}//foreach (employees
+				
+		$theResult['result_array'] = $employee_OT_Data;
+		$theResult['error_code'] = 0;
+		$theResult['error_message'] = 'SUCCESS';
+			
+		return $theResult;
+	}
+	
+	function get_UnderTime
+	( $payperiod = NULL, $payment_mode = NULL)
+	{
+		/*
+			abe | made | 23MAY2011_1316
+			for this, ditched the DateFrom and DateTo options, only $payperiod considered
+		*/
+		
+		$employee_UT_count = NULL;
+		$employee_UT_Data = array();
+		
+		$theResult = array("error_code" => NULL,
+						   "error_message" => NULL,
+							"result_array" => NULL
+		);
+		if($payperiod == NULL || $payment_mode == NULL)
+		{
+			$theResult["error_code"] = -1;
+			$theResult["ERROR_MESSAGE"] = "PAYPERIOD/PAYMENT_MODE NOT SPECIFIED";
+			return $theResult;
+		}
+		
+		//get date inclusives during the payperiod specified from database			
+		$obj_result = $this->Payperiod_model->pull_PayPeriod_Info($payperiod);
+							
+		if($obj_result->num_rows == 0)
+		{
+			$theResult["error_code"] = -2;
+			$theResult["error_message"] = "Pay period does not exist";
+			return $theResult;
+		}
+		$payperiod_obj = $obj_result->result();
+		
+		/*			now pull-all employees
+			
+			abe | 10may2011 2030 | i am making my own fetch all function so far
+				since I'm not sure of Employee_model->Employee_getall()
+		*/		
+		$employees = $this->getAllEmployees($payment_mode)->result();		
+		if( empty ($employees) )
+		{			
+			$theResult["error_code"] = -3;
+			$theResult["error_message"] = "No employee so far.";
+			return $theResult;
+		}		
+					
+		foreach($employees as $emp_x)
+		{								
+			$undertime_count = 0;		//initialize, in mins
+			
+			/*
+			*	pull all records between the dates, inclusive,  specified for the employee
+			*/								
+			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE)->result();
+			
+			foreach($daily_attendance as $daily_attendance_each_day)
+			{																			
+				//get shift id from its table				
+				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();			
+				if( empty ($shift_info) )
+				{
+					$theResult["error_code"] = -4;
+					$theResult["error_message"] = "INVALID SHIFT ID.";
+					die(var_dump($theResult));
+					//return $theResult;
+				}
+								
+				/*
+				*	if absence_reason is 0, means person is not absent.
+				*	and we only compute the late if start_time of that person for the day
+				*	is later than what should be for his/her shift
+				*/								
+				if( ( $daily_attendance_each_day->absence_reason == NULL 
+					  or $daily_attendance_each_day->absence_reason == '0')
+					and
+					( strtotime($daily_attendance_each_day->time_out) < strtotime($shift_info[0]->END_TIME)  ) 
+				)
+				{						
+					$undertime_today = ( strtotime($shift_info[0]->END_TIME) - strtotime($daily_attendance_each_day->time_out)) / 60 ;					
+					$this->update_Today("UNDERTIME", $daily_attendance_each_day, "MIN", $undertime_today);
+					$undertime_count += $undertime_today;					
+					
+				}								
+			}//foreach daily_attendance...
+			
+			//at the end of sifting through the days, store it to some variable			
+			$employee_OT_Data[$emp_x->empnum] = $undertime_count;								
+		}//foreach (employees
+				
+		$theResult['result_array'] = $employee_OT_Data;
+		$theResult['error_code'] = 0;
+		$theResult['error_message'] = 'SUCCESS';
+			
+		return $theResult;
+	}
+	
+	function get_NightDifferential
+	( $payperiod = NULL, $payment_mode = NULL)
+	{
+		/*
+			abe | made | 23MAY2011_1431
+			for this, ditched the DateFrom and DateTo options, only $payperiod considered
+			IMPORTANT!!!! UNDERTIME SHOULD BE COMPUTED/CALLED BEFORE THIS
+		*/
+		
+		$employee_ND_count = NULL;
+		$employee_ND_Data = array();
+		
+		$theResult = array("error_code" => NULL,
+						   "error_message" => NULL,
+							"result_array" => NULL
+		);
+		if($payperiod == NULL || $payment_mode == NULL)
+		{
+			$theResult["error_code"] = -1;
+			$theResult["ERROR_MESSAGE"] = "PAYPERIOD/PAYMENT_MODE NOT SPECIFIED";
+			return $theResult;
+		}
+		
+		//get date inclusives during the payperiod specified from database			
+		$obj_result = $this->Payperiod_model->pull_PayPeriod_Info($payperiod);
+							
+		if($obj_result->num_rows == 0)
+		{
+			$theResult["error_code"] = -2;
+			$theResult["error_message"] = "Pay period does not exist";
+			return $theResult;
+		}
+		$payperiod_obj = $obj_result->result();
+		
+		/*			now pull-all employees
+			
+			abe | 10may2011 2030 | i am making my own fetch all function so far
+				since I'm not sure of Employee_model->Employee_getall()
+		*/		
+		$employees = $this->getAllEmployees($payment_mode)->result();		
+		if( empty ($employees) )
+		{			
+			$theResult["error_code"] = -3;
+			$theResult["error_message"] = "No employee so far.";
+			return $theResult;
+		}		
+					
+		foreach($employees as $emp_x)
+		{								
+			$night_diff_count = 0;		//initialize, in mins
+			
+			/*
+			*	pull all records between the dates, inclusive,  specified for the employee
+			*/								
+			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE)->result();
+			
+			foreach($daily_attendance as $daily_attendance_each_day)
+			{																			
+				//get shift id from its table				
+				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();			
+				if( empty ($shift_info) )
+				{
+					$theResult["error_code"] = -4;
+					$theResult["error_message"] = "INVALID SHIFT ID.";
+					die(var_dump($theResult));
+					//return $theResult;
+				}
+								
+				/*
+				*	if absence_reason is 0, means person is not absent.
+				*	and we only compute the night diff if the night_diff for that shift
+				* 	is not default value
+				*/					
+				echo "EMP: {$emp_x->empnum}<br/>";
+				echo var_dump($shift_info[0]);
+				echo "-------------------<br/>";
+				echo var_dump($daily_attendance_each_day);
+				if( ( $daily_attendance_each_day->absence_reason == NULL 
+					  or $daily_attendance_each_day->absence_reason == '0')
+					and
+					( $shift_info[0]->NIGHT_DIFF != "00:00:00" 
+					  or $shift_info[0]->NIGHT_DIFF != NULL
+					) 
+				)
+				{						
+					$night_diff_today = $shift_info[0]->NIGHT_DIFF;
+					if($daily_attendance_each_day->undertime != "00:00:00" )
+					{
+						$difference = strtotime($shift_info[0]->NIGHT_DIFF) - strtotime($daily_attendance_each_day->undertime);
+						if($difference >= 0)
+							$night_diff_today = $this->convert_to_Time("MIN", $difference);
+						else{
+							$night_diff_today = "00:00:00";		
+							$difference = 0;
+						}
+					}										
+					$this->update_Today("NIGHT_DIFF", $daily_attendance_each_day, "MIN", $night_diff_today);
+					$night_diff_count += $difference;										
+				}								
+			}//foreach daily_attendance...
+			
+			//at the end of sifting through the days, store it to some variable			
+			$employee_ND_Data[$emp_x->empnum] = $night_diff_count;								
+		}//foreach (employees
+				
+		$theResult['result_array'] = $employee_ND_Data;
+		die(var_dump($theResult));
+		$theResult['error_code'] = 0;
+		$theResult['error_message'] = 'SUCCESS';
+			
+		return $theResult;
 	}
 	
 }//class
