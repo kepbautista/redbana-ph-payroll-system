@@ -103,5 +103,6 @@ class Leave_model extends CI_Model {
 		if(empty($query)) return NULL;
 		else return $query->result();
 	}
+	
 }
 ?>
