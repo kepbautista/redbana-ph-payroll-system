@@ -91,6 +91,7 @@
 				$data['fname'] = $obj_temp[0]->fname;
 				$data['mname'] = $obj_temp[0]->mname;
 				$data['userType'] = $obj_temp[0]->user_right;	
+				//die(var_dump($data));
 				$this->session->set_userdata($data);
 				redirect('super');
 			}
@@ -107,6 +108,27 @@
 			redirect('login');
 		}
 		
+		function redirect_To()
+		{
+			$userType = strtolower($this->session->userdata('userType'));
+					
+			switch($userType)
+			{
+				case 'superuser': 
+							redirect('super'); break;
+				case 'hr':	
+							redirect('hr'); break;
+				case 'accounting':
+							redirect('accounting'); break;
+				case 'employee': 
+							redirect('employee_home'); break;
+				case 'supervisor':
+							redirect('supervisor'); break;
+				default:
+							$this->load->view('login_view');			
+							break;
+			}//switch
+		}//redirect_To
 			
 	}
 ?>

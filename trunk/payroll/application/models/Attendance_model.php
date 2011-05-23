@@ -395,8 +395,7 @@ class Attendance_model extends CI_Model
 		{
 			die("tardiness DATA ERROR: ".$tardiness_data['error_message']);
 		}
-		//DIE(VAR_DUMP($tardiness_data));
-		
+				
 		foreach($employees_data as $employee_individual)
 		{	
 			$daily_rate;
@@ -450,9 +449,7 @@ class Attendance_model extends CI_Model
 				);
 				//continue;
 			}
-						
-			echo "<br/>EMPNUM: {$employee_individual->empnum}";			
-			
+										
 			foreach($this_employee_absence_data as $this_employee_absence_data_x)
 			{		
 				switch($this_employee_absence_data_x['ABSENCE_REASON_CATEGORY'])
@@ -481,7 +478,7 @@ class Attendance_model extends CI_Model
 				echo "No data for tardiness of {.$employee_individual->empnum}";
 				//further error handling
 			}
-			echo var_dump(($tardiness_data['result_array'][$employee_individual->empnum]));					
+		
 			/*
 				COMPUTATION SECTION
 			*/
@@ -807,6 +804,19 @@ class Attendance_model extends CI_Model
 		}
 		
 		return $theData;
+	}
+	
+	function generateOverTime($payperiod_obj)
+	{
+		if( $payperiod_obj == NULL)
+		{
+			die('gaga.');
+			return NULL;
+		}
+		$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $dateFrom, $dateTo)->result();
+		$employees = $this->getAllEmployees($payperiod_obj->payment_mode)->result();		
+		
+		
 	}
 	
 }//class
