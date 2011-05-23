@@ -73,6 +73,7 @@ class Timesheet extends CI_Controller {
 	function Viewotherdate()//view the timesheet for today 
 	{
 		$data['absence_reasons'] = $this->Attendance_model->getAbsenceReasons();
+		$data['type']=$this->Timesheet_model->get_desc();
 		$data['shifts'] = $this->Shift_model->makeAssociativeArray_of_Shifts();		
 		$data['date']=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
 		list($year,$month,$day) = explode('-', $data['date']);
@@ -103,11 +104,9 @@ class Timesheet extends CI_Controller {
 	
 	function ViewTimeSheet()//view the timesheet for today 
 	{
-				
-		
 		$data['date']=date("Y-n-j");
 		$date=date("Y/n/j");
-		
+		$data['type']=$this->Timesheet_model->get_desc();
 		list($year,$month,$day) = explode('/', $date);
 		$data['absence_reasons'] = $this->Attendance_model->getAbsenceReasons();
 		$data['shifts'] = $this->Shift_model->makeAssociativeArray_of_Shifts();

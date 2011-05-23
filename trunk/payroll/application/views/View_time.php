@@ -31,10 +31,11 @@
 	</h1>
 			<?php if  (($trows==0))//If there are no records on the database with the date today,,it will output a button where the user can make a record today
 			{
-			echo "There are no records for today";
+			echo "<p>There are no records for today</p><br/>";
 			echo form_open('timesheet/Inserttodate');
 			echo form_hidden('date',$date);
 			echo form_submit('submits',"Make A Record for this date.");
+			echo form_dropdown('type',$type);
 			echo form_close();
 			}
 			else { ?><!-- It will output the table of records for the date today-->

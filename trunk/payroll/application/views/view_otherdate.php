@@ -34,6 +34,7 @@
 			echo form_open('timesheet/Inserttodate');
 			echo form_hidden('date',$date);
 			echo form_submit('submits',"Make A Record for this date.");
+			echo form_dropdown('type',$type);
 			echo form_close();
 			}
 			else { ?><!-- It will output the table of records for the date today-->
