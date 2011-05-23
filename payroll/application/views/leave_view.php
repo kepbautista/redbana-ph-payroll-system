@@ -9,9 +9,8 @@
 	
 </head>
 <body>
-
+File a Leave
 <form name="FRM" class="jNice" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/leave/insert">
-<?php  include  ("links.php");?>
 <table  border="0" cellspacing="2">
   <tr>
     <th width="100" align="left">Employee Number:</th>
@@ -86,7 +85,7 @@
   <tr>
    <th width="100" align="left">Reason for leave:</th>
 		<td align="left">
-		<input type="text" name="reason" id="reason"/>
+		<textarea name="reason" id="reason"></textarea>
 		</td>
 		<td>
 		</td>

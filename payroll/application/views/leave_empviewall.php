@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
 <html> 
 	<head> 
@@ -22,13 +21,12 @@
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
 			<thead> 
 				<tr> 
-					<th>Employee Number</th> 
-					<th>Date Filed</th> 
-					<th>Start Date</th> 
-					<th>Return Date</th> 
-					<th>Type of Leave</th>
-					<th>Reason for Leave</th>
-					<th>Approval</th>
+				<th>Date Filed</th>
+				<th>Type of Leave</th>
+				<th>Start Date of Leave</th>
+				<th>Return Date to Work</th>
+				<th>Reason For Leave</th>
+				<th>Leave Status</th>
 				</tr> 
 			</thead> 
 			<tbody> 
@@ -39,23 +37,12 @@
 				else	$class="odd";
 				$emp=$row->empnum;
 			?>
-				<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
-					<td><?php echo $emp; ?></td>
-					<td><?php echo $row->filedate; ?></td>
-					<td><?php echo $row->startdate; ?></td>
-					<td><?php echo $row->returndate; ?></td>
-					<td><?php echo $row->type; ?></td>
-					<td><?php echo $row->reason; ?></td>
-					<td><?php echo $row->approval; ?></td>
-						<td>
-						<?php
-						$hidden=$row->empnum;
-						echo form_open('leave/approve'); 
-						echo form_hidden('empnum', $emp);
-						echo form_submit('editEmp','View'); 
-						echo form_close(); 
-						?>
-					</td>
+					<td><?php echo $row->filedate ?></td>
+					<td><?php echo $row->type ?></td>
+					<td><?php echo $row->startdate ?></td>
+					<td><?php echo $row->returndate ?></td>
+					<td><?php echo $row->reason ?></td>
+					<td><?php echo $row->approval ?></td>
 				</tr>
 			<?php  
 			$cnt++; 
@@ -63,14 +50,13 @@
 			} ?>
 			</tbody>
 			<tfoot> 
-				<tr> 
-					<th>Employee Number</th> 
-					<th>Date Filed</th> 
-					<th>Start Date</th> 
-					<th>Return Date</th> 
-					<th>Type of Leave</th>
-					<th>Reason for Leave</th>
-					<th>Approval</th>
+				<tr>
+				<th>Date Filed</th>
+				<th>Type of Leave</th>
+				<th>Start Date of Leave</th>
+				<th>Return Date to Work</th>
+				<th>Reason For Leave</th>
+				<th>Leave Status</th>					
 				</tr> 
 			</tfoot>  
 		</table>

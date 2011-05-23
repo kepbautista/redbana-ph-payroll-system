@@ -22,7 +22,10 @@
 			<thead> 
 				<tr> 
 					<th>Employee Number</th> 
-				<th>Employee Name</th> 
+				<th>Employee Name</th>
+				<th>Start Date of Leave</th>
+				<th>Return Date to Work</th>
+				<th>Leave Status</th>
 				</tr> 
 			</thead> 
 			<tbody> 
@@ -36,11 +39,16 @@
 				<tr id="<?php echo $emp ?>" class="<?php echo $class ?>">
 					<td><?php echo $emp; ?></td>
 					<td><?php echo $row->fname; echo " "; echo $row->mname; echo " "; echo $row->sname; ?></td>
+					<td><?php echo $row->startdate ?></td>
+					<td><?php echo $row->returndate ?></td>
+					<td><?php echo $row->approval ?></td>
 					<td>
 						<?php
 						$hidden=$row->empnum;
+						$hidden2=$row->filedate;
 						echo form_open('leave/approve'); 
 						echo form_hidden('empnum', $emp);
+						echo form_hidden('filedate', $hidden2);
 						echo form_submit('editEmp','View'); 
 						echo form_close(); 
 						?>
@@ -54,7 +62,10 @@
 			<tfoot> 
 				<tr> 
 					<th>Employee Number</th> 
-					<th>Employee Name</th> 					
+					<th>Employee Name</th> 		
+				<th>Start Date of Leave</th>
+				<th>Return Date to Work</th>
+				<th>Leave Status</th>					
 				</tr> 
 			</tfoot>  
 		</table>
