@@ -7,7 +7,7 @@ class Employee extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->helper('date');
 		$this->load->library('session');	
-		
+		$this->load->model('login_model');
 	}
 	function validateForm($type){
 		//load form validation library
@@ -41,172 +41,215 @@ class Employee extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("addemp"))
 			{
-			$data['months'] = $this->Employee_model->buildMonthDropdown(); 
-			$data['days'] = range(1,31);
-			$data['years'] = range(1990,2020); 
-			$data['title'] =  array(
-	                  'Mr.'  => 'Mr.',
-	                  'Ms.'    => 'Ms.',
-					  'Mrs.'    => 'Mrs.'
-	                );
-			$data['pmode'] = $this->Employee_model->getPmode(); 
-			$data['pos_options'] = $this->Employee_model->get_pos();
-			$data['shift_id'] = $this->Employee_model->get_shift();
-			$data['civil_status'] = array(
-	                  'Single'  => 'Single',
-	                  'Married'    => 'Married'
-					);
-			$data['emp_status'] = array(
-	                  'Active'  => 'Active',
-	                  'On-Leave'    => 'On-Leave',
-					  'Terminated'    => 'Terminated',
-					  'Resigned'    => 'Resigned'
-					);
-			$data['dept_options'] = $this->Employee_model->get_dept();
-			$data['tax_options'] = $this->Employee_model->get_tax();
-			$data['type_options'] = $this->Employee_model->get_type();
-			$data['user_right'] = $this->Employee_model->get_user_right();
-			$this->validateForm("insert");//call function for validating forms
-		
-			if ($this->form_validation->run() == FALSE)
-				$this->load->view('Emp_view',$data);
-				//validation errors are present
-			else $this->InsertDb();//insert data
-			}else echo "no permission";
-			}
+				$data['months'] = $this->Employee_model->buildMonthDropdown(); 
+				$data['days'] = range(1,31);
+				$data['years'] = range(1990,2020); 
+				$data['title'] =  array(
+		                  'Mr.'  => 'Mr.',
+		                  'Ms.'    => 'Ms.',
+						  'Mrs.'    => 'Mrs.'
+		                );
+				$data['pmode'] = $this->Employee_model->getPmode(); 
+				$data['pos_options'] = $this->Employee_model->get_pos();
+				$data['shift_id'] = $this->Employee_model->get_shift();
+				$data['civil_status'] = array(
+		                  'Single'  => 'Single',
+		                  'Married'    => 'Married'
+						);
+				$data['emp_status'] = array(
+		                  'Active'  => 'Active',
+		                  'On-Leave'    => 'On-Leave',
+						  'Terminated'    => 'Terminated',
+						  'Resigned'    => 'Resigned'
+						);
+				$data['dept_options'] = $this->Employee_model->get_dept();
+				$data['tax_options'] = $this->Employee_model->get_tax();
+				$data['type_options'] = $this->Employee_model->get_type();
+				$data['user_right'] = $this->Employee_model->get_user_right();
+				$this->validateForm("insert");//call function for validating forms
+			
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Emp_view',$data);
+					//validation errors are present
+				else $this->InsertDb();//insert data
+			}else $this->load->view('no_access');
+		}
 		else
 			redirect('login');
-
 	}
-	
 	function Edit()//function for viewing the editing an employee page 
 	{	
-		if(!isset($_POST['editEmp']))
+		
+		$this->load->model('login_model');
+		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			//get all information from the previous viewing of Emp_edit form
-			$data['empnum'] = $_POST['empnum'];//employee number
-			$data['fname'] = $_POST['fname'];//first name
-			$data['mname'] = $_POST['mname'];//middle name
-			$data['sname'] = $_POST['sname'];//last name
-			$data['title1'] = $_POST['title'];//title
-			$data['mrate'] = $_POST['mrate'];//monthly rate
-			$data['position'] = $_POST['position'];//position
-			$data['dept'] = $_POST['dept'];//department
-			$data['gender'] = $_POST['gender'];//gender
-			$data['emp_status1'] = $_POST['emp_status'];//employee status
-			$data['cstatus'] = $_POST['cstatus'];//civil status
-			$data['user'] = $_POST['user_right'];//user right or type of user
-			$data['sss'] = $_POST['sss'];//SSS number
-			$data['phil'] = $_POST['phil'];//Philhealth number
-			$data['tin'] = $_POST['tin'];//TIN number
-			$data['mphone'] = $_POST['mphone'];//Mobile Phone number
-			$data['hphone'] = $_POST['hphone'];//Home Phone number
-			$data['email'] = $_POST['email'];//e-mail address
-			$data['address'] = $_POST['address'];//present address
-			$data['emp_type1'] = $_POST['emp_type'];//employee type
-			$data['zip'] = $_POST['zip'];//zip code
-			$data['shift'] = $_POST['shift_id'];//zip code
-			$data['tax'] = $_POST['tax_status'];//tax status
-			$data['pagibig'] = $_POST['pagibig'];//Pag-Ibig Number
-			$data['pmode1'] = $_POST['pmode'];//payment mode
-			$data['password'] = $_POST['password'];//password
-			
-			//starting date
-			$data['syear'] = $_POST['syear'];
-			$data['smonth'] = $_POST['smonth'];
-			$data['sday'] = $_POST['sday'];
-			
-			//birthdate
-			$data['byear'] = $_POST['byear'];
-			$data['bmonth'] = $_POST['bmonth'];
-			$data['bday'] = $_POST['bday'];
-			
-			$this->load->helper('form');
-			$this->load->model('Employee_model');
-		
+			if ($this->login_model->can_Access("editemp"))
+			{
+				if(!isset($_POST['editEmp']))
+				{
+				//get all information from the previous viewing of Emp_edit form
+					$data['empnum'] = $_POST['empnum'];//employee number
+					$data['fname'] = $_POST['fname'];//first name
+					$data['mname'] = $_POST['mname'];//middle name
+					$data['sname'] = $_POST['sname'];//last name
+					$data['title1'] = $_POST['title'];//title
+					$data['mrate'] = $_POST['mrate'];//monthly rate
+					$data['position'] = $_POST['position'];//position
+					$data['dept'] = $_POST['dept'];//department
+					$data['gender'] = $_POST['gender'];//gender
+					$data['emp_status1'] = $_POST['emp_status'];//employee status
+					$data['cstatus'] = $_POST['cstatus'];//civil status
+					$data['user'] = $_POST['user_right'];//user right or type of user
+					$data['sss'] = $_POST['sss'];//SSS number
+					$data['phil'] = $_POST['phil'];//Philhealth number
+					$data['tin'] = $_POST['tin'];//TIN number
+					$data['mphone'] = $_POST['mphone'];//Mobile Phone number
+					$data['hphone'] = $_POST['hphone'];//Home Phone number
+					$data['email'] = $_POST['email'];//e-mail address
+					$data['address'] = $_POST['address'];//present address
+					$data['emp_type1'] = $_POST['emp_type'];//employee type
+					$data['zip'] = $_POST['zip'];//zip code
+					$data['shift'] = $_POST['shift_id'];//zip code
+					$data['tax'] = $_POST['tax_status'];//tax status
+					$data['pagibig'] = $_POST['pagibig'];//Pag-Ibig Number
+					$data['pmode1'] = $_POST['pmode'];//payment mode
+					$data['password'] = $_POST['password'];//password
+					
+					//starting date
+					$data['syear'] = $_POST['syear'];
+					$data['smonth'] = $_POST['smonth'];
+					$data['sday'] = $_POST['sday'];
+					
+					//birthdate
+					$data['byear'] = $_POST['byear'];
+					$data['bmonth'] = $_POST['bmonth'];
+					$data['bday'] = $_POST['bday'];
+					
+					$this->load->helper('form');
+					$this->load->model('Employee_model');		
+				}
+				else
+				{
+					$this->load->helper('form');
+					$this->load->model('Employee_model');
+					$data['query']=$this->Employee_model->Employee_edit();
+				}//Edit Employee Form is executed for the 1st time
+				
+				$data['months'] = $this->Employee_model->buildMonthDropdown(); 
+				$data['days'] = range(1,31);
+				$data['years'] = range(1990,2020); 
+				$data['title'] =  array(
+		                  'Mr.'  => 'Mr.',
+		                  'Ms.'    => 'Ms.',
+						  'Mrs.'    => 'Mrs.'
+		                );
+				$data['pmode'] = $this->Employee_model->getPmode(); 
+				$data['pos_options'] = $this->Employee_model->get_pos();
+				$data['civil_status'] = array(
+		                  'Single'  => 'Single',
+		                  'Married'    => 'Married'
+						);
+				$data['emp_status'] = array(
+		                  'Active'  => 'Active',
+		                  'On-Leave'    => 'On-Leave',
+						  'Terminated'    => 'Terminated',
+						  'Resigned'    => 'Resigned'
+						);
+				$data['dept_options'] = $this->Employee_model->get_dept();
+				$data['tax_options'] = $this->Employee_model->get_tax();
+				$data['type_options'] = $this->Employee_model->get_type();
+				$data['user_right'] = $this->Employee_model->get_user_right();
+				$data['shift_id'] = $this->Employee_model->get_shift();
+				
+				$this->validateForm("update");//call function for form validation
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Emp_edit',$data);
+					//validation errors are present
+				else $this->Update();//update information
+			}else $this->load->view('no_access');
 		}
-		else{
-			$this->load->helper('form');
-			$this->load->model('Employee_model');
-			$data['query']=$this->Employee_model->Employee_edit();
-		}//Edit Employee Form is executed for the 1st time
-		
-		$data['months'] = $this->Employee_model->buildMonthDropdown(); 
-		$data['days'] = range(1,31);
-		$data['years'] = range(1990,2020); 
-		$data['title'] =  array(
-                  'Mr.'  => 'Mr.',
-                  'Ms.'    => 'Ms.',
-				  'Mrs.'    => 'Mrs.'
-                );
-		$data['pmode'] = $this->Employee_model->getPmode(); 
-		$data['pos_options'] = $this->Employee_model->get_pos();
-		$data['civil_status'] = array(
-                  'Single'  => 'Single',
-                  'Married'    => 'Married'
-				);
-		$data['emp_status'] = array(
-                  'Active'  => 'Active',
-                  'On-Leave'    => 'On-Leave',
-				  'Terminated'    => 'Terminated',
-				  'Resigned'    => 'Resigned'
-				);
-		$data['dept_options'] = $this->Employee_model->get_dept();
-		$data['tax_options'] = $this->Employee_model->get_tax();
-		$data['type_options'] = $this->Employee_model->get_type();
-		$data['user_right'] = $this->Employee_model->get_user_right();
-		$data['shift_id'] = $this->Employee_model->get_shift();
-		
-		$this->validateForm("update");//call function for form validation
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Emp_edit',$data);
-			//validation errors are present
-		else $this->Update();//update information
-		
+		else
+			redirect('login');
 	}
-	
 	function GetAll()//Getting all info of employee and 
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['query']=$this->Employee_model->Employee_getall();
-		$this->load->view('Emp_viewall',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("viewemp"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				$data['query']=$this->Employee_model->Employee_getall();
+				$this->load->view('Emp_viewall',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	function Show($empnum)//Getting all info of employee and 
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['query']=$this->Employee_model->Employee_get($empnum);
-		$data['rows']=$this->Employee_model->Employee_getRows($empnum);
-		$this->load->view('profile',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("viewemp"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				$data['query']=$this->Employee_model->Employee_get($empnum);
+				$data['rows']=$this->Employee_model->Employee_getRows($empnum);
+				$this->load->view('profile',$data);			
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
-	
 	function Delete()//deletes an employee
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$this->Employee_model->Employee_delete();
-		$data['query']=$this->Employee_model->Employee_getall();
-		$this->load->view('Emp_viewall',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("editemp"))
+			{		
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				$this->Employee_model->Employee_delete();
+				$data['query']=$this->Employee_model->Employee_getall();
+				$this->load->view('Emp_viewall',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
-	
 	function InsertDb()//insert an employee info to the database then redirect for viewing all employee page
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$this->Employee_model->Employee_insert();
-		$data['query']=$this->Employee_model->Employee_getall();
-		$this->load->view('Emp_viewall',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("addemp"))
+			{	
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				$this->Employee_model->Employee_insert();
+				$data['query']=$this->Employee_model->Employee_getall();
+				$this->load->view('Emp_viewall',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
-	
 	function Update()//update an employee info
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$this->Employee_model->Employee_update();
-		$data['query']=$this->Employee_model->Employee_getall();
-		$this->load->view('Emp_viewall',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("editemp"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				$this->Employee_model->Employee_update();
+				$data['query']=$this->Employee_model->Employee_getall();
+				$this->load->view('Emp_viewall',$data);
+				}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function script_input($str){
@@ -231,115 +274,40 @@ class Employee extends CI_Controller {
 		
 		return $response;
 	}//check if duplicate employee number
-	
-	//HR
-	
-	function Insertothertime()
-	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-		$date_rows=$this->Employee_model->Employee_viewalltime_rows(1);
-		if ($date_rows==0)$this->Employee_model->insert_time();
-		$data['trows']=$this->Employee_model->Employee_viewalltime_rows(1);
-		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
-		$data['date_today']=date("Y/n/j");
-		$data['date']=$this->input->post('date');
-		list($year,$month,$day) = explode('-', $data['date']);
-		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-		$data['year_s']=$year;
-		$data['month_s']=$month;
-		$data['day_s']=$day;
-		$this->load->view('date_inserted',$data);
-	}
-	
-	function ViewTimeSheet()//view the timesheet for today 
-	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['date']=date("Y-n-j");
-		$date=date("Y/n/j");
-		list($year,$month,$day) = explode('/', $date);
-		$data['trows']=$this->Employee_model->Employee_viewalltime_rows(2);
-		$data['query']=$this->Employee_model->Employee_viewalltime(2);	
-		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-		$data['year_s']=$year;
-		$data['month_s']=$month;
-		$data['day_s']=$day;
-		$this->load->view('View_time',$data);
-	}
-	
-	function Viewotherdate()//view the timesheet for today 
-	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['date']=$this->input->post('yrs').'-'.$this->input->post('mos').'-'.$this->input->post('days');
-		list($year,$month,$day) = explode('-', $data['date']);
-		$data['trows']=$this->Employee_model->Employee_viewalltime_rows(3);
-		$data['query']=$this->Employee_model->Employee_viewalltime(3);	
-		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-		$data['year_s']=$year;
-		$data['date_today']=date("Y/n/j");
-		$data['month_s']=$month;
-		$data['day_s']=$day;
-		$this->load->view('View_otherdate',$data);
-	}
-	
-	function Updatetime()//view the timesheet for today 
-	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$this->Employee_model->Employee_updateTime();
-		list($year,$month,$day) = explode('-', $this->input->post('date'));
-		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
-		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-		$data['year_s']=$year;
-		$data['month_s']=$month;
-		$data['day_s']=$day;
-		$this->load->view('dateupdated',$data);
-	}
-	
-	function EditTime()//view the timesheet for today 
-	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['edit']=$this->input->post('empnum');
-		$data['date']=$this->input->post('date');
-		$data['hour']=range(01,12);
-		$data['minute']=range(00,59);
-		$data['second']=range(00,59);
-		$data['ampm'] = array(
-                  'am'  => 'am',
-                  'pm'    => 'pm'
-				);
-		$date=$this->input->post('date');
-		list($year,$month,$day) = explode('-', $date);
-		$data['mos']= $this->Employee_model->buildMonthDropdown(); 
-		$data['year_s']=$year;
-		$data['month_s']=$month;
-		$data['day_s']=$day;
-		$data['query']=$this->Employee_model->Employee_viewalltime(1);	
-		$this->load->view('Edit_time',$data);
-	}
 	function Privilege($user)//Getting all info of employee and 
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$data['user']=$user;
-		$data['query']=$this->Employee_model->get_privilege($user);
-		$data['query1']=$this->Employee_model->get_privilege($user);
-		$data['rows']=$this->Employee_model->get_privilegeRows($user);
-		$this->load->view('privilege',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("access"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				$data['user']=$user;
+				$data['query']=$this->Employee_model->get_privilege($user);
+				$data['query1']=$this->Employee_model->get_privilege($user);
+				$data['rows']=$this->Employee_model->get_privilegeRows($user);
+				$this->load->view('privilege',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	function insertPriv()//Getting all info of employee and 
 	{
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		//echo $this->input->post('user');//
-		$this->Employee_model->insert_privilege($_POST['user']);
-		redirect('employee/getall');
-		//$this->load->view('privilege',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("access"))
+			{			
+				$this->load->helper('form');  
+				$this->load->model('Employee_model');
+				//echo $this->input->post('user');//
+				$this->Employee_model->insert_privilege($_POST['user']);
+				redirect('employee/getall');
+				//$this->load->view('privilege',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
-	
 }
 ?>
