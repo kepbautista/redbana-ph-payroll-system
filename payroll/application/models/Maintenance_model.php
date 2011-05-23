@@ -172,8 +172,8 @@ class Maintenance_model extends CI_Model {
 		//count number of rows produced by the query
 		$rows = mysql_num_rows($query);
 	
-		if($rows>0) return FALSE;
-			//department already exists
+		if($rows>0){ return FALSE;
+		}//type already exists
 		else return TRUE;
 	}//check if duplicate department
 }
