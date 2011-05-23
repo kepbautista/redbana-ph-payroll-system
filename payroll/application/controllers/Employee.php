@@ -335,7 +335,9 @@ class Employee extends CI_Controller {
 	{
 		$this->load->helper('form');  
 		$this->load->model('Employee_model');
+		//echo $this->input->post('user');//
 		$this->Employee_model->insert_privilege($_POST['user']);
+		redirect('employee/getall');
 		//$this->load->view('privilege',$data);
 	}
 	

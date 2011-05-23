@@ -395,6 +395,27 @@ class Employee_model extends CI_Model {
 			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="dept"'); 
 		else 
 			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="dept"'); 
+		if (isset($_POST['access'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="access"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="access"'); 
+		if (isset($_POST['use'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="user"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="user"'); 
+		if (isset($_POST['type'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="type"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="type"'); 
+		if (isset($_POST['day'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="day"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="day"'); 
+		if (isset($_POST['timesheet'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="timesheet"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="timesheet"'); 
+		
 	}
 	function get_privilege($user_right) {//select all the info of a specific employee
 		$this->load->database();
