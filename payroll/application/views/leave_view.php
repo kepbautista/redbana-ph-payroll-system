@@ -12,11 +12,7 @@
 File a Leave
 <form name="FRM" class="jNice" method="post"  accept-charset="utf-8" action="<?php echo site_url(); ?>/leave/insert">
 <table  border="0" cellspacing="2">
-  <tr>
-    <th width="100" align="left">Employee Number:</th>
-    <td><input name="empnum" id="empnum" type="text" class="textfield" size="25" value="<?php echo set_value('empnum'); ?>"/>&nbsp<span class="warning" name="enum" id="enum"><span></td>
-  </tr>
-
+ 
   <tr>
     <th align="left">Type of Leave:</th>
     <td>

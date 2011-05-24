@@ -15,7 +15,7 @@ You have successfully filed a leave.
 
 <?php
 $url=base_url();
-echo "<a href='".$url."index.php/employee_home'>Back to Home </a>";
+echo "<a href='".$url."index.php/super'>Back to Home </a>";
 ?>
 <div>
 </form>
