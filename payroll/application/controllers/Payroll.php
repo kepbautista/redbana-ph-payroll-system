@@ -95,6 +95,7 @@ class Payroll extends CI_Controller {
 		$this->load->model('Payroll_model');
 		$this->Payroll_model->UpdatePayslip();
 		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
+		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
 		$this->load->view('ViewPayslip',$data);
 	}//Update a pay slip
 	
