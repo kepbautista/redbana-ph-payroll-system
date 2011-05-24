@@ -142,49 +142,98 @@ class Maintenance extends CI_Controller {
 	//positon maintenance
 	function Posview()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Pos_getall();	
-		$this->load->view('Pos_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("position"))
+			{
+				$data['query']=$this->Maintenance_model->Pos_getall();	
+				$this->load->view('Pos_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function PosEdit()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Pos_getall();	
-		$data['edit']=$this->input->post('position');
-		$this->load->view('Pos_edit',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("position"))
+			{
+				$data['query']=$this->Maintenance_model->Pos_getall();	
+				$data['edit']=$this->input->post('position');
+				$this->load->view('Pos_edit',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
+
 	}
 	
 	function PosUpdate()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Pos_getall();
-		$this->validateForm('position');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Pos_view',$data);
-			//validation errors are present
-		else $this->UpdatePos();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("position"))
+			{
+				$data['query'] = $this->Maintenance_model->Pos_getall();
+				$this->validateForm('position');
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Pos_view',$data);
+					//validation errors are present
+				else $this->UpdatePos();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function PosInsert()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Pos_getall();
-		$this->validateForm('position');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Pos_view',$data);
-			//validation errors are present
-		else $this->InsertPos();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("position"))
+			{
+				$data['query'] = $this->Maintenance_model->Pos_getall();
+				$this->validateForm('position');
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Pos_view',$data);
+					//validation errors are present
+				else $this->InsertPos();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function UpdatePos(){
-		$this->Maintenance_model->Pos_update();
-		$data['query'] = $this->Maintenance_model->Pos_getall();
-		$this->load->view('Pos_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("position"))
+			{
+				$this->Maintenance_model->Pos_update();
+				$data['query'] = $this->Maintenance_model->Pos_getall();
+				$this->load->view('Pos_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for updating a position
 	
 	function InsertPos(){
-		$this->Maintenance_model->Pos_insert();
-		$data['query'] = $this->Maintenance_model->Pos_getall();
-		$this->load->view('Pos_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("position"))
+			{
+				$this->Maintenance_model->Pos_insert();
+				$data['query'] = $this->Maintenance_model->Pos_getall();
+				$this->load->view('Pos_view',$data);
+				}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for adding a position
 	
 	//User maintenance
