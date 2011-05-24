@@ -33,7 +33,8 @@ class Leave_model extends CI_Model {
 	function Leave_edit() {
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
-		$query = $this->db->query('SELECT * FROM `employee` `a`, `leave` `b` WHERE `b`.`empnum`=`a`.`empnum` AND `a`.`empnum`="'.$empnum.'"');	
+		$filedate=$this->input->post('filedate');
+		$query = $this->db->query('SELECT * FROM `employee` `a`, `leave` `b` WHERE `b`.`empnum`=`a`.`empnum` AND `b`.`filedate`="'.$filedate.'" AND `a`.`empnum`="'.$empnum.'"');	
 		return $query->result();
 	}
 
