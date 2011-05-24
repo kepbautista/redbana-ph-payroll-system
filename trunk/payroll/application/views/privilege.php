@@ -82,12 +82,7 @@
 						else{
 							echo form_checkbox('access','access'); echo form_label('Distribute access right', 'access');}?>
 				</td>
-				<td ><?php 
-						if (set("history",$query)==1){
-							echo form_checkbox('history','history','true'); echo form_label('View History', 'history');}
-						else{
-							echo form_checkbox('history','history'); echo form_label('View History', 'history');}?>
-				</td>
+				
 			</tr>
 			<tr >
 				<td ><?php 
@@ -95,6 +90,12 @@
 							echo form_checkbox('accleave','accleave','true'); echo form_label('Accept File Leave', 'accleave');}
 						else{
 							echo form_checkbox('accleave','accleave'); echo form_label('Accept File Leave', 'accleave');}?>
+				</td>
+				<td ><?php 
+						if (set("history",$query)==1){
+							echo form_checkbox('history','history','true'); echo form_label('View History', 'history');}
+						else{
+							echo form_checkbox('history','history'); echo form_label('View History', 'history');}?>
 				</td>
 			</tr>
 			<tr><th colspan=2>Manipulate Maintenance Table</th></tr>
