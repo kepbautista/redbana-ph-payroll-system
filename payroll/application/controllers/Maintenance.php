@@ -433,7 +433,7 @@ class Maintenance extends CI_Controller {
 	{	
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			if ($this->login_model->can_Access("tax"))
+			if ($this->login_model->can_Access("taxstatus"))
 			{
 				$data['query']=$this->Maintenance_model->Tax_getall();	
 				$this->load->view('Tax_view',$data);
@@ -447,7 +447,7 @@ class Maintenance extends CI_Controller {
 	{	
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			if ($this->login_model->can_Access("tax"))
+			if ($this->login_model->can_Access("taxstatus"))
 			{
 				$data['query']=$this->Maintenance_model->Tax_getall();	
 				$data['edit']=$this->input->post('id');
@@ -463,7 +463,7 @@ class Maintenance extends CI_Controller {
 	{	
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			if ($this->login_model->can_Access("tax"))
+			if ($this->login_model->can_Access("taxstatus"))
 			{
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->validateForm('taxstatus');
@@ -481,7 +481,7 @@ class Maintenance extends CI_Controller {
 	{	
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			if ($this->login_model->can_Access("tax"))
+			if ($this->login_model->can_Access("taxstatus"))
 			{
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->validateForm('taxstatus');
@@ -499,7 +499,7 @@ class Maintenance extends CI_Controller {
 	function UpdateTax(){
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			if ($this->login_model->can_Access("tax"))
+			if ($this->login_model->can_Access("taxstatus"))
 			{
 				$this->Maintenance_model->Tax_update();
 				$data['query']=$this->Maintenance_model->Tax_getall();
@@ -513,7 +513,7 @@ class Maintenance extends CI_Controller {
 	function InsertTax(){
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			if ($this->login_model->can_Access("tax"))
+			if ($this->login_model->can_Access("taxstatus"))
 			{
 				$this->Maintenance_model->Tax_insert();
 				$data['query']=$this->Maintenance_model->Tax_getall();
