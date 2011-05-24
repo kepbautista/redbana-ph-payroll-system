@@ -92,9 +92,10 @@ background-color:#7A991A;
 		if (can_Access("addemp",$sql))
 			echo "<li><a href='employee/insert' class='underline'>Add and Edit Employee Information</a></li>";
 		if (can_Access("viewemp",$sql))
-			echo "<li><a href='employee/getall' class='underline'>View All Employee</a></li></ul>";
+			echo "<li><a href='employee/getall' class='underline'>View All Employee</a></li>";
+		echo "</ul><ul>";
 		if (can_Access("sss",$sql))
-			echo "<ul><li><a href='sss/getall' class='underline'>SSS Table</a></li>";
+			echo "<li><a href='sss/getall' class='underline'>SSS Table</a></li>";
 		if (can_Access("phil",$sql))
 			echo "<li><a href='philhealth/getall' class='underline'>Philhealth Table</a></li>";
 		if (can_Access("wth",$sql))
@@ -112,21 +113,25 @@ background-color:#7A991A;
 		if (can_Access("dept",$sql))
 			echo "<li><a href='maintenance/deptview' class='underline'>Department Maintenance</a></li>";
 		if (can_Access("type",$sql))
-			echo "<li><a href='maintenance/typeview' class='underline'>Employment Type Maintenance</a></li></ul>";
+			echo "<li><a href='maintenance/typeview' class='underline'>Employment Type Maintenance</a></li>";
+		echo "</ul><ul>";
 		if (can_Access("allleave",$sql))
-			echo "<ul><li><a href='leave/viewall' class='underline'>View All Leave and Approve</a></li></ul>";
+			echo "<li><a href='leave/viewall' class='underline'>View All Leave and Approve</a></li>";
 		if (can_Access("viewpay",$sql))
-			echo "<ul><li><a href='payroll/payrollinfoview' class='underline'>View Payroll</a></li>";
+			echo "<li><a href='payroll/payrollinfoview' class='underline'>View Payroll</a></li>";
+		echo "</ul><ul>";
 		if (can_Access("leave",$sql))
 		{
 			echo "<li><a href='leave/insert' class='underline'>File a leave</a></li>";
-			echo "<li><a href='leave/empview' class='underline'>View all your filed leave</a></li></ul>";
+			echo "<li><a href='leave/empview' class='underline'>View all your filed leave</a></li>";
 		}
+		echo "</ul><ul>";
 		if (can_Access("timesheet",$sql))
 		{
-			echo "<ul><li><a href='timesheet/viewtimesheet' class='underline'>View TimeSheet</a></li>";
-			echo "<li><a href='AttendanceController' class='underline'>Absences and Tardiness</a></li></ul>";
+			echo "<li><a href='timesheet/viewtimesheet' class='underline'>View TimeSheet</a></li>";
+			echo "<li><a href='AttendanceController' class='underline'>Absences and Tardiness</a></li>";
 		}
+		echo "</ul>";
 		echo "<ul><li><a href='login/logout' class='underline'>Sign out</a></li></ul>";
 		
 	?>

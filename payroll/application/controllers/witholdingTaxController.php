@@ -25,8 +25,15 @@ class witholdingTaxController extends CI_Controller
 		
 		$this->load->helper(array('form','url') );		
 		$this->load->model('login_model');
-		if( ! $this->login_model->isUser_LoggedIn() ) redirect('Login');
-		
+		if ( ($this->login_model->isUser_LoggedIn())==FALSE ) 	
+		{			
+			redirect('login');
+		}
+		else
+		{
+			if (($this->login_model->can_Access("wth"))==FALSE)
+				redirect('super');
+		}
 	}
 	
 	function index()
