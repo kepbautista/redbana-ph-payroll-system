@@ -39,6 +39,7 @@
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
 							<th>Reason for Absence</th>
+							<th>Restday?</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -165,6 +166,14 @@
 						 			?>			 			
 				 				</select>
 							</td>
+							<td>								
+								<?php
+									echo '<input type="checkbox" name="restday" ';
+									if($row->restday == 1) echo 'checked="checked"';
+									echo ' /> ';
+								?>
+								
+							</td>
 							<td>
 								<?php
 								echo form_hidden('empnum', $emp);
@@ -205,7 +214,13 @@
 									}
 								?>
 							</td>
-
+							<td>
+								<?php if($row->restday == 1)
+										echo "YES";
+									  else
+									  	echo "NO";
+								?>
+							</td>
 							<td>
 							<?php
 							echo form_open('timesheet/editTime'); 
@@ -230,7 +245,9 @@
 							<th>Date of Time-in</th>
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
-							<th>Reason for Absence</th>						</tr> 
+							<th>Reason for Absence</th>						
+							<th>Restday?</th>
+						</tr> 
 					</tfoot>  
 				</table>
 			<center><!-- For Viewing Other dates-->

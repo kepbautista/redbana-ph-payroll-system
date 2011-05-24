@@ -50,6 +50,7 @@
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
 							<th>Reason for Absence</th>
+							<th><span lang="en-ph">Restday</span>?</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -91,6 +92,13 @@
 										echo $absence_reasons[$row->absence_reason]->TITLE; 										
 									}
 								?>
+							</td>
+							<td>
+								<?php if($row->restday == 1)
+										echo "YES";
+									  else
+									  	echo "NO";
+								?>	
 							</td>
 							<td>							
 							<?php

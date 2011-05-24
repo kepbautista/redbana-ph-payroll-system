@@ -39,7 +39,7 @@
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
 							<th>Reason for Absence</th>
-
+							<th>Restday?</th>
 						</tr> 
 					</thead> 
 					<tbody> 
@@ -79,7 +79,13 @@
 									}
 								?>
 							</td>
-
+							<td>
+								<?php if($row->restday == 1)
+										echo "YES";
+									  else
+									  	echo "NO";
+								?>
+							</td>
 							<td>
 							<?php
 							echo form_open('timesheet/editTime'); 
@@ -104,6 +110,7 @@
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
 							<th>Reason for Absence</th>
+							<th>Restday?</th>
 						</tr> 
 					</tfoot>  
 				</table>
