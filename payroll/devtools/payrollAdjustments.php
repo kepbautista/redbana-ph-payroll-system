@@ -55,8 +55,9 @@ function showPayroll($startDate,$endDate,$payperiod){
 	$response = $response."<table><tr>
 		 <th>Employee Number</th><th style='align:left'>Employee Name</th>
 		 <th>Tax Status</th><th>Pay Period Rate</th>
-		 <th>NetPay</th><th>Remarks</th><th>Status</th>
-		 <th>Modify</th></tr>";
+		 <th>NetPay</th><th>Remarks</th><th>Status</th>";
+	if(!finalized($payperiod))	 
+		 $response = $response."<th>Modify</th></tr>";
 	
 	while($row = mysql_fetch_array($query)){
 		$response = $response."<tr id='info' name='info'>
@@ -76,7 +77,8 @@ function showPayroll($startDate,$endDate,$payperiod){
 					<input type='hidden' id='end_date' 
 					name='end_date' value='".$endDate."'/>";
 		if(!finalized($payperiod))
-			$response = $response."<input type='submit' id='edit' name='edit' value='Edit'/></td>";
+			$response = $response."<input type='submit' id='edit' name='edit' value='Edit'/><br/>
+						<input type='submit' id='netpay' name='netpay' value='Compute Net Pay'/></td>";
 		$response = $response."</form></tr>";
 	}
 	

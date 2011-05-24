@@ -73,6 +73,39 @@ class Payroll_model extends CI_Model{
 		return $data;
 	}//function that gets the information on an employee's pay slip
 	
+	function UpdatePayslip(){
+		//get needed information
+		$EmployeeNumber = $this->input->post('EmployeeNumber');
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		$DailyRate = $this->input->post('DailyRate');
+		$TaxRefund = $this->input->post('TaxRefund');
+		$NonTax = $this->input->post('NonTax');
+		$TaxShield = $this->input->post('TaxShield');
+		$PagibigLoan = $this->input->post('PagibigLoan');
+		$SSSLoan = $this->input->post('SSSLoan');
+		$CompanyLoan = $this->input->post('CompanyLoan');
+		$AdvancestoOfficer = $this->input->post('AdvancestoOfficer');
+		$CellphoneCharges = $this->input->post('CellphoneCharges');
+		$AdvancestoEmployee = $this->input->post('AdvancestoEmployee');
+		$Remarks = mysql_real_escape_string($this->input->post('Remarks'));
+		$Status = mysql_real_escape_string($this->input->post('Status'));
+	
+		$sql = "UPDATE `salary` SET DailyRate='".$DailyRate."',
+				TaxRefund='".$TaxRefund."',NonTax='".$NonTax."',
+				TaxShield='".$TaxShield."',PagibigLoan='".$PagibigLoan."', 
+				SSSLoan='".$SSSLoan."',CompanyLoan='".$CompanyLoan."',
+				AdvancestoOfficer='".$AdvancestoOfficer."',
+				CellphoneCharges='".$CellphoneCharges."',
+				AdvancestoEmployee='".$AdvancestoEmployee."',
+				Remarks='".$Remarks."',Status='".$Status."'
+				WHERE EmployeeNumber='".$EmployeeNumber."'
+				AND start_date='".$start_date."' AND 
+				end_date='".$end_date."'";
+		
+		mysql_query($sql);
+	}//function that updates the Payslip
+	
 	function selectSalaryData($empnum,$start_date,$end_date){
 		//select data from salary table
 		$sql = "SELECT * FROM `salary` WHERE 
@@ -123,7 +156,7 @@ class Payroll_model extends CI_Model{
 		$rate = $this->getMonthlyRate($info[0]);
 		$paymentMode = $this->paymentMode($info);
 		
-		if($paymentMode=="SEMI-MONTHLY")
+		if($paymentMode==1)
 			$rate/=2;//see if payment mode is semi-monthly
 		
 		$sql = "UPDATE `salary` SET PayPeriodRate='".$rate."' WHERE 
@@ -182,9 +215,6 @@ class Payroll_model extends CI_Model{
 	}//compute withholding tax basis
 	
 	function governmentContribs($info,$sss,$philhealth,$pagibig){	
-		echo "Philhealth=".$philhealth."<br/>SSS=".$sss
-			."<br/>Pagibig=".$pagibig;
-		
 		$sql = "UPDATE `salary` SET SSS='".$sss."',
 				Philhealth='".$philhealth."',
 				Pagibig='".$pagibig."' WHERE 
@@ -225,9 +255,7 @@ class Payroll_model extends CI_Model{
 		}
 		
 		$taxStatus = $this->getTaxStatus($empnum);//get Tax Status
-		echo "<br/>".$taxStatus;
 		$this->compute($info,$taxStatus);
-		
 	}//perform arithmetic computations for net pay
 	
 	function findNumber($string){
@@ -315,7 +343,6 @@ class Payroll_model extends CI_Model{
 				 + $data['SSSLoan'] + $data['CompanyLoan']
 				 + $data['AdvancestoOfficer']+ $data['CellphoneCharges'] 
 				 + $data['AdvancestoEmployee']);
-		echo "(".$netpay.")";
 		
 		$sql = "UPDATE `salary` SET Netpay='".$netpay."' WHERE 
 				EmployeeNumber='".$info[0]."' AND 

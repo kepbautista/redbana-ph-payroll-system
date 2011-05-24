@@ -40,7 +40,9 @@ class Payroll extends CI_Controller {
 		$data['start_date'] = $_POST['start_date'];
 		$data['end_date'] = $_POST['end_date'];
 		
-		if(!isset($_POST['edit'])){
+		if(isset($_POST['netpay']))
+			$this->NetPay();
+		else if(!isset($_POST['edit'])){
 			//get information
 			$data['EmployeeName'] = $_POST['EmployeeName'];
 			$data['DailyRate'] = $_POST['DailyRate'];
@@ -81,23 +83,32 @@ class Payroll extends CI_Controller {
 			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
 			$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
 			$this->load->view('EditPayslip_view',$data);
-		}
+		}//Edit Pay Slip Form is loaded for the 1st time
 	}
 	
 	function UpdatePayslip(){
+		//get needed information
+		$empnum = $_POST['EmployeeNumber'];
+		$start_date = $_POST['start_date'];
+		$end_date = $_POST['end_date'];
+		
 		$this->load->model('Payroll_model');
-		$this->Payroll_model->UpdatePayroll();
-		echo "Payslip!";
-	}
+		$this->Payroll_model->UpdatePayslip();
+		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
+		$this->load->view('ViewPayslip',$data);
+	}//Update a pay slip
 	
 	function NetPay(){
-		$cutoffL = '2011-04-24';
-		$cutoffH = '2011-05-07';
-		$empnum = '2008-00196';
+		//get information
+		$empnum = $_POST['EmployeeNumber'];
+		$start_date = $_POST['start_date'];
+		$end_date = $_POST['end_date'];
 	
 		$this->load->model('Payroll_model');
-		$this->Payroll_model->computeNetPay($empnum,$cutoffL,$cutoffH);
-		
+		$this->Payroll_model->computeNetPay($empnum,$start_date,$end_date);
+		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
+		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
+		$this->load->view('ViewPayslip',$data);
 	}//function for computing Withholding Tax
 	
 	function script_input($str){
