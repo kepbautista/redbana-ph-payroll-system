@@ -198,11 +198,6 @@ class Maintenance_model extends CI_Model {
 			//department already exists
 		else return TRUE;
 	}//check if duplicate department
-	function history_getall() {//select all the list of department
-		$this->load->database();
-		$query = $this->db->query('SELECT * FROM history');
-		return $query->result();
-	}
 	function duplicate_taxstatus($str){
 		//search if position is existing
 		$query = mysql_query("SELECT * from `tax_status` WHERE status LIKE '".$str."'");
