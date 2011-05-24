@@ -133,7 +133,7 @@ background-color:#7A991A;
 </div>
 </div>
 <div id="copyright" >
-<p>Copyright 2011 | Bautista and Associates Information Systems</p>
+<p>Copyright 2011 | UPLB Students</p>
 </div>
 
 </body>
