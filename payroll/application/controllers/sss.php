@@ -6,6 +6,16 @@ class Sss extends CI_Controller {
 		parent::__construct();	// to load controller constructor
 		$this->load->helper('url');	// to load the url helper file
 		$this->load->library('table');	// to invoke the the class names
+		$this->load->model('login_model');
+		if ( ($this->login_model->isUser_LoggedIn())==FALSE ) 	
+		{			
+			redirect('login');
+		}
+		else
+		{
+			if (($this->login_model->can_Access("sss"))==FALSE)
+				redirect('super');
+		}
 	}
 	
 	function GetAll()
