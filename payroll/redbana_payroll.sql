@@ -722,7 +722,9 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (96, 'superuser', 'user', 1),
 (97, 'employee', 'user', 0),
 (152, 'superuser', 'day', 1),
-(153, 'employee', 'day', 0);
+(153, 'employee', 'day', 0),
+(154, 'superuser', 'history', 1),
+(155, 'employee', 'history', 0);
 
 -- --------------------------------------------------------
 
