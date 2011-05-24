@@ -55,7 +55,7 @@ function showPayroll($startDate,$endDate,$payperiod){
 	$response = $response."<table><tr>
 		 <th>Employee Number</th><th style='align:left'>Employee Name</th>
 		 <th>Tax Status</th><th>Pay Period Rate</th>
-		 <th>Remarks</th><th>Status</th>";
+		 <th>Remarks</th><th>Status</th><th>Pay Slip</th>";
 	if(!finalized($payperiod))	 
 		 $response = $response."<th>Modify</th></tr>";
 	
@@ -74,10 +74,10 @@ function showPayroll($startDate,$endDate,$payperiod){
 					<input type='hidden' id='start_date' 
 					name='start_date' value='".$startDate."'/>
 					<input type='hidden' id='end_date' 
-					name='end_date' value='".$endDate."'/>";
+					name='end_date' value='".$endDate."'/>
+					<input type='submit' id='netpay' name='netpay' value='View'/></td>";
 		if(!finalized($payperiod))
-			$response = $response."<input type='submit' id='netpay' name='netpay' value='View Pay Slip'/><br/>
-						<input type='submit' id='edit' name='edit' value='Edit'/></td>";
+			$response = $response."<td><input type='submit' id='edit' name='edit' value='Edit'/></td>";
 		$response = $response."</form></tr>";
 	}
 	
