@@ -41,7 +41,7 @@ class Leave extends CI_Controller {
 
 	}//function for validating forms
 	
-	function Insert()//function for viewing the inserting employee page
+	function Insert()//function for viewing the inserting leave page
 	{	
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
