@@ -7,7 +7,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
-	<title>Compute Payroll</title>
+	<title>Edit Pay Slip</title>
 	<style>
 		th{text-align: left;}
 		.numeric{text-align: right; width: 60px}
@@ -17,35 +17,58 @@
 
 <body>
 <h3>Initial Pay Slip for <?php echo $start_date." to ".$end_date;?></h3>
-<form>
+<form method="post" accept-charset="utf-8" action="<?php echo site_url(); ?>/payroll/editpayslip">
+<div style='color:red'>
+	<?php if(!isset($_POST['edit'])) echo validation_errors();?>
+</div>
 <table>
 	<tr>
 		<th>Employee Number:</th>
-		<td style='text-align:left'><?php echo $EmployeeNumber;?></td>
+		<td style='text-align:left'>
+		<?php echo $EmployeeNumber;?>
+		<input type='hidden' id='EmployeeNumber' name='EmployeeNumber' value='<?php echo $EmployeeNumber?>'/>
+		</td>
 	</tr>
 	<tr>
 		<th>Employee Name:</th>
-		<td style='text-align:left'><?php echo $EmployeeName;?></td>
+		<td style='text-align:left'>
+		<?php echo $EmployeeName;?>
+		<input type='hidden' id='EmployeeName' name='EmployeeName' value='<?php echo $EmployeeName?>'/>
+		</td>
 	</tr>
 	<tr>
 		<th>Daily Rate:</th>
-		<td><input type='text' class='numeric' id='DailyRate' name='DailyRate' value='<?php echo $DailyRate;?>'/></td>
+		<td>
+		<input type='text' class='numeric' id='DailyRate' name='DailyRate' value='<?php echo $DailyRate;?>'/>
+		</td>
 	</tr>
 	<tr>
 		<th>Pay Period Rate:</th>
-		<td><?php echo $PayPeriodRate;?></td>
+		<td>
+		<?php echo $PayPeriodRate;?>
+		<input type='hidden' id='PayPeriodRate' name='PayPeriodRate' value='<?php echo $PayPeriodRate?>'/>
+		</td>
 	</tr>
 	<tr>
 		<th>Absences/Tardiness:</th>
-		<td><span><?php echo $AbsencesTardiness;?></span></td>
+		<td>
+		<?php echo $AbsencesTardiness;?>
+		<input type='hidden' id='AbsencesTardiness' name='AbsencesTardiness' value='<?php echo $AbsencesTardiness?>'/>
+		</td>
 	</tr>
 	<tr>
 		<th>Overtime Pay:</th>
-		<td><?php echo $Overtime;?></td>
+		<td>
+		<input type='hidden' id='Overtime' name='Overtime' value='<?php echo $Overtime?>'/>
+		<?php echo $Overtime;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Holiday Pay:</th>
-		<td><?php echo $Holiday;?></td>
+		<td>
+		<input type='hidden' id='Holiday' name='Holiday' value='<?php echo $Holiday?>'/>
+		<?php echo $Holiday;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Salary Adjustment (Tax Refund):</th>
@@ -53,11 +76,17 @@
 	</tr>
 	<tr>
 		<th>Night Differential:</th>
-		<td><?php echo $NightDifferential;?></td>
+		<td>
+		<input type='hidden' id='NightDifferential' name='NightDifferential' value='<?php echo $NightDifferential?>'/>
+		<?php echo $NightDifferential;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Gross Pay:</th>
-		<td><?php echo $GrossPay;?></td>
+		<td>
+		<input type='hidden' id='GrossPay' name='GrossPay' value='<?php echo $GrossPay?>'/>
+		<?php echo $GrossPay;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Non-Tax:</th>
@@ -69,27 +98,45 @@
 	</tr>
 	<tr>
 		<th>Total Pay:</th>
-		<td><?php echo $TotalPay;?></td>
+		<td>
+		<input type='hidden' id='TotalPay' name='TotalPay' value='<?php echo $TotalPay?>'/>
+		<?php echo $TotalPay;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Withholding Tax Basis:</th>
-		<td><?php echo $WithholdingBasis;?></td>
+		<td>
+		<input type='hidden' id='WithholdingBasis' name='WithholdingBasis' value='<?php echo $WithholdingBasis?>'/>
+		<?php echo $WithholdingBasis;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Withholding Tax:</th>
-		<td><?php echo $WithholdingTax;?></td>
+		<td>
+		<input type='hidden' id='WithholdingTax' name='WithholdingTax' value='<?php echo $WithholdingTax?>'/>
+		<?php echo $WithholdingTax;?>
+		</td>
 	</tr>
 	<tr>
 		<th>SSS:</th>
-		<td><?php echo $SSS;?></td>
+		<td>
+		<input type='hidden' id='SSS' name='SSS' value='<?php echo $SSS?>'/>
+		<?php echo $SSS;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Philhealth:</th>
-		<td><?php echo $Philhealth;?></td>
+		<td>
+		<input type='hidden' id='Philhealth' name='Philhealth' value='<?php echo $Philhealth?>'/>
+		<?php echo $Philhealth;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Pag-Ibig:</th>
-		<td><?php echo $Pagibig;?></td>
+		<td>
+		<input type='hidden' id='Pagibig' name='Pagibig' value='<?php echo $Pagibig?>'/>
+		<?php echo $Pagibig;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Pag-Ibig Loan:</th>
@@ -117,7 +164,10 @@
 	</tr>
 	<tr>
 		<th>Net Pay:</th>
-		<td><?php echo $NetPay;?></td>
+		<td>
+		<input type='hidden' id='NetPay' name='NetPay' value='<?php echo $NetPay?>'/>
+		<?php echo $NetPay;?>
+		</td>
 	</tr>
 	<tr>
 		<th>Remarks:</th>
@@ -129,9 +179,10 @@
 	</tr>
 </table>
 
-<input type='hidden' id='EmployeeNumber' name='EmployeeNumber' value='<?php echo $EmployeeNumber?>'/>
 <input type='hidden' id='start_date' name='start_date' value='<?php echo $start_date?>'/>
 <input type='hidden' id='end_date' name='end_date' value='<?php echo $end_date?>'/>
+<input type='submit' id='editpayslip' name='editpayslip' value='Edit Payslip'/>
+<input type='reset' id='reset' name='reset' value='Reset'/>
 </form>
 
 </body>

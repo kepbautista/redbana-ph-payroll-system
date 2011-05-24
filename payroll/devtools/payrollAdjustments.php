@@ -43,7 +43,7 @@ function getTaxStatus($employeeNum){
 	return $data['tax_status'];
 }//get tax status of employee
 
-function showPayroll($startDate,$endDate){
+function showPayroll($startDate,$endDate,$payperiod){
 	$response = "";
 
 	$sql = "SELECT * FROM `salary` WHERE
@@ -53,7 +53,7 @@ function showPayroll($startDate,$endDate){
 	$query = mysql_query($sql);
 	
 	$response = $response."<table><tr>
-		 <th>Employee Number</th><th>Employee Name</th>
+		 <th>Employee Number</th><th style='align:left'>Employee Name</th>
 		 <th>Tax Status</th><th>Pay Period Rate</th>
 		 <th>NetPay</th><th>Remarks</th><th>Status</th>
 		 <th>Modify</th></tr>";
@@ -64,19 +64,20 @@ function showPayroll($startDate,$endDate){
 					action='editpayslip'>
 					<td>".$row['EmployeeNumber']."</td>
 					<td>".getName($row['EmployeeNumber'])."</td>
-					<td>".getTaxStatus($row['EmployeeNumber'])."</td>
-					<td>".$row['PayPeriodRate']."</td>
-					<td>".$row['NetPay']."</td>
+					<td style='text-align:center'>".getTaxStatus($row['EmployeeNumber'])."</td>
+					<td style='text-align:right'>".number_format($row['PayPeriodRate'],2,'.',',')."</td>
+					<td style='text-align:right'>".number_format($row['NetPay'],2,'.',',')."</td>
 					<td>".$row['Remarks']."</td>
 					<td>".$row['Status']."</td>
-					<td><input type='hidden' id='empnum' 
-					name='empnum' value='".$row['EmployeeNumber']."'/>
-					<td><input type='hidden' id='startDate' 
-					name='startDate' value='".$startDate."'/>
-					<td><input type='hidden' id='endDate' 
-					name='endDate' value='".$endDate."'/>
-					<input type='submit' id='edit' name='edit' value='Edit'/></td>
-					</form></tr>";
+					<td><input type='hidden' id='EmployeeNumber' 
+					name='EmployeeNumber' value='".$row['EmployeeNumber']."'/>
+					<input type='hidden' id='start_date' 
+					name='start_date' value='".$startDate."'/>
+					<input type='hidden' id='end_date' 
+					name='end_date' value='".$endDate."'/>";
+		if(!finalized($payperiod))
+			$response = $response."<input type='submit' id='edit' name='edit' value='Edit'/></td>";
+		$response = $response."</form></tr>";
 	}
 	
 	$response = $response."</table>";
@@ -88,13 +89,13 @@ $connect = connectdb();//open database connection
 $payperiod = $_POST['payperiod'];
 
 $cutoff = returnCutoff($payperiod);
-$startDate = $cutoff['start_date'];
-$endDate = $cutoff['end_date'];
+$start_date = $cutoff['start_date'];
+$end_date = $cutoff['end_date'];
 	
-$response = showPayroll($startDate,$endDate);
+$response = showPayroll($start_date,$end_date,$payperiod);
 
 if(finalized($payperiod))
-	$response = "<h4>This Pay Period 
+	$response = "<h4 style='color:red'>This Pay Period 
 				is already finalized.</h4>".$response;
 
 closeconnection($connect);//close database connection
