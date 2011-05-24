@@ -90,9 +90,7 @@ background-color:#7A991A;
 	<?php
 		echo "<ul>";
 		if (can_Access("addemp",$sql))
-			echo "<li><a href='employee/insert' class='underline'>Add Employee Information</a></li>";
-		if (can_Access("editemp",$sql))
-			echo "<li><a href='employee/insert' class='underline'>Edit Employee Information</a></li>";
+			echo "<li><a href='employee/insert' class='underline'>Add and Edit Employee Information</a></li>";
 		if (can_Access("viewemp",$sql))
 			echo "<li><a href='employee/getall' class='underline'>View All Employee</a></li></ul>";
 		if (can_Access("sss",$sql))
