@@ -431,49 +431,98 @@ class Maintenance extends CI_Controller {
 	//Tax Maintenance
 	function Taxview()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Tax_getall();	
-		$this->load->view('Tax_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("tax"))
+			{
+				$data['query']=$this->Maintenance_model->Tax_getall();	
+				$this->load->view('Tax_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function TaxEdit()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Tax_getall();	
-		$data['edit']=$this->input->post('id');
-		$this->load->view('Tax_edit',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("tax"))
+			{
+				$data['query']=$this->Maintenance_model->Tax_getall();	
+				$data['edit']=$this->input->post('id');
+				$this->load->view('Tax_edit',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
+
 	}
 	
 	function TaxUpdate()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Tax_getall();
-		$this->validateForm('taxstatus');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Tax_view',$data);
-			//validation errors are present
-		else $this->UpdateTax();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("tax"))
+			{
+				$data['query']=$this->Maintenance_model->Tax_getall();
+				$this->validateForm('taxstatus');
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Tax_view',$data);
+					//validation errors are present
+				else $this->UpdateTax();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function TaxInsert()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->Tax_getall();
-		$this->validateForm('taxstatus');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Tax_view',$data);
-			//validation errors are present
-		else $this->InsertTax();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("tax"))
+			{
+				$data['query']=$this->Maintenance_model->Tax_getall();
+				$this->validateForm('taxstatus');
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Tax_view',$data);
+					//validation errors are present
+				else $this->InsertTax();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function UpdateTax(){
-		$this->Maintenance_model->Tax_update();
-		$data['query']=$this->Maintenance_model->Tax_getall();
-		$this->load->view('Tax_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("tax"))
+			{
+				$this->Maintenance_model->Tax_update();
+				$data['query']=$this->Maintenance_model->Tax_getall();
+				$this->load->view('Tax_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for updating tax status
 	
 	function InsertTax(){
-		$this->Maintenance_model->Tax_insert();
-		$data['query']=$this->Maintenance_model->Tax_getall();
-		$this->load->view('Tax_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("tax"))
+			{
+				$this->Maintenance_model->Tax_insert();
+				$data['query']=$this->Maintenance_model->Tax_getall();
+				$this->load->view('Tax_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
+
 	}//function for adding a tax status
 	//Daily Description
 	function dayview()//main page of department maintenance
