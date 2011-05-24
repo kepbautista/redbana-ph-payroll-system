@@ -32,8 +32,8 @@
 					$cnt=1;
 					foreach ($query->result() as $row)
 					{ 
+					$rowdate=$row->date;
 					?>
-						<tr><?php echo $row->date; ?></tr>
 						<tr>
 							<td><?php echo $row->date; ?></td>
 							<td>

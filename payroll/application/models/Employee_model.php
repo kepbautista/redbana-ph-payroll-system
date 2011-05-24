@@ -11,6 +11,7 @@ class Employee_model extends CI_Model {
 	{
 		parent::__construct();		
 		$this->load->model('Payperiod_model');
+		$this->load->library('session');	
 	}
 	
 	public function get_status() {//get the description of the status
@@ -148,7 +149,7 @@ class Employee_model extends CI_Model {
 	}
 	
 	function Employee_Insert(){//insert employee information to the database
-	
+		
 		$sday = mysql_real_escape_string($this->input->post('sday'));
 		$smonth = mysql_real_escape_string($this->input->post('smonth'));
 		$syear = mysql_real_escape_string($this->input->post('syear'));
@@ -192,6 +193,14 @@ class Employee_model extends CI_Model {
 	}
 	
 	function Employee_update(){
+		//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+		$today=$row->time;
+		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$person=$this->input->post('fname').' '.$this->input->post('sname');
+		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$person.'","employee","update")');
+		
 		$sday = mysql_real_escape_string($this->input->post('sday'));
 		$smonth = mysql_real_escape_string($this->input->post('smonth'));
 		$syear = mysql_real_escape_string($this->input->post('syear'));
