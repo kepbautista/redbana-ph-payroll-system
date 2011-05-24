@@ -788,6 +788,17 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
 
+
+CREATE TABLE IF NOT EXISTS `history` (
+  `date` datetime NOT NULL,
+  `user` varchar(70) NOT NULL,
+  `action` varchar(70) NOT NULL,
+  `person` varchar(70) NOT NULL,
+  `table` varchar(70) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 --
 -- Constraints for dumped tables
 --
