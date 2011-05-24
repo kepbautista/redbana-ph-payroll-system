@@ -44,32 +44,8 @@ class Payroll extends CI_Controller {
 			$this->NetPay();
 		else if(!isset($_POST['edit'])){
 			//get information
-			$data['EmployeeName'] = $_POST['EmployeeName'];
-			$data['DailyRate'] = $_POST['DailyRate'];
-			$data['PayPeriodRate'] = $_POST['PayPeriodRate'];
-			$data['AbsencesTardiness'] = $_POST['AbsencesTardiness'];
-			$data['Overtime'] = $_POST['Overtime'];
-			$data['Holiday'] = $_POST['Holiday'];
-			$data['TaxRefund'] = $_POST['TaxRefund'];
-			$data['NightDifferential'] = $_POST['NightDifferential'];
-			$data['GrossPay'] = $_POST['GrossPay'];
-			$data['NonTax'] = $_POST['NonTax'];
-			$data['TaxShield'] = $_POST['TaxShield'];
-			$data['TotalPay'] = $_POST['TotalPay'];
-			$data['WithholdingBasis'] = $_POST['WithholdingBasis'];
-			$data['WithholdingTax'] = $_POST['WithholdingTax'];
-			$data['SSS'] = $_POST['SSS'];
-			$data['Philhealth'] = $_POST['Philhealth'];
-			$data['Pagibig'] = $_POST['Pagibig'];
-			$data['PagibigLoan'] = $_POST['PagibigLoan'];
-			$data['SSSLoan'] = $_POST['SSSLoan'];
-			$data['CompanyLoan'] = $_POST['CompanyLoan'];
-			$data['AdvancestoOfficer'] = $_POST['AdvancestoOfficer'];
-			$data['CellphoneCharges'] = $_POST['CellphoneCharges'];
-			$data['AdvancestoEmployee'] = $_POST['AdvancestoEmployee'];
-			$data['NetPay'] = $_POST['NetPay'];
-			$data['Remarks'] = $_POST['Remarks'];
-			$data['Status'] = $_POST['Status'];
+			foreach($_POST as $key => $value)
+				$data[$key] = $value;
 		
 			$this->load->model('Payroll_model');
 			$this->validateForm();
@@ -96,7 +72,7 @@ class Payroll extends CI_Controller {
 		$this->Payroll_model->UpdatePayslip();
 		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
 		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
-		$this->load->view('ViewPayslip',$data);
+		$this->NetPay();
 	}//Update a pay slip
 	
 	function NetPay(){
@@ -111,6 +87,9 @@ class Payroll extends CI_Controller {
 		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
 		$this->load->view('ViewPayslip',$data);
 	}//function for computing Withholding Tax
+	
+	/**VIEW PAY SLIP INDIVIDUALLY
+	(FOR NOT SUPERUSER USER RIGHT)**/
 	
 	function script_input($str){
 		$response = TRUE;

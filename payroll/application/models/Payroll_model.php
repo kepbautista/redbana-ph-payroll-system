@@ -73,6 +73,16 @@ class Payroll_model extends CI_Model{
 		return $data;
 	}//function that gets the information on an employee's pay slip
 	
+	function getPayperiod($start_date,$end_date){
+		$sql = "SELECT * FROM `payperiod` WHERE start_date='".$start_date."'
+				AND end_date='".$end_date."'";
+		
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return $data['ID'];
+	}//function get pay period ID
+	
 	function UpdatePayslip(){
 		//get needed information
 		$EmployeeNumber = $this->input->post('EmployeeNumber');
@@ -102,7 +112,12 @@ class Payroll_model extends CI_Model{
 				WHERE EmployeeNumber='".$EmployeeNumber."'
 				AND start_date='".$start_date."' AND 
 				end_date='".$end_date."'";
+		mysql_query($sql);
 		
+		$payperiod = $this->getPayPeriod($start_date,$end_date);
+		$sql = "UPDATE `payroll_absence` SET 
+				daily_rate='".$DailyRate."' WHERE 
+				payperiod='".$payperiod."'";
 		mysql_query($sql);
 	}//function that updates the Payslip
 	
@@ -118,6 +133,16 @@ class Payroll_model extends CI_Model{
 		
 		return $data;
 	}//select needed employee data from salary table
+	
+	function getDailyRate($empnum,$start_date,$end_date){
+		$sql = "SELECT DailyRate from `salary` 
+				WHERE EmployeeNumber='".$empnum."' 
+				AND start_date='".$start_date."' 
+				AND end_date='".$end_date."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		return $data['DailyRate'];
+	}//get daily rate for the payperiod
 	
 	function selectEmployeeData($empnum){
 		//select data from salary table
@@ -204,15 +229,15 @@ class Payroll_model extends CI_Model{
 		return $data['tee'];
 	}//get monthly contribution for SSS
 	
-	function getPagIbig($info){
+	function getVariable($info){
 		//get the value for pagibig
-		$sql = "SELECT * FROM `variables` WHERE Name='pagibig'";
+		$sql = "SELECT * FROM `variables` WHERE Name='".$info."'";
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
-		$pagibig = $data['Value'];
+		$value = $data['Value'];
 	
-		return $pagibig;
-	}//compute withholding tax basis
+		return $value;
+	}//compute get value for pagibig
 	
 	function governmentContribs($info,$sss,$philhealth,$pagibig){	
 		$sql = "UPDATE `salary` SET SSS='".$sss."',
@@ -233,6 +258,8 @@ class Payroll_model extends CI_Model{
 		$info = array($empnum,$start_date,$end_date);
 		$this->getPayPeriodRate($info);//get Rate for current PayPeriod
 		$this->dailyRate($info);//compute daily rate
+		$this->absencesTardiness($empnum,$start_date,$end_date);
+		//compute deductions for absences, tardiness and suspensions
 		
 		if($this->paymentMode($info)==1){
 			/**get if end of the month or not**/
@@ -240,7 +267,7 @@ class Payroll_model extends CI_Model{
 				$sss = $this->getSSS($empnum);//sss contributions
 				$philhealth = $this->getPhilhealth($empnum);//philhealth contributions
 			}
-			else $pagibig = $this->getPagIbig($info);//for pagibig contributions
+			else $pagibig = $this->getVariable('PagIbig');//for pagibig contributions
 			
 			//call function for Government Dues
 			$this->governmentContribs($info,$sss,$philhealth,$pagibig);
@@ -248,7 +275,7 @@ class Payroll_model extends CI_Model{
 		else{
 			$philhealth = $this->getPhilhealth($empnum);//sss contributions
 			$sss = $this->getSSS($empnum);//philhealth contributions
-			$pagibig = $this->getPagIbig($info);//for pagibig contributions
+			$pagibig = $this->getVariable('PagIbig');//for pagibig contributions
 			
 			//call function for Government Dues
 			$this->governmentContribs($info,$sss,$philhealth,$pagibig);
@@ -258,11 +285,51 @@ class Payroll_model extends CI_Model{
 		$this->compute($info,$taxStatus);
 	}//perform arithmetic computations for net pay
 	
-	function findNumber($string){
-		foreach(str_split($string) as $value)
-			if(is_numeric($value)) return true;
-		return false;
-	}//check if a string contains a number
+	function getLate($empnum,$start_date,$end_date){
+		$payperiod = $this->getPayperiod($start_date,$end_date);
+		$sql = "SELECT tardiness_min FROM `payroll_absence` 
+				WHERE empnum='".$empnum."' AND
+				payperiod='".$payperiod."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		/**MAMAYA NA PO YUNG TARDINESS...**/
+		
+		return 0;
+	}//get minutes late in a certain pay period
+	
+	function getAbsences($empnum,$start_date,$end_date){
+		$payperiod = $this->getPayperiod($start_date,$end_date);
+		$sql = "SELECT absences_lwop_days FROM `payroll_absence` 
+				WHERE empnum='".$empnum."' AND
+				payperiod='".$payperiod."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$days = $data['absences_lwop_days'];
+		
+		$dailyRate = $this->getDailyRate($empnum,$start_date,$end_date);
+		$deduct = $dailyRate * $days;
+		
+		return $deduct;
+	}//get number of absences in a payperiod
+	
+	function getSuspensions($empnum,$start_date,$end_date){
+		return 0;
+	}
+	
+	function absencesTardiness($empnum,$start_date,$end_date){
+		$deduct = $this->getLate($empnum,$start_date,$end_date)
+				+ $this->getAbsences($empnum,$start_date,$end_date);
+				+ $this->getSuspensions($empnum,$start_date,$end_date);
+		$deduct *= -1;
+		
+		$sql = "UPDATE `salary` SET 
+				AbsencesTardiness='".$deduct."' 
+				WHERE EmployeeNumber='".$empnum."' AND 
+				start_date='".$start_date."' 
+				AND end_date='".$end_date."'";
+		mysql_query($sql);
+	}//update deduction for Absences/Tardiness
 	
 	function getWithholdingStatus($taxStatus){
 		switch($taxStatus){
@@ -366,7 +433,6 @@ class Payroll_model extends CI_Model{
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";
 		mysql_query($sql);//update gross pay
-		
 	}//function for computing daily rate
 	
 	function getTaxExemption(){
@@ -384,7 +450,7 @@ class Payroll_model extends CI_Model{
 		//select all employee data
 		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 		
-		$gross = $data['PayPeriodRate'] - $data['AbsencesTardiness'] +
+		$gross = $data['PayPeriodRate'] + $data['AbsencesTardiness'] +
 		         $data['Overtime'] + $data['Holiday'] + $data['TaxRefund'] +
 				 $data['NightDifferential'];
 		$sql = "UPDATE `salary` SET GrossPay='".$gross."' WHERE 
@@ -410,7 +476,7 @@ class Payroll_model extends CI_Model{
 		//select all employee data
 		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 	
-		$taxBasis = $data['PayPeriodRate'] - $data['AbsencesTardiness'] +
+		$taxBasis = $data['PayPeriodRate'] + $data['AbsencesTardiness'] +
 					$data['Overtime'] + $data['Overtime'] + $data['Holiday'] +
 					$data['NightDifferential'] - $data['SSS'] -
 					$data['Philhealth'] - $data['Pagibig'];
