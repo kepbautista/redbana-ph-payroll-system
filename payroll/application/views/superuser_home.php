@@ -117,6 +117,8 @@ background-color:#7A991A;
 		echo "</ul><ul>";
 		if (can_Access("allleave",$sql))
 			echo "<li><a href='leave/viewall' class='underline'>View All Leave and Approve</a></li>";
+		if (can_Access("history",$sql))
+			echo "<li><a href='history/history' class='underline'>View History</a></li>";
 		if (can_Access("viewpay",$sql))
 			echo "<li><a href='payroll/payrollinfoview' class='underline'>View Payroll</a></li>";
 		echo "</ul><ul>";
