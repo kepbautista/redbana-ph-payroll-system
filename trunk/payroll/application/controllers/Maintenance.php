@@ -230,7 +230,7 @@ class Maintenance extends CI_Controller {
 				$this->Maintenance_model->Pos_insert();
 				$data['query'] = $this->Maintenance_model->Pos_getall();
 				$this->load->view('Pos_view',$data);
-				}else $this->load->view('no_access');
+			}else $this->load->view('no_access');
 		}
 		else
 			redirect('login');
@@ -239,48 +239,97 @@ class Maintenance extends CI_Controller {
 	//User maintenance
 	function Userview()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->User_getall();	
-		$this->load->view('User_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("user"))
+			{
+				$data['query']=$this->Maintenance_model->User_getall();	
+				$this->load->view('User_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
+
 	}
 	
 	function UserEdit()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->User_getall();	
-		$data['edit']=$this->input->post('user');
-		$this->load->view('User_edit',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("user"))
+			{
+				$data['query']=$this->Maintenance_model->User_getall();	
+				$data['edit']=$this->input->post('user');
+				$this->load->view('User_edit',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function UserUpdate()//main page of department maintenance
 	{	
-		$data['query']=$this->Maintenance_model->User_getall();	
-		$this->validateForm('user');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('User_view',$data);
-			//validation errors are present
-		else $this->UpdateUser();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("user"))
+			{
+				$data['query']=$this->Maintenance_model->User_getall();	
+				$this->validateForm('user');
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('User_view',$data);
+					//validation errors are present
+				else $this->UpdateUser();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function UserInsert()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->User_getall();
-		$this->validateForm('user');		
-		
-		if($this->form_validation->run() == FALSE)
-			$this->load->view('User_view',$data);
-		else $this->InsertUser();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("user"))
+			{
+				$data['query'] = $this->Maintenance_model->User_getall();
+				$this->validateForm('user');		
+				
+				if($this->form_validation->run() == FALSE)
+					$this->load->view('User_view',$data);
+				else $this->InsertUser();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function InsertUser(){
-		$this->Maintenance_model->User_insert();
-		$data['query']=$this->Maintenance_model->User_getall();
-		$this->load->view('User_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("user"))
+			{
+				$this->Maintenance_model->User_insert();
+				$data['query']=$this->Maintenance_model->User_getall();
+				$this->load->view('User_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for adding a user right
 	
 	function UpdateUser(){
-		$this->Maintenance_model->User_update();
-		$data['query']=$this->Maintenance_model->User_getall();
-		$this->load->view('User_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("user"))
+			{
+				$this->Maintenance_model->User_update();
+				$data['query']=$this->Maintenance_model->User_getall();
+				$this->load->view('User_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for updating a user right
 
 	//Employment Type Maintenance
