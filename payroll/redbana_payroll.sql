@@ -98,7 +98,8 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
 INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
 (1, 'Regular Work', 'Regular Holiday', 100),
 (2, 'Regular Holiday', 'Regular Holiday', 200),
-(3, 'Special Holiday', 'Special Holiday', 300);
+(3, 'Special Holiday', 'Special Holiday', 300),
+(4, 'LEGAL HOLIDAY', 'Legal holiday', 200);
 
 -- --------------------------------------------------------
 
@@ -612,7 +613,8 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `undertime` time DEFAULT '00:00:00',
   `overtime` time DEFAULT '00:00:00',
   `night_diff` time DEFAULT '00:00:00',
-  `type` varchar(50) NOT NULL,
+  `type` varchar(50) NOT NULL COMMENT "int value, references values in table `daily_desc` which are REGULAR_WORKING_DAY|SPECIAL_HOLIDAY|LEGAL_HOLIDAY|REGULAR|HOLIDAY",
+  `restday` tinyint(1) DEFAULT 0 NOT NULL COMMENT "This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 

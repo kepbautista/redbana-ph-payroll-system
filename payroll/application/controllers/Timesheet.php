@@ -19,9 +19,13 @@ class Timesheet extends CI_Controller {
 		
 	}
 	
-	function wa()
+	function index()
 	{
-		$this->load->view('View_time');
+		/*	abe | 24may2011_1135 | renamed from 'wa' to 'index()' so that if URL/timesheet
+				is accessed, user will be redirected to home page
+		*/
+		//$this->load->view('View_time');
+		redirect('/');
 	}
 	
 	function Inserttodate()
@@ -110,10 +114,8 @@ class Timesheet extends CI_Controller {
 		list($year,$month,$day) = explode('/', $date);
 		$data['absence_reasons'] = $this->Attendance_model->getAbsenceReasons();
 		$data['shifts'] = $this->Shift_model->makeAssociativeArray_of_Shifts();
-		//die(var_dump($data['shifts']));
 		$data['trows']=$this->Timesheet_model->Timesheet_viewalltime_rows(2);
-		$data['query']=$this->Timesheet_model->Timesheet_viewalltime(2);	
-		//die(var_dump($data['query']));
+		$data['query']=$this->Timesheet_model->Timesheet_viewalltime(2);			
 		$data['mos']= $this->Timesheet_model->buildMonthDropdown(); 
 		$data['year_s']=$year;
 		$data['month_s']=$month;
