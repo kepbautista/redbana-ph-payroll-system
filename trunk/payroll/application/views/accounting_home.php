@@ -1,4 +1,3 @@
-
 <html>
 <head> 
 	<title> REDBANA PAYROLL SYSTEM</title>
@@ -11,10 +10,9 @@
 		<div id="drdw">
 <div>
 Welcome accounting officer! :)
-		<?php 
-				echo "<a class = 'active' href = 'login/logout' id = 'cname' alignment = 'left' > Sign out </a>";
-				
-			?>	
+<?php 
+	echo "<a class = 'active' href = 'login/logout' id = 'cname' alignment = 'left' > Sign out </a>";				
+?>	
 			
     <ul>    	
     	<li><a href="#" class="underline">Edit payroll</a></li>

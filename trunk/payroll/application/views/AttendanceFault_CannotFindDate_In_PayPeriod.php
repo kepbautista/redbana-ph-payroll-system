@@ -9,8 +9,6 @@
  version: 1.0.0 - initial work
  		 
 */
-
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,6 +30,11 @@
 		<li class="nav"><a id="nav" href="<?php echo base_url(); ?>">Home</a></li>
 	</ul>
 </div>
+
+<?php 
+	echo "<a class = 'active' href = 'login/logout' id = 'cname' alignment = 'left' > Sign out </a>";				
+?>	
+
 <div id="container" class="center" >
 <div id="article_SpecificDetail" class="center" style="width:80%">
 	Payperiod Controversy

@@ -10,7 +10,6 @@
  		 
 */
 
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -63,6 +62,11 @@
 <div id="article_SpecificDetail" class="center" style="width:80%">
 	Add New PayPeriod
 </div>
+
+<?php 
+	echo "<a class = 'active' href = 'login/logout' id = 'cname' alignment = 'left' > Sign out </a>";				
+?>
+		
 <div>
 	<?php 		     	
 		    		if( strlen(validation_errors()) > 0 )
@@ -177,8 +181,5 @@
 <div id="copyright" >
 <p>Copyright 2011 | Bautista and Associates Information Systems</p>
 </div>
-
 </body>
-
 </html>
-
