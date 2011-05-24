@@ -74,6 +74,8 @@ class Maintenance_model extends CI_Model {
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","timesheet")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","viewpay")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","leave")');
+		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","history")');
+	
 	}
 	//Employee Type Maintenance
 	function Type_getall() {//select all the list of employee type
@@ -196,7 +198,11 @@ class Maintenance_model extends CI_Model {
 			//department already exists
 		else return TRUE;
 	}//check if duplicate department
-	
+	function history_getall() {//select all the list of department
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM history');
+		return $query->result();
+	}
 	function duplicate_taxstatus($str){
 		//search if position is existing
 		$query = mysql_query("SELECT * from `tax_status` WHERE status LIKE '".$str."'");
