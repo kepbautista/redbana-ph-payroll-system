@@ -415,6 +415,10 @@ class Employee_model extends CI_Model {
 			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="timesheet"'); 
 		else 
 			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="timesheet"'); 
+		if (isset($_POST['history'])) 
+			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="history"'); 
+		else 
+			$this->db->query('UPDATE `user_main` SET type="0" WHERE user_right ="'.$user.'" AND privilege ="history"'); 
 		
 	}
 	function get_privilege($user_right) {//select all the info of a specific employee
