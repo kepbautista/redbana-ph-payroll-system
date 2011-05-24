@@ -683,18 +683,6 @@ class Maintenance extends CI_Controller {
 		}	
 		return $response;
 	}//check if user entered a script as input
-	function history()//main page of department maintenance
-	{	
-		if ( $this->login_model->isUser_LoggedIn() ) 	
-		{
-			if ($this->login_model->can_Access("history"))
-			{
-				$data['query']=$this->Maintenance_model->history_getall();	
-				$this->load->view('history_view',$data);
-			}else $this->load->view('no_access');
-		}
-		else
-			redirect('login');
-	}
+	
 }
 ?>
