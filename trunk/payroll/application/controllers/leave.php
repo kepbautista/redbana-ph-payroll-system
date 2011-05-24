@@ -234,10 +234,18 @@ class Leave extends CI_Controller {
 	
 	function Viewall()//insert an employee info to the database then redirect for viewing all employee page
 	{
+	if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$data['query']=$this->Leave_model->Leave_getinfo();
 		$this->load->view('leave_all', $data);
+		}else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
 	}
 	
 	function script_input($str){
