@@ -30,14 +30,14 @@ class Maintenance extends CI_Controller {
 		case 'day': 
 					$this->form_validation->set_rules('desc','Description',
 				'required|callback_script_input');
-						  $this->form_validation->set_rules('payrate','Payrate',
+						  $this->form_validation->set_rules(floatval('payrate'),'Payrate',
 				'required|numeric|greater_than[0]');
 				break;
 		case 'taxstatus': $this->form_validation->set_rules('status','Tax Status',
 				'required|callback_script_input');
 						  $this->form_validation->set_rules('desc','Description',
 				'required|callback_script_input');
-						  $this->form_validation->set_rules('ex','Exemption',
+						  $this->form_validation->set_rules(floatval('ex'),'Exemption',
 				'required|numeric|greater_than[0]');
 				break;	
 		}

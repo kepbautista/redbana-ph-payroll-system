@@ -37,7 +37,7 @@
 				<th>Seq #</th>
 				<th>Title</th>
 				<th>Desc</th>
-				<th>Payrate in Pesos</th>
+				<th>Pay Addition (%)</th>
 				<th colspan="2">Action</th>
 			</tr>
 			<?php 
