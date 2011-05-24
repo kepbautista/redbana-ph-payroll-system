@@ -24,13 +24,13 @@ class Leave_model extends CI_Model {
             '12'=>'December');
         return $month;
     }
-    function Leave_getall() {//select all the info of an employee from employee table
+    function Leave_getall() {//select all the info of an employee from leave table
 		$this->load->database();
 		$query = $this->db->get('leave');
 		return $query->result();
 	}
 	
-	function Leave_edit() {
+	function Leave_edit() {			//choose a certain row from the employee and leave table to be edited.
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
 		$filedate=$this->input->post('filedate');
@@ -38,27 +38,24 @@ class Leave_model extends CI_Model {
 		return $query->result();
 	}
 
-	function Leave_delete(){
+	function Leave_delete(){			//delete a leave row.
 		$this->db->where('empnum',$this->input->post('empnum'));
 		$this->db->delete('leave');
-	}//delete an employee
+	}
 	
-	function Leave_getinfo(){
+	function Leave_getinfo(){			//this is for viewing all the employee information from the joint table of employee and leave
 		$this->load->database();
-		//$sql_execute = "SELECT * FROM `leave` , `employee` WHERE `leave`.`empnum` = ' ".$this->input->post('empnum')." ' LIMIT 0 , 30";
 		$query = $this->db->query('SELECT * FROM `employee` `a`, `leave` `b` WHERE `b`.`empnum`=`a`.`empnum`');	
 		return $query->result();
 	}
 
-	/*
-	*/
 	function Leave_numrows() {//count number of rows
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
 		$query = $this->db->get_where('leave',array('empnum'=>$empnum));
 		return $query->num_rows();
 	}
-	function Leave_Insert(){
+	function Leave_Insert(){			//insert a leave form
 		
 		$fday=$this->input->post('fday');
 		$fmonth=$this->input->post('fmonth');
@@ -82,21 +79,20 @@ class Leave_model extends CI_Model {
 		);
 		$this->db->insert('leave',$data); 
 	}
-	function Leave_approved(){
-		//$this->db->where('empnum',$this->input->post('empnum'));
+	function Leave_approved(){			//update the approval of a row to "approved"
 		$app = "approved";
 		$row = $this->db->where('empnum',$this->input->post('empnum'));
 		$sql_x = 'UPDATE `leave` SET `approval` = ? WHERE `empnum` = ? AND `filedate` = ?';
 		$this->db->query($sql_x, array($app, $this->input->post('empnum'),$this->input->post('filedate') ) );
 	}
-	function Leave_notapproved(){
+	function Leave_notapproved(){		//update the approval of a row to " not approved"
 		$this->db->where('empnum',$this->input->post('empnum'));
 		$app = "not approved";
 		$row = $this->db->where('empnum',$this->input->post('empnum'));
 		$sql_x = 'UPDATE `leave` SET `approval` = ? WHERE `empnum` = ? AND `filedate` = ?';
 		$this->db->query($sql_x, array($app, $this->input->post('empnum'),$this->input->post('filedate') ) );
 	}
-	function Empview()
+	function Empview()		//view an employee's previous leaves 
 	{
 		$emp = $this->session->userdata('empnum');
 		$sql_x = 'SELECT * FROM `leave` WHERE `empnum` = ?';
