@@ -335,49 +335,97 @@ class Maintenance extends CI_Controller {
 	//Employment Type Maintenance
 	function Typeview()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Type_getall();	
-		$this->load->view('Type_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("type"))
+			{
+				$data['query'] = $this->Maintenance_model->Type_getall();	
+				$this->load->view('Type_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function TypeEdit()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Type_getall();	
-		$data['edit'] = $this->input->post('type');
-		$this->load->view('Type_edit',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("type"))
+			{
+				$data['query'] = $this->Maintenance_model->Type_getall();	
+				$data['edit'] = $this->input->post('type');
+				$this->load->view('Type_edit',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function TypeUpdate()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Type_getall();	
-		$this->validateForm('type');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Type_view',$data);
-			//validation errors are present
-		else $this->UpdateType();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("type"))
+			{
+				$data['query'] = $this->Maintenance_model->Type_getall();	
+				$this->validateForm('type');
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Type_view',$data);
+					//validation errors are present
+				else $this->UpdateType();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function TypeInsert()//main page of department maintenance
 	{	
-		$data['query'] = $this->Maintenance_model->Type_getall(); 
-		$this->validateForm('type');
-		
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('Type_view',$data);
-			//validation errors are present
-		else $this->InsertType();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("type"))
+			{
+				$data['query'] = $this->Maintenance_model->Type_getall(); 
+				$this->validateForm('type');
+				
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('Type_view',$data);
+					//validation errors are present
+				else $this->InsertType();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function UpdateType(){
-		$this->Maintenance_model->Type_update();
-		$data['query'] = $this->Maintenance_model->Type_getall();
-		$this->load->view('Type_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("type"))
+			{
+				$this->Maintenance_model->Type_update();
+				$data['query'] = $this->Maintenance_model->Type_getall();
+				$this->load->view('Type_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for updating employee type
 	
 	function InsertType(){
-		$this->Maintenance_model->Type_insert();
-		$data['query'] = $this->Maintenance_model->Type_getall();
-		$this->load->view('Type_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("type"))
+			{
+				$this->Maintenance_model->Type_insert();
+				$data['query'] = $this->Maintenance_model->Type_getall();
+				$this->load->view('Type_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for inserting an employee type to the database
 	
 	//Tax Maintenance
