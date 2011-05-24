@@ -7,6 +7,7 @@ class Leave extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->helper('date');
 		$this->load->library('session');
+		$this->load->model('login_model');
 	}
 	
 	function index() {
@@ -43,6 +44,7 @@ class Leave extends CI_Controller {
 	
 	function Insert()//function for viewing the inserting leave page
 	{	
+
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$data['months'] = $this->Leave_model->buildMonthDropdown(); 
@@ -67,32 +69,61 @@ class Leave extends CI_Controller {
 	
 	function Accepted()			//called when a leave is approved.
 	{
+	 if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_approved();
 		$data['query']=$this->Leave_model->Leave_getinfo();
 		$this->load->view('Leave_all',$data);
+		 }else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
+	
 	}
 	
 	function Empview()			//an employee's view of his/her previously filed leaves
 	{
+	 if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("leave"))//kung pwede nia maaccess un
+            {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$data['query']=$this->Leave_model->Empview();
 		$this->load->view('Leave_empviewall',$data);
+		 }else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
 	}
 	
 	function Not_approved()		//leave not approved
 	{
+		if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_notapproved();
 		$data['query']=$this->Leave_model->Leave_getinfo();
 		$this->load->view('Leave_all',$data);
+		 }else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
 	}
 	
 	function Approve()//function for viewing a leave page 
-	{	
+	{		 
+		if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
 		if(!isset($_POST['editEmp']))
 		{
 	
@@ -143,6 +174,10 @@ class Leave extends CI_Controller {
 			$this->load->view('Leave_approve',$data);
 			//validation errors are present
 		else $this->Update();//update information
+			 }else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
 		
 	}
 	
@@ -158,19 +193,35 @@ class Leave extends CI_Controller {
 	
 	function Update()//update an employee info
 	{
+	if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_update();
 		$data['query']=$this->Leave_model->Leave_getall();
 		$this->load->view('leave_viewall',$data);
+			}else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
 	}
 	
 	function GetAll()//Getting all info of employee and 
 	{
+		if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$data['query']=$this->Leave_model->Leave_getall();
 		$this->load->view('leave_viewall',$data);
+			}else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
 	}
 
 	function InsertDb()//insert an employee info to the database then redirect for viewing all employee page
