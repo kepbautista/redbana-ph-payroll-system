@@ -54,8 +54,7 @@ function showPayroll($startDate,$endDate,$payperiod){
 	
 	$response = $response."<table><tr>
 		 <th>Employee Number</th><th style='align:left'>Employee Name</th>
-		 <th>Tax Status</th><th>Pay Period Rate</th>
-		 <th>Remarks</th><th>Status</th><th>Pay Slip</th>";
+		 <th>Pay Slip</th>";
 	if(!finalized($payperiod))	 
 		 $response = $response."<th>Modify</th></tr>";
 	
@@ -65,10 +64,6 @@ function showPayroll($startDate,$endDate,$payperiod){
 					action='editpayslip'>
 					<td>".$row['EmployeeNumber']."</td>
 					<td>".getName($row['EmployeeNumber'])."</td>
-					<td style='text-align:center'>".getTaxStatus($row['EmployeeNumber'])."</td>
-					<td style='text-align:right'>".number_format($row['PayPeriodRate'],2,'.',',')."</td>
-					<td>".$row['Remarks']."</td>
-					<td>".$row['Status']."</td>
 					<td style='text-align:center'><input type='hidden' id='EmployeeNumber' 
 					name='EmployeeNumber' value='".$row['EmployeeNumber']."'/>
 					<input type='hidden' id='start_date' 

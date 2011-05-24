@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 24, 2011 at 02:58 AM
+-- Generation Time: May 24, 2011 at 09:37 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -96,10 +96,9 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
 --
 
 INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
-(1, 'Regular Work', 'Regular Holiday', 100),
-(2, 'Regular Holiday', 'Regular Holiday', 200),
-(3, 'Special Holiday', 'Special Holiday', 300),
-(4, 'LEGAL HOLIDAY', 'Legal holiday', 200);
+(1, 'Regular Work', 'Regular Work', 0),
+(2, 'Regular Holiday', 'Regular Holiday', 100),
+(3, 'Special Holiday', 'Special Holiday', 30);
 
 -- --------------------------------------------------------
 
@@ -338,6 +337,10 @@ CREATE TABLE IF NOT EXISTS `payroll_absence` (
 -- Dumping data for table `payroll_absence`
 --
 
+INSERT INTO `payroll_absence` (`empnum`, `payperiod`, `payment_mode`, `monthly_rate`, `daily_rate`, `absences_lwop_days`, `absences_lwop_amount`, `leave_sick_vacation_days`, `leave_sick_vacation_amount`, `suspension_days`, `suspension_amount`, `tardiness_min`, `tardiness_amount`, `total_amount`, `paid_vl_days`, `paid_sl_days`, `paid_emergency_leave_days`, `last_update`, `modified_by`) VALUES
+('2008-00195', 3, 1, 11123, 505.591, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196'),
+('2008-00196', 3, 1, 11000, 500, 1, 500, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196'),
+('2008-00198', 3, 1, 5000, 227.273, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196');
 
 -- --------------------------------------------------------
 
@@ -481,8 +484,8 @@ CREATE TABLE IF NOT EXISTS `salary` (
 --
 
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
-('2011-03-15', '2011-03-31', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0, '', ''),
-('2011-05-01', '2011-05-15', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4858.3, 0, 366.7, 275, 0, 0, 0, 0, 0, 0, 0, 0, '', '');
+('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4954.36, '', ''),
+('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4479.36, '', '');
 
 -- --------------------------------------------------------
 
@@ -613,8 +616,8 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `undertime` time DEFAULT '00:00:00',
   `overtime` time DEFAULT '00:00:00',
   `night_diff` time DEFAULT '00:00:00',
-  `type` varchar(50) NOT NULL COMMENT "int value, references values in table `daily_desc` which are REGULAR_WORKING_DAY|SPECIAL_HOLIDAY|LEGAL_HOLIDAY|REGULAR|HOLIDAY",
-  `restday` tinyint(1) DEFAULT 0 NOT NULL COMMENT "This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.",
+  `type` varchar(50) NOT NULL COMMENT 'int value, references values in table `daily_desc` which are REGULAR_WORKING_DAY|SPECIAL_HOLIDAY|LEGAL_HOLIDAY|REGULAR|HOLIDAY',
+  `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
@@ -622,16 +625,16 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`) VALUES
-(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1'),
-(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1');
+INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`) VALUES
+(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', 1, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
+(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0);
 
 -- --------------------------------------------------------
 
