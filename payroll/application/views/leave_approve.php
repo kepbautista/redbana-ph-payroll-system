@@ -90,20 +90,20 @@ foreach($query as $row){
 						$hidden2=$fdate;
 						
 						echo form_open('leave/not_approved'); 
-						echo form_hidden('empnum', $hidden);
-						echo form_hidden('filedate', $fdate);
+						echo form_hidden('empnum', $empnum);
+						echo form_hidden('filedate', $hidden2);
 						echo form_submit('sub','walalangto'); 
 						echo form_close(); 
 						
 						echo form_open('leave/accepted'); 
 						echo form_hidden('empnum', $hidden);
-						echo form_hidden('filedate', $fdate);
+						echo form_hidden('filedate', $hidden2);
 						echo form_submit('mysubmit','APPROVE'); 
 						echo form_close(); 
 							
 						echo form_open('leave/not_approved'); 
 						echo form_hidden('empnum', $hidden);
-						echo form_hidden('filedate', $fdate);
+						echo form_hidden('filedate', $hidden2);
 						echo form_submit('mysubmit','DENY'); 
 						echo form_close(); 
 						
