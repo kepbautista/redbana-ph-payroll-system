@@ -70,7 +70,7 @@ class Leave_model extends CI_Model {
 		$startdate=$syear . '-' . $smonth. '-' . $sday;
 		$returndate=$ryear . '-' . $rmonth. '-' . $rday;
 		$data = array(
-		'empnum'=>$this->input->post('empnum'),
+		'empnum' => $this->session->userdata('empnum'),
 		'filedate'=>$filedate,       
 	    'startdate'=>$startdate,
 		'returndate'=>$returndate,
