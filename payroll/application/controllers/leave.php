@@ -37,7 +37,7 @@ class Leave extends CI_Controller {
 		$this->load->library('form_validation');
 	
 		//form validation rules for employee information
-		if($type=="insert") $this->form_validation->set_rules('empnum','Employee Number',	'required|callback_script_input');
+		if($type=="insert") $this->form_validation->set_rules('empnum','Employee Number',	'callback_script_input');
 
 	}//function for validating forms
 	
@@ -65,7 +65,7 @@ class Leave extends CI_Controller {
 		else $this->InsertDb();//insert data
 	}
 	
-	function Accepted()
+	function Accepted()			//called when a leave is approved.
 	{
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
@@ -74,7 +74,7 @@ class Leave extends CI_Controller {
 		$this->load->view('Leave_all',$data);
 	}
 	
-	function Empview()
+	function Empview()			//an employee's view of his/her previously filed leaves
 	{
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
@@ -82,7 +82,7 @@ class Leave extends CI_Controller {
 		$this->load->view('Leave_empviewall',$data);
 	}
 	
-	function Not_approved()
+	function Not_approved()		//leave not approved
 	{
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
@@ -91,13 +91,13 @@ class Leave extends CI_Controller {
 		$this->load->view('Leave_all',$data);
 	}
 	
-	function Approve()//function for viewing the editing an employee page 
+	function Approve()//function for viewing a leave page 
 	{	
 		if(!isset($_POST['editEmp']))
 		{
-			//get all information from the previous viewing of Emp_edit form
+	
 			$data['empnum'] = $_POST['empnum'];//employee number
-			$data['type'] = $_POST['type'];//first name
+			$data['type'] = $_POST['type'];//type
 			$data['reason'] = $_POST['reason'];//middle name
 			$data['approval'] = $_POST['approval'];//last name
 			
