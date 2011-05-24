@@ -527,60 +527,116 @@ class Maintenance extends CI_Controller {
 	//Daily Description
 	function dayview()//main page of department maintenance
 	{	
-		$this->load->helper('form');  
-		$this->load->model('Maintenance_model');
-		$data['query']=$this->Maintenance_model->day_getall();	
-		$this->load->view('day_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Maintenance_model');
+				$data['query']=$this->Maintenance_model->day_getall();	
+				$this->load->view('day_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function dayEdit()//main page of department maintenance
 	{	
-		$this->load->helper('form');  
-		$this->load->model('Maintenance_model');
-		$data['query']=$this->Maintenance_model->day_getall();	
-		$data['edit']=$this->input->post('title');
-		$this->load->view('day_edit',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Maintenance_model');
+				$data['query']=$this->Maintenance_model->day_getall();	
+				$data['edit']=$this->input->post('title');
+				$this->load->view('day_edit',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	
 	function dayUpdate()//main page of department maintenance
 	{	
-		$this->load->helper('form');  
-		$data['query'] = $this->Maintenance_model->day_getall();
-		$this->load->model('Maintenance_model');	
-		$this->validateForm('day');	
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('day_view',$data);
-			//validation errors are present
-		else $this->UpdateDay();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->load->helper('form');  
+				$data['query'] = $this->Maintenance_model->day_getall();
+				$this->load->model('Maintenance_model');	
+				$this->validateForm('day');	
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('day_view',$data);
+					//validation errors are present
+				else $this->UpdateDay();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	function dayInsert()//main page of department maintenance
 	{	
-		$this->load->helper('form');  
-		$data['query'] = $this->Maintenance_model->day_getall();
-		$this->load->model('Maintenance_model');
-		$this->validateForm('day');
-		if ($this->form_validation->run() == FALSE)
-			$this->load->view('day_view',$data);
-			//validation errors are present
-		else $this->InsertDay();
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->load->helper('form');  
+				$data['query'] = $this->Maintenance_model->day_getall();
+				$this->load->model('Maintenance_model');
+				$this->validateForm('day');
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('day_view',$data);
+					//validation errors are present
+				else $this->InsertDay();
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	function UpdateDay(){
-		$this->Maintenance_model->day_update();
-		$data['query']=$this->Maintenance_model->day_getall();
-		$this->load->view('day_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->Maintenance_model->day_update();
+				$data['query']=$this->Maintenance_model->day_getall();
+				$this->load->view('day_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for updating type of day
 	function InsertDay(){
-		$this->Maintenance_model->day_insert();
-		$data['query']=$this->Maintenance_model->day_getall();
-		$this->load->view('day_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->Maintenance_model->day_insert();
+				$data['query']=$this->Maintenance_model->day_getall();
+				$this->load->view('day_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}//function for inserting type of day
 	function dayDelete()//main page of department maintenance
 	{	
-		$this->load->helper('form');  
-		$this->load->model('Maintenance_model');
-		$this->Maintenance_model->day_delete();	
-		$data['query']=$this->Maintenance_model->day_getall();	
-		$this->load->view('day_view',$data);
+		if ( $this->login_model->isUser_LoggedIn() ) 	
+		{
+			if ($this->login_model->can_Access("day"))
+			{
+				$this->load->helper('form');  
+				$this->load->model('Maintenance_model');
+				$this->Maintenance_model->day_delete();	
+				$data['query']=$this->Maintenance_model->day_getall();	
+				$this->load->view('day_view',$data);
+			}else $this->load->view('no_access');
+		}
+		else
+			redirect('login');
 	}
 	function duplicate_type($str){
 		$response = $this->Maintenance_model->duplicate_Type($str);	
