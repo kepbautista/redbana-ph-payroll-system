@@ -178,6 +178,13 @@ class Leave extends CI_Controller {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_insert();
+		$this->load->view('leave_success');
+	}
+	
+	function Viewall()//insert an employee info to the database then redirect for viewing all employee page
+	{
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
 		$data['query']=$this->Leave_model->Leave_getinfo();
 		$this->load->view('leave_all', $data);
 	}
