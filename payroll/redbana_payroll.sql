@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 24, 2011 at 09:37 AM
+-- Generation Time: May 25, 2011 at 02:38 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -221,6 +221,27 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 (8, 'Employed husband and husband claims exemptions of children'),
 (9, 'Employed wife whose husband is also employed or engaged in business;husband waived claim for depende'),
 (10, 'Single with qualified dependent children');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `history`
+--
+
+CREATE TABLE IF NOT EXISTS `history` (
+  `date` datetime NOT NULL,
+  `user` varchar(70) NOT NULL,
+  `action` varchar(70) NOT NULL,
+  `person` varchar(70) NOT NULL,
+  `table` varchar(70) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `history`
+--
+
 
 -- --------------------------------------------------------
 
@@ -473,8 +494,8 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `CellphoneCharges` double NOT NULL DEFAULT '0',
   `AdvancestoEmployee` double NOT NULL DEFAULT '0',
   `NetPay` double NOT NULL DEFAULT '0',
-  `Remarks` varchar(100) NOT NULL,
-  `Status` varchar(50) NOT NULL,
+  `Remarks` varchar(100) DEFAULT NULL,
+  `Status` varchar(50) DEFAULT NULL,
   KEY `EmployeeNumber` (`EmployeeNumber`),
   KEY `EmployeeNumber_2` (`EmployeeNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -678,7 +699,7 @@ CREATE TABLE IF NOT EXISTS `user_main` (
   `privilege` varchar(50) NOT NULL,
   `type` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=154 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=156 ;
 
 --
 -- Dumping data for table `user_main`
@@ -789,17 +810,6 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
-
-CREATE TABLE IF NOT EXISTS `history` (
-  `date` datetime NOT NULL,
-  `user` varchar(70) NOT NULL,
-  `action` varchar(70) NOT NULL,
-  `person` varchar(70) NOT NULL,
-  `table` varchar(70) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables

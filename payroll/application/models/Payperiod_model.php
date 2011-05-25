@@ -133,8 +133,10 @@ class Payperiod_model extends CI_Model
 		$end_date[4] = '-';	
 		$end_date[7] = '-';
 		
-		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, FALSE, FALSE, NULL, NULL) ";			
-		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays) );
+		$this->insertPayslips($start_date,$end_date);
+		
+		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?,0, FALSE, NULL, NULL, 0, NULL, NULL) ";			
+		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays));
 	
 		$check_it = $this->get_Last_PayPeriod($payment_mode);
 		
@@ -163,7 +165,20 @@ class Payperiod_model extends CI_Model
 		return $result;
 	}
 	
-	
+	function insertPayslips($start_date,$end_date){
+		$sql = "SELECT empnum FROM `employee`";
+		$query = mysql_query($sql);
+		
+		while($data = mysql_fetch_array($query)){
+			$sql = "INSERT INTO `salary` VALUES 
+				('".$start_date."','".$end_date."',
+				'".$data['empnum']."',0,0,0,
+				0,0,0,0,0,0,0,0,0,0,
+				0,0,0,0,0,0,0,0,0,0,
+				null,null)";
+			mysql_query($sql);
+		}
+	}
 }
 
 /* End of file Payperiod_model.php */
