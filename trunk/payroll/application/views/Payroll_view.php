@@ -1,5 +1,5 @@
 <!--
-/*File Name: ComputePayroll_view.php
+/*File Name: Payroll_view.php
   Program Description: Compute Payroll for current Payperiod
 */
 -->
@@ -7,7 +7,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
-	<title>Compute Payroll</title>
+	<title>View Payroll</title>
 	<style>th{text-align: center;}</style>
 	<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/demo.css" type="text/css" media="all" />
 	<script type="text/javascript" src="<?php echo base_url();?>devtools/jquery-1.5.2"></script>
