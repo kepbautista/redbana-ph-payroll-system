@@ -64,7 +64,8 @@ function showPayroll($startDate,$endDate,$payperiod){
 					action='editpayslip'>
 					<td>".$row['EmployeeNumber']."</td>
 					<td>".getName($row['EmployeeNumber'])."</td>
-					<td style='text-align:center'><input type='hidden' id='EmployeeNumber' 
+					<td style='text-align:center'>
+					<input type='hidden' id='EmployeeNumber' 
 					name='EmployeeNumber' value='".$row['EmployeeNumber']."'/>
 					<input type='hidden' id='start_date' 
 					name='start_date' value='".$startDate."'/>

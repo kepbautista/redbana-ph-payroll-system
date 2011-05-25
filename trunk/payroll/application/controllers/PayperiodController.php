@@ -287,8 +287,6 @@ class PayperiodController extends CI_Controller
 			die("You should not access this thing directly.");
 		}
 		
-	
-				
 		$result = $this->Payperiod_model->finalizePayPeriod(
 			$payment_mode,
 			$payperiod,
