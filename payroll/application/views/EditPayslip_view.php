@@ -1,5 +1,5 @@
 <!--
-/*File Name: ComputePayroll_view.php
+/*File Name: EditPayslip_view.php
   Program Description: Compute Payroll for current Payperiod
 */
 -->
