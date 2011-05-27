@@ -103,7 +103,7 @@ color: navy;
 	<thead>
 	<tr>
 		<th rowspan="3"> Monthly <br /> Salary <br /> Bracket </th>
-		<th rowspan="3" colspan="3">c  Monthly Salary Range </th>
+		<th rowspan="3" colspan="3"> Monthly Salary Range </th>
 		<th rowspan="3" colspan="2"> Salary Base <br /> (SB) </th>
 		<th rowspan="3" colspan="2"> Total Monthly <br /> Contributions </th>
 		<th rowspan="3" colspan="2"> Employee Share <br /> (EeS) <br /> (EeS = 0.5 x TMC) </th>
