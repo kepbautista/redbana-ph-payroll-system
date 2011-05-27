@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 25, 2011 at 02:38 AM
+-- Generation Time: May 27, 2011 at 02:34 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -314,16 +314,16 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `PAYROLL_FINALIZED_BY` varchar(255) DEFAULT NULL,
   `PAYROLL_FINALIZED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `payperiod`
 --
 
 INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
-(1, 1, '2011-04-08', '2011-04-23', 11, 0, 1, NULL, NULL, 0, NULL, NULL),
 (2, 1, '2011-04-24', '2011-05-07', 11, 0, 1, '2008-00196', '2011-05-22 17:10:02', 0, NULL, NULL),
-(3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL, 0, NULL, NULL);
+(3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL, 0, NULL, NULL),
+(4, 1, '2011-06-01', '2011-06-22', 22, 0, 0, NULL, NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -506,7 +506,10 @@ CREATE TABLE IF NOT EXISTS `salary` (
 
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
 ('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4954.36, '', ''),
-('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4479.36, '', '');
+('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4479.36, '', ''),
+('2011-06-01', '2011-06-22', '2008-00195', 505.59090909091, 5561.5, -0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 0, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 5057.3, '', ''),
+('2011-06-01', '2011-06-22', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4954.36, NULL, NULL),
+('2011-06-01', '2011-06-22', '2008-00198', 227.27272727273, 2500, -0, 0, 0, 0, 0, 2500, 0, 0, 2500, 2270.8, 0, 166.7, 62.5, 0, 0, 0, 0, 0, 100, 0, 2170.8, '', '');
 
 -- --------------------------------------------------------
 

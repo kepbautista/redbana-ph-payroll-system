@@ -50,11 +50,39 @@ class Payroll_model extends CI_Model{
 		$data = mysql_fetch_array($query);
 		
 		if($data['FINALIZED']==1)
-			return false;
-		else
 			return true;
+		else
+			return false;
 	
 	}//function for checking in the database if payroll is finalized
+	
+	function returnCutoff($payperiod){
+		$sql = "SELECT * FROM `payperiod` 
+				WHERE id='".$payperiod."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+	
+		$data['start_date'] = $data['START_DATE'];
+		$data['end_date'] = $data['END_DATE'];
+	
+		return $data;
+	}//return cutoff start and end date
+	
+	function getPayroll($start_date,$end_date){	
+		$sql = "SELECT EmployeeNumber FROM `salary` WHERE
+			start_date='".$start_date."' 
+			AND end_date='".$end_date."' 
+			ORDER BY EmployeeNumber";
+		$query = mysql_query($sql);
+		
+		while($row = mysql_fetch_array($query)){
+			$info['EmployeeNumber'] = $row['EmployeeNumber'];
+			$info['EmployeeName'] = $this->getName($row['EmployeeNumber']);
+			$data[] = $info;
+		}//get all data needed from salary table
+		
+		return $data;
+	}//get payroll for said pay period
 	
 	function getPayslip($empnum,$start_date,$end_date){
 		$sql = $this->db->query("SELECT * FROM `salary` 
