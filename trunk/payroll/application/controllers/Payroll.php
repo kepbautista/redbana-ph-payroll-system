@@ -15,16 +15,47 @@ class Payroll extends CI_Controller {
 	
 	function validateForm(){
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules(floatval('DailyRate'),'Daily Rate','required|numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('TaxRefund'),'Tax Refund','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('NonTax'),'Non-Tax','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('TaxShield'),'TaxShield','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('PagibigLoan'),'Pag-Ibig Loan','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('SSSLoan'),'SSS Loan','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('CompanyLoan'),'Company Loan','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('AdvancestoOfficer'),'Advances to Officer','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('CellphoneCharges'),'Cellphone Charges','numeric|greater_than[0]');
-		$this->form_validation->set_rules(floatval('AdvancestoEmployee'),'Advances to Employee','numeric|greater_than[0]');
+		
+		if(is_numeric($this->input->post('DailyRate')))
+			$this->form_validation->set_rules(floatval('DailyRate'),'Daily Rate','required|numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('DailyRate','Daily Rate','required|numeric|greater_than[0]');
+		if(is_numeric($this->input->post('TaxRefund')))
+			$this->form_validation->set_rules(floatval('TaxRefund'),'Tax Refund','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('TaxRefund','Tax Refund','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('NonTax')))
+			$this->form_validation->set_rules(floatval('NonTax'),'Non-Tax','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('NonTax','Non-Tax','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('TaxShield')))
+			$this->form_validation->set_rules(floatval('TaxShield'),'TaxShield','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('TaxShield','TaxShield','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('PagibigLoan')))
+			$this->form_validation->set_rules(floatval('PagibigLoan'),'Pag-Ibig Loan','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('PagibigLoan','Pag-Ibig Loan','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('SSSLoan')))
+			$this->form_validation->set_rules(floatval('SSSLoan'),'SSS Loan','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('SSSLoan','SSS Loan','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('CompanyLoan')))
+			$this->form_validation->set_rules(floatval('CompanyLoan'),'Company Loan','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('CompanyLoan','Company Loan','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('AdvancestoOfficer')))
+			$this->form_validation->set_rules(floatval('AdvancestoOfficer'),'Advances to Officer','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('AdvancestoOfficer','Advances to Officer','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('CellphoneCharges')))
+			$this->form_validation->set_rules(floatval('CellphoneCharges'),'Cellphone Charges','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('CellphoneCharges','Cellphone Charges','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('AdvancestoEmployee')))
+			$this->form_validation->set_rules(floatval('AdvancestoEmployee'),'Advances to Employee','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('AdvancestoEmployee','Advances to Employee','numeric|greater_than[0]');
 		$this->form_validation->set_rules('Remarks','Remarks','callback_script_input');
 		$this->form_validation->set_rules('Status','Status','callback_script_input');
 	}//function for validating edit pay slip form
@@ -57,15 +88,14 @@ class Payroll extends CI_Controller {
 		$data['start_date'] = $_POST['start_date'];
 		$data['end_date'] = $_POST['end_date'];
 		
-		if(isset($_POST['netpay']))
-			$this->NetPay();
-		else if(!isset($_POST['edit'])){
+		$this->NetPay();//compute for net pay
+		
+		if(isset($_POST['editpayslip'])){
+			$this->validateForm();
+			
 			//get information
 			foreach($_POST as $key => $value)
 				$data[$key] = $value;
-		
-			$this->load->model('Payroll_model');
-			$this->validateForm();
 			
 			if ($this->form_validation->run() == FALSE)
 				$this->load->view('EditPayslip_view',$data);
@@ -75,7 +105,11 @@ class Payroll extends CI_Controller {
 			$this->load->model('Payroll_model');
 			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
 			$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
-			$this->load->view('EditPayslip_view',$data);
+			
+			if(isset($_POST['view']))
+				$this->load->view('ViewPayslip',$data);
+			else
+				$this->load->view('EditPayslip_view',$data);
 		}//Edit Pay Slip Form is loaded for the 1st time
 	}
 	
@@ -90,6 +124,9 @@ class Payroll extends CI_Controller {
 		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
 		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
 		$this->NetPay();
+		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
+		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
+		$this->load->view('ViewPayslip',$data);
 	}//Update a pay slip
 	
 	function NetPay(){
@@ -100,9 +137,6 @@ class Payroll extends CI_Controller {
 	
 		$this->load->model('Payroll_model');
 		$this->Payroll_model->computeNetPay($empnum,$start_date,$end_date);
-		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
-		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
-		$this->load->view('ViewPayslip',$data);
 	}//function for computing Withholding Tax
 	
 	/**VIEW PAY SLIP INDIVIDUALLY
