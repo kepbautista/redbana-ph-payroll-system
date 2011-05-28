@@ -181,7 +181,7 @@
 
 <input type='hidden' id='start_date' name='start_date' value='<?php echo $start_date?>'/>
 <input type='hidden' id='end_date' name='end_date' value='<?php echo $end_date?>'/>
-<input type='submit' id='editpayslip' name='editpayslip' value='Edit Payslip'/>
+<input type='submit' id='editpayslip' name='editpayslip' value='Compute'/>
 <input type='reset' id='reset' name='reset' value='Reset'/>
 </form>
 

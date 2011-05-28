@@ -285,7 +285,6 @@ class Payroll_model extends CI_Model{
 		//get needed information
 		$info = array($empnum,$start_date,$end_date);
 		$this->getPayPeriodRate($info);//get Rate for current PayPeriod
-		$this->dailyRate($info);//compute daily rate
 		$this->absencesTardiness($empnum,$start_date,$end_date);
 		//compute deductions for absences, tardiness and suspensions
 		
@@ -389,18 +388,13 @@ class Payroll_model extends CI_Model{
 	}//get tax status from tax bracket
 	
 	function computeWithholdingTax($taxStatus,$taxBasis,$info,$paymentMode){
-		//get Payment Mode ID
-		if($paymentMode=="SEMI-MONTHLY")
-			$pmodeID = 1;
-		else $pmodeID = 2;
-	
 		//get status for withholding tax table
 		$status = $this->getWithholdingStatus($taxStatus);
 	
 		/*get withholding tax bracket*/
 		$sql = "SELECT MAX(".$status.") FROM `witholding_tax` 
 				WHERE ".$status."<='".$taxBasis."' AND 
-				PAYMENT_MODE_ID_FK='".$pmodeID."'";
+				PAYMENT_MODE_ID_FK='".$paymentMode."'";
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
 		$taxBracket = $data['MAX('.$status.')'];
@@ -409,7 +403,7 @@ class Payroll_model extends CI_Model{
 		//get Exemption Definite & Percentage
 		$sql = "SELECT EXEMPTION_DEFINITE,EXEMPTION_PERCENT FROM 
 				`witholding_tax` WHERE ".$status."='".$taxBracket."' 
-				AND PAYMENT_MODE_ID_FK='".$pmodeID."'";
+				AND PAYMENT_MODE_ID_FK='".$paymentMode."'";
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
 		$percent = $data['EXEMPTION_PERCENT']/100;
