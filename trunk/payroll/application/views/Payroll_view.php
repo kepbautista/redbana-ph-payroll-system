@@ -60,7 +60,7 @@
 					name='end_date' value='".$end_date."'/>
 					<input type='submit' id='view' name='view' value='View'/></td>";
 				if($finalized==false)
-					echo "<td><input type='submit' id='compute' name='compute' value='Compute'/></td>";
+					echo "<td><input type='submit' id='edit' name='edit' value='Compute'/></td>";
 					
 				echo "</form></tr>";
 			}

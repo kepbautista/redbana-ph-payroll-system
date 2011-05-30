@@ -71,6 +71,9 @@
 		</td>
 	</tr>
 	<tr>
+		<th>Holiday Adjustment:</th>
+		<td><input type='text' class='numeric' id='HolidayAdjustment' name='HolidayAdjustment' value='<?php echo $HolidayAdjustment;?>'/></td>
+	<tr>
 		<th>Salary Adjustment (Tax Refund):</th>
 		<td><input type='text' class='numeric' id='TaxRefund' name='TaxRefund' value='<?php echo $TaxRefund;?>'/></td>
 	</tr>
@@ -151,10 +154,6 @@
 		<td><input type='text' class='numeric' id='CompanyLoan' name='CompanyLoan' value='<?php echo $CompanyLoan;?>'></td>
 	</tr>
 	<tr>
-		<th>Advances to Officer:</th>
-		<td><input type='text' class='numeric' id='AdvancestoOfficer' name='AdvancestoOfficer' value='<?php echo $AdvancestoOfficer;?>'></td>
-	</tr>
-	<tr>
 		<th>Cellphone Charges:</th>
 		<td><input type='text' class='numeric' id='CellphoneCharges' name='CellphoneCharges' value='<?php echo $CellphoneCharges;?>'></td>
 	</tr>
@@ -170,10 +169,6 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Remarks:</th>
-		<td><input type='text' id='Remarks' name='Remarks' value='<?php echo $Remarks;?>'></td>
-	</tr>
-	<tr>
 		<th>Status:</th>
 		<td><input type='text' id='Status' name='Status' value='<?php echo $Status;?>'></td>
 	</tr>
@@ -181,7 +176,7 @@
 
 <input type='hidden' id='start_date' name='start_date' value='<?php echo $start_date?>'/>
 <input type='hidden' id='end_date' name='end_date' value='<?php echo $end_date?>'/>
-<input type='submit' id='editpayslip' name='editpayslip' value='Compute'/>
+<input type='submit' id='editpayslip' name='editpayslip' value='Compute Pay Slip'/>
 <input type='reset' id='reset' name='reset' value='Reset'/>
 </form>
 

@@ -175,7 +175,7 @@ class Payperiod_model extends CI_Model
 				'".$data['empnum']."',0,0,0,
 				0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,
-				null,null)";
+				null)";
 			mysql_query($sql);
 		}
 	}

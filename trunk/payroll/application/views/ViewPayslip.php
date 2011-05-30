@@ -53,6 +53,10 @@
 		<td><?php echo $Holiday;?></td>
 	</tr>
 	<tr>
+		<th>Holiday Adjustment:</th>
+		<td><?php echo $HolidayAdjustment;?></td>
+	</tr>
+	<tr>
 		<th>Salary Adjustment (Tax Refund):</th>
 		<td><?php echo $TaxRefund;?></td>
 	</tr>
@@ -109,10 +113,6 @@
 		<td><?php echo $CompanyLoan;?></td>
 	</tr>
 	<tr>
-		<th>Advances to Officer:</th>
-		<td><?php echo $AdvancestoOfficer;?></td>
-	</tr>
-	<tr>
 		<th>Cellphone Charges:</th>
 		<td><?php echo $CellphoneCharges;?></td>
 	</tr>
@@ -123,10 +123,6 @@
 	<tr>
 		<th>Net Pay:</th>
 		<td><?php echo $NetPay;?></td>
-	</tr>
-	<tr>
-		<th>Remarks:</th>
-		<td><?php echo $Remarks;?></td>
 	</tr>
 	<tr>
 		<th>Status:</th>
