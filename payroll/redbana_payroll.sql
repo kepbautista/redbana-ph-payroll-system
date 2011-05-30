@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 27, 2011 at 02:34 AM
+-- Generation Time: May 30, 2011 at 08:22 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
   `desc` varchar(100) NOT NULL,
   `payrate` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=67 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=68 ;
 
 --
 -- Dumping data for table `daily_desc`
@@ -98,7 +98,8 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
 INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
 (1, 'Regular Work', 'Regular Work', 0),
 (2, 'Regular Holiday', 'Regular Holiday', 100),
-(3, 'Special Holiday', 'Special Holiday', 30);
+(3, 'Special Holiday', 'Special Holiday', 30),
+(67, 'Special Holiday on Rest Day', 'Special Holiday on Rest Day', 260);
 
 -- --------------------------------------------------------
 
@@ -134,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `emp_type` (
   `type` varchar(50) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `emp_type`
@@ -314,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `PAYROLL_FINALIZED_BY` varchar(255) DEFAULT NULL,
   `PAYROLL_FINALIZED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -323,7 +324,8 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
 INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
 (2, 1, '2011-04-24', '2011-05-07', 11, 0, 1, '2008-00196', '2011-05-22 17:10:02', 0, NULL, NULL),
 (3, 1, '2011-05-08', '2011-05-23', 11, 0, 0, NULL, NULL, 0, NULL, NULL),
-(4, 1, '2011-06-01', '2011-06-22', 22, 0, 0, NULL, NULL, 0, NULL, NULL);
+(4, 1, '2011-06-01', '2011-06-22', 22, 0, 0, NULL, NULL, 0, NULL, NULL),
+(5, 1, '2011-06-23', '2011-06-30', 8, 0, 0, NULL, NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -443,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `pos_main` (
   `position` varchar(50) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `pos_main`
@@ -476,6 +478,7 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `AbsencesTardiness` double NOT NULL DEFAULT '0',
   `Overtime` double NOT NULL DEFAULT '0',
   `Holiday` double NOT NULL DEFAULT '0',
+  `HolidayAdjustment` double NOT NULL DEFAULT '0',
   `TaxRefund` double NOT NULL DEFAULT '0',
   `NightDifferential` double NOT NULL DEFAULT '0',
   `GrossPay` double NOT NULL DEFAULT '0',
@@ -490,11 +493,9 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `PagibigLoan` double NOT NULL DEFAULT '0',
   `SSSLoan` double NOT NULL DEFAULT '0',
   `CompanyLoan` double NOT NULL DEFAULT '0',
-  `AdvancestoOfficer` double NOT NULL DEFAULT '0',
   `CellphoneCharges` double NOT NULL DEFAULT '0',
   `AdvancestoEmployee` double NOT NULL DEFAULT '0',
   `NetPay` double NOT NULL DEFAULT '0',
-  `Remarks` varchar(100) DEFAULT NULL,
   `Status` varchar(50) DEFAULT NULL,
   KEY `EmployeeNumber` (`EmployeeNumber`),
   KEY `EmployeeNumber_2` (`EmployeeNumber`)
@@ -504,12 +505,15 @@ CREATE TABLE IF NOT EXISTS `salary` (
 -- Dumping data for table `salary`
 --
 
-INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `AdvancestoOfficer`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Remarks`, `Status`) VALUES
-('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4954.36, '', ''),
-('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4479.36, '', ''),
-('2011-06-01', '2011-06-22', '2008-00195', 505.59090909091, 5561.5, -0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 0, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 5057.3, '', ''),
-('2011-06-01', '2011-06-22', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 0, 4954.36, NULL, NULL),
-('2011-06-01', '2011-06-22', '2008-00198', 227.27272727273, 2500, -0, 0, 0, 0, 0, 2500, 0, 0, 2500, 2270.8, 0, 166.7, 62.5, 0, 0, 0, 0, 0, 100, 0, 2170.8, '', '');
+INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
+('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4954.36, ''),
+('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4479.36, ''),
+('2011-06-01', '2011-06-22', '2008-00195', 505.59090909091, 5561.5, -0, 0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 0, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 5057.3, ''),
+('2011-06-01', '2011-06-22', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 353.59, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4642.21, ''),
+('2011-06-01', '2011-06-22', '2008-00198', 227.27272727273, 2500, -0, 0, 0, 0, 0, 0, 2500, 0, 0, 2500, 2270.8, 0, 166.7, 62.5, 0, 0, 100, 0, 100, 0, 2070.8, ''),
+('2011-06-23', '2011-06-30', '2008-00195', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
+('2011-06-23', '2011-06-30', '2008-00196', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
+('2011-06-23', '2011-06-30', '2008-00198', 227.27, 2500, -0, 0, 0, 100, 0, 0, 2600, 0, 0, 2600, 2370.8, 0, 166.7, 62.5, 0, 0, 0, 0, 0, 0, 2370.8, '');
 
 -- --------------------------------------------------------
 

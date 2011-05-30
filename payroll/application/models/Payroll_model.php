@@ -117,26 +117,25 @@ class Payroll_model extends CI_Model{
 		$start_date = $this->input->post('start_date');
 		$end_date = $this->input->post('end_date');
 		$DailyRate = $this->input->post('DailyRate');
+		$HolidayAdjustment = $this->input->post('HolidayAdjustment');
 		$TaxRefund = $this->input->post('TaxRefund');
 		$NonTax = $this->input->post('NonTax');
 		$TaxShield = $this->input->post('TaxShield');
 		$PagibigLoan = $this->input->post('PagibigLoan');
 		$SSSLoan = $this->input->post('SSSLoan');
 		$CompanyLoan = $this->input->post('CompanyLoan');
-		$AdvancestoOfficer = $this->input->post('AdvancestoOfficer');
 		$CellphoneCharges = $this->input->post('CellphoneCharges');
 		$AdvancestoEmployee = $this->input->post('AdvancestoEmployee');
-		$Remarks = mysql_real_escape_string($this->input->post('Remarks'));
 		$Status = mysql_real_escape_string($this->input->post('Status'));
 	
 		$sql = "UPDATE `salary` SET DailyRate='".$DailyRate."',
+				HolidayAdjustment='".$HolidayAdjustment."',
 				TaxRefund='".$TaxRefund."',NonTax='".$NonTax."',
 				TaxShield='".$TaxShield."',PagibigLoan='".$PagibigLoan."', 
 				SSSLoan='".$SSSLoan."',CompanyLoan='".$CompanyLoan."',
-				AdvancestoOfficer='".$AdvancestoOfficer."',
 				CellphoneCharges='".$CellphoneCharges."',
 				AdvancestoEmployee='".$AdvancestoEmployee."',
-				Remarks='".$Remarks."',Status='".$Status."'
+				Status='".$Status."'
 				WHERE EmployeeNumber='".$EmployeeNumber."'
 				AND start_date='".$start_date."' AND 
 				end_date='".$end_date."'";
@@ -430,7 +429,7 @@ class Payroll_model extends CI_Model{
 				 + $data['SSS'] + $data['Philhealth']
 				 + $data['Pagibig'] + $data['PagibigLoan']
 				 + $data['SSSLoan'] + $data['CompanyLoan']
-				 + $data['AdvancestoOfficer']+ $data['CellphoneCharges'] 
+				 + $data['CellphoneCharges'] 
 				 + $data['AdvancestoEmployee']);
 		
 		$sql = "UPDATE `salary` SET Netpay='".$netpay."' WHERE 
@@ -473,8 +472,8 @@ class Payroll_model extends CI_Model{
 		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 		
 		$gross = $data['PayPeriodRate'] + $data['AbsencesTardiness'] +
-		         $data['Overtime'] + $data['Holiday'] + $data['TaxRefund'] +
-				 $data['NightDifferential'];
+		         $data['Overtime'] + $data['Holiday'] + $data['HolidayAdjustment'] +
+				 $data['TaxRefund'] + $data['NightDifferential'] ;
 		$sql = "UPDATE `salary` SET GrossPay='".$gross."' WHERE 
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";
@@ -499,9 +498,10 @@ class Payroll_model extends CI_Model{
 		$data = $this->selectSalaryData($info[0],$info[1],$info[2]);
 	
 		$taxBasis = $data['PayPeriodRate'] + $data['AbsencesTardiness'] +
-					$data['Overtime'] + $data['Overtime'] + $data['Holiday'] +
-					$data['NightDifferential'] - $data['SSS'] -
-					$data['Philhealth'] - $data['Pagibig'];
+					$data['Overtime'] + $data['Holiday'] +
+					$data['NightDifferential'] + $data['HolidayAdjustment'] +
+					$data['TaxRefund'] - ($data['SSS'] +
+					$data['Philhealth'] + $data['Pagibig']);
 		$sql = "UPDATE `salary` SET WithholdingBasis='".$taxBasis."' WHERE 
 				EmployeeNumber='".$info[0]."' AND start_date='".$info[1]."' 
 				AND end_date='".$info[2]."'";

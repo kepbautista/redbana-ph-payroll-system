@@ -24,6 +24,10 @@ class Payroll extends CI_Controller {
 			$this->form_validation->set_rules(floatval('TaxRefund'),'Tax Refund','numeric|greater_than[0]');
 		else
 			$this->form_validation->set_rules('TaxRefund','Tax Refund','numeric|greater_than[0]');
+		if(is_numeric($this->input->post('HolidayAdjustment')))
+			$this->form_validation->set_rules(floatval('HolidayAdjustment'),'Holiday Adjustment','numeric|greater_than[0]');
+		else
+			$this->form_validation->set_rules('HolidayAdjustment','Holiday Adjustment','numeric|greater_than[0]');
 		if(is_numeric($this->input->post('NonTax')))
 			$this->form_validation->set_rules(floatval('NonTax'),'Non-Tax','numeric|greater_than[0]');
 		else
@@ -44,10 +48,6 @@ class Payroll extends CI_Controller {
 			$this->form_validation->set_rules(floatval('CompanyLoan'),'Company Loan','numeric|greater_than[0]');
 		else
 			$this->form_validation->set_rules('CompanyLoan','Company Loan','numeric|greater_than[0]');
-		if(is_numeric($this->input->post('AdvancestoOfficer')))
-			$this->form_validation->set_rules(floatval('AdvancestoOfficer'),'Advances to Officer','numeric|greater_than[0]');
-		else
-			$this->form_validation->set_rules('AdvancestoOfficer','Advances to Officer','numeric|greater_than[0]');
 		if(is_numeric($this->input->post('CellphoneCharges')))
 			$this->form_validation->set_rules(floatval('CellphoneCharges'),'Cellphone Charges','numeric|greater_than[0]');
 		else
@@ -56,7 +56,6 @@ class Payroll extends CI_Controller {
 			$this->form_validation->set_rules(floatval('AdvancestoEmployee'),'Advances to Employee','numeric|greater_than[0]');
 		else
 			$this->form_validation->set_rules('AdvancestoEmployee','Advances to Employee','numeric|greater_than[0]');
-		$this->form_validation->set_rules('Remarks','Remarks','callback_script_input');
 		$this->form_validation->set_rules('Status','Status','callback_script_input');
 	}//function for validating edit pay slip form
 	
@@ -88,14 +87,14 @@ class Payroll extends CI_Controller {
 		$data['start_date'] = $_POST['start_date'];
 		$data['end_date'] = $_POST['end_date'];
 		
-		$this->NetPay();//compute for net pay
+		$this->NetPay();//compute partial net pay
 		
-		if(isset($_POST['editpayslip'])){
-			$this->validateForm();
-			
+		if(!isset($_POST['edit'])){
 			//get information
 			foreach($_POST as $key => $value)
 				$data[$key] = $value;
+			
+			$this->validateForm();
 			
 			if ($this->form_validation->run() == FALSE)
 				$this->load->view('EditPayslip_view',$data);
