@@ -15,7 +15,8 @@ function validator($q,$response){
 	//sql injections
 	
 	//input is null
-	if(($_POST['vtype']!='open') && ($_POST['vtype']!='e-mail')){
+	if(($_POST['vtype']!='open') && ($_POST['vtype']!='e-mail') 
+		&& (($_POST['vtype']!='salary'))){
 		//value is required
 		if(strlen($q)==0) $response = "Required Value.";
 	}
@@ -102,6 +103,8 @@ if($response==""){
 		case 'e-mail': $response = validateEmail($q,$response);
 					break;
 		case 'numeric': $response = validateNumber($q,$response);
+					break;
+		case 'salary': $response = validateNumber($q,$response);
 					break;
 	}//validation type
 }
