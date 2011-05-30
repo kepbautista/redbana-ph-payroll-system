@@ -11,6 +11,7 @@ class Payroll extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->helper('date');
 		$this->load->helper('form');
+		$this->load->model('Payroll_model');
 	}
 	
 	function validateForm(){
@@ -60,7 +61,6 @@ class Payroll extends CI_Controller {
 	}//function for validating edit pay slip form
 	
 	function PayrollInfoView(){
-		$this->load->model('Payroll_model');
 		$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 		
 		if(isset($_POST['GeneratePayroll'])){
@@ -81,6 +81,25 @@ class Payroll extends CI_Controller {
 		
 		$this->load->view('Payroll_view',$data);
 	}//view the payroll for specified cutoff
+	
+	/**VIEW PAY SLIP INDIVIDUALLY
+	(NOT SUPERUSER USER RIGHT)**/
+	/**function IndividualPayslip(){
+		$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+		
+		//get latest payperiod (that's the default view)
+		$payperiod = 4;
+		//$empnum = $this->session->userdata('empnum');
+		
+		$cutoff = $this->Payroll_model->returnCutoff($payperiod);
+		$data['start_date'] = $cutoff['start_date'];
+		$data['end_date'] = $cutoff['end_date'];
+			
+		$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
+		$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
+		
+		$this->load->view('Payroll_view',$data);
+	}**/
 
 	function EditPayslip(){
 		$data['EmployeeNumber'] = $_POST['EmployeeNumber'];
@@ -89,7 +108,13 @@ class Payroll extends CI_Controller {
 		
 		$this->NetPay();//compute partial net pay
 		
-		if(!isset($_POST['edit'])){
+		$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
+		$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
+		
+		if(isset($_POST['view']))
+			$this->load->view('ViewPayslip',$data);
+			//view pay slip only
+		else if(!isset($_POST['edit'])){
 			//get information
 			foreach($_POST as $key => $value)
 				$data[$key] = $value;
@@ -99,16 +124,9 @@ class Payroll extends CI_Controller {
 			if ($this->form_validation->run() == FALSE)
 				$this->load->view('EditPayslip_view',$data);
 			else $this->UpdatePayslip();//update pay slip
-		}
-		else{
-			$this->load->model('Payroll_model');
-			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
-			$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
-			
-			if(isset($_POST['view']))
-				$this->load->view('ViewPayslip',$data);
-			else
-				$this->load->view('EditPayslip_view',$data);
+		}//edit pay slip
+		else{	
+			$this->load->view('EditPayslip_view',$data);
 		}//Edit Pay Slip Form is loaded for the 1st time
 	}
 	
@@ -118,7 +136,6 @@ class Payroll extends CI_Controller {
 		$start_date = $_POST['start_date'];
 		$end_date = $_POST['end_date'];
 		
-		$this->load->model('Payroll_model');
 		$this->Payroll_model->UpdatePayslip();
 		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
 		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
@@ -134,12 +151,9 @@ class Payroll extends CI_Controller {
 		$start_date = $_POST['start_date'];
 		$end_date = $_POST['end_date'];
 	
-		$this->load->model('Payroll_model');
+		
 		$this->Payroll_model->computeNetPay($empnum,$start_date,$end_date);
 	}//function for computing Withholding Tax
-	
-	/**VIEW PAY SLIP INDIVIDUALLY
-	(FOR NOT SUPERUSER USER RIGHT)**/
 	
 	function script_input($str){
 		$response = TRUE;
@@ -155,7 +169,6 @@ class Payroll extends CI_Controller {
 	}//check if user entered a script as input
 	
 	function finalized($payperiod){
-		$this->load->model('Payroll_model');
 		$response = $this->Payroll_model->payrollFinalized($payperiod);
 		$this->form_validation->set_message('finalized',"This %s is already finalized.");
 		
