@@ -22,7 +22,7 @@
 		"http://localhost/payroll/index.php/unittest/index"
 	 For function w/ parameter:
 		"http://localhost/payroll/index.php/unittest/payrollfinalized/3"
-	*This controller is not included in the list functionalities of
+	*This controller is not included in the list of functionalities for
 		our project. It's only for testing purposes so, no need
 		to create views, models, sessions, privileges, etc. for this
 		functionality/controller.
