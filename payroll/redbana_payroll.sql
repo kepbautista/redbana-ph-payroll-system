@@ -646,6 +646,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `night_diff` time DEFAULT '00:00:00',
   `type` varchar(50) NOT NULL COMMENT 'int value, references values in table `daily_desc` which are REGULAR_WORKING_DAY|SPECIAL_HOLIDAY|LEGAL_HOLIDAY|REGULAR|HOLIDAY',
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
+  `overtime_rate` int DEFAULT 0 NOT NULL COMMENT "If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.",
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
@@ -817,6 +818,35 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
+
+CREATE TABLE IF NOT EXISTS `errorcodes` (
+  `CODE` int(11) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `MESSAGE` longtext NOT NULL,
+  `FURTHER_INFO` longtext,
+  PRIMARY KEY (`NAME`),
+  UNIQUE KEY `CODE` (`CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `errorcodes`
+--
+
+INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
+(201, 'ABSENCES_AND_LATE_ALREADY', 'For this payperiod, absences and tardiness info have been already generated. If you want\r\n										to generate again, clear all records first.', NULL),
+(453, 'DATE_SPECIFIED_NULL', 'The date you submitted is NULL.', NULL),
+(404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
+(450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
+(200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
+(700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
+(102, 'MISSING_ABSENCE_DETAILS', 'No attendance record for this employee exists.', NULL),
+(410, 'NON_EXISTENT_TIMESHEET', 'This timesheet is not existing.', NULL),
+(101, 'NO_EMPLOYEE_EXISTS', 'There is no single employee in the database.', NULL),
+(405, 'PAYMENT_MODE_NOT_FOUND', 'The specified payment mode can''t be found.', NULL),
+(451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
+(407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
+(452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
+(403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
 
 --
 -- Constraints for dumped tables

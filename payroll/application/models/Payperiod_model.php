@@ -28,7 +28,7 @@ class Payperiod_model extends CI_Model
 	{
 		/*		
 			made | abe | 19may2011_1253, differs from the 'without X' function because
-			this will return ARRAY or NULL
+			this will return OBJECT or NULL
 			
 		RETURNS: OBJECT containing the first MySQL results row, index is the payperiod->ID ;
 				 NULL, if no entry exists in the dB
@@ -44,7 +44,7 @@ class Payperiod_model extends CI_Model
 		return $rows_result[0];
 	}//_X
 
-	function pull_Payperiod_This_Date_Falls($date_in_SQL)
+	function pull_Payperiod_This_Date_Falls($date_in_SQL, $payment_mode = 1)
 	{
 		/*		
 			made | abe | 15may2011_2345
@@ -53,8 +53,8 @@ class Payperiod_model extends CI_Model
 		RETURNS: OBJECT containing the MySQL results or NULL, if no entry exists in the dB
 		*/
 	
-		$sql_x = "SELECT * FROM `payperiod` WHERE `START_DATE` <= ? AND `END_DATE` >= ?";
-		$obj_result = $this->db->query($sql_x, array($date_in_SQL, $date_in_SQL) );
+		$sql_x = "SELECT * FROM `payperiod` WHERE `START_DATE` <= ? AND `END_DATE` >= ? AND `payment_mode` = ?";
+		$obj_result = $this->db->query($sql_x, array($date_in_SQL, $date_in_SQL, $payment_mode) );
 		
 		return $obj_result;
 	}
