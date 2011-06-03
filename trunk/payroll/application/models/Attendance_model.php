@@ -6,6 +6,7 @@ class Attendance_model extends CI_Model
 	{
 		parent::__construct();
 		$this->load->model('Payperiod_model');
+		$this->load->model('ErrorReturn_model');
 	}
 
 	function getAbsences
@@ -48,12 +49,7 @@ class Attendance_model extends CI_Model
 			$dateTo   = $temp[0]->END_DATE;			
 		}else	//no payperiod specified but only dates inclusive
 		{			
-			if($dateFrom == NULL or $dateTo == NULL) 
-			{
-				$theResult["error_code"] = -1;
-				$theResult["error_message"] = 'Date(s) is/are NULL.';
-				return $theResult;
-			}
+			if($dateFrom == NULL or $dateTo == NULL) return $this->ErrorReturn_model->createSingleError(453, NULL, NULL);			
 		}
 		
 		/*			now pull-all employees
@@ -61,15 +57,11 @@ class Attendance_model extends CI_Model
 			abe | 10may2011 2030 | i am making my own fetch all function so far
 				since I'm not sure of Employee_model->Employee_getall()
 		*/		
-		$employees = $this->getAllEmployees($payment_mode)->result();		
-		if( empty ($employees) )
-		{			
-			$theResult["error_code"] = -3;
-			$theResult["error_message"] = "No employee so far.";
-			return $theResult;
-		}		
-
-		/*
+		$employees = $this->getAllEmployees($payment_mode)->result();	
+		
+		if( empty ($employees) ) return $this->ErrorReturn_model->createSingleError(101, NULL, NULL);			
+	
+	/*
 		Get all the type of absences
 		*/
 		$sql_x = "SELECT * from `absence_reason` ";	
@@ -139,12 +131,7 @@ class Attendance_model extends CI_Model
 			//get date inclusives during the payperiod specified from database
 			$obj_result = $this->Payperiod_model->pull_PayPeriod_Info($payperiod);
 			
-			if($obj_result->num_rows == 0)
-			{
-				$theResult["error_code"] = -2;
-				$theResult["error_message"] = "Pay period does not exist";
-				return $theResult;
-			}
+			if($obj_result->num_rows == 0)return $this->ErrorReturn_model->createSingleError(407, NULL, NULL);			
 			
 			/*now store dates
 			  :: might be a potential for bugs
@@ -154,12 +141,7 @@ class Attendance_model extends CI_Model
 			$dateTo   = $temp[0]->END_DATE;			
 		}else	//no payperiod specified but only dates inclusive
 		{			
-			if($dateFrom == NULL or $dateTo == NULL) 
-			{
-				$theResult["error_code"] = -1;
-				$theResult["error_message"] = 'Date(s) is/are NULL.';
-				return $theResult;
-			}
+			if($dateFrom == NULL or $dateTo == NULL) return $this->ErrorReturn_model->createSingleError(453, NULL, NULL);			
 		}
 		
 		/*
@@ -169,12 +151,7 @@ class Attendance_model extends CI_Model
 				since I'm not sure of Employee_model->Employee_getall()
 		*/		
 		$employees = $this->getAllEmployees($payment_mode)->result();		
-		if( empty ($employees) )
-		{			
-			$theResult["error_code"] = -3;
-			$theResult["error_message"] = "No employee so far.";
-			return $theResult;
-		}			
+		if( empty ($employees) ) return $this->ErrorReturn_model->createSingleError(101, NULL, NULL);			
 		
 		foreach($employees as $emp_x)
 		{								
@@ -216,10 +193,7 @@ class Attendance_model extends CI_Model
 			}//foreach daily_attendance...
 			
 			//at the end of sifting through the days, store it to some variable
-			$emp_tardiness_result[$emp_x->empnum] = $tardiness_count; 
-			
-			//echo var_dump($emp_tardiness_result[$emp_x->empnum]);
-			
+			$emp_tardiness_result[$emp_x->empnum] = $tardiness_count; 									
 		}//foreach (employees
 			
 		//prep up the final results
@@ -233,7 +207,8 @@ class Attendance_model extends CI_Model
 	function getAllEmployees($payment_mode = 1)
 	/*
 		gets all employees from the employee table.
-		 		 
+
+			
 		RETURNS: OBJECT containing the MySQL results or NULL, if no entry exists in the dB
 	*/
 	{
@@ -376,7 +351,7 @@ class Attendance_model extends CI_Model
 		}		
 		
 		//get employee details first
-		$employees_data = $this->Attendance_model->getAllEmployees($payment_mode)->result();
+		$employees_data = $this->getAllEmployees($payment_mode)->result();
 
 		if( empty ($employees_data) )
 		{
@@ -384,8 +359,18 @@ class Attendance_model extends CI_Model
 			//redirect('/errorWhatever');
 		}
 		
-		$absences_data = $this->Attendance_model->getAbsences($payperiod, ``, ``, $payment_mode);
-		$tardiness_data = $this->Attendance_model->getTardiness($payperiod, ``, ``, $payment_mode);		
+		//get payperiod obj, i don't think we need trouble shooting here
+		$payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info($payperiod)->result();
+																
+		$absences_data = $this->getAbsences($payperiod, ``, ``, $payment_mode);
+		$tardiness_data = $this->getTardiness($payperiod, ``, ``, $payment_mode);		
+		/*
+			These parts added 24MAY2011_2339, no need to assign to something as of the moment
+		*/
+		$this->get_OverTime($payperiod, $payment_mode);
+		$this->get_UnderTime($payperiod, $payment_mode);
+		$this->get_NightDifferential($payperiod, $payment_mode);
+		$OT_and_ND_data = $this->generate_OT_and_ND_Cost($payperiod, $payment_mode);
 		
 		
 		
@@ -412,18 +397,19 @@ class Attendance_model extends CI_Model
 			{
 				//calculate daily rate
 				
-				if( (int) $payment_mode == 1 || $payment_mode == "SEMI-MONTHLY" )
+				if( $payment_mode == '1' or $payment_mode == "SEMI-MONTHLY" )
 				{
 					$daily_rate = ($employee_individual->mrate / 2) / $defaultWorkingDays;	
 				}else
-				if( (int) $payment_mode == 2 || $payment_mode == "MONTHLY" )
+				if( $payment_mode == '2' or $payment_mode == "MONTHLY" )
 				{
-					$daily_rate = $employee_individual->mrate / $defaultWorkingDays;	
+					$daily_rate = $employee_individual->mrate / 22;	
 				}else
 				{
 					//later for this
 				}
 			}
+			$daily_rate = round($daily_rate, 2);
 			$absences_and_lwop = 0;
 			$absences_and_lwop_amount = 0;
 			
@@ -488,31 +474,18 @@ class Attendance_model extends CI_Model
 			/*
 				COMPUTATION SECTION
 			*/
-			$absences_and_lwop_amount = $absences_and_lwop * $daily_rate;
-			$vacation_and_sick_leave_amount = $vacation_and_sick_leave * $daily_rate;
-			$suspension_amount = $suspension * $daily_rate;
-			// if you are searching for suspension, it seems that it is not deductible.
+			$absences_and_lwop_amount = round($absences_and_lwop * $daily_rate, 2);
+			$vacation_and_sick_leave_amount = round($vacation_and_sick_leave * $daily_rate, 2);
+			$suspension_amount = round($suspension * $daily_rate, 2);
+			
 			
 			/*	abe | 12may2011
 			*	isn't the computation of these supposed to change?	
 			*/
-			$tardiness_amount = ($daily_rate / $defaultHoursPerDay) * ($tardiness_count * 0.01);
-			$total_amount = $absences_and_lwop_amount + $vacation_and_sick_leave_amount + 
-							$suspension_amount + $tardiness_amount;
-			
-			/*
-				DISPLAY RESULT SECTION. should be erased upon finalization.
-			*/
-			/*
-			echo $daily_rate."|".($defaultHoursPerDay * $tardiness_count);
-			echo "FOR ".$employee_individual->empnum."<br/>";
-			echo "ABSENCES/LWOP: ".$absences_and_lwop."|".$absences_and_lwop_amount."<br/>";
-			echo "VL/SL   : ".$vacation_and_sick_leave."|".$vacation_and_sick_leave_amount."<br/>";
-			echo "Suspension: ".$suspension."|".$suspension_amount."<br/>";
-			echo "Tardiness	   : ".$tardiness_count."|".$tardiness_amount."<br/>";			
-			echo $this->login_model->getCurrentUser();
-			*/
-						
+			$tardiness_amount = round(($daily_rate / $defaultHoursPerDay) * ($tardiness_count * 0.01), 2);
+			$total_amount = $absences_and_lwop_amount + $vacation_and_sick_leave_amount + $suspension_amount 
+							+ $tardiness_amount;
+									
 			$result_to_be_returned['result'] = $this->insertComputation
 			(
 				$employee_individual->empnum,
@@ -532,7 +505,7 @@ class Attendance_model extends CI_Model
 				$paid_vl_days,
 				$paid_sl_days,
 				$paid_emergency_leave_days,				
-				"",					//the constant CURRENT_TIMESTAMP is 'hardcoded' in the SQL statement
+				"",					//the constant CURRENT_TIMESTAMP is 'hardcoded' in the SQL statement in function insertComputation(..)
 				$this->login_model->getCurrentUser()
 			);
 			
@@ -545,15 +518,40 @@ class Attendance_model extends CI_Model
 				'ERROR_TITLE' => 'INSERTION_FINAL_ERROR',
 				'DESCRIPTION' => 'Cannot insert ATTENDANCE_FAULT_DATA for '.$employee_individual->empnum." ",
 				);
-			}
+			}			
 			
-			//echo 'reiterating...<br/><br/>';
+			
+
+			/*
+				NOW for OVERTIME and NIGHT_DIFF
+			*/						
+			$sql_x = "UPDATE `salary` SET `Overtime`=?,`NightDifferential`=?,`AbsencesTardiness`=? WHERE `start_date` = ? AND `end_date` = ? AND `EmployeeNumber` =?";
+			
+			$OT_ND_Query_Result = $this->db->query( $sql_x, array(
+					$OT_and_ND_data['result_array'][$employee_individual->empnum]['overtime']['amount'],
+					$OT_and_ND_data['result_array'][$employee_individual->empnum]['night_diff']['amount'],
+					$total_amount,
+					$payperiod_obj[0]->START_DATE,
+					$payperiod_obj[0]->END_DATE,
+					$employee_individual->empnum
+				)//end of array..
+			);
+			
+			if( $OT_ND_Query_Result == FALSE )			
+			{
+				$result_to_be_returned['validation_errors'][] = array( 
+				'ERROR_CODE' => 200,
+				'ERROR_TITLE' => 'INSERTION_FINAL_ERROR',
+				'DESCRIPTION' => 'Cannot insert OVERTIME AND NIGHT_DIFF for '.$employee_individual->empnum." ",
+				);
+			}
 			
 		}//foreach(employees)
 		
-		return $result_to_be_returned;
+		return $result_to_be_returned;		
 	}//generateEverything
 	
+		
 	function getCurrentDate_MySQL_Format()
 	{
 		/*
@@ -572,22 +570,7 @@ class Attendance_model extends CI_Model
 		
 		return $date_in_SQL;
 	}
-	
-	function getCurrentDate_European_Union_Format()
-	{
-		/*
-			made | abe | 16may2011_1600
-		*/
-		$my_time_in_PHP;
-		$date_in_SQL;
-		
-		$my_time_in_PHP = getdate(date("U"));
-						
-		$date_in_SQL = "{$my_time_in_PHP['mday']}-{$my_time_in_PHP['month']}-{$my_time_in_PHP['year']}";
-		
-		return $date_in_SQL;
-	}
-	
+			
 	function convert_Date_To_EU_Format($date)
 	{
 		/*	made | abe | 18MAY2011_1413
@@ -602,25 +585,25 @@ class Attendance_model extends CI_Model
 		
 		if( strlen($date) !=  10 )
 		{
-			$returnThis['ERROR_CODE'] = '0xUNDEFINED';
+			$returnThis['ERROR_CODE'] = '700';
 			$returnThis['ERROR_TITLE'] = 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS';
 			$returnThis['ERROR_MESSAGE'] = 'The date submitted should be composed exactly of 10 characters.';
 			die($returnThis);
 		}		
 		$date[4] = $date[7] = '-';
 		$month=array(
-            '01'=>'Jan',
-            '02'=>'Feb',
-            '03'=>'Mar',
-            '04'=>'Apr',
-            '05'=>'May',
-            '06'=>'Jun',
-            '07'=>'Jul',
-            '08'=>'Aug',
-            '09'=>'Sep',
-            '10'=>'Oct',
-            '11'=>'Nov',
-            '12'=>'Dec'
+            '01'=>'JAN',
+            '02'=>'FEB',
+            '03'=>'MAR',
+            '04'=>'APR',
+            '05'=>'MAY',
+            '06'=>'JUN',
+            '07'=>'JUL',
+            '08'=>'AUG',
+            '09'=>'SEP',
+            '10'=>'OCT',
+            '11'=>'NOV',
+            '12'=>'DEC'
 		);
 		list($sql_year, $sql_month, $sql_day) = explode('-', $date);
 		$month_in_word = $month[$sql_month];
@@ -629,12 +612,12 @@ class Attendance_model extends CI_Model
 	}
 	
 	
-	function isCurrentDate_on_a_payPeriod()
+	function isCurrentDate_on_a_payPeriod($payment_mode = 1)
 	{
 		/*
 			made | abe | 15may2011_2333
 		*/			
-		$obj_result = $this->Payperiod_model->pull_Payperiod_This_Date_Falls( $this->getCurrentDate_MySQL_Format() ) ;
+		$obj_result = $this->Payperiod_model->pull_Payperiod_This_Date_Falls( $this->getCurrentDate_MySQL_Format(), $payment_mode ) ;
 		
 		if( $obj_result->num_rows == 0 || $obj_result == null )	
 			return false;
@@ -658,11 +641,11 @@ class Attendance_model extends CI_Model
 	
 	function getPaymentModes()
 	{
-		/*
-		
+		/*	
 			returns NULL if no content gotten from dB
 			else  ASSOCIATIVE  ARRAY of the rows in the dB
 		*/
+		
 		$sql_x = "SELECT * FROM `payment_mode` ORDER BY `id` ASC";
 		$rows_result = $this->db->query( $sql_x, array() )->result();
 		$returnThis = array();
@@ -738,6 +721,8 @@ class Attendance_model extends CI_Model
 	{
 		/*
 			abe | made | 19MAY2011_1333 |
+			
+			RETURNS BOOLEAN TRUE|FALSE
 		*/
 		
 		if( 
@@ -795,36 +780,23 @@ class Attendance_model extends CI_Model
 
 		foreach($data as $each_employee_data)
 		{			
-			$theData['absences_lwop_days']['value'] += floatval($each_employee_data->absences_lwop_days);
-			$theData['absences_lwop_amount']['value'] += floatval($each_employee_data->absences_lwop_amount);
-			$theData['leave_sick_vacation_days']['value'] += floatval($each_employee_data->leave_sick_vacation_days);
-			$theData['leave_sick_vacation_amount']['value'] += floatval($each_employee_data->leave_sick_vacation_amount);
-			$theData['suspension_days']['value'] += floatval($each_employee_data->suspension_days);
-			$theData['suspension_amount']['value'] += floatval($each_employee_data->suspension_amount);
-			$theData['tardiness_min']['value'] += floatval($each_employee_data->tardiness_min);
-			$theData['tardiness_amount']['value'] += floatval($each_employee_data->tardiness_amount);
-			$theData['total_amount']['value'] += floatval($each_employee_data->total_amount);
-			$theData['paid_vl_days']['value'] += floatval($each_employee_data->paid_vl_days);
-			$theData['paid_sl_days']['value'] += floatval($each_employee_data->paid_sl_days);
-			$theData['paid_emergency_leave_days']['value'] += floatval($each_employee_data->paid_emergency_leave_days);		
+			$theData['absences_lwop_days']['value'] += round(floatval($each_employee_data->absences_lwop_days), 2);
+			$theData['absences_lwop_amount']['value'] += round(floatval($each_employee_data->absences_lwop_amount), 2);
+			$theData['leave_sick_vacation_days']['value'] += round(floatval($each_employee_data->leave_sick_vacation_days), 2);
+			$theData['leave_sick_vacation_amount']['value'] += round(floatval($each_employee_data->leave_sick_vacation_amount), 2);
+			$theData['suspension_days']['value'] += round(floatval($each_employee_data->suspension_days), 2);
+			$theData['suspension_amount']['value'] += round(floatval($each_employee_data->suspension_amount), 2);
+			$theData['tardiness_min']['value'] += round(floatval($each_employee_data->tardiness_min), 2);
+			$theData['tardiness_amount']['value'] += round(floatval($each_employee_data->tardiness_amount), 2);
+			$theData['total_amount']['value'] += round(floatval($each_employee_data->total_amount), 2);
+			$theData['paid_vl_days']['value'] += round(floatval($each_employee_data->paid_vl_days), 2);
+			$theData['paid_sl_days']['value'] += round(floatval($each_employee_data->paid_sl_days), 2);
+			$theData['paid_emergency_leave_days']['value'] += round(floatval($each_employee_data->paid_emergency_leave_days), 2);		
 		}
 		
 		return $theData;
 	}
-	
-	function generateOverTime($payperiod_obj)
-	{
-		if( $payperiod_obj == NULL)
-		{
-			die('gaga.');
-			return NULL;
-		}
-		$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $dateFrom, $dateTo)->result();
-		$employees = $this->getAllEmployees($payperiod_obj->payment_mode)->result();		
-		
-		
-	}
-	
+			
 	function update_Today($whatField, $theTimeSheetObject, $passed_is_what = "MIN", $theNumber)
 	{
 	/*
@@ -844,11 +816,10 @@ class Attendance_model extends CI_Model
 			"ERROR_MESSAGE" => NULL
 		);
 		
-		$updateThisField = "";
-		//die(var_dump($theTimeSheetObject));
+		$updateThisField = "";		
 		if($theTimeSheetObject == NULL)
 		{
-			$theResult['ERROR_CODE'] = 0x000;
+			$theResult['ERROR_CODE'] = 410;
 			$theResult['ERROR_TITLE'] = "NON_EXISTENT_TIMESHEET";
 			$theResult['ERROR_MESSAGE'] = "You have tried to update a TIMESHEET that does not exist.";
 			return $theResult;
@@ -864,10 +835,13 @@ class Attendance_model extends CI_Model
 				$theResult['ERROR_CODE'] = 0x000;
 				$theResult['ERROR_TITLE'] = "UNKNOWN_FIELD";
 				$theResult['ERROR_MESSAGE'] = "You have tried to update a field that does not exist.";
+				die($theResult);
 				return $theResult;
 		}
 		$sql_x = "UPDATE `timesheet` SET `".$updateThisField."` = ? WHERE `timesheet`.`id` = ?";		
+				
 		$theResult['result'] = $this->db->query($sql_x, array( $this->convert_to_Time($passed_is_what, $theNumber), $theTimeSheetObject->id) );	
+		return $theResult;
 	}
 	
 	function convert_to_Time($passed_is_what, $theTimeCount)
@@ -916,6 +890,7 @@ class Attendance_model extends CI_Model
 		*/
 		
 		$employee_OT_count = NULL;
+		$employee_OT_amount = 0;
 		$employee_OT_Data = array();
 		
 		$theResult = array("error_code" => NULL,
@@ -957,14 +932,15 @@ class Attendance_model extends CI_Model
 		foreach($employees as $emp_x)
 		{								
 			$overtime_count = 0;		//initialize, in mins
-			
+			$overtime_amount = 0;
+						
 			/*
 			*	pull all records between the dates, inclusive,  specified for the employee
 			*/								
 			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE)->result();
 			
 			foreach($daily_attendance as $daily_attendance_each_day)
-			{																			
+			{																									
 				//get shift id from its table				
 				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();				
 				if( empty ($shift_info) )
@@ -977,8 +953,7 @@ class Attendance_model extends CI_Model
 								
 				/*
 				*	if absence_reason is 0, means person is not absent.
-				*	and we only compute the late if start_time of that person for the day
-				*	is later than what should be for his/her shift
+				*
 				*/										
 				if( ( $daily_attendance_each_day->absence_reason == NULL 
 					  or $daily_attendance_each_day->absence_reason == '0')
@@ -986,23 +961,22 @@ class Attendance_model extends CI_Model
 					( strtotime($daily_attendance_each_day->time_out) > strtotime($shift_info[0]->END_TIME)  ) 
 				)
 				{						
-					$overtime_today = ( strtotime($daily_attendance_each_day->time_out) - strtotime($shift_info[0]->END_TIME)) / 60 ;					
+					$overtime_today = ( strtotime($daily_attendance_each_day->time_out) - strtotime($shift_info[0]->END_TIME)) / 60 ;									
 					$this->update_Today("OVERTIME", $daily_attendance_each_day, "MIN", $overtime_today);
-					$overtime_count += $overtime_today;
+					$overtime_count += $overtime_today;				
 				}								
 			}//foreach daily_attendance...
 			
 			//at the end of sifting through the days, store it to some variable			
-			$employee_OT_Data[$emp_x->empnum] = $overtime_count;								
+			$employee_OT_Data[$emp_x->empnum]['count'] = $overtime_count;											
 		}//foreach (employees
 				
 		$theResult['result_array'] = $employee_OT_Data;
 		$theResult['error_code'] = 0;
-		$theResult['error_message'] = 'SUCCESS';
-			
+		$theResult['error_message'] = 'SUCCESS';		
 		return $theResult;
 	}
-	
+			
 	function get_UnderTime
 	( $payperiod = NULL, $payment_mode = NULL)
 	{
@@ -1099,6 +1073,192 @@ class Attendance_model extends CI_Model
 		return $theResult;
 	}
 	
+	function generate_OT_and_ND_Cost
+	( $payperiod = NULL, $payment_mode = NULL)
+	{
+		/*
+			made | abe | 24may2011_1516
+		*/
+		if($payperiod == NULL || $payment_mode == NULL)
+		{
+			$theResult["error_code"] = -1;
+			$theResult["ERROR_MESSAGE"] = "PAYPERIOD/PAYMENT_MODE NOT SPECIFIED";
+			return $theResult;
+		}
+		
+		//get date inclusives during the payperiod specified from database			
+		$obj_result = $this->Payperiod_model->pull_PayPeriod_Info($payperiod);
+							
+		if($obj_result->num_rows == 0)
+		{
+			$theResult["error_code"] = -2;
+			$theResult["error_message"] = "Pay period does not exist";
+			return $theResult;
+		}
+		$payperiod_obj = $obj_result->result();
+		
+		/*	now pull-all employees
+			
+			abe | 10may2011 2030 | i am making my own fetch all function so far
+				since I'm not sure of Employee_model->Employee_getall()
+		*/		
+		$employees = $this->getAllEmployees($payment_mode)->result();		
+		if( empty ($employees) )
+		{			
+			$theResult["error_code"] = -3;
+			$theResult["error_message"] = "No employee so far.";
+			die($theResult);
+			return $theResult;
+		}		
+					
+		foreach($employees as $emp_x)
+		{								
+			$emp_OT_amount = 0;
+			$emp_OT_count = 0;
+			$emp_ND_amount = 0;
+			$emp_ND_count = 0;
+			/*
+			*	pull all records between the dates, inclusive,  specified for the employee
+			*/								
+			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE)->result();
+			
+			foreach($daily_attendance as $daily_attendance_each_day)
+			{					
+				//get shift id from its table				
+				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();			
+				if( empty ($shift_info) )
+				{
+					$theResult["error_code"] = -4;
+					$theResult["error_message"] = "INVALID SHIFT ID.";
+					die(var_dump($theResult));
+					//return $theResult;
+				}
+								
+				/*
+				*	if absence_reason is 0, means person is not absent.				
+				*/						
+				if( ($daily_attendance_each_day->absence_reason == NULL 
+					  or $daily_attendance_each_day->absence_reason == '0')
+					 and
+					 ( $daily_attendance_each_day->overtime_rate != '0' )
+				)									
+				{	
+					$OT_recipient_var = $this->generate_OT_Cost_Proper($daily_attendance_each_day->overtime_rate, $payperiod_obj, $emp_x->empnum, $daily_attendance_each_day, $shift_info[0]);				
+					$ND_recipient_var = $this->generate_ND_Cost_Proper($payperiod_obj, $emp_x->empnum, $daily_attendance_each_day, $shift_info[0]);				
+					$emp_OT_amount += $OT_recipient_var['amount'];
+					$emp_OT_count  += $OT_recipient_var['count'];
+					$emp_ND_amount += $ND_recipient_var['amount'];
+					$emp_ND_count  += $ND_recipient_var['count'];
+				}								
+			}//foreach daily_attendance...
+			
+			//at the end of sifting through the days, store it to some variable		
+			
+			$employee_OT_Data[$emp_x->empnum]['overtime']['amount'] = $emp_OT_amount;
+			$employee_OT_Data[$emp_x->empnum]['overtime']['count'] = $emp_OT_count;
+			$employee_OT_Data[$emp_x->empnum]['night_diff']['amount'] = $emp_ND_amount;
+			$employee_OT_Data[$emp_x->empnum]['night_diff']['count'] = $emp_ND_count;
+		}//foreach (employees
+				
+		$theResult['result_array'] = $employee_OT_Data;
+		$theResult['error_code'] = 0;
+		$theResult['error_message'] = 'SUCCESS';
+		
+		/*foreach($employee_OT_Data as $x)
+		{
+			echo var_dump($x);
+		}*/		
+		return $theResult;
+	}
+	
+	function generate_OT_Cost_Proper($OT_rate_id = NULL, $payperiod_obj, $empnum, $daily_attendance_each_day, $shift_obj)
+	{
+		/*
+			made | abe | 24MAY2011_1413
+			PARAMS:			
+		*/
+		$thisOT['amount'] = 0;
+		$thisOT['count'] = 0;
+		$OT_duration_float = 0;
+		$ND_duration_float = 0;
+		$mixed_durations = 0;
+		$dailyHours = 0;
+		
+		if($OT_rate_id == NULL || $payperiod_obj == NULL )
+		{
+			die("generate_OTND_Cost_Proper: NO PP or OT_RATE_ID specified");
+		}
+				
+		$sql_x = "SELECT * FROM `overtime_rates` where `ID` = ?"; 
+		$OTND_rows = $this->db->query($sql_x, array($OT_rate_id) )->result();
+		
+		$sql_x = "SELECT * FROM `salary` where `start_date` = ? and `end_date` = ? and `EmployeeNumber` = ?" ;
+		$SALARY_ROW = $this->db->query($sql_x, array($payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE, $empnum) )->result();
+		
+		if(empty($SALARY_ROW))
+		{
+			echo("NO SALARY ROW FOR {$empnum}");
+		}
+		
+		/*
+			COMPUTATION SECTION!!!
+		*/
+		$OT_duration_float = round($this->thisTime_in_Float($daily_attendance_each_day->overtime ), 2);		
+		$thisOT['count']  = $OT_duration_float;
+		$dailyHours    = round($this->differenceTime_in_Float($shift_obj->START_TIME, $shift_obj->END_TIME, intval($shift_obj->OVERFLOW) ), 2);
+		$dailyRate	   = round( floatval($SALARY_ROW[0]->DailyRate) , 2);
+		$thisOT['amount'] = ($dailyRate/$dailyHours ) * ($OT_duration_float) * floatval($OTND_rows[0]->MUL_FACTOR);			
+		$thisOT['amount'] = round($thisOT['amount'], 2);
+		
+		return $thisOT;
+	}
+	
+	function generate_ND_Cost_Proper($payperiod_obj, $empnum, $daily_attendance_each_day, $shift_obj)
+	{
+		/*
+			made | abe | 24MAY2011_1413
+			PARAMS:			
+		*/
+		$thisND['amount'] = 0;
+		$thisND['count'] = 0;		
+		$ND_duration_float = 0;		
+		$dailyHours = 0;
+		
+		if( $payperiod_obj == NULL )
+		{
+			die("generate_ND_Cost_Proper: NO PP specified");
+		}
+								
+		$sql_x = "SELECT * FROM `salary` where `start_date` = ? and `end_date` = ? and `EmployeeNumber` = ?" ;
+		$SALARY_ROW = $this->db->query($sql_x, array($payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE, $empnum) )->result();
+		if(empty($SALARY_ROW))
+		{
+			echo("NO SALARY ROW FOR {$empnum}");
+		}
+		
+		$night_diff_rate = $this->db->query("SELECT * FROM `variables` WHERE `Name` = 'NIGHT_DIFF_RATE'")->result();
+		if( empty($night_diff_rate) )
+		{
+			die("CRITICAL ERROR!!! NIGHT_DIFF_RATE is missing in `variables`");
+		}
+		if( !(floatval($night_diff_rate[0]->Value) >= 0) )
+		{
+			die("CRITICAL ERROR!!! NIGHT_DIFF_RATE must be greater than or equal to zero.");
+		}
+		
+		/*
+			COMPUTATION SECTION!!!
+		*/	
+		$ND_duration_float = round($this->thisTime_in_Float( $daily_attendance_each_day->night_diff), 2);		
+		$thisND['count']   = $ND_duration_float;
+		$dailyHours    = round($this->differenceTime_in_Float($shift_obj->START_TIME, $shift_obj->END_TIME, intval($shift_obj->OVERFLOW) ), 2);
+		$dailyRate	   = round( floatval($SALARY_ROW[0]->DailyRate) , 2);
+		$hourlyRate	   = round( $dailyRate/$dailyHours , 2);
+		$night_diff_per_hour = $hourlyRate / (floatval($night_diff_rate[0]->Value));		
+		$thisND['amount'] = round($ND_duration_float * $night_diff_per_hour, 2);		
+		return $thisND;
+	}
+		
 	function get_NightDifferential
 	( $payperiod = NULL, $payment_mode = NULL)
 	{
@@ -1118,7 +1278,7 @@ class Attendance_model extends CI_Model
 		if($payperiod == NULL || $payment_mode == NULL)
 		{
 			$theResult["error_code"] = -1;
-			$theResult["ERROR_MESSAGE"] = "PAYPERIOD/PAYMENT_MODE NOT SPECIFIED";
+			$theResult["ERROR_MESSAGE"] = "get_NightDifferential: PAYPERIOD/PAYMENT_MODE NOT SPECIFIED";
 			return $theResult;
 		}
 		
@@ -1131,7 +1291,7 @@ class Attendance_model extends CI_Model
 			$theResult["error_message"] = "Pay period does not exist";
 			return $theResult;
 		}
-		$payperiod_obj = $obj_result->result();
+		$payperiod_obj = $obj_result->result();		//must access index 0 everytime referenced
 		
 		/*			now pull-all employees
 			
@@ -1142,29 +1302,28 @@ class Attendance_model extends CI_Model
 		if( empty ($employees) )
 		{			
 			$theResult["error_code"] = -3;
-			$theResult["error_message"] = "No employee so far.";
+			$theResult["error_message"] = "No employee so far for this payperiod.";
 			return $theResult;
 		}		
 					
 		foreach($employees as $emp_x)
 		{								
-			$night_diff_count = 0;		//initialize, in mins
-			
+			$night_diff_count = 0;		//initialize, in mins			
 			/*
 			*	pull all records between the dates, inclusive,  specified for the employee
 			*/								
 			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $payperiod_obj[0]->START_DATE, $payperiod_obj[0]->END_DATE)->result();
 			
 			foreach($daily_attendance as $daily_attendance_each_day)
-			{																			
+			{							
+				$difference = 0;
 				//get shift id from its table				
 				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();			
 				if( empty ($shift_info) )
 				{
 					$theResult["error_code"] = -4;
 					$theResult["error_message"] = "INVALID SHIFT ID.";
-					die(var_dump($theResult));
-					//return $theResult;
+					die(var_dump($theResult));					
 				}
 								
 				/*
@@ -1172,30 +1331,29 @@ class Attendance_model extends CI_Model
 				*	and we only compute the night diff if the night_diff for that shift
 				* 	is not default value
 				*/					
-				echo "EMP: {$emp_x->empnum}<br/>";
-				echo var_dump($shift_info[0]);
-				echo "-------------------<br/>";
-				echo var_dump($daily_attendance_each_day);
+				
 				if( ( $daily_attendance_each_day->absence_reason == NULL 
 					  or $daily_attendance_each_day->absence_reason == '0')
 					and
 					( $shift_info[0]->NIGHT_DIFF != "00:00:00" 
-					  or $shift_info[0]->NIGHT_DIFF != NULL
+					  and $shift_info[0]->NIGHT_DIFF != NULL
 					) 
 				)
-				{						
-					$night_diff_today = $shift_info[0]->NIGHT_DIFF;
+				{															
+					$night_diff_today = $this->abeMethod_convert_Time($shift_info[0]->NIGHT_DIFF);
+					/*
+						If worker has night diff but is undertime, then mababawasan ang kanyang night diff
+					*/
 					if($daily_attendance_each_day->undertime != "00:00:00" )
 					{
-						$difference = strtotime($shift_info[0]->NIGHT_DIFF) - strtotime($daily_attendance_each_day->undertime);
+						$difference = $night_diff_today - $this->abeMethod_convert_Time($daily_attendance_each_day->undertime);
 						if($difference >= 0)
-							$night_diff_today = $this->convert_to_Time("MIN", $difference);
+							$night_diff_today = $difference;
 						else{
-							$night_diff_today = "00:00:00";		
-							$difference = 0;
+							$night_diff_today = 0;							
 						}
-					}										
-					$this->update_Today("NIGHT_DIFF", $daily_attendance_each_day, "MIN", $night_diff_today);
+					}								
+					$this->update_Today("NIGHT_DIFF", $daily_attendance_each_day, "SEC", $night_diff_today);
 					$night_diff_count += $difference;										
 				}								
 			}//foreach daily_attendance...
@@ -1204,14 +1362,93 @@ class Attendance_model extends CI_Model
 			$employee_ND_Data[$emp_x->empnum] = $night_diff_count;								
 		}//foreach (employees
 				
-		$theResult['result_array'] = $employee_ND_Data;
-		die(var_dump($theResult));
+		$theResult['result_array'] = $employee_ND_Data;	
 		$theResult['error_code'] = 0;
 		$theResult['error_message'] = 'SUCCESS';
 			
 		return $theResult;
 	}
 	
+	function thisTime_in_Float($theTime, $includeSeconds = FALSE)
+	{
+		/*
+			To address the issue in computing for hours, since when computing, we are using BASE 10. 
+			However, in time, For seconds and minutes, it's base 60, while for hours, it base 24.
+			So this functions does the following, e.g. you passed value from left, the corresponding to its right is returned
+			
+			01:30:00	-> 1.45
+			02:45:00    -> 2.75
+			00:05:00	-> 0.08
+			
+			accepts only time format HH*:MM:SS			
+			*H can be so many
+		*/
+		
+		$time_exp = explode(':', $theTime);
+		if ( count($time_exp) != 3 )
+		{
+			echo("Invalid time format passed.");
+			return 0;
+		}
+		$hours = intval($time_exp[0]);
+		$mins = intval($time_exp[1]);
+		if($includeSeconds) $mins += intval($time_exp[2]);
+		$mins_decimal = ( intval($mins) / 60);
+		$feedThisTime = floatval($hours) + floatval($mins_decimal);
+		
+		return $feedThisTime;
+	}
+	
+	
+	function differenceTime_in_Float($time1, $time2, $overflow)
+	{
+		/*
+			made | abe | 24may2011_1558
+			PARAMS:
+			$time1, $time2 - INT, HH:MM:SS format
+			$overflow - indicates if $time1 starts in this day and ends ($time2) next day
+		*/
+		if($overflow == 1)
+		{
+			$time1 = strtotime("24:00:00") - strtotime($time1);
+		}
+		
+		return ($this->thisTime_in_Float($time1) + $this->thisTime_in_Float($time2));
+		
+	}
+	
+	function abeMethod_convert_Time($time)
+	{
+		/*
+			made | abe | 24may2011_2239
+			PARAM:
+			
+			$time = time in HH:MM:SS format
+			
+			returns INT which is time units in seconds, else BOOL na FALSE
+		*/
+		$grandTotal = 0;
+		
+		$time_exp = explode(':', $time);
+		if(count($time_exp) != 3)
+		{	
+			echo("abeMethod_convert_Time: Invalid Time Format should be HH:MM:SS" );
+			return FALSE;
+		}
+		
+		if( !is_numeric($time_exp[0]) or !is_numeric($time_exp[1]) 
+			or !is_numeric($time_exp[2])
+		)
+		{
+			echo("abeMethod_convert_Time: Non-numeric character detected." );
+			return FALSE;
+		}
+		$grandTotal = intval($time_exp[2]);
+		$grandTotal += ( intval($time_exp[1]) * 60);
+		$grandTotal += ( intval($time_exp[0]) * 3600);
+		
+		return $grandTotal;
+	}
 }//class
 
 /* End of file Attendance_model.php */

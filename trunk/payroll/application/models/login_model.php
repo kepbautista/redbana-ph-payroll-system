@@ -66,6 +66,7 @@ class Login_model extends CI_Model {
 		
 		return $result;
 	}
+	
 	function can_Access($type){
 		$query = $this->db->query('SELECT `type` FROM user_main WHERE user_right = "'.$this->session->userdata('userType').'" AND privilege="'.$type.'"');
 		foreach ($query->result() as $row)
@@ -76,6 +77,39 @@ class Login_model extends CI_Model {
 	function permission($type){
 		$query = $this->db->query('SELECT `type`,`privilege` FROM user_main WHERE user_right = "'.$this->session->userdata('userType').'" ');
 		return $query;
+	}
+	
+	function check_and_Act_On_Login($redirectTo = NULL, $loadThisView = NULL, $data = NULL)
+	{
+		/*	made | abe | 02JUN2011_1340
+		    - this is a function intended to be called on by controllers, 
+			wherein a user is checked if logged in, and if not acts accordingly
+			based on the parameters passed by the calling controllers
+			If a user is logged in, function ends.
+			
+			ASSUMPTION:
+			Either $redirectTo or $loadThisView can be used.
+			Cannot be both null.
+			If both specified, $redirectTo is prioritized.
+			PARAMS:						
+			$redirectTo   :
+			$loadThisView :
+			$data         : error messages
+			
+			RETURNS:
+			nothing
+		*/
+		
+		if ( $this->isUser_LoggedIn() == FALSE )
+		{
+			if($redirectTo == NULL and $loadThisView == NULL)
+			{
+				die("check_and_Act_On_Login: Specify where to go!");
+			}else{
+				if($redirectTo != NULL) redirect($redirectTo);			// as of 02JUN2011, the current problem is how to pass data by redirecting
+				if($loadThisView != NULL) $this->load->view($loadThisView, $data);				
+			}	
+		}
 	}
 }//CLASS
 

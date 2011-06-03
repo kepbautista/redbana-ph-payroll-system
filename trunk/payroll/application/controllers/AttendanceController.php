@@ -13,16 +13,13 @@ class AttendanceController extends CI_Controller
 		$this->load->model('Payperiod_model');	
 		$this->load->model('Employee_model');
 		
-		if( ! $this->login_model->isUser_LoggedIn() ) 
-		{
-			/* ABE | 15MAY2011 2326 | The succeeding two lines are under development,
-			*	isn't it nice that such error is displayed on the login page on the circumstance?
-			*/
-			//$data['relayThisError'] = array("ERROR_CODE" => "NEED_TO_LOGIN", "ERROR_MESSAGE" => "You are accessing a page that requires you to be logged in.");
-			//$this->load->view('login_view', $data);
-			
-			redirect('Login', $data);						
-		}
+		
+		/*  ABE | 15MAY2011 2326 | The succeeding lines until the end of this functionareunder development,
+			isn't it nice that such error is displayed on the login page on the circumstance?				
+		*/	
+		
+		$data['relayThisError'] = array("ERROR_CODE" => "NEED_TO_LOGIN", "ERROR_MESSAGE" => "You are accessing a page that requires you to be logged in.");		
+		$this->login_model->check_and_Act_on_Login('Login', NULL, $data);
 	}
 	
 	function index()
