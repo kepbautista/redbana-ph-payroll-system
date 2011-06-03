@@ -30,10 +30,13 @@
 	<ul class="nav">
 		<li class="nav"><a id="nav" href="<?php echo base_url(); ?>"> Home </a></li>
 	</ul>
+<?php 
+	echo "<a class='active' href='login/logout' id='cname' alignment='left' > Sign out </a>";				
+?>
 </div>
 <div id="container" class="center">
 	To edit, click the bracket number located within the payperiod concerned.
-	<br /><br /><br />
+<br /><br /><br />
 	<?php
 		$x; $a; $bracket_objs;
 		$y; $b;
@@ -50,8 +53,8 @@
 		?>
 			<div  class="witholdingTax_description">
 				<div class="payment_mode_title" ><?php echo $this_obj[$x]->TITLE; ?></div> <br />
-				<span>Exemption</span><br />				
-				<span>Status</span><br />				
+				<span> Exemption </span><br />				
+				<span> Status </span><br />				
 			</div>	
 			<?php
 				$bracket_objs = $witholding_tax[$this_obj[$x]->TITLE]->result();
@@ -122,27 +125,20 @@
 					<span><?php echo $bracket_objs[$a_1]->B_MES2; ?> </span><br />
 					<span><?php echo $bracket_objs[$a_1]->B_MES3; ?> </span><br />
 					<span><?php echo $bracket_objs[$a_1]->B_MES4; ?> </span><br />					
-				</div>				
-			 
+				</div>					 
 			<?php
 				}
 			?>	
-
-			<br /><br /><br />			
-	<?php	
-			
+<br /><br /><br />			
+<?php	
 		}
-	?>
-
-	<?php	
-			
+?>
+<?php		
 		}
-	?>
+?>
 </div>
 <div id="copyright" >
 <p>Copyright 2011 | Bautista and Associates Information Systems</p>
 </div>
-
 </body>
-
 </html>
