@@ -121,6 +121,8 @@ background-color:#7A991A;
 			echo "<li><a href='history/getall' class='underline'>View History</a></li>";
 		if (can_Access("viewpay",$sql))
 			echo "<li><a href='payroll/payrollinfoview' class='underline'>View Payroll</a></li>";
+		if (can_Access("viewslip",$sql))
+			echo "<li><a href='payroll/individualpayslip' class='underline'>View You Pay Slip</a></li>";
 		echo "</ul><ul>";
 		if (can_Access("leave",$sql))
 		{

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 30, 2011 at 08:22 AM
+-- Generation Time: Jun 04, 2011 at 10:27 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -226,6 +226,41 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `errorcodes`
+--
+
+CREATE TABLE IF NOT EXISTS `errorcodes` (
+  `CODE` int(11) NOT NULL,
+  `NAME` varchar(255) NOT NULL,
+  `MESSAGE` longtext NOT NULL,
+  `FURTHER_INFO` longtext,
+  PRIMARY KEY (`NAME`),
+  UNIQUE KEY `CODE` (`CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `errorcodes`
+--
+
+INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
+(201, 'ABSENCES_AND_LATE_ALREADY', 'For this payperiod, absences and tardiness info have been already generated. If you want\r\n										to generate again, clear all records first.', NULL),
+(453, 'DATE_SPECIFIED_NULL', 'The date you submitted is NULL.', NULL),
+(404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
+(450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
+(200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
+(700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
+(102, 'MISSING_ABSENCE_DETAILS', 'No attendance record for this employee exists.', NULL),
+(410, 'NON_EXISTENT_TIMESHEET', 'This timesheet is not existing.', NULL),
+(101, 'NO_EMPLOYEE_EXISTS', 'There is no single employee in the database.', NULL),
+(405, 'PAYMENT_MODE_NOT_FOUND', 'The specified payment mode can''t be found.', NULL),
+(451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
+(407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
+(452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
+(403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `history`
 --
 
@@ -270,6 +305,7 @@ INSERT INTO `leave` (`empnum`, `filedate`, `startdate`, `returndate`, `type`, `r
 ('12211', '1990-02-03', '1990-07-01', '1993-08-04', 'bereavement', 'asssd', 'Not yet approved'),
 ('12222', '1990-04-01', '1990-01-01', '1990-01-08', 'bereavement', 'asa', 'Not yet approved'),
 ('13333', '2011-05-11', '2011-05-15', '2011-05-27', '0000-00-00', 'sick', ''),
+('2008-00195', '1990-01-01', '1990-01-01', '1990-01-01', 'vacation', '', 'Not yet approved'),
 ('89992', '1992-03-04', '1993-03-04', '1993-04-04', 'emergency', 'i dunno', ''),
 ('89999', '1992-03-04', '1993-03-04', '1993-04-04', '0000-00-00', 'i dunno', '');
 
@@ -508,12 +544,12 @@ CREATE TABLE IF NOT EXISTS `salary` (
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
 ('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4954.36, ''),
 ('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4479.36, ''),
-('2011-06-01', '2011-06-22', '2008-00195', 505.59090909091, 5561.5, -0, 0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 0, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 5057.3, ''),
+('2011-06-01', '2011-06-22', '2008-00195', 505.59090909091, 5561.5, 0, 0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 0, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 5057.3, ''),
 ('2011-06-01', '2011-06-22', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 353.59, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4642.21, ''),
-('2011-06-01', '2011-06-22', '2008-00198', 227.27272727273, 2500, -0, 0, 0, 0, 0, 0, 2500, 0, 0, 2500, 2270.8, 0, 166.7, 62.5, 0, 0, 100, 0, 100, 0, 2070.8, ''),
+('2011-06-01', '2011-06-22', '2008-00198', 227.27, 2500, -0, 0, 0, 0, 0, 0, 2500, 0, 0, 2500, 2270.8, 0, 166.7, 62.5, 0, 0, 100, 0, 100, 0, 2070.8, ''),
 ('2011-06-23', '2011-06-30', '2008-00195', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
 ('2011-06-23', '2011-06-30', '2008-00196', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
-('2011-06-23', '2011-06-30', '2008-00198', 227.27, 2500, -0, 0, 0, 100, 0, 0, 2600, 0, 0, 2600, 2370.8, 0, 166.7, 62.5, 0, 0, 0, 0, 0, 0, 2370.8, '');
+('2011-06-23', '2011-06-30', '2008-00198', 227.27, 2500, 0, 0, 0, 100, 0, 0, 2600, 0, 0, 2600, 2370.8, 0, 166.7, 62.5, 0, 0, 0, 0, 0, 0, 2370.8, '');
 
 -- --------------------------------------------------------
 
@@ -646,7 +682,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `night_diff` time DEFAULT '00:00:00',
   `type` varchar(50) NOT NULL COMMENT 'int value, references values in table `daily_desc` which are REGULAR_WORKING_DAY|SPECIAL_HOLIDAY|LEGAL_HOLIDAY|REGULAR|HOLIDAY',
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
-  `overtime_rate` int DEFAULT 0 NOT NULL COMMENT "If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.",
+  `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
@@ -654,46 +690,16 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`) VALUES
-(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', 1, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0),
-(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `fname` varchar(60) NOT NULL,
-  `mname` varchar(60) NOT NULL,
-  `lname` varchar(60) NOT NULL,
-  `email` varchar(60) NOT NULL,
-  `empnum` varchar(60) NOT NULL,
-  `password` varchar(60) NOT NULL,
-  `type` varchar(60) NOT NULL,
-  `position` varchar(60) NOT NULL,
-  `department` varchar(60) NOT NULL,
-  `gender` char(1) NOT NULL,
-  `startdate` date NOT NULL,
-  `paymentmode` varchar(60) NOT NULL,
-  PRIMARY KEY (`empnum`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`fname`, `mname`, `lname`, `email`, `empnum`, `password`, `type`, `position`, `department`, `gender`, `startdate`, `paymentmode`) VALUES
-('mary rose', 'bigata', 'garra', 'merose@gmail.com', '11111', 'mary', 'employee', '', '', '', '0000-00-00', ''),
-('kim', 'pura', 'samaniego', 'kimsamaniego@gmail.com', '12345', 'karlene', 'superuser', '', '', '', '0000-00-00', '');
+INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
+(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', 1, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
+(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -714,6 +720,8 @@ CREATE TABLE IF NOT EXISTS `user_main` (
 --
 
 INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
+(1, 'employee', 'viewslip', 1),
+(2, 'superuser', 'viewslip', 0),
 (20, 'superuser', 'viewemp', 1),
 (21, 'superuser', 'editemp', 1),
 (22, 'superuser', 'addemp', 1),
@@ -740,7 +748,7 @@ INSERT INTO `user_main` (`id`, `user_right`, `privilege`, `type`) VALUES
 (43, 'employee', 'sss', 0),
 (44, 'employee', 'phil', 0),
 (45, 'employee', 'wth', 0),
-(46, 'employee', 'viewpay', 1),
+(46, 'employee', 'viewpay', 0),
 (47, 'employee', 'leave', 1),
 (90, 'superuser', 'timesheet', 1),
 (91, 'superuser', 'type', 1),
@@ -818,35 +826,6 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
-CREATE TABLE IF NOT EXISTS `errorcodes` (
-  `CODE` int(11) NOT NULL,
-  `NAME` varchar(255) NOT NULL,
-  `MESSAGE` longtext NOT NULL,
-  `FURTHER_INFO` longtext,
-  PRIMARY KEY (`NAME`),
-  UNIQUE KEY `CODE` (`CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `errorcodes`
---
-
-INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
-(201, 'ABSENCES_AND_LATE_ALREADY', 'For this payperiod, absences and tardiness info have been already generated. If you want\r\n										to generate again, clear all records first.', NULL),
-(453, 'DATE_SPECIFIED_NULL', 'The date you submitted is NULL.', NULL),
-(404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
-(450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
-(200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
-(700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
-(102, 'MISSING_ABSENCE_DETAILS', 'No attendance record for this employee exists.', NULL),
-(410, 'NON_EXISTENT_TIMESHEET', 'This timesheet is not existing.', NULL),
-(101, 'NO_EMPLOYEE_EXISTS', 'There is no single employee in the database.', NULL),
-(405, 'PAYMENT_MODE_NOT_FOUND', 'The specified payment mode can''t be found.', NULL),
-(451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
-(407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
-(452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
-(403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
 
 --
 -- Constraints for dumped tables

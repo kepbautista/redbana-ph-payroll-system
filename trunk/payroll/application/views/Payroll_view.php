@@ -14,8 +14,8 @@
 </head>
 
 <body>
+<?php include 'links.php'?>
 <h3>View Payroll</h3>
-
 <form method='post' accept-charset='utf-8' action='payrollinfoview'>
 <table>
 	<tr>
