@@ -12,4 +12,5 @@ function connectdb() {
 function closeconnection($con) {
 	mysql_close($con);
 }//close database connection
+
 ?>

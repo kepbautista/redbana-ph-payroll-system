@@ -5,28 +5,34 @@
 	
 		<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
 		<!-- For DATATABLES-->
+		<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
 		<style type="text/css" title="currentStyle"> 
 			@import "<?php echo base_url();?>/css/demo_page.css";
 			@import "<?php echo base_url();?>/css/demo_table.css";
 		</style> 
-		<!-- For JQTRANSFORM-->
-		<link rel="stylesheet" href="<?php echo base_url();?>/jqtransform/jqtransformplugin/jqtransform.css" type="text/css" media="all" />
-		<script type="text/javascript" src="<?php echo base_url();?>/jqtransform/jqtransformplugin/jquery.jqtransform.js" ></script>
-		<script type="text/javascript" >
-			$(function(){
-				$('form').jqTransform({imgPath:'<?php echo base_url();?>/jqtransform/jqtransformplugin/img/'});
-			});
-		</script>
-</head>
+		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.js"></script> 
+		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.dataTables.js"></script>
+		<script type="text/javascript" charset="utf-8"> 
+			$(document).ready(function() {
+				$('#example').dataTable();
+			} );
+		</script> 
+	</head>
 <body id="dt_example">
 <div id="demo">
 	
 			<?php if  (($trows==0))//If there are no records on the database with the date today,,it will output a button where the user can make a record today
 			{
-				echo "<p>There are no activities made.</p><br/>";
+				echo "<p>There are no activities yet.</p><br/>";
 			}
 			else { ?><!-- It will output the table of records for the date today-->
 				<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
+					<thead> 
+						<tr> 
+							<th>Date</th> 
+							<th>Activities</th>	
+						</tr> 
+					</thead> 
 					<tbody> 
 					<?php 
 					$cnt=1;
@@ -54,6 +60,12 @@
 					$cnt++; 
 					} ?>
 					</tbody>  
+					<tfoot> 
+						<tr> 
+							<th>Date</th> 
+							<th>Activities</th>	
+						</tr> 
+					</tfoot> 
 				</table>
 			<?php }?>
 </div>

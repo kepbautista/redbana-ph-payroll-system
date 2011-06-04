@@ -168,6 +168,7 @@ class Employee extends CI_Controller {
 			if ($this->login_model->can_Access("viewemp"))
 			{
 				$data['query']=$this->Employee_model->Employee_getall();
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->view('Emp_viewall',$data);
 			} else $this->load->view('no_access');
 		}
@@ -182,6 +183,7 @@ class Employee extends CI_Controller {
 			{
 				$data['query']=$this->Employee_model->Employee_get($empnum);
 				$data['rows']=$this->Employee_model->Employee_getRows($empnum);
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->view('profile',$data);			
 			}else $this->load->view('no_access');
 		}
@@ -224,6 +226,7 @@ class Employee extends CI_Controller {
 			{
 				$this->Employee_model->Employee_update();
 				$data['query']=$this->Employee_model->Employee_getall();
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->view('Emp_viewall',$data);
 				}else $this->load->view('no_access');
 		}

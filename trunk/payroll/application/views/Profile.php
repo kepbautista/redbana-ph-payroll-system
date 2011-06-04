@@ -4,7 +4,26 @@
 	<title>View Record </title>
 		<!-- For JQTRANSFORM-->
 		<link rel="stylesheet" href="<?php echo base_url();?>css/profile.css" type="text/css" media="all" />
-		
+		<script type="text/javascript" charset="utf-8"> 
+			$(document).ready(function() {
+				$('#example').dataTable();
+				$("button").click(function(){
+		var r = confirm("Are you sure you want to delete this employee?");
+			if(r==true){ //alert($(this).val());
+				$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
+					query: $(this).val(),
+					tableType: "employee",
+					person: "<?php echo $person; ?>",
+				},//perform ajax to delete the bracket using mysql_query
+				function(data){
+					alert("Employee Number "+data+" deleted.");
+					window.location.href = "<?php echo site_url();?>"+"/employee/getall";//reload page to see the effect of delete
+				});
+			}
+			else alert("Employee delete cancelled.");
+		});
+			} );
+		</script>
 </head>
 <body id="dt_example">
 	<?php
@@ -76,11 +95,7 @@
 				</td>
 				<td>
 				<?php
-					$hidden=$row->empnum;
-					echo form_open('employee/delete'); 
-					echo form_hidden('empnum', $hidden);
-					echo form_submit('delete','Delete'); 
-					echo form_close(); 
+					echo "<button type='button' name='delete' id='delete' value='".$row->empnum."'>Delete</button>";
 				?></td>
 			</tr>
 		</table>

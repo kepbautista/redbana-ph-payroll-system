@@ -19,6 +19,7 @@
 				$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
 					query: $(this).val(),
 					tableType: "employee",
+					person: "<?php echo $person; ?>",
 				},//perform ajax to delete the bracket using mysql_query
 				function(data){
 					alert("Employee Number "+data+" deleted.");
