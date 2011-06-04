@@ -7,6 +7,8 @@ class Philhealth extends CI_Controller {
 		$this->load->helper('url');	// to load the url helper file
 		$this->load->library('table');	// to invoke the the class name
 		$this->load->model('login_model');
+		$this->load->helper('form');// to load the url helper file
+		$this->load->model('Philhealth_model');// to load a model
 		if ( ($this->login_model->isUser_LoggedIn())==FALSE ) 	
 		{			
 			redirect('login');
@@ -19,9 +21,7 @@ class Philhealth extends CI_Controller {
 	}
 			
 	function GetAll()
-	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Philhealth_model');	// to load a model
+	{			
 		$data['query'] = $this->Philhealth_model->Philhealth_getall();
 		$data['trows'] = $this->Philhealth_model->Philhealth_numrows();
 		$this->load->view('philhealth_view',$data);	// to load a particular view file
@@ -29,8 +29,6 @@ class Philhealth extends CI_Controller {
 	
 	function PrintAll($message)
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Philhealth_model');	// to load a model
 		$data['query'] = $this->Philhealth_model->Philhealth_getall();
 		$data['trows'] = $this->Philhealth_model->Philhealth_numrows();
 		$data['message'] = $message;
@@ -39,8 +37,6 @@ class Philhealth extends CI_Controller {
 	
 	function Edit()
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Philhealth_model');	// to load a model
 		$data['edit'] = $this->input->post('hidden');
 		$data['query'] = $this->Philhealth_model->Philhealth_getall();
 		$data['trows'] = $this->Philhealth_model->Philhealth_numrows();
@@ -53,8 +49,6 @@ class Philhealth extends CI_Controller {
 				
 	function Update()
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Philhealth_model');	// to load a model
 		$this->Philhealth_model->Philhealth_update();
 		$data['query'] = $this->Philhealth_model->Philhealth_getall();
 		$data['trows'] = $this->Philhealth_model->Philhealth_numrows();
@@ -77,8 +71,6 @@ class Philhealth extends CI_Controller {
 	}	// function that will insert another bracket to the PhilHealth Table
 
 	function Insertdb(){
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Philhealth_model');	// to load a model
 		$this->Philhealth_model->PHILHEALTH_insertPHBrackets();	// insert the brackets
 		$data['query'] = $this->Philhealth_model->Philhealth_getall();
 		$this->GetAll();

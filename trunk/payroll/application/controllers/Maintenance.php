@@ -8,40 +8,36 @@ class Maintenance extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->model('Maintenance_model');
 		$this->load->model('login_model');
+		$this->load->library('form_validation');//load form validation library
 	}
 	
 	function validateForm($type){
-		//load form validation library
-		$this->load->library('form_validation');
-		
 		switch($type){
-		case 'user': $this->form_validation->set_rules($type,'User Right',
-				'required|callback_script_input|callback_duplicate_usertype');
-				break;
-		case 'position': $this->form_validation->set_rules($type,'Position',
-				'required|callback_script_input|callback_duplicate_positiontype');
-				break;
-		case 'dept': $this->form_validation->set_rules($type,'Department',
-				'required|callback_script_input|callback_duplicate_department');
-				break;
-		case 'type': $this->form_validation->set_rules($type,'Employee Type',
-				'required|callback_script_input|callback_duplicate_type');
-				break;
-		case 'day': 
-					$this->form_validation->set_rules('desc','Description',
-				'required|callback_script_input');
-						  $this->form_validation->set_rules(floatval('payrate'),'Payrate',
-				'required|numeric|greater_than[0]');
-				break;
-		case 'taxstatus': $this->form_validation->set_rules('status','Tax Status',
-				'required|callback_script_input');
-						  $this->form_validation->set_rules('desc','Description',
-				'required|callback_script_input');
-						  $this->form_validation->set_rules(floatval('ex'),'Exemption',
-				'required|numeric|greater_than[0]');
-				break;	
+			case 'user': $this->form_validation->set_rules($type,'User Right',
+					'required|callback_script_input|callback_duplicate_usertype');
+					break;
+			case 'position': $this->form_validation->set_rules($type,'Position',
+					'required|callback_script_input|callback_duplicate_positiontype');
+					break;
+			case 'dept': $this->form_validation->set_rules($type,'Department',
+					'required|callback_script_input|callback_duplicate_department');
+					break;
+			case 'type': $this->form_validation->set_rules($type,'Employee Type',
+					'required|callback_script_input|callback_duplicate_type');
+					break;
+			case 'day': $this->form_validation->set_rules('desc','Description',
+					'required|callback_script_input');
+						$this->form_validation->set_rules(floatval('payrate'),'Payrate',
+					'required|numeric|greater_than[0]');
+					break;
+			case 'taxstatus': $this->form_validation->set_rules('status','Tax Status',
+					'required|callback_script_input');
+							$this->form_validation->set_rules('desc','Description',
+					'required|callback_script_input');
+							$this->form_validation->set_rules(floatval('ex'),'Exemption',
+					'required|numeric|greater_than[0]');
+					break;	
 		}
-		
 	}//function for validating forms
 	
 	//department maintenance

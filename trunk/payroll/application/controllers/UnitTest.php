@@ -27,6 +27,9 @@
 		to create views, models, sessions, privileges, etc. for this
 		functionality/controller.
 */
+
+include 'Payroll.php';
+
 class UnitTest extends CI_Controller {
 
 	function __construct()
@@ -56,5 +59,15 @@ class UnitTest extends CI_Controller {
 		$test_name = "Check if pay period is finalized";
 		$this->runTest($test,$expected_result,$test_name);
 	}//test for payrollfinalized function in Payroll_model
+	
+	function script_input(){
+		$function = new Payroll();//instantiate
+		$str = "<script>alert(hello)</script>";
+		
+		$test = $function->script_input($str);
+		$expected_result = 0;
+		$test_name = "Invalid Javascript Input";
+		$this->runTest($test,$expected_result,$test_name);
+	}//test for the script_input validator
 }
 ?>

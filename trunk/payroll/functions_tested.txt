@@ -1,4 +1,7 @@
 This file contains the list of functions
 that were already tested...
 
-1. Payroll_model->payrollfinalized($payperiod);
+1. Payroll_model->payrollfinalized($payperiod), 1 parameter
+2. Payroll_controller->script_input(), 0 parameter
+
+ITBPO

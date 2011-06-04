@@ -12,11 +12,10 @@ class Payroll extends CI_Controller {
 		$this->load->helper('date');
 		$this->load->helper('form');
 		$this->load->model('Payroll_model');
+		$this->load->library('form_validation');
 	}
 	
-	function validateForm(){
-		$this->load->library('form_validation');
-		
+	function validateForm(){		
 		if(is_numeric($this->input->post('DailyRate')))
 			$this->form_validation->set_rules(floatval('DailyRate'),'Daily Rate','required|numeric|greater_than[0]');
 		else
@@ -78,7 +77,6 @@ class Payroll extends CI_Controller {
 			//get all pay slips
 			$data['info'] = $this->Payroll_model->getPayroll($data['start_date'],$data['end_date']);	
 		}
-		
 		$this->load->view('Payroll_view',$data);
 	}//view the payroll for specified cutoff
 	
@@ -150,7 +148,6 @@ class Payroll extends CI_Controller {
 		$empnum = $_POST['EmployeeNumber'];
 		$start_date = $_POST['start_date'];
 		$end_date = $_POST['end_date'];
-	
 		
 		$this->Payroll_model->computeNetPay($empnum,$start_date,$end_date);
 	}//function for computing Withholding Tax

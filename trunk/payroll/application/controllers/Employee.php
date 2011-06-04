@@ -7,11 +7,12 @@ class Employee extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->helper('date');
 		$this->load->library('session');	
+		$this->load->library('form_validation');//load form validation library
+		$this->load->helper('form');
+		$this->load->model('Employee_model');
 		$this->load->model('login_model');
 	}
-	function validateForm($type){
-		//load form validation library
-		$this->load->library('form_validation');
+	function validateForm($type){		
 		//form validation rules for employee information
 		if($type=="insert") $this->form_validation->set_rules('empnum','Employee Number',	'required|callback_script_input|callback_duplicate_empnum');
 		$this->form_validation->set_rules('fname','First Name','required|callback_script_input');
@@ -33,10 +34,6 @@ class Employee extends CI_Controller {
 	
 	function Insert()//function for viewing the inserting employee page
 	{	
-		$this->load->helper('form');  
-		$this->load->model('Employee_model');
-		$this->load->model('login_model');
-		
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
 			if ($this->login_model->can_Access("addemp"))
@@ -79,8 +76,6 @@ class Employee extends CI_Controller {
 	}
 	function Edit()//function for viewing the editing an employee page 
 	{	
-		
-		$this->load->model('login_model');
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
 			if ($this->login_model->can_Access("editemp"))
@@ -123,17 +118,11 @@ class Employee extends CI_Controller {
 					//birthdate
 					$data['byear'] = $_POST['byear'];
 					$data['bmonth'] = $_POST['bmonth'];
-					$data['bday'] = $_POST['bday'];
-					
-					$this->load->helper('form');
-					$this->load->model('Employee_model');		
+					$data['bday'] = $_POST['bday'];			
 				}
 				else
-				{
-					$this->load->helper('form');
-					$this->load->model('Employee_model');
 					$data['query']=$this->Employee_model->Employee_edit();
-				}//Edit Employee Form is executed for the 1st time
+					//Edit Employee Form is executed for the 1st time
 				
 				$data['months'] = $this->Employee_model->buildMonthDropdown(); 
 				$data['days'] = range(1,31);
@@ -178,11 +167,9 @@ class Employee extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("viewemp"))
 			{
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
 				$data['query']=$this->Employee_model->Employee_getall();
 				$this->load->view('Emp_viewall',$data);
-			}else $this->load->view('no_access');
+			} else $this->load->view('no_access');
 		}
 		else
 			redirect('login');
@@ -193,8 +180,6 @@ class Employee extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("viewemp"))
 			{
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
 				$data['query']=$this->Employee_model->Employee_get($empnum);
 				$data['rows']=$this->Employee_model->Employee_getRows($empnum);
 				$this->load->view('profile',$data);			
@@ -208,9 +193,7 @@ class Employee extends CI_Controller {
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
 			if ($this->login_model->can_Access("editemp"))
-			{		
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
+			{
 				$this->Employee_model->Employee_delete();
 				$data['query']=$this->Employee_model->Employee_getall();
 				$this->load->view('Emp_viewall',$data);
@@ -225,8 +208,6 @@ class Employee extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("addemp"))
 			{	
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
 				$this->Employee_model->Employee_insert();
 				$data['query']=$this->Employee_model->Employee_getall();
 				$this->load->view('Emp_viewall',$data);
@@ -241,8 +222,6 @@ class Employee extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("editemp"))
 			{
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
 				$this->Employee_model->Employee_update();
 				$data['query']=$this->Employee_model->Employee_getall();
 				$this->load->view('Emp_viewall',$data);
@@ -266,10 +245,7 @@ class Employee extends CI_Controller {
 	}//check if user entered a script as input
 		
 	function duplicate_empnum($str){	
-		$this->load->helper('form'); 
-		$this->load->model('Employee_model');
 		$response = $this->Employee_model->duplicate_EmployeeNum($str);
-		
 		$this->form_validation->set_message('duplicate_empnum','%s already exists.');
 		
 		return $response;
@@ -280,8 +256,6 @@ class Employee extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("access"))
 			{
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
 				$data['user']=$user;
 				$data['query']=$this->Employee_model->get_privilege($user);
 				$data['query1']=$this->Employee_model->get_privilege($user);
@@ -297,9 +271,7 @@ class Employee extends CI_Controller {
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
 			if ($this->login_model->can_Access("access"))
-			{			
-				$this->load->helper('form');  
-				$this->load->model('Employee_model');
+			{
 				//echo $this->input->post('user');//
 				$this->Employee_model->insert_privilege($_POST['user']);
 				redirect('employee/getall');
