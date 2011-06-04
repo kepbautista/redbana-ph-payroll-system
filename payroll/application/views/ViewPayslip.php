@@ -41,8 +41,10 @@ if(isset($current)){
 </div>
 <h3>Pay Slip for <?php echo $start_date." to ".$end_date;?></h3>
 <?php
-if($finalized)
-	echo "<span>Pay period is already finalized!<span>";
+if(isset($finalized)){
+	if($finalized)
+		echo "<span>Pay period is already finalized!<span>";
+}
 ?>
 <table>
 	<tr>
