@@ -128,7 +128,7 @@ class Payroll extends CI_Controller {
 			$data['current'] = $payperiod;//pass current pay period
 			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 			
-			$this->load->view('nopayslip');
+			$this->load->view('nopayslip',$data);
 		}
 	}
 

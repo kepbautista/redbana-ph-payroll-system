@@ -23,7 +23,7 @@
 <?php
 if(isset($current)){
 	echo '<form method="post" accept-charset="utf-8" action="'.site_url().'/payroll/individualpayslip">';
-	echo 'Select Payperiod:';
+	echo 'Select Pay Period: ';
 
 	echo "<select name='payperiod' id='payperiod'>";
 	foreach($payperiod as $key => $value){
