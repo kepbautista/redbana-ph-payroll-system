@@ -9,6 +9,7 @@ function getName($empnum) {
 		$name=$row['fname'].' '.$row['sname'];
 	return $name;
 }
+
 function getTime()
 {
 	$result = mysql_query("SELECT NOW() time FROM dual");
