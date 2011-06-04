@@ -150,6 +150,14 @@ class Employee_model extends CI_Model {
 	
 	function Employee_Insert(){//insert employee information to the database
 		
+		//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+		$today=$row->time;
+		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$person=$this->input->post('fname').' '.$this->input->post('sname');
+		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$person.'","employee","insert")');
+		
 		$sday = mysql_real_escape_string($this->input->post('sday'));
 		$smonth = mysql_real_escape_string($this->input->post('smonth'));
 		$syear = mysql_real_escape_string($this->input->post('syear'));
@@ -245,12 +253,26 @@ class Employee_model extends CI_Model {
 	}
 	
 	function Employee_delete(){
+		//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+		$today=$row->time;
+		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$person=$this->get_Name($this->input->post('empnum'));
+		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$person.'","employee","delete")');
+		
 		$this->db->where('empnum',$this->input->post('empnum'));
 		$this->db->delete('employee');
 		$this->db->where('empnum',$this->input->post('empnum'));
 		$this->db->delete('timesheet'); 
 	}//delete an employee
-	
+	function get_Name($empnum){
+		//search if employee number is existing
+		$query = mysql_query("SELECT * from `employee` WHERE empnum LIKE '".$empnum."'");
+		foreach($query->result() as $row)
+		$name=$row->fname.' '.$row->sname;
+		return $name;
+	}
 	function duplicate_EmployeeNum($empnum){
 		//search if employee number is existing
 		$query = mysql_query("SELECT * from `employee` WHERE empnum LIKE '".$empnum."'");
