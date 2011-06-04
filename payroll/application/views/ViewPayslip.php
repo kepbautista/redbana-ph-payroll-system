@@ -12,6 +12,7 @@
 		th{text-align: left;}
 		.numeric{text-align: right; width: 60px}
 		td{text-align: right;}
+		span{color:red;}
 	</style>
 </head>
 
@@ -39,6 +40,10 @@ if(isset($current)){
 </form>
 </div>
 <h3>Pay Slip for <?php echo $start_date." to ".$end_date;?></h3>
+<?php
+if($finalized)
+	echo "<span>Pay period is already finalized!<span>";
+?>
 <table>
 	<tr>
 		<th>Employee Number:</th>
