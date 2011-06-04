@@ -1,6 +1,6 @@
 <!--
-/*File Name: ComputePayroll_view.php
-  Program Description: Compute Payroll for current Payperiod
+/*File Name: NoPayslip.php
+  Program Description: Prompt user that No Pay Slip exists for current pay period
 */
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

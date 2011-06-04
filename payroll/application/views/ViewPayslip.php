@@ -1,6 +1,6 @@
 <!--
-/*File Name: ComputePayroll_view.php
-  Program Description: Compute Payroll for current Payperiod
+/*File Name: ViewPayslip.php
+  Program Description: Show Pay Slip Individually
 */
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
