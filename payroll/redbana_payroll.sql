@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 04, 2011 at 10:27 AM
+-- Generation Time: Jun 04, 2011 at 01:23 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -191,9 +191,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
-('2008-00195', 'Ilagan', 'Castiliogne', 'Dane', 'Employee', 11123, 1, 'Graphic Artist', 'Business Executive', 'M', 'EPfa5s7Wz0', '1990-01-01', '1990-03-01', 'Mr.', 'Single', '123', '123', 'roseann.scola@gmail.com', '123', '123', 'ME2', 'Regular', '123', '123', '123', '123', '0', '0', 'On-Leave', 0),
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
-('2008-00198', 'Abarintos', 'Ilagan', 'Rose Ann', 'Superuser', 5000, 1, 'Web Programmer', 'Operations', 'M', 'rozieanniewa', '1990-05-01', '1990-10-01', 'Ms.', 'Single', '5490773', '123', 'roseann.scola@gmail.com', 'paranaque', '1700', 'ME1', 'Regular', '111', '111', '111', '111', '0', '0', 'Active', 0);
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'Superuser', 11000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'S', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1);
 
 -- --------------------------------------------------------
 
@@ -272,12 +270,17 @@ CREATE TABLE IF NOT EXISTS `history` (
   `table` varchar(70) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `history`
 --
 
+INSERT INTO `history` (`date`, `user`, `action`, `person`, `table`, `id`) VALUES
+('2011-06-04 21:04:09', 'Kristine Elaine Bautista', 'delete', 'Rose Ann Ilagan', 'employee', 1),
+('2011-06-04 21:07:02', 'Kristine Elaine Bautista', 'delete', 'Rose Ann Ilagan', 'employee', 2),
+('2011-06-04 21:13:04', 'Kristine Elaine Bautista', 'delete', 'Rose Ann Ilagan', 'employee', 3),
+('2011-06-04 21:22:50', 'Kristine Elaine Bautista', 'delete', 'Dane Castiliogne', 'employee', 4);
 
 -- --------------------------------------------------------
 
@@ -496,8 +499,7 @@ INSERT INTO `pos_main` (`position`, `id`) VALUES
 ('HR Manager', 7),
 ('HR Supervisor', 8),
 ('Marketing Associate', 9),
-('Operations Team Leader', 11),
-('Manager', 12);
+('Operations Team Leader', 11);
 
 -- --------------------------------------------------------
 
@@ -542,12 +544,12 @@ CREATE TABLE IF NOT EXISTS `salary` (
 --
 
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
-('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 41.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4954.36, ''),
-('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 16.44, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4479.36, ''),
+('2011-04-24', '2011-05-07', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 353.59, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4642.21, ''),
+('2011-05-08', '2011-05-23', '2008-00196', 500, 5500, -500, 0, 0, 0, 0, 0, 5000, 0, 0, 5000, 4495.8, 278.59, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4217.21, ''),
 ('2011-06-01', '2011-06-22', '2008-00195', 505.59090909091, 5561.5, 0, 0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 0, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 5057.3, ''),
 ('2011-06-01', '2011-06-22', '2008-00196', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 353.59, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4642.21, ''),
 ('2011-06-01', '2011-06-22', '2008-00198', 227.27, 2500, -0, 0, 0, 0, 0, 0, 2500, 0, 0, 2500, 2270.8, 0, 166.7, 62.5, 0, 0, 100, 0, 100, 0, 2070.8, ''),
-('2011-06-23', '2011-06-30', '2008-00195', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
+('2011-06-23', '2011-06-30', '2008-00195', 0, 5561.5, 0, 0, 0, 0, 0, 0, 5561.5, 0, 0, 5561.5, 5057.3, 68.26, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4989.04, ''),
 ('2011-06-23', '2011-06-30', '2008-00196', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
 ('2011-06-23', '2011-06-30', '2008-00198', 227.27, 2500, 0, 0, 0, 100, 0, 0, 2600, 0, 0, 2600, 2370.8, 0, 166.7, 62.5, 0, 0, 0, 0, 0, 0, 2370.8, '');
 
@@ -826,13 +828,3 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `salary`
---
-ALTER TABLE `salary`
-  ADD CONSTRAINT `salary_ibfk_1` FOREIGN KEY (`EmployeeNumber`) REFERENCES `employee` (`empnum`) ON DELETE NO ACTION ON UPDATE CASCADE;
