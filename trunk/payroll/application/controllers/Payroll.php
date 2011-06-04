@@ -121,6 +121,11 @@ class Payroll extends CI_Controller {
 			$data['current'] = $payperiod;//pass current pay period
 			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 			
+			//check if pay period is finalized
+			if($this->Payroll_model->payrollFinalized($payperiod))
+				$data['finalized'] = true;
+			else $data['finalized'] = false;
+			
 			$this->load->view('viewpayslip',$data);
 		}
 		else{
