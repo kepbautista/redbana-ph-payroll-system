@@ -7,6 +7,9 @@ class Sss extends CI_Controller {
 		$this->load->helper('url');	// to load the url helper file
 		$this->load->library('table');	// to invoke the the class names
 		$this->load->model('login_model');
+		$this->load->helper('form');// to load the url helper file
+		$this->load->model('Sss_model');// to load a model
+		
 		if ( ($this->login_model->isUser_LoggedIn())==FALSE ) 	
 		{			
 			redirect('login');
@@ -20,8 +23,6 @@ class Sss extends CI_Controller {
 	
 	function GetAll()
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Sss_model');	// to load a model
 		$data['query'] = $this->Sss_model->Sss_getall();
 		$data['trows'] = $this->Sss_model->Sss_numrows();
 		$this->load->view('sss_view',$data);	// to load a particular view file
@@ -29,8 +30,6 @@ class Sss extends CI_Controller {
 	
 	function PrintAll($message)
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Sss_model');	// to load a model
 		$data['query'] = $this->Sss_model->Sss_getall();
 		$data['trows'] = $this->Sss_model->Sss_numrows();
 		$data['message'] = $message;
@@ -39,8 +38,6 @@ class Sss extends CI_Controller {
 	
 	function Edit()
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Sss_model');	// to load a model
 		$data['edit'] = $this->input->post('hidden');
 		$data['query'] = $this->Sss_model->Sss_getall();
 		$data['trows'] = $this->Sss_model->Sss_numrows();
@@ -53,8 +50,6 @@ class Sss extends CI_Controller {
 	
 	function Update()
 	{
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Sss_model');	// to load a model
 		$this->Sss_model->Sss_update();
 		$data['query']=$this->Sss_model->Sss_getall();
 		$data['trows']=$this->Sss_model->Sss_numrows();
@@ -78,8 +73,6 @@ class Sss extends CI_Controller {
 	}	// function that will insert another bracket to the SSS Table
 	
 	function Insertdb(){
-		$this->load->helper('form');	// to load the url helper file
-		$this->load->model('Sss_model');	// to load a model
 		$this->Sss_model->SSS_insertBrackets();	// insert the brackets
 		$data['query'] = $this->Sss_model->Sss_getall();
 		$this->GetAll();
