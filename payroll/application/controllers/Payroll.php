@@ -13,6 +13,7 @@ class Payroll extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->model('Payroll_model');
 		$this->load->library('form_validation');
+		$this->load->model('login_model');
 	}
 	
 	function validateForm(){		
@@ -60,96 +61,127 @@ class Payroll extends CI_Controller {
 	}//function for validating edit pay slip form
 	
 	function PayrollInfoView(){
-		$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+		if ($this->login_model->isUser_LoggedIn()){
+			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 		
-		if(isset($_POST['GeneratePayroll'])){
-			$payperiod = $this->input->post('payperiod');
+			if(isset($_POST['GeneratePayroll'])){
+				$payperiod = $this->input->post('payperiod');
 		
-			//check if pay period is finalized
-			if($this->Payroll_model->payrollFinalized($payperiod))
-				$data['finalized'] = true;
-			else $data['finalized'] = false;
+				//check if pay period is finalized
+				if($this->Payroll_model->payrollFinalized($payperiod))
+					$data['finalized'] = true;
+				else $data['finalized'] = false;
 			
-			$cutoff = $this->Payroll_model->returnCutoff($payperiod);
-			$data['start_date'] = $cutoff['start_date'];
-			$data['end_date'] = $cutoff['end_date'];
+				$cutoff = $this->Payroll_model->returnCutoff($payperiod);
+				$data['start_date'] = $cutoff['start_date'];
+				$data['end_date'] = $cutoff['end_date'];
 			
-			//get all pay slips
-			$data['info'] = $this->Payroll_model->getPayroll($data['start_date'],$data['end_date']);	
+				//get all pay slips
+				$data['info'] = $this->Payroll_model->getPayroll($data['start_date'],$data['end_date']);	
+			}
+			$this->load->view('Payroll_view',$data);
 		}
-		$this->load->view('Payroll_view',$data);
+		else redirect('login');//user not logged-in
 	}//view the payroll for specified cutoff
 	
 	/**VIEW PAY SLIP INDIVIDUALLY
 	(NOT SUPERUSER USER RIGHT)**/
-	/**function IndividualPayslip(){
-		$data['payperiod'] = $this->Payroll_model->getPayPeriods();
-		
-		//get latest payperiod (that's the default view)
-		$payperiod = 4;
-		//$empnum = $this->session->userdata('empnum');
-		
-		$cutoff = $this->Payroll_model->returnCutoff($payperiod);
-		$data['start_date'] = $cutoff['start_date'];
-		$data['end_date'] = $cutoff['end_date'];
+	function IndividualPayslip(){
+		if($this->login_model->isUser_LoggedIn()){
+			if(isset($_POST['payslip']))
+				$payperiod = $this->input->post('payperiod');
+				//user selected pay period
+			else
+				$payperiod = $this->Payroll_model->getLatestPayperiod();
+				//get latest pay period (default view)
 			
-		$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
-		$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
-		
-		$this->load->view('Payroll_view',$data);
-	}**/
+			$data['EmployeeNumber'] = $this->session->userData('empnum');
+			$cutoff = $this->Payroll_model->returnCutoff($payperiod);
+			$data['start_date'] = $cutoff['start_date'];
+			$data['end_date'] = $cutoff['end_date'];
+			
+			if($this->Payroll_model->payslipExists($data['EmployeeNumber'],
+				$data['start_date'],$data['end_date'])){	
+				$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],
+						$data['start_date'],$data['end_date']);
+				
+				$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
+				$data['current'] = $payperiod;//pass current pay period
+				$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+				
+				$this->load->view('viewpayslip',$data);
+			}
+			else{
+				$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
+				$data['current'] = $payperiod;//pass current pay period
+				$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+				
+				$this->load->view('nopayslip');
+			}
+		}
+		else redirect('login');//user not logged-in
+	}
 
 	function EditPayslip(){
-		$data['EmployeeNumber'] = $_POST['EmployeeNumber'];
-		$data['start_date'] = $_POST['start_date'];
-		$data['end_date'] = $_POST['end_date'];
+		if($this->login_model->isUser_LoggedIn()){
+			$data['EmployeeNumber'] = $_POST['EmployeeNumber'];
+			$data['start_date'] = $_POST['start_date'];
+			$data['end_date'] = $_POST['end_date'];
 		
-		$this->NetPay();//compute partial net pay
+			$this->NetPay();//compute partial net pay
 		
-		$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
-		$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
+			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
+			$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
 		
-		if(isset($_POST['view']))
-			$this->load->view('ViewPayslip',$data);
-			//view pay slip only
-		else if(!isset($_POST['edit'])){
-			//get information
-			foreach($_POST as $key => $value)
-				$data[$key] = $value;
+			if(isset($_POST['view'])){
+				$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+				$this->load->view('ViewPayslip',$data);
+			}//view pay slip only
+			else if(!isset($_POST['edit'])){
+				//get information
+				foreach($_POST as $key => $value)
+					$data[$key] = $value;
 			
-			$this->validateForm();
+				$this->validateForm();
 			
-			if ($this->form_validation->run() == FALSE)
+				if ($this->form_validation->run() == FALSE)
+					$this->load->view('EditPayslip_view',$data);
+				else $this->UpdatePayslip();//update pay slip
+			}//edit pay slip
+			else	
 				$this->load->view('EditPayslip_view',$data);
-			else $this->UpdatePayslip();//update pay slip
-		}//edit pay slip
-		else{	
-			$this->load->view('EditPayslip_view',$data);
-		}//Edit Pay Slip Form is loaded for the 1st time
+				//Edit Pay Slip Form is loaded for the 1st time
+		}
+		else redirect('login');//user is not logged-in
 	}
 	
 	function UpdatePayslip(){
-		//get needed information
-		$empnum = $_POST['EmployeeNumber'];
-		$start_date = $_POST['start_date'];
-		$end_date = $_POST['end_date'];
+		if($this->login_model->isUser_LoggedIn()){
+			//get needed information
+			$empnum = $_POST['EmployeeNumber'];
+			$start_date = $_POST['start_date'];
+			$end_date = $_POST['end_date'];
 		
-		$this->Payroll_model->UpdatePayslip();
-		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
-		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
-		$this->NetPay();
-		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
-		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
-		$this->load->view('ViewPayslip',$data);
+			$this->Payroll_model->UpdatePayslip();
+			$this->NetPay();
+			$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
+			$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
+			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+			$this->load->view('ViewPayslip',$data);
+		}
+		else redirect('login');//user is not logged-in
 	}//Update a pay slip
 	
 	function NetPay(){
-		//get information
-		$empnum = $_POST['EmployeeNumber'];
-		$start_date = $_POST['start_date'];
-		$end_date = $_POST['end_date'];
+		if($this->login_model->isUser_LoggedIn()){
+			//get information
+			$empnum = $_POST['EmployeeNumber'];
+			$start_date = $_POST['start_date'];
+			$end_date = $_POST['end_date'];
 		
-		$this->Payroll_model->computeNetPay($empnum,$start_date,$end_date);
+			$this->Payroll_model->computeNetPay($empnum,$start_date,$end_date);
+		}
+		else redirect('login');
 	}//function for computing Withholding Tax
 	
 	function script_input($str){

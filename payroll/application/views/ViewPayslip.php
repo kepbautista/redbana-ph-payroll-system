@@ -18,6 +18,26 @@
 <?php include 'links.php';?>
 
 <body>
+<div>
+<br/>
+<?php
+if(isset($current)){
+	echo '<form method="post" accept-charset="utf-8" action="'.site_url().'/payroll/individualpayslip">';
+	echo 'Select Payperiod:';
+
+	echo "<select name='payperiod' id='payperiod'>";
+	foreach($payperiod as $key => $value){
+		if($key==$current)
+			echo "<option value='".$key."' selected='selected'>".$value."</option>";
+		else
+			echo "<option value='".$key."'>".$value."</option>";
+	}
+	echo "</select>";
+	echo "&nbsp<input type='submit' name='payslip' id='payslip' value='See Pay Slip'/>";
+}
+?>
+</form>
+</div>
 <h3>Pay Slip for <?php echo $start_date." to ".$end_date;?></h3>
 <table>
 	<tr>

@@ -9,12 +9,11 @@ class Super extends CI_Controller {
 		$this->load->library('session');	
 		
 		// load the database and connect to MySQL
-		
 		$this->load->database();
+		
 		// load the needed helpers
 		$this->load->helper(array('form','url'));
 	}
-		
 		
 	function index() {
 		/* changed | abe | 06may2011_0030 : changed this condition in if so that the login_model is called, as part of 'Object-oriented approach',

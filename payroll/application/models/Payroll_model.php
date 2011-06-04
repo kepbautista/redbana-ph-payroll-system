@@ -68,6 +68,13 @@ class Payroll_model extends CI_Model{
 		return $data;
 	}//return cutoff start and end date
 	
+	function getLatestPayperiod(){
+		$sql = "SELECT MAX(ID) FROM `payperiod`";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		return $data['MAX(ID)'];
+	}//get the latest payperiod
+	
 	function getPayroll($start_date,$end_date){	
 		$sql = "SELECT EmployeeNumber FROM `salary` WHERE
 			start_date='".$start_date."' 
@@ -97,9 +104,21 @@ class Payroll_model extends CI_Model{
 			else
 				$data[$key] = $value;
 		}
-
+		
 		return $data;
 	}//function that gets the information on an employee's pay slip
+	
+	function payslipExists($empnum,$start_date,$end_date){
+		$sql = "SELECT * FROM `salary` WHERE 
+				EmployeeNumber = '".$empnum.
+				"' AND start_date='".$start_date."' 
+				AND end_date='".$end_date."'";
+		$query = mysql_query($sql);
+		
+		if(mysql_num_rows($query) > 0)
+			return true;
+		else return false;
+	}//check if pay slip exists for said employee
 	
 	function getPayperiod($start_date,$end_date){
 		$sql = "SELECT * FROM `payperiod` WHERE start_date='".$start_date."'
