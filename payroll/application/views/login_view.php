@@ -1,49 +1,59 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login - REDBANA PAYROLL SYSTEM</title>
-<link href="<?php echo base_url(); ?>assets/css/mainstyling.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url(); ?>assets/css/style_x.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.style1 {
+	color: #FFFFFF;
+}
+</style>
 </head>
 
 <body>
-<div id="header" class="center">
-	<img src="<?php echo base_url(); ?>assets/images/payroll.png" height="78" width="1000"  alt="banner image"/>
-</div>
-<div id="header2" class="center">
-	<ul class="nav">
-		<li class="nav"><a href="<?php echo base_url(); ?>">Home</a></li>
-	</ul></div>
-<div id="container" class="center">
-<div style="width: 70%; float:left; overflow:auto">
-
-</div >
-<div id="drdw">
-<div style="width: 30%; overflow:auto">
-
-				<!-- <form name="login" action="succe.php" method ="post" onsubmit="return validate(this)"> -->
-				<?php echo form_open('login/view_form'); ?>
-				<br/>
-				<br/>
-				<table>
-					<tr>
-						<td style="height: 26px">Employee Number:</td>
-						<td style="height: 26px"><input type="text" name="empnum" /></td>
-					</tr>
-					<tr>
-						<td>Password:</td>
-						<td><input type="password" name="password" /></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td><input type="submit" value="Log-in" onclick="validate(this)" /></td>
-					</tr>
-				</table>
-						      	
-		      	<?php 		      		
+<div id="main_container">
+	<div id="header">
+    	<div id="logo">
+    	<a href="home.html"><img src="<?php echo base_url(); ?>assets/images/redbana_logo2.png" alt="" title="" style="border:0" /></a>    	
+    	</div>
+    	<div id="logo">
+    	<a href="home.html"><img src="<?php echo base_url(); ?>assets/images/payroll_logo.jpg" alt="" title="" style="border:0" /></a>    	
+    	</div>
+        
+        <div id="menu">
+            <ul>                                        
+                <li><a class="current" href="home.html" title="">Home</a></li>
+            </ul>
+        </div>
+        
+    </div>
+    
+    <!--end of green box-->
+    
+    <div id="main_content">
+    	<div id="left_content">
+        <h2>Welcome! Please log-in.</h2>
+        <div class="text_box">
+        								<?php echo form_open('login/view_form'); ?>
+										<div class="login_form_row">
+										<label class="login_label">Username:</label><input type="text" name="empnum" class="login_input" />
+										</div>
+										
+										<div class="login_form_row">
+										<label class="login_label">Password:</label><input type="password" name="password" class="login_input" />
+										</div>                                     
+										<!--<input type="image" src="images/login.gif" class="login" />-->										
+										<div class="login_form_row">
+										<input type="submit" value="Log-in" onclick="validate(this)" />
+										</div>  
+										<?php echo form_close(); ?>      	
+		</div>
+         <div id="left_nav">
+         <?php 		      		
 		    		if( isset($incorrect_credentials) ){		    			
-		    			echo '<div id="form_error_notice" style="width: 80%" class="center"><br/>';
+		    			//echo '<div id="form_error_notice" style="width: 80%" class="center"><br/>';
+		    			echo '<div style="color:red; font-size:1.5em"><br/> ';
 		    			echo 'You have entered an incorrect username or password.<br/><br/>Please try again.';
 		    			echo '</div>';
 		    		}    
@@ -61,16 +71,72 @@
 		    			echo '</div>';
 		    		}		
 		    	?>
-		    	
-				<br/>		    	
-		      	<?php echo form_close(); ?>      	
+         </div>
+        
+    
+        
+        
+        
+        </div><!--end of left content-->
 
-</div>
-</div>
-</div>
-<div id="copyright" >
-<p>Copyright 2011 | Bautista and Associates Information Systems</p>
-</div>
+
+
+    	<div id="right_content">
+        <h2>Announcements</h2>
+        	<div class="products_box">
+  <img src="../../../../../Users/Abraham_Darius_Llave/Desktop/sample/111/images/box_icon.gif" alt="" title="" class="box_img" />
+ <h3>Dolore magna aliqua</h3>  
+            <p>         
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.        
+            </p>
+            <div class="read_more_link"><a href="#">read more</a></div>
+            </div>
+            
+            
+         	<div class="products_box">
+  <img src="../../../../../Users/Abraham_Darius_Llave/Desktop/sample/111/images/box_icon.gif" alt="" title="" class="box_img" />
+ <h3>Dolore magna aliqua</h3>  
+            <p>         
+"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.        
+            </p>
+            <div class="read_more_link"><a href="#">read more</a></div>
+            </div>
+            
+                        
+            </div>  
+            
+            
+                     
+            
+            
+            
+            
+            
+            
+        
+        </div><!--end of right content-->
+    <div style=" clear:both;"></div>
+    </div><!--end of main content-->
+ 
+
+     <div id="footer">
+     	<div class="copyright">
+<a href="home.html">
+			<img src="../../../../../Users/Abraham_Darius_Llave/Desktop/sample/111/images/footer_logo.gif" alt="" title="" /></a>
+        </div>
+    	<div class="footer_links"> 
+        <a href="#">About us</a>
+         <a href="privacy.html">Privacy policy</a> 
+        <a href="contact.html">Contact us </a>
+
+        
+        </div>
+    
+    
+    </div>  
+ 
+   
+
+<!--end of main container-->
 </body>
-
 </html>

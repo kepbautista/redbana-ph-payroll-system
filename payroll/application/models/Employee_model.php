@@ -344,6 +344,7 @@ class Employee_model extends CI_Model {
 		/*
 			made | abe | 19MAY2011_1242
 			changed | abe | 19MAY2011_1415 | $payperiod_obj is now the first param, MySQL obj, row directly accessible
+			returns BOOLEAN FALSE if no payperiod or payment mode specified
 			returns NULL if no gotten from dB
 			returns ARRAY of objects gotten from dB, where the indices are the employees' nums
 		*/
@@ -351,8 +352,7 @@ class Employee_model extends CI_Model {
 		
 		if( $payperiod_obj == NULL  or $payment_mode == NULL)
 		{
-			die("getAllEmployees_eligible_this_PayPeriod: NO PAYMENT MODE or PAYPERIOD SPECIFIED.");
-			//redirect('wherever');
+			return FALSE;			
 		}
 		
 		/*
@@ -362,13 +362,12 @@ class Employee_model extends CI_Model {
 		$sql_x = "SELECT * from `employee` WHERE `sdate` <= ?"; 
 		$rows_result = $this->db->query($sql_x, array($payperiod_obj->END_DATE) )->result();
 		
-		if( empty($rows_result) )
-		{	return NULL;	}
-		
+		if( empty($rows_result) ) return NULL;		
 		foreach($rows_result as $each_employee) $returnThisArray[$each_employee->empnum]  = $each_employee;				
 
 		return $returnThisArray;		
 	}//getAllEmployees_eligible...
+	
 	function insert_privilege($user) {//select all the info of a specific employee
 		if (isset($_POST['position'])) 
 			$this->db->query('UPDATE `user_main` SET type="1" WHERE user_right ="'.$user.'" AND privilege ="position"'); 
