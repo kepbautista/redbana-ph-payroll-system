@@ -36,6 +36,10 @@ td
 ?>	
 </div>
 <div id="container" class="center">
+	<div  class="center" style="width:80%; margin-top:15px" >
+			In this area, we compute for the Employees' Absences, Tardiness, Undertime, OverTime and Night Differentials and their<br/>
+			corresponding fees and/or deductions from the employees' salaries.<br/><br/>
+	</div>
 	<?php
 		foreach( $payment_modes as $individ )
 		{

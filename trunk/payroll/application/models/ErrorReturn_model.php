@@ -22,6 +22,7 @@ class ErrorReturn_model extends CI_Model
 		$thisError = array
 		(
 			"ERROR_CODE" => -1,
+			"result" => true,
 			"ERROR_NAME" => "UNDEFINED",
 			"ERROR_MESSAGE" => "INVALID_ERROR_CODE_PASSED",
 			"FURTHER_INFO" => NULL			
@@ -33,13 +34,19 @@ class ErrorReturn_model extends CI_Model
 		if( !empty($array_result) )
 		{
 			$thisError['ERROR_CODE'] = $code;
+			$thisError['result'] = FALSE;
 			$thisError['ERROR_NAME'] = $array_result[0]->NAME;
 			$thisError['ERR0R_MESSAGE'] = $array_result[0]->MESSAGE;
 			$thisError['FURTHER_INFO'] = $array_result[0]->FURTHER_INFO;
-		}		
+		}
+		if($code == 0)
+		{
+			$thisError['result'] = TRUE;
+		}
 		return $thisError;
 	}
-		
+	
+	
 }
 
 /* End of file ErrorReturn_model.php */

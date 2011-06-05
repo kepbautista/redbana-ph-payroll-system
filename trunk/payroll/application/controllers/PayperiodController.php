@@ -10,22 +10,21 @@ class PayperiodController extends CI_Controller
 		$this->load->model('login_model');
 		$this->load->model('Payperiod_model');		
 		$this->load->model('Attendance_model');		
+		$this->load->model('ErrorReturn_model');		
 		
 		if( ! $this->login_model->isUser_LoggedIn() ) 
 		{
 			/* ABE | 15MAY2011 2326 | The succeeding two lines are under development,
 			*	isn't it nice that such error is displayed on the login page on the circumstance?
 			*/
-			//$data['relayThisError'] = array("ERROR_CODE" => "NEED_TO_LOGIN", "ERROR_MESSAGE" => "You are accessing a page that requires you to be logged in.");
-			//$this->load->view('login_view', $data);
-			
-			redirect('Login', $data);						
+			$data['relayThisError'] = array("ERROR_CODE" => "NEED_TO_LOGIN", "ERROR_MESSAGE" => "You are accessing a page that requires you to be logged in.");		
+			$this->login_model->check_and_Act_on_Login('Login', NULL, $data);
 		}
 	}
 	
 	function index()
 	{
-	
+		redirect('/');
 	}
 	
 	function addPayPeriod($payment_mode = NULL)
@@ -38,11 +37,9 @@ class PayperiodController extends CI_Controller
 			$data['lastPayPeriod'] = $this->Payperiod_model->get_Last_PayPeriod($payment_mode);							
 			$data['payment_mode_specified'] = TRUE;
 			$data['payment_mode'] = $payment_mode;
-		}
-		
+		}		
 		$data['payment_modes'] = $this->Attendance_model->getPaymentModes();
-		$this->load->view('addNewPayPeriod', $data);
-		
+		$this->load->view('addNewPayPeriod', $data);		
 	}
 	
 		
@@ -57,8 +54,7 @@ class PayperiodController extends CI_Controller
 		$this->form_validation->set_rules('END_DATE', 'End date', 'callback_endDate_check');	
 		$this->form_validation->set_rules('WORKING_DAYS', 'Working days', 'callback_workingDays_check');	
 		
-		if($this->form_validation->run() == FALSE){				
-			//has not been run or failed validation.
+		if($this->form_validation->run() == FALSE){				//has not been run or failed validation.
 			$this->addPayPeriod();
 		}else{	
 			$data['result'] = $this->Payperiod_model->add_new_PayPeriod(
@@ -164,12 +160,8 @@ class PayperiodController extends CI_Controller
 		//DATE FORMAT IN THIS APP: YYYY/MM/DDD
 		$returnThis = array("result" => false, "ERROR_CODE" => null, "ERROR_MESSAGE" => null);
 		
-		if( strlen($str) != 10 )
-		{
-			$returnThis["ERROR_CODE"] =  "DATE_INCONFORMANCE_TO_STANDARD";
-			$returnThis["ERROR_MESSAGE"] = "The date submitted is not in accordance to the YYYY/MM/DD (ISO) format.";			
-			return $returnThis;
-		}
+		//inconformance to supposedly 10 chars
+		if( strlen($str) != 10 )return $this->ErrorReturn_model->createSingleError(700, NULL, NULL);	
 		
 		/*
 			Since it doesn't matter much what separator we can use in a date e.g.
@@ -180,12 +172,8 @@ class PayperiodController extends CI_Controller
 		
 		$splitted = explode('-', $str);		//now explode, so that they wil be separated into year, month and day
 		
-		if( count($splitted) != 3 )
-		{
-			$returnThis["ERROR_CODE"] =  "DATE_INCONFORMANCE_TO_STANDARD";
-			$returnThis["ERROR_MESSAGE"] = "The date submitted is not in accordance to the YYYY/MM/DD (ISO) format.";			
-			return $returnThis;
-		}
+		// ISO format non-conformance return error
+		if( count($splitted) != 3) return $this->ErrorReturn_model->createSingleError(701, NULL, NULL);	
 		
 		foreach($splitted as $individual_date_elements)
 		{
@@ -199,25 +187,14 @@ class PayperiodController extends CI_Controller
 				}
 			}
 		}
+		// ISO format non-conformance return error
+		if( $found_fault ) return $this->ErrorReturn_model->createSingleError(701, NULL, NULL);	
 		
-		if( 
-			$found_fault
-		) 
-		{
-			$returnThis["ERROR_CODE"] =  "DATE_INCONFORMANCE_TO_STANDARD";
-			$returnThis["ERROR_MESSAGE"] = "The date submitted is not in accordance to the YYYY/MM/DD (ISO) format.";			
-			
-			return $returnThis;
-		}
-		
-		$returnThis['result'] = TRUE;		
-		return $returnThis;
-	}
+		return $this->ErrorReturn_model->createSingleError(0, NULL, NULL);	//success		
+	}//is_This_Date($str)
 	
 	function finalizePayPeriod()
-	{
-		//$this->Payperiod_model->finalizePayPeriod();
-	
+	{		
 		/*
 			made | abe | 19may2011_1235
 		*/
@@ -225,9 +202,10 @@ class PayperiodController extends CI_Controller
 		$missing_in_TimeSheet = array();
 		$there_is_entry_for_payperiod = TRUE;		
 		$payperiod_lapsed = TRUE;
-		$this->load->model('Employee_model');	//only used here, move to __construct() if used by multiple functions already
 		$payperiod = $this->input->post('PAYPERIOD');
 		$payment_mode = $this->input->post('PAYMENT_MODE');				
+		$this->load->model('Employee_model');	//only used here, move to __construct() if used by multiple functions already
+		
 		
 		$payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X( $payperiod, $payment_mode );				
 		$eligible_employees = $this->Employee_model->getAllEmployees_eligible_this_PayPeriod($payperiod_obj, $payment_mode);
