@@ -69,24 +69,30 @@ class Payroll extends CI_Controller {
 				redirect('super');
 		}
 	
-		$data['payperiod'] = $this->Payroll_model->getPayPeriods();
+		if(!$this->Payroll_model->emptyPayperiod()){
+			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 		
-		if(isset($_POST['GeneratePayroll'])){
-			$payperiod = $this->input->post('payperiod');
+			if(isset($_POST['GeneratePayroll'])){
+				$payperiod = $this->input->post('payperiod');
 		
-			//check if pay period is finalized
-			if($this->Payroll_model->payrollFinalized($payperiod))
-				$data['finalized'] = true;
-			else $data['finalized'] = false;
+				//check if pay period is finalized
+				if($this->Payroll_model->payrollFinalized($payperiod))
+					$data['finalized'] = true;
+				else $data['finalized'] = false;
 			
-			$cutoff = $this->Payroll_model->returnCutoff($payperiod);
-			$data['start_date'] = $cutoff['start_date'];
-			$data['end_date'] = $cutoff['end_date'];
+				$cutoff = $this->Payroll_model->returnCutoff($payperiod);
+				$data['start_date'] = $cutoff['start_date'];
+				$data['end_date'] = $cutoff['end_date'];
 			
-			//get all pay slips
-			$data['info'] = $this->Payroll_model->getPayroll($data['start_date'],$data['end_date']);	
+				//get all pay slips
+				$data['info'] = $this->Payroll_model->getPayroll($data['start_date'],$data['end_date']);	
+			}
+			
+			$this->load->view('Payroll_view',$data);
 		}
-		$this->load->view('Payroll_view',$data);
+		else
+			redirect('AttendanceController');
+			//no existing pay period yet
 	}//view the payroll for specified cutoff
 	
 	/**VIEW PAY SLIP INDIVIDUALLY

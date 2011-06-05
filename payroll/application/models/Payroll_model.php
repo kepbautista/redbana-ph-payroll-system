@@ -12,16 +12,14 @@ class Payroll_model extends CI_Model{
 		$this->load->database();
 	}//constructor
 	
-	function getName($employeeNum){
-		$sql = "SELECT * FROM `employee` 
-				WHERE empnum='".$employeeNum."'";
+	function emptyPayperiod(){
+		$sql = "SELECT * FROM `payperiod`";
 		$query = mysql_query($sql);
-		$data = mysql_fetch_array($query);
-	
-		return $data['sname'].", "
-			.$data['fname']." "
-			.$data['mname'];
-	}//get name of the employee
+		
+		if(mysql_num_rows($query) > 0)
+			return false;
+		else return true;
+	}//check if pay period is empty
 	
 	function getPayPeriods(){
 		$query = $this->db->query('SELECT * FROM `payperiod`
@@ -76,7 +74,8 @@ class Payroll_model extends CI_Model{
 	}//get the latest payperiod
 	
 	function getPayroll($start_date,$end_date){	
-		$sql = "SELECT EmployeeNumber FROM `salary` WHERE
+		$sql = "SELECT EmployeeNumber,EmployeeName 
+			FROM `salary` WHERE
 			start_date='".$start_date."' 
 			AND end_date='".$end_date."' 
 			ORDER BY EmployeeNumber";
@@ -84,7 +83,7 @@ class Payroll_model extends CI_Model{
 		
 		while($row = mysql_fetch_array($query)){
 			$info['EmployeeNumber'] = $row['EmployeeNumber'];
-			$info['EmployeeName'] = $this->getName($row['EmployeeNumber']);
+			$info['EmployeeName'] = $row['EmployeeName'];
 			$data[] = $info;
 		}//get all data needed from salary table
 		

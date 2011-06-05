@@ -165,20 +165,37 @@ class Payperiod_model extends CI_Model
 		return $result;
 	}
 	
+	/**TIN**/
 	function insertPayslips($start_date,$end_date){
 		$sql = "SELECT empnum FROM `employee`";
 		$query = mysql_query($sql);
 		
 		while($data = mysql_fetch_array($query)){
+			//get employee name
+			$empname = $this->getName($data['empnum']);
+			
 			$sql = "INSERT INTO `salary` VALUES 
 				('".$start_date."','".$end_date."',
-				'".$data['empnum']."',0,0,0,
+				'".$data['empnum']."',
+				'".$empname."',0,0,0,
 				0,0,0,0,0,0,0,0,0,0,
 				0,0,0,0,0,0,0,0,0,0,
 				null)";
 			mysql_query($sql);
 		}
-	}
+	}//create pay slips for certain pay period
+	
+	/*TIN*/
+	function getName($employeeNum){
+		$sql = "SELECT * FROM `employee` 
+				WHERE empnum='".$employeeNum."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+	
+		return $data['sname'].", "
+			.$data['fname']." "
+			.$data['mname'];
+	}//get name of the employee
 }
 
 /* End of file Payperiod_model.php */
