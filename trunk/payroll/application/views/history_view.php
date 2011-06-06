@@ -13,9 +13,13 @@
 		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.js"></script> 
 		<script type="text/javascript" language="javascript" src="<?php echo base_url();?>/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" charset="utf-8"> 
-			$(document).ready(function() {
-				$('#example').dataTable();
-			} );
+			$(document).ready( function() {
+				$('#example').dataTable({
+					/* Disable initial sort */
+					"aaSorting": [],
+					"iDisplayLength": 100
+				});
+			})
 		</script> 
 	</head>
 <body id="dt_example">

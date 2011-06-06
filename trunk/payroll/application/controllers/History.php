@@ -17,8 +17,8 @@ class History extends CI_Controller {
 			if ($this->login_model->can_Access("history"))
 			{
 				$data['query']=$this->history_model->history_getall();	
-		$data['trows']=$data['query']->num_rows();
-		$this->load->view('history_view',$data);	
+				$data['trows']=$data['query']->num_rows();
+				$this->load->view('history_view',$data);	
 			}else $this->load->view('no_access');
 		}
 		else
