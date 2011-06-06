@@ -48,6 +48,7 @@ class Maintenance extends CI_Controller {
 			if ($this->login_model->can_Access("dept"))
 			{
 				$data['query']=$this->Maintenance_model->Dept_getall();	
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->view('Dept_view',$data);
 			}else $this->load->view('no_access');
 		}
@@ -62,6 +63,7 @@ class Maintenance extends CI_Controller {
 			if ($this->login_model->can_Access("dept"))
 			{
 				$data['query']=$this->Maintenance_model->Dept_getall();	
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['edit']=$this->input->post('dept');
 				$this->load->view('Dept_edit',$data);
 			}else $this->load->view('no_access');
@@ -77,6 +79,7 @@ class Maintenance extends CI_Controller {
 			if ($this->login_model->can_Access("dept"))
 			{
 				$data['query'] = $this->Maintenance_model->Dept_getall();
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->validateForm('dept');
 				
 				if($this->form_validation->run() == FALSE)
@@ -95,6 +98,7 @@ class Maintenance extends CI_Controller {
 			if ($this->login_model->can_Access("dept"))
 			{
 				$data['query'] = $this->Maintenance_model->Dept_getall();
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->validateForm('dept');
 				
 				if($this->form_validation->run() == FALSE)
@@ -112,6 +116,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("dept"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Dept_update();
 				$data['query'] = $this->Maintenance_model->Dept_getall();
 				$this->load->view('Dept_view',$data);
@@ -126,6 +131,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("dept"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Dept_insert();
 				$data['query'] = $this->Maintenance_model->Dept_getall();
 				$this->load->view('Dept_view',$data);
@@ -142,6 +148,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("position"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->Pos_getall();	
 				$this->load->view('Pos_view',$data);
 			}else $this->load->view('no_access');
@@ -156,6 +163,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("position"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->Pos_getall();	
 				$data['edit']=$this->input->post('position');
 				$this->load->view('Pos_edit',$data);
@@ -172,6 +180,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("position"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->Pos_getall();
 				$this->validateForm('position');
 				
@@ -191,6 +200,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("position"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->Pos_getall();
 				$this->validateForm('position');
 				
@@ -209,6 +219,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("position"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Pos_update();
 				$data['query'] = $this->Maintenance_model->Pos_getall();
 				$this->load->view('Pos_view',$data);
@@ -223,6 +234,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("position"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Pos_insert();
 				$data['query'] = $this->Maintenance_model->Pos_getall();
 				$this->load->view('Pos_view',$data);
@@ -239,6 +251,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("user"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->User_getall();	
 				$this->load->view('User_view',$data);
 			}else $this->load->view('no_access');
@@ -254,6 +267,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("user"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->User_getall();	
 				$data['edit']=$this->input->post('user');
 				$this->load->view('User_edit',$data);
@@ -269,6 +283,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("user"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->User_getall();	
 				$this->validateForm('user');
 				
@@ -288,6 +303,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("user"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->User_getall();
 				$this->validateForm('user');		
 				
@@ -306,6 +322,7 @@ class Maintenance extends CI_Controller {
 			if ($this->login_model->can_Access("user"))
 			{
 				$this->Maintenance_model->User_insert();
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->User_getall();
 				$this->load->view('User_view',$data);
 			}else $this->load->view('no_access');
@@ -319,6 +336,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("user"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->User_update();
 				$data['query']=$this->Maintenance_model->User_getall();
 				$this->load->view('User_view',$data);
@@ -335,6 +353,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("type"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->Type_getall();	
 				$this->load->view('Type_view',$data);
 			}else $this->load->view('no_access');
@@ -349,6 +368,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("type"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->Type_getall();	
 				$data['edit'] = $this->input->post('type');
 				$this->load->view('Type_edit',$data);
@@ -364,6 +384,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("type"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->Type_getall();	
 				$this->validateForm('type');
 				
@@ -383,6 +404,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("type"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query'] = $this->Maintenance_model->Type_getall(); 
 				$this->validateForm('type');
 				
@@ -401,6 +423,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("type"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Type_update();
 				$data['query'] = $this->Maintenance_model->Type_getall();
 				$this->load->view('Type_view',$data);
@@ -415,6 +438,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("type"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Type_insert();
 				$data['query'] = $this->Maintenance_model->Type_getall();
 				$this->load->view('Type_view',$data);
@@ -431,6 +455,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("taxstatus"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->Tax_getall();	
 				$this->load->view('Tax_view',$data);
 			}else $this->load->view('no_access');
@@ -445,6 +470,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("taxstatus"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->Tax_getall();	
 				$data['edit']=$this->input->post('id');
 				$this->load->view('Tax_edit',$data);
@@ -461,6 +487,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("taxstatus"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->validateForm('taxstatus');
 				if ($this->form_validation->run() == FALSE)
@@ -479,6 +506,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("taxstatus"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->validateForm('taxstatus');
 				
@@ -497,6 +525,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("taxstatus"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Tax_update();
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->load->view('Tax_view',$data);
@@ -511,6 +540,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("taxstatus"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->Tax_insert();
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->load->view('Tax_view',$data);
@@ -527,6 +557,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->helper('form');  
 				$this->load->model('Maintenance_model');
 				$data['query']=$this->Maintenance_model->day_getall();	
@@ -543,6 +574,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->helper('form');  
 				$this->load->model('Maintenance_model');
 				$data['query']=$this->Maintenance_model->day_getall();	
@@ -560,6 +592,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->helper('form');  
 				$data['query'] = $this->Maintenance_model->day_getall();
 				$this->load->model('Maintenance_model');	
@@ -579,6 +612,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->helper('form');  
 				$data['query'] = $this->Maintenance_model->day_getall();
 				$this->load->model('Maintenance_model');
@@ -597,6 +631,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->day_update();
 				$data['query']=$this->Maintenance_model->day_getall();
 				$this->load->view('day_view',$data);
@@ -610,6 +645,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->Maintenance_model->day_insert();
 				$data['query']=$this->Maintenance_model->day_getall();
 				$this->load->view('day_view',$data);
@@ -624,6 +660,7 @@ class Maintenance extends CI_Controller {
 		{
 			if ($this->login_model->can_Access("day"))
 			{
+				$data['person']=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 				$this->load->helper('form');  
 				$this->load->model('Maintenance_model');
 				$this->Maintenance_model->day_delete();	
