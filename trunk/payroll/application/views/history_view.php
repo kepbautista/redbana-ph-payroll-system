@@ -51,6 +51,105 @@
 								if ($row->table=="employee")
 								{
 									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of employees.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of employees.';
+								}
+								else if ($row->table=="user_main")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of user rights.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of user rights.';
+								}
+								else if ($row->table=="dept_main")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of departments.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of departments.';
+								}
+								else if ($row->table=="pos_main")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of positions.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of positions.';
+								}
+								else if ($row->table=="tax_status")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of tax status.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of tax status.';
+								}
+								else if ($row->table=="emp_type")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of employment type.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of employment type.';
+								}
+								else if ($row->table=="payment_mode")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of payment mode.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of payment mode.';
+								}
+								else if ($row->table=="daily_desc")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the list of daily description.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the list of daily description.';
+								}
+								else if ($row->table=="philhealth")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted the bracket '.$row->person.' on the Philhealth Table.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted the bracket '.$row->person.' on the Philhealth Table.';
+								}
+								else if ($row->table=="sss")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted the bracket'.$row->person.' on the SSS Table.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted the bracket '.$row->person.' on the SSS Table.';
+								}
+								else if ($row->table=="withholding_tax")
+								{
+									if ($row->action=="insert") 
+										echo $row->user.' inserted '.$row->person.' on the Withholding Tax Table.';
+									else if ($row->action=="update")
+										echo $row->user.' updated the profile of '.$row->person;
+									else 
+										echo $row->user.' deleted '.$row->person.' on the Withholding Tax Table.';
+								}
+								else
+								{
+									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of employee.';
 									else if ($row->action=="update")
 										echo $row->user.' updated the profile of '.$row->person;
