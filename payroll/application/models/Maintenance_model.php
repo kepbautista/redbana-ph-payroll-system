@@ -18,6 +18,7 @@ class Maintenance_model extends CI_Model {
 	function Dept_insert(){//insert department
 		$data = mysql_real_escape_string($this->input->post('dept'));
 		$this->db->query('INSERT INTO dept_main(`dept`) VALUES ("'.$data.'")');
+		$this->insert_history("dept_main","insert",$data);
 	}
 	//Position Maintenance
 	function Pos_getall() {//select all the list of position
@@ -37,6 +38,7 @@ class Maintenance_model extends CI_Model {
 	function Pos_insert(){//insert department
 		$data = mysql_real_escape_string($this->input->post('position'));
 		$this->db->query('INSERT INTO pos_main(`position`) VALUES ("'.$data.'")');
+		$this->insert_history("pos_main","insert",$data);
 	}
 	//User Maintenance
 	function User_getall() {//select all the list of position
@@ -75,7 +77,7 @@ class Maintenance_model extends CI_Model {
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","viewpay")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","1","leave")');
 		$this->db->query('INSERT INTO user_main(`user_right`,`type`,`privilege`) VALUES ("'.$data.'","0","history")');
-	
+		$this->insert_history("user_main","insert",$data);
 	}
 	//Employee Type Maintenance
 	function Type_getall() {//select all the list of employee type
@@ -93,7 +95,9 @@ class Maintenance_model extends CI_Model {
 		$this->db->delete('emp_type'); 
 	}
 	function Type_insert(){//insert type
+		
 		$data = mysql_real_escape_string($this->input->post('type'));
+		$this->insert_history("emp_type","insert",$data);
 		$this->db->query('INSERT INTO emp_type(`type`) VALUES ("'.$data.'")');
 	}
 	//Tax Maintenance
@@ -118,6 +122,7 @@ class Maintenance_model extends CI_Model {
 		$desc = mysql_real_escape_string($this->input->post('desc'));
 		$ex = mysql_real_escape_string($this->input->post('ex'));
 		$this->db->query('INSERT INTO tax_status(`status`,`desc`,`exemption`) VALUES ("'.$status.'","'.$desc.'","'.$ex.'")');
+		$this->insert_history("tax_status","insert",$data);
 	}
 	function day_getall() {//select all the list of department
 		$this->load->database();
@@ -140,6 +145,7 @@ class Maintenance_model extends CI_Model {
 		$desc = mysql_real_escape_string($this->input->post('desc'));
 		$payrate = mysql_real_escape_string($this->input->post('payrate'));
 		$this->db->query('INSERT INTO daily_desc(`title`,`desc`,`payrate`) VALUES ("'.$title.'","'.$desc.'","'.$payrate.'")');
+		$this->insert_history("daily_desc","insert",$data);
 	}
 	function duplicate_Type($str){
 		//search if type is existing
@@ -209,5 +215,14 @@ class Maintenance_model extends CI_Model {
 		}//type already exists
 		else return TRUE;
 	}//check if duplicate department
+	function insert_history($table,$action,$person)
+	{
+		//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+		$today=$row->time;
+		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$person.'","'.$table.'","'.$action.'")');
+	}
 }
 ?>
