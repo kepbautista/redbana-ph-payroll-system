@@ -16,7 +16,7 @@
 			<tr>
 				<th>Seq #</th>
 				<th>Employee Type</th>
-				<th colspan="2">Action</th>
+				<th>Action</th>
 			</tr>
 			<?php 
 			$cnt=1;
@@ -34,16 +34,6 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/typedelete'); 
-					echo form_hidden('id', $row->id);
-					echo form_hidden('type', $row->type);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
-
 			</tr>
 			<?php } else{?>
 			<tr>
@@ -54,19 +44,11 @@
 					echo form_open('maintenance/typeedit'); 
 					echo form_hidden('id', $row->id);
 					echo form_hidden('type', $row->type);
-					echo form_submit('mysubmit','Edit'); 
+					echo form_submit('mysubmit','Update'); 
 					echo form_close();
 				?>
 				</td>
 				<td>
-				<?php
-					echo form_open('maintenance/typedelete'); 
-					echo form_hidden('id', $row->id);
-					echo form_hidden('type', $row->type);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
 
 			</tr>
 			<?php }

@@ -18,7 +18,7 @@
 				<th>Tax Status</th>
 				<th>Description</th>
 				<th>Exemption</th>
-				<th colspan="2">Action</th>
+				<th colspan="1">Action</th>
 			</tr>			<?php 
 			$cnt=1;
 			foreach($query as $row){
@@ -43,14 +43,7 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/taxdelete'); 
-					echo form_hidden('id', $row->id);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
+				
 
 			</tr>
 			<?php } else{?>
@@ -70,15 +63,7 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/taxdelete'); 
-					echo form_hidden('id', $row->id);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
-
+				
 			</tr>
 			<?php }
 			$cnt++;} ?>
