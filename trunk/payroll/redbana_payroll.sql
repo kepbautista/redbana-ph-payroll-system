@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2011 at 12:39 PM
+-- Generation Time: Jun 07, 2011 at 01:21 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -179,8 +179,6 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `tinno` varchar(20) NOT NULL,
   `philno` varchar(20) NOT NULL,
   `pagibig` varchar(50) NOT NULL,
-  `bank` varchar(10) NOT NULL,
-  `baccount` varchar(20) NOT NULL,
   `emp_status` varchar(20) NOT NULL,
   `shift_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`empnum`)
@@ -190,9 +188,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `bank`, `baccount`, `emp_status`, `shift_id`) VALUES
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 0, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', '0', '0', 'Active', 1),
-('2008-13916', 'Pura', 'Samaniego', 'Kim', 'employee', 11000, 0, 'Game Master', 'Localization', 'M', 'kimpurasamanieg', '1990-01-01', '1990-05-01', 'Ms.', 'Single', '', '', '', '', '', 'ME2', 'Regular', '13231', '1231', '32131', '31231', '', '', 'Active', 1);
+INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `emp_status`, `shift_id`) VALUES
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 1),
+('2008-13916', 'Pura', 'Samaniego', 'Kim', 'employee', 11000, 1, 'Game Master', 'Localization', 'M', 'kimpurasamanieg', '1990-01-01', '1990-05-01', 'Ms.', 'Single', '', '', '', '', '', 'ME2', 'Regular', '13231', '1231', '32131', '31231', 'Active', 1);
 
 -- --------------------------------------------------------
 
@@ -271,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `history` (
   `table` varchar(70) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `history`
@@ -283,7 +281,10 @@ INSERT INTO `history` (`date`, `user`, `action`, `person`, `table`, `id`) VALUES
 ('2011-06-04 21:13:04', 'Kristine Elaine Bautista', 'delete', 'Rose Ann Ilagan', 'employee', 3),
 ('2011-06-04 21:22:50', 'Kristine Elaine Bautista', 'delete', 'Dane Castiliogne', 'employee', 4),
 ('2011-06-07 17:11:34', 'Kristine Elaine Bautista', 'insert', 'Kim Samaniego', 'employee', 5),
-('2011-06-07 17:12:09', 'Kristine Elaine Bautista', 'update', 'Kristine Elaine Bautista', 'employee', 6);
+('2011-06-07 17:12:09', 'Kristine Elaine Bautista', 'update', 'Kristine Elaine Bautista', 'employee', 6),
+('2011-06-07 21:08:14', 'Kristine Elaine Bautista', 'update', 'Kim Samaniego', 'employee', 7),
+('2011-06-07 21:16:05', 'Kristine Elaine Bautista', 'update', 'Kristine Elaine Bautista', 'employee', 8),
+('2011-06-07 21:16:15', 'Kristine Elaine Bautista', 'update', 'Kim Samaniego', 'employee', 9);
 
 -- --------------------------------------------------------
 
@@ -546,9 +547,9 @@ CREATE TABLE IF NOT EXISTS `salary` (
 --
 
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `EmployeeName`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
-('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 353.59, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4642.21, ''),
-('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
-('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 11000, 0, 0, 0, 0, 0, 0, 11000, 0, 0, 11000, 10395.8, 0, 366.7, 137.5, 100, 0, 0, 0, 0, 0, 10395.8, '');
+('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
+('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 25000, 0, 0, 0, 0, 0, 0, 25000, 0, 0, 25000, 24087.5, 0, 500, 312.5, 100, 0, 0, 0, 0, 0, 24087.5, ''),
+('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, '');
 
 -- --------------------------------------------------------
 
