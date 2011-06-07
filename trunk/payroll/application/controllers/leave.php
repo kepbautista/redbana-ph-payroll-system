@@ -75,7 +75,7 @@ class Leave extends CI_Controller {
             {
 		$this->load->helper('form');  
 		$this->load->model('Leave_model');
-		$this->Leave_model->Leave_approved();
+		$this->Leave_model->Checkmax();
 		$data['query']=$this->Leave_model->Leave_getinfo();
 		$this->load->view('Leave_all',$data);
 		 }else $this->load->view('no_access'); //walang access
