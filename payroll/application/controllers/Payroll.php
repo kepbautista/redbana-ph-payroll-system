@@ -12,6 +12,7 @@ class Payroll extends CI_Controller {
 		$this->load->helper('date');
 		$this->load->helper('form');
 		$this->load->model('Payroll_model');
+		$this->load->model('Payperiod_model');
 		$this->load->library('form_validation');
 		$this->load->model('login_model');
 	}
@@ -134,8 +135,7 @@ class Payroll extends CI_Controller {
 			$this->load->view('viewpayslip',$data);
 		}
 		else{
-			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],
-					$data['start_date'],$data['end_date']);
+			$data['EmployeeName'] = $this->Payperiod_model->getName($data['EmployeeNumber']);
 			$data['current'] = $payperiod;//pass current pay period
 			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 			
