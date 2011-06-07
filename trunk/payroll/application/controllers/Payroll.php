@@ -123,7 +123,6 @@ class Payroll extends CI_Controller {
 			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],
 					$data['start_date'],$data['end_date']);
 			
-			$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
 			$data['current'] = $payperiod;//pass current pay period
 			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 			
@@ -135,7 +134,8 @@ class Payroll extends CI_Controller {
 			$this->load->view('viewpayslip',$data);
 		}
 		else{
-			$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
+			$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],
+					$data['start_date'],$data['end_date']);
 			$data['current'] = $payperiod;//pass current pay period
 			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 			
@@ -159,7 +159,6 @@ class Payroll extends CI_Controller {
 		$this->NetPay();//compute partial net pay
 		
 		$data = $this->Payroll_model->getPayslip($data['EmployeeNumber'],$data['start_date'],$data['end_date']);
-		$data['EmployeeName'] = $this->Payroll_model->getName($data['EmployeeNumber']);
 		
 		if(isset($_POST['view'])){
 			$data['payperiod'] = $this->Payroll_model->getPayPeriods();
@@ -198,7 +197,6 @@ class Payroll extends CI_Controller {
 		$this->Payroll_model->UpdatePayslip();
 		$this->NetPay();
 		$data = $this->Payroll_model->getPayslip($empnum,$start_date,$end_date);
-		$data['EmployeeName'] = $this->Payroll_model->getName($empnum);
 		$data['payperiod'] = $this->Payroll_model->getPayPeriods();
 		$this->load->view('ViewPayslip',$data);		
 	}//Update a pay slip
