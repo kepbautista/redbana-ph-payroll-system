@@ -84,6 +84,8 @@ class Leave_model extends CI_Model {
 		$row = $this->db->where('empnum',$this->input->post('empnum'));
 		$sql_x = 'UPDATE `leave` SET `approval` = ? WHERE `empnum` = ? AND `filedate` = ?';
 		$this->db->query($sql_x, array($app, $this->input->post('empnum'),$this->input->post('filedate') ) );
+		
+		
 	}
 	function Leave_notapproved(){		//update the approval of a row to " not approved"
 		$this->db->where('empnum',$this->input->post('empnum'));
@@ -91,6 +93,27 @@ class Leave_model extends CI_Model {
 		$row = $this->db->where('empnum',$this->input->post('empnum'));
 		$sql_x = 'UPDATE `leave` SET `approval` = ? WHERE `empnum` = ? AND `filedate` = ?';
 		$this->db->query($sql_x, array($app, $this->input->post('empnum'),$this->input->post('filedate') ) );
+	}
+	function checkmax(){
+		$emp = $this->input->post('empnum');
+		
+		$sql = 'SELECT numofleave FROM `maxleave` WHERE empnum ="'.$emp.'"';
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$num = $data['numofleave'];
+		
+		$sql = 'SELECT maxleave FROM `maxleave` WHERE empnum ="'.$emp.'"';
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$max = $data['maxleave'];
+	
+		if($num < $max) {
+		$num+= 1;
+		$sql_x = 'UPDATE `maxleave` SET `numofleave` = ? WHERE `empnum` = ?';
+		$this->db->query($sql_x, array($num, $emp) );
+		$this->Leave_approved();
+		}
+		else echo "wahaha sobra na";
 	}
 	function Empview()		//view an employee's previous leaves 
 	{
