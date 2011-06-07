@@ -122,7 +122,7 @@ class Maintenance_model extends CI_Model {
 		$desc = mysql_real_escape_string($this->input->post('desc'));
 		$ex = mysql_real_escape_string($this->input->post('ex'));
 		$this->db->query('INSERT INTO tax_status(`status`,`desc`,`exemption`) VALUES ("'.$status.'","'.$desc.'","'.$ex.'")');
-		$this->insert_history("tax_status","insert",$data);
+		$this->insert_history("tax_status","insert",$status);
 	}
 	function day_getall() {//select all the list of department
 		$this->load->database();
@@ -145,7 +145,7 @@ class Maintenance_model extends CI_Model {
 		$desc = mysql_real_escape_string($this->input->post('desc'));
 		$payrate = mysql_real_escape_string($this->input->post('payrate'));
 		$this->db->query('INSERT INTO daily_desc(`title`,`desc`,`payrate`) VALUES ("'.$title.'","'.$desc.'","'.$payrate.'")');
-		$this->insert_history("daily_desc","insert",$data);
+		$this->insert_history("daily_desc","insert",$title);
 	}
 	function duplicate_Type($str){
 		//search if type is existing

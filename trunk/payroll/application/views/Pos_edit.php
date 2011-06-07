@@ -43,16 +43,7 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/posdelete'); 
-					echo form_hidden('id', $row->id);
-					echo form_hidden('position', $row->position);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
-
+				
 			</tr>
 			<?php } else{?>
 			<tr>
@@ -67,15 +58,7 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/posdelete'); 
-					echo form_hidden('id', $row->id);
-					echo form_hidden('position', $row->position);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
+				
 
 			</tr>
 			<?php }

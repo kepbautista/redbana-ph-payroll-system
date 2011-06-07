@@ -14,6 +14,7 @@
 					$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
 						query: $(this).val(),
 						tableType: "daily_desc",
+						person: "<?php echo $person; ?>",
 				},//perform ajax to delete the bracket using mysql_query
 				function(data){
 					alert("Bracket deleted! ");

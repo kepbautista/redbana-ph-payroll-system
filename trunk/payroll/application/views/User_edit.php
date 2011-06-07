@@ -35,15 +35,7 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/userdelete'); 
-					echo form_hidden('user', $row->user_right);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
-
+				
 			</tr>
 			<?php } else{?>
 			<tr>
@@ -57,15 +49,7 @@
 					echo form_close();
 				?>
 				</td>
-				<td>
-				<?php
-					echo form_open('maintenance/userdelete'); 
-					echo form_hidden('user', $row->user_right);
-					echo form_submit('mysubmit','Delete'); 
-					echo form_close();
-				?>
-				</td>
-
+			
 			</tr>
 			<?php }
 			$cnt++;} ?>
