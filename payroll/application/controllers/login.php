@@ -90,14 +90,12 @@
 				$data['sname'] = $obj_temp[0]->sname;
 				$data['fname'] = $obj_temp[0]->fname;
 				$data['mname'] = $obj_temp[0]->mname;
-				$data['userType'] = $obj_temp[0]->user_right;	
-				//die(var_dump($data));
+				$data['userType'] = $obj_temp[0]->user_right;					
 				$this->session->set_userdata($data);
 				redirect('super');
 			}
 			else
-			{
-				//echo "wrong pas"; // incorrect username or password
+			{			
 				$data['incorrect_credentials'] = true;
 				$this->load->view('login_view', $data);	
 			}

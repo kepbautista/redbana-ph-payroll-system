@@ -106,7 +106,10 @@ class Login_model extends CI_Model {
 			{
 				die("check_and_Act_On_Login: Specify where to go!");
 			}else{
-				if($redirectTo != NULL) redirect($redirectTo);			// as of 02JUN2011, the current problem is how to pass data by redirecting
+				if($redirectTo != NULL){
+				    $this->session->set_userdata('LOGIN_WARNING', $data); 
+					redirect($redirectTo);			// as of 02JUN2011, the current problem is how to pass data by redirecting
+				}
 				if($loadThisView != NULL) $this->load->view($loadThisView, $data);				
 			}	
 		}
