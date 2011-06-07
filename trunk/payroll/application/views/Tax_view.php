@@ -46,9 +46,9 @@
 			foreach($query as $row){?>
 			<tr>
 				<td><?php echo $cnt;?></td>
-				<td><?php echo $row->status;?></td>
-				<td><?php echo $row->desc;?></td>
-				<td><?php echo $row->exemption;?></td>
+				<td><?php echo strtoupper($row->status);?></td>
+				<td><?php echo strtoupper($row->desc);?></td>
+				<td><?php echo number_format($row->exemption,2,'.',',');?></td>
 				<td>
 				<?php
 					echo form_open('maintenance/taxedit'); 

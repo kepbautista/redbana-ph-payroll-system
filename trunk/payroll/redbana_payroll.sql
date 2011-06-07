@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2011 at 01:52 PM
+-- Generation Time: Jun 07, 2011 at 03:36 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -241,27 +241,18 @@ CREATE TABLE IF NOT EXISTS `errorcodes` (
 
 INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (201, 'ABSENCES_AND_LATE_ALREADY', 'For this payperiod, absences and tardiness info have been already generated. If you want\r\n										to generate again, clear all records first.', NULL),
-(702, 'ABSENCES_DATA_ERROR', 'Please check absence reasons.', NULL),
-(408, 'DATA_NOT_SUPPLIED', 'You are trying to access a page that requires data to be submitted first.', NULL),
 (453, 'DATE_SPECIFIED_NULL', 'The date you submitted is NULL.', NULL),
 (404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
 (450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
 (200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
 (700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
-(701, 'INVALID_DATE_FORMAT_ISO_INCONFORMANCE', 'The date submitted does not conform to the ISO Format YYYY/MM/DD where all of the characters should be numeric (Except for the separators).', NULL),
-(704, 'INVALID_PAYPERIOD_OBJECT', 'There is something wrong with payperiod submitted. ', NULL),
-(102, 'MISSING_ABSENCE_DETAILS', 'No absence details for this employee: you might have missed a day of checking attendance.', NULL),
-(103, 'MISSING_TARDINESS_DETAILS', 'No tardiness record for this employee exists.', NULL),
-(455, 'NEED_TO_LOGIN', 'The section you are trying to access requires you to be logged-in.', NULL),
+(102, 'MISSING_ABSENCE_DETAILS', 'No attendance record for this employee exists.', NULL),
 (410, 'NON_EXISTENT_TIMESHEET', 'This timesheet is not existing.', NULL),
 (101, 'NO_EMPLOYEE_EXISTS', 'There is no single employee in the database.', NULL),
 (405, 'PAYMENT_MODE_NOT_FOUND', 'The specified payment mode can''t be found.', NULL),
 (451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
 (407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
 (452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
-(409, 'SALARY_TABLE_404_EMPLOYEE', 'For the given payperiod and employee, no matching entry cannot be found on the ''Salary'' table. Make sure you have generated a payperiod first.', NULL),
-(0, 'SUCCESS', 'n/a', NULL),
-(703, 'TARDINESS_DATA_ERROR', 'Please check tardiness reasons.', NULL),
 (403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
 
 -- --------------------------------------------------------
@@ -278,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `history` (
   `table` varchar(70) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `history`
@@ -293,7 +284,18 @@ INSERT INTO `history` (`date`, `user`, `action`, `person`, `table`, `id`) VALUES
 ('2011-06-07 17:12:09', 'Kristine Elaine Bautista', 'update', 'Kristine Elaine Bautista', 'employee', 6),
 ('2011-06-07 21:08:14', 'Kristine Elaine Bautista', 'update', 'Kim Samaniego', 'employee', 7),
 ('2011-06-07 21:16:05', 'Kristine Elaine Bautista', 'update', 'Kristine Elaine Bautista', 'employee', 8),
-('2011-06-07 21:16:15', 'Kristine Elaine Bautista', 'update', 'Kim Samaniego', 'employee', 9);
+('2011-06-07 21:16:15', 'Kristine Elaine Bautista', 'update', 'Kim Samaniego', 'employee', 9),
+('2011-06-07 23:15:14', 'Kristine Elaine Bautista', 'insert', 'ME1', 'tax_status', 10),
+('2011-06-07 23:16:40', 'Kristine Elaine Bautista', 'insert', 'S1', 'tax_status', 11),
+('2011-06-07 23:19:47', 'Kristine Elaine Bautista', 'insert', 'S1', 'tax_status', 12),
+('2011-06-07 23:19:56', 'Kristine Elaine Bautista', 'delete', 'S1', 'tax_status', 13),
+('2011-06-07 23:20:26', 'Kristine Elaine Bautista', 'insert', 'S2', 'tax_status', 14),
+('2011-06-07 23:21:40', 'Kristine Elaine Bautista', 'insert', 'S3', 'tax_status', 15),
+('2011-06-07 23:22:25', 'Kristine Elaine Bautista', 'insert', 's4', 'tax_status', 16),
+('2011-06-07 23:23:35', 'Kristine Elaine Bautista', 'insert', 's', 'tax_status', 17),
+('2011-06-07 23:23:52', 'Kristine Elaine Bautista', 'insert', 's', 'tax_status', 18),
+('2011-06-07 23:23:56', 'Kristine Elaine Bautista', 'delete', 's', 'tax_status', 19),
+('2011-06-07 23:23:59', 'Kristine Elaine Bautista', 'delete', 's', 'tax_status', 20);
 
 -- --------------------------------------------------------
 
@@ -413,9 +415,9 @@ CREATE TABLE IF NOT EXISTS `payroll_absence` (
 --
 
 INSERT INTO `payroll_absence` (`empnum`, `payperiod`, `payment_mode`, `monthly_rate`, `daily_rate`, `absences_lwop_days`, `absences_lwop_amount`, `leave_sick_vacation_days`, `leave_sick_vacation_amount`, `suspension_days`, `suspension_amount`, `tardiness_min`, `tardiness_amount`, `total_amount`, `paid_vl_days`, `paid_sl_days`, `paid_emergency_leave_days`, `last_update`, `modified_by`) VALUES
-('2008-00195', 3, 1, 11123, 505.591, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196'),
+('2008-00195', 3, 1, 11123, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-06-07 22:19:06', '2008-00196'),
 ('2008-00196', 3, 1, 11000, 500, 1, 500, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196'),
-('2008-00198', 3, 1, 5000, 227.273, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196');
+('2008-00198', 3, 1, 5000, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-06-07 22:19:06', '2008-00196');
 
 -- --------------------------------------------------------
 
@@ -562,7 +564,7 @@ INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `EmployeeName`
 ('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 25000, 0, 0, 0, 0, 0, 0, 25000, 0, 0, 25000, 24087.5, 0, 500, 312.5, 100, 0, 0, 0, 0, 0, 24087.5, ''),
 ('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
 ('2011-06-23', '2011-06-30', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
-('2011-06-23', '2011-06-30', '2008-13916', 'Samaniego, Kim Pura', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
+('2011-06-23', '2011-06-30', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 102.53, 0, 0, 100, 0, 0, 0, 0, 0, 5297.47, ''),
 ('2011-07-04', '2011-07-14', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 12400, 1537.5, 0, 0, 100, 0, 0, 0, 0, 0, 10862.5, ''),
 ('2011-07-04', '2011-07-14', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 102.53, 0, 0, 100, 0, 0, 0, 0, 0, 5297.47, '');
 
@@ -664,17 +666,22 @@ CREATE TABLE IF NOT EXISTS `tax_status` (
   `desc` varchar(50) NOT NULL,
   `exemption` double NOT NULL,
   PRIMARY KEY (`id`,`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `tax_status`
 --
 
 INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
-(8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 48000),
-(9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 56000),
-(10, 'ME4', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 64000),
-(11, 'S', 'SINGLE OR EMPLOYED HUSBAND WHOSE WIFE IS ALSO EMPL', 20000);
+(8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 100000),
+(9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 125000),
+(10, 'ME4', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 150000),
+(11, 'S', 'SINGLE OR EMPLOYED HUSBAND WHOSE WIFE IS ALSO EMPL', 50000),
+(12, 'ME1', 'MARRIED WITH ONE DEPENDENT', 75000),
+(13, 'S1', 'SINGLE WITH ONE DEPENDENT', 75000),
+(15, 'S2', 'SINGLE WITH TWO DEPENDENT', 100000),
+(16, 'S3', 'SINGLE WITH THREE DEPENDENT', 125000),
+(17, 's4', 'single with four dependent', 150000);
 
 -- --------------------------------------------------------
 
@@ -841,4 +848,3 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
