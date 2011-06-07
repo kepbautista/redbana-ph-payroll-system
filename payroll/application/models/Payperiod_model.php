@@ -126,7 +126,7 @@ class Payperiod_model extends CI_Model
 		}		
 	}//get_All_PayPeriods
 			
-	function add_new_PayPeriod($payment_mode, $start_date, $end_date, $workingDays)
+	function add_new_PayPeriod($payment_mode, $start_date, $end_date, $workingDays, $endOfMonth)
 	{
 		$start_date[4] = '-';	
 		$start_date[7] = '-';
@@ -135,8 +135,8 @@ class Payperiod_model extends CI_Model
 		
 		$this->insertPayslips($start_date,$end_date);
 		
-		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?,0, FALSE, NULL, NULL, 0, NULL, NULL) ";			
-		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays));
+		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, ?, FALSE, NULL, NULL, 0, NULL, NULL) ";			
+		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays, $endOfMonth));
 	
 		$check_it = $this->get_Last_PayPeriod($payment_mode);
 		
