@@ -4,11 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login - REDBANA PAYROLL SYSTEM</title>
 <link href="<?php echo base_url(); ?>assets/css/style_x.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
-.style1 {
-	color: #FFFFFF;
-}
-</style>
 </head>
 
 <body>
@@ -26,6 +21,15 @@
                 <li><a class="current" href="home.html" title="">Home</a></li>
             </ul>
         </div>
+		<div id="graynavbar" >
+			<!--
+			<ul>
+				<li>009102901921</li>
+				<li>Kristine Chorvah</li>
+				<li class="last">Log out</li>
+			</ul>
+			-->
+		</div>
         
     </div>
     
@@ -45,17 +49,21 @@
 										</div>                                     
 										<!--<input type="image" src="images/login.gif" class="login" />-->										
 										<div class="login_form_row">
-										<input type="submit" value="Log-in" onclick="validate(this)" />
+										<label class="login_label">
+										<input type="submit" value="Log-in" onclick="validate(this)" class="btnExample" />
+										</label>
 										</div>  
 										<?php echo form_close(); ?>      	
 		</div>
          <div id="left_nav">
          <?php 		      		
-		    		if( isset($incorrect_credentials) ){		    			
-		    			//echo '<div id="form_error_notice" style="width: 80%" class="center"><br/>';
+		    		if( isset($incorrect_credentials) or
+						$this->session->userdata('LOGIN_WARNING') != FALSE
+					){		    					    			
 		    			echo '<div style="color:red; font-size:1.5em"><br/> ';
 		    			echo 'You have entered an incorrect username or password.<br/><br/>Please try again.';
 		    			echo '</div>';
+						@$this->session->unset_userdata('LOGIN_WARNING');
 		    		}    
 		    		if( strlen(validation_errors()) > 0 )
 		    		{
@@ -121,22 +129,14 @@
 
      <div id="footer">
      	<div class="copyright">
-<a href="home.html">
-			<img src="../../../../../Users/Abraham_Darius_Llave/Desktop/sample/111/images/footer_logo.gif" alt="" title="" /></a>
+			2011 UPLB Students
         </div>
     	<div class="footer_links"> 
         <a href="#">About us</a>
          <a href="privacy.html">Privacy policy</a> 
-        <a href="contact.html">Contact us </a>
-
-        
-        </div>
-    
-    
-    </div>  
- 
-   
-
+        <a href="contact.html">Contact us </a>        
+        </div>        
+    </div>     
 <!--end of main container-->
 </body>
 </html>

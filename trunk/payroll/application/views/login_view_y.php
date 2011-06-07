@@ -51,102 +51,51 @@
         
     </div>
     
-    <?php
-		function can_Access($type,$query)
-		{
-			$result=false;
-			foreach ($query->result() as $row)
-			{
-				if (($row->privilege ==$type) &&($row->type==1) )
-				{
-					$result=true;
-					break;
-				}
-			}
-			return $result;
-		}
-	?>
-	
+    <!--end of green box-->
     
     <div id="main_content">    	
     	<div id="centralContainer">
             <div id="demo">
 				<div id="accordion">
 					<h3><a class="title" href="#">Employees' Corner</a></h3>
-					<div class="content" >					
-												
-						<?php
-							echo "<ul>";
-							if (can_Access("addemp",$sql))
-								echo "<li><a href='employee/insert' class='underline'>Add and Edit Employee Information</a></li>";
-							if (can_Access("viewemp",$sql))
-								echo "<li><a href='employee/getall' class='underline'>View All Employee</a></li>";
-							echo "</ul>";
-						?>
+					<div class="content" >
+						<ul>
+							<li>Add Employee</li>
+							<li>Edit Employee Info</li>
+							<li>View All Employee</li>
+							<li>Search Employee</li>
+						</ul>
 					</div>
 					<h3><a class="title" href="#">Classification Maintenances</a></h3>
 					<div class="content" >
 						<ul>
-							<?php
-								if (can_Access("position",$sql))
-									echo "<li><a href='maintenance/posview' class='underline'>Position</a></li>";
-								if (can_Access("taxstatus",$sql))
-									echo "<li><a href='maintenance/taxview' class='underline'>Tax Status Maintenance</a></li>";
-								if (can_Access("user",$sql))
-									echo "<li><a href='maintenance/userview' class='underline'>User Right Maintenance</a></li>";
-								if (can_Access("day",$sql))
-									echo "<li><a href='maintenance/dayview' class='underline'>Type Of Day Maintenance</a></li>";
-								if (can_Access("shift",$sql))
-									echo "<li><a href='' class='underline'>Shift Maintenance</a></li>";
-								if (can_Access("dept",$sql))
-									echo "<li><a href='maintenance/deptview' class='underline'>Department Maintenance</a></li>";
-								if (can_Access("type",$sql))
-									echo "<li><a href='maintenance/typeview' class='underline'>Employment Type Maintenance</a></li>";
-							?>							
-						</ul>
-					</div>
-					<h3><a class="title" href="#">Leave</a></h3>
-					<div class="content" >			
-						<ul>
-						<?php
-							if (can_Access("allleave",$sql))
-								echo "<li><a href='leave/viewall' class='underline'>View All Leave and Approve</a></li>";
-							if (can_Access("leave",$sql))
-							{
-								echo "<li><a href='leave/insert' class='underline'>File a leave</a></li>";
-								echo "<li><a href='leave/empview' class='underline'>View all your filed leave</a></li>";
-							}
-						?>
+							<li>Position</li>
+							<li>Tax Status</li>
+							<li>User right</li>
+							<li>Type of Day</li>
+							<li>Shift</li>
+							<li>Department</li>
+							<li>Employment Type</li>								
 						</ul>
 					</div>
 					<h3><a class="title" href="#">Timekeeping</a></h3>
 					<div class="content" >			
 						<ul>
-						<?php
-							if (can_Access("timesheet",$sql))		
-								echo "<li><a href='timesheet/viewtimesheet' class='underline'>View TimeSheet</a></li>";
-						?>
+							<li>View Timesheet</li>			
 						</ul>
 					</div>
 					<h3><a class="title" href="#">Payroll Generation</a></h3>
 					<div class="content" >
-						<ul>							
-							<?php
-								if (can_Access("timesheet",$sql))		
-									echo "<li><a href='AttendanceController' class='underline'>View Tardiness/Absences/etc and corresponding charges</a></li>";
-								if (can_Access("viewpay",$sql))
-									echo "<li><a href='payroll/payrollinfoview' class='underline'>View Payroll</a></li>";
-							?>
-							<li><a href="http://localhost/payroll/index.php/PayPeriodController/addPayPeriod" >Add Payperiod</a></li>							
+						<ul>
+							<li>View Tardiness/Absences/etc and corresponding charges</li>
+							<li>Add new Payperiod</li>
+							<li>Generate Payroll </li>
 						</ul>
 					</div>
 					<h3><a class="title" href="#">History</a></h3>
 					<div class="content" >
-						<ul>	
-							<?php
-							if (can_Access("history",$sql))
-								echo "<li><a href='history/getall' class='underline'>View History</a></li>";
-							?>							
+						<ul>				
+							<li>View History</li>
 						</ul>
 					</div>
 				</div>

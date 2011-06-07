@@ -241,18 +241,27 @@ CREATE TABLE IF NOT EXISTS `errorcodes` (
 
 INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (201, 'ABSENCES_AND_LATE_ALREADY', 'For this payperiod, absences and tardiness info have been already generated. If you want\r\n										to generate again, clear all records first.', NULL),
+(702, 'ABSENCES_DATA_ERROR', 'Please check absence reasons.', NULL),
+(408, 'DATA_NOT_SUPPLIED', 'You are trying to access a page that requires data to be submitted first.', NULL),
 (453, 'DATE_SPECIFIED_NULL', 'The date you submitted is NULL.', NULL),
 (404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
 (450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
 (200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
 (700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
-(102, 'MISSING_ABSENCE_DETAILS', 'No attendance record for this employee exists.', NULL),
+(701, 'INVALID_DATE_FORMAT_ISO_INCONFORMANCE', 'The date submitted does not conform to the ISO Format YYYY/MM/DD where all of the characters should be numeric (Except for the separators).', NULL),
+(704, 'INVALID_PAYPERIOD_OBJECT', 'There is something wrong with payperiod submitted. ', NULL),
+(102, 'MISSING_ABSENCE_DETAILS', 'No absence details for this employee: you might have missed a day of checking attendance.', NULL),
+(103, 'MISSING_TARDINESS_DETAILS', 'No tardiness record for this employee exists.', NULL),
+(455, 'NEED_TO_LOGIN', 'The section you are trying to access requires you to be logged-in.', NULL),
 (410, 'NON_EXISTENT_TIMESHEET', 'This timesheet is not existing.', NULL),
 (101, 'NO_EMPLOYEE_EXISTS', 'There is no single employee in the database.', NULL),
 (405, 'PAYMENT_MODE_NOT_FOUND', 'The specified payment mode can''t be found.', NULL),
 (451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
 (407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
 (452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
+(409, 'SALARY_TABLE_404_EMPLOYEE', 'For the given payperiod and employee, no matching entry cannot be found on the ''Salary'' table. Make sure you have generated a payperiod first.', NULL),
+(0, 'SUCCESS', 'n/a', NULL),
+(703, 'TARDINESS_DATA_ERROR', 'Please check tardiness reasons.', NULL),
 (403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
 
 -- --------------------------------------------------------
@@ -832,3 +841,4 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
+

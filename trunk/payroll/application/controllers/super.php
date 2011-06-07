@@ -15,7 +15,8 @@ class Super extends CI_Controller {
 		$this->load->helper(array('form','url'));
 	}
 		
-	function index() {
+	function index() 
+    {
 		/* changed | abe | 06may2011_0030 : changed this condition in if so that the login_model is called, as part of 'Object-oriented approach',
 											rather than calling the session data directly
 		*/							
@@ -30,16 +31,11 @@ class Super extends CI_Controller {
 						   'mname' => $this->session->userData('mname')
 			);
 			$data['sql']=$this->login_model->permission($this->session->userData('userType'));
-			$this->load->view('superuser_home', $data);					
+			$this->load->view('superuser_home_x', $data);					
 		}
 		else
-			redirect('login');
-			
-			
+			redirect('login');						
 	}//index()
 		
-}//class
-
-			
-			//Process the posted form			
+}//class				
 ?>

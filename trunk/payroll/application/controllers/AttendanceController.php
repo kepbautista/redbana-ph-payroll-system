@@ -12,13 +12,12 @@ class AttendanceController extends CI_Controller
 		$this->load->model('Attendance_model');		
 		$this->load->model('Payperiod_model');	
 		$this->load->model('Employee_model');
-		
+		$this->load->model('ErrorReturn_model');
 		
 		/*  ABE | 15MAY2011 2326 | The succeeding lines until the end of this functionareunder development,
 			isn't it nice that such error is displayed on the login page on the circumstance?				
-		*/	
-		
-		$data['relayThisError'] = array("ERROR_CODE" => "NEED_TO_LOGIN", "ERROR_MESSAGE" => "You are accessing a page that requires you to be logged in.");		
+		*/			
+		$data['relayThisError'] = $this->ErrorReturn_model->createSingleError(455, NULL, NULL);
 		$this->login_model->check_and_Act_on_Login('Login', NULL, $data);
 	}
 	
@@ -49,49 +48,33 @@ class AttendanceController extends CI_Controller
 	function regenerateAttendanceFaultData ($payperiod = NULL, $payment_mode = NULL)
 	{
 		// abe | made | 17MAY2011_1437
+		// abe | edited | 07JUN2011_2217
 		
-		$validation_errors = array(
-			"RESULT" => false, 
-			"ERROR_CODE" => NULL,
-			"ERROR_MESSAGE" => NULL
-		);
-			
 		$payperiod = $this->input->post('PAYPERIOD');
 		$payment_mode = $this->input->post('PAYMENT_MODE');
-		/*
-			though in the view (AttendanceController) this shouldn't be accessible if there is no payperiod data in the DB
-			a user can access this via his/her browser's history, so, safety net.
-		*/
-		$lastPayPeriod = $this->Payperiod_model->get_Last_PayPeriod($payment_mode);	
-		if($lastPayPeriod == NULL)
+		if( !$payperiod or !$payment_mode)
+		{ 			
+			die(var_dump($this->ErrorReturn_model->createSingleError(408, NULL, NULL)));			
+		}
+		$payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);
+		if($payperiod_obj == NULL)
 		{
-			$validation_errors["ERROR_CODE"] = "NO_PAYPERIOD_DATA";
-			$validation_errors["ERROR_MESSAGE"] = "There isn't any Payperiod in the database. Please insert first.";
-			die(var_dump($validation_errors));
-			//$this->load->view('???');
-		}else
-		{
-			$this->clearAttendanceFaultData($lastPayPeriod->ID, $payment_mode);
-			$mode['present_progressive'] = 'regenerating';
-			$mode['past'] = 'regenerated';
-			$data['generation_result'] = $this->generateAttendanceFault($payment_mode, $lastPayPeriod->ID, 8, $mode);						
-		}	
+			die(var_dump($this->ErrorReturn_model->createSingleError(407, NULL, NULL)));			
+		}		
+		$this->clearAttendanceFaultData($payperiod, $payment_mode);
+		$mode['present_progressive'] = 'regenerating';
+		$mode['past'] = 'regenerated';
+		$data['generation_result'] = $this->generateAttendanceFault($payment_mode, $payperiod, 8, $mode);						
+		
 	}
-	
-	
+		
 	function clearAttendanceFaultData( $payperiod = NULL, $payment_mode = NULL )
 	{
-		$validation_errors = array(
-			"RESULT" => false, 
-			"ERROR_CODE" => NULL,
-			"ERROR_MESSAGE" => NULL
-		);
+		//abe | edited | 07JUN2011_2218
 	
 		if( $payperiod == NULL )
-		{
-			$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
-			$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
-			die(var_dump($validation_errors));
+		{			
+			die(var_dump($this->ErrorReturn_model->createSingleError(455, NULL, NULL)));
 			//$this->load->view('login_view');
 		}
 		$this->Attendance_model->deleteAttendanceFaultData_thisPayPeriod( $payperiod, $payment_mode );
@@ -117,11 +100,8 @@ class AttendanceController extends CI_Controller
 		if($payment_mode == NULL) $payment_mode = $this->input->post('PAYMENT_MODE');
 		
 		if( !$payment_mode or !$payperiod )
-		{
-			$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
-			$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
-			die(var_dump($validation_errors));
-			//$this->load->view('login_view');
+		{			
+			die(var_dump($this->ErrorReturn_model->createSingleError(408, NULL, NULL)));			
 		}				
 		
 		
@@ -131,7 +111,15 @@ class AttendanceController extends CI_Controller
 			$mode['present_progressive'] = 'generating';
 			$mode['past'] = 'generated';
 		}
-		$data['generation_result'] = $this->Attendance_model->generateAbsences_and_Late($payment_mode, $payperiod, $payperiod_obj->TOTAL_WORK_DAYS, 8);
+		$currentEmployees = $this->Employee_model->get_Employees_Associative();
+		$currentEmployeesDailyRate = array();
+		
+		foreach($currentEmployees as $eachEmployee)
+		{			
+			$xyza = floatval($this->Employee_model->getDailyRate_from_SalaryTable($payperiod_obj, $eachEmployee->empnum));			
+		    $currentEmployeesDailyRate[$eachEmployee->empnum] = $xyza;
+		}		
+		$data['generation_result'] = $this->Attendance_model->generateAbsences_and_Late($payment_mode, $payperiod, $payperiod_obj->TOTAL_WORK_DAYS, 8, $currentEmployeesDailyRate);
 		$data['mode'] = $mode;
 		
 		$this->loadGenerationResult($data);
@@ -149,10 +137,7 @@ class AttendanceController extends CI_Controller
 		
 		if( !$payment_mode or !$payperiod )
 		{
-			$validation_errors["ERROR_CODE"] = "DATA_NOT_SUPPLIED";
-			$validation_errors["ERROR_MESSAGE"] = "You are trying to access a page that requires data be submitted first.";
-			die(var_dump($validation_errors));
-			//$this->load->view('login_view');
+			die(var_dump($this->ErrorReturn_model->createSingleError(408, NULL, NULL)));			
 		}	
 		
 		$data['payperiod_obj'] = $payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);	

@@ -43,7 +43,7 @@ class Payperiod_model extends CI_Model
 
 		return $rows_result[0];
 	}//_X
-
+	
 	function pull_Payperiod_This_Date_Falls($date_in_SQL, $payment_mode = 1)
 	{
 		/*		

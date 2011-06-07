@@ -61,7 +61,7 @@ class Attendance_model extends CI_Model
 		
 		if( empty ($employees) ) return $this->ErrorReturn_model->createSingleError(101, NULL, NULL);			
 	
-	/*
+		/*
 		Get all the type of absences
 		*/
 		$sql_x = "SELECT * from `absence_reason` ";	
@@ -88,6 +88,7 @@ class Attendance_model extends CI_Model
 				pull all records between the date specified for the employee
 			*/
 			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $dateFrom, $dateTo)->result();																	
+			
 			foreach($daily_attendance as $daily_attendance_each_day)
 			{																			
 				if ($daily_attendance_each_day->absence_reason != NULL ) 
@@ -115,7 +116,7 @@ class Attendance_model extends CI_Model
 			If $payperiod is not null, it will be preferred.
 		*/
 		
-		$emp_tardiness_result = array();		
+		$emp_tardiness_result = array("total" => NULL, "eachday" => array() );		
 		$theResult = array("error_code" => NULL,
 						   "error_message" => NULL,
 							"result_array" => NULL
@@ -128,7 +129,7 @@ class Attendance_model extends CI_Model
 		*/
 		if($payperiod != NULL)
 		{
-			//get date inclusives during the payperiod specified from database
+			//get date inclusives during the payperiod specified from database			
 			$obj_result = $this->Payperiod_model->pull_PayPeriod_Info($payperiod);
 			
 			if($obj_result->num_rows == 0)return $this->ErrorReturn_model->createSingleError(407, NULL, NULL);			
@@ -161,7 +162,7 @@ class Attendance_model extends CI_Model
 			*	pull all records between the dates, inclusive,  specified for the employee
 			*/					
 			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $dateFrom, $dateTo)->result();
-			
+			//echo var_dump($daily_attendance);
 			foreach($daily_attendance as $daily_attendance_each_day)
 			{																			
 				//get shift id from its table				
@@ -175,20 +176,20 @@ class Attendance_model extends CI_Model
 				}
 								
 				/*
-				*	if absence_reason is 0, means person is not absent.
+				*	if absence_reason is 0 or NULL, means person is not absent.
 				*	and we only compute the late if start_time of that person for the day
 				*	is later than what should be for his/her shift
-				*/				
+				*/			
+				
 				if( ( $daily_attendance_each_day->absence_reason == NULL 
 					  or $daily_attendance_each_day->absence_reason == '0')
 					and
 					( strtotime($daily_attendance_each_day->time_in) > strtotime($shift_info[0]->START_TIME) ) 
 				)
 				{	
-					$today_tardiness = ( ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) ) / 60 );					
+					$today_tardiness = ( ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) ) / 60 );										
 					$this->update_Today("TARDINESS", $daily_attendance_each_day, "MIN", $today_tardiness);
-					$tardiness_count += $today_tardiness;
-					
+					$tardiness_count += $today_tardiness;					
 				}								
 			}//foreach daily_attendance...
 			
@@ -225,12 +226,13 @@ class Attendance_model extends CI_Model
 		gets all attendance record of the employee specified for the periods specified.
 		no more date checking here as this should be done in the calling functions.
 		 
-		RETURNS: OBJECT containing the MySQL results or NULL, if no entry exists in the dB
+		RETURNS: OBJECT containing the MySQL results also even if no entry exists in the dB
 	*/
 	{
 		$sql_x = "SELECT * from `timesheet` WHERE `empnum` = ? AND `date_in` BETWEEN ? AND ?";
-		$obj_result = $this->db->query($sql_x, array($empnum, $dateFrom, $dateTo) );
 		
+		$obj_result = $this->db->query($sql_x, array($empnum, $dateFrom, $dateTo) );
+		 
 		return $obj_result;
 	}
 	
@@ -242,7 +244,8 @@ class Attendance_model extends CI_Model
 		$sql_x = "SELECT * from `shift` WHERE `ID` = ?";
 		$obj_result = $this->db->query($sql_x, array($shiftId) );
 		
-		return $obj_result;
+		if($obj_result->num_rows == 0) return NULL;
+		else return $obj_result;
 	}
 	
 	function insertComputation
@@ -307,7 +310,8 @@ class Attendance_model extends CI_Model
 		return ($obj_result->num_rows != 0);
 	}
 	
-	function generateAbsences_and_Late($payment_mode, $payperiod, $defaultWorkingDays, $defaultHoursPerDay = 8)
+	function generateAbsences_and_Late
+	($payment_mode, $payperiod, $defaultWorkingDays, $defaultHoursPerDay = 8, $currentEmployeesDailyRate = NULL)
 	{
 		/*
 			abe | 11MAY2011 1335 | attention on $defaultWorkingDays - shouldn't it be included in `payperiod`?
@@ -320,43 +324,35 @@ class Attendance_model extends CI_Model
 			
 			['result'] = (boolean) TRUE|FALSE : if all successful, true, else false.
 			['validation_errors'] = (array) 
-						=> array with indexes ['ERROR_CODE'],['ERROR_TITLE'],['DESCRIPTION']
+						=> array with indices
+						(
+						"ERROR_CODE" ,
+						"result" ,
+						"ERROR_NAME" ,
+						"ERROR_MESSAGE" ,
+						"FURTHER_INFO"
+						);		
 		*/
 		
 		$result_to_be_returned = array(
-			"result" => false, "validation_errors" => array()		
+			"result" => FALSE, "validation_errors" => array()		
 		);
-		
-		/*
-			.. under construction as of 12MAY2011
-			
-			TABLE OF ERRORS.
-			
-			101	-	NO_EMPLOYEE_EXISTS	- There is no single employee in the database.
-			102	-	MISSING_ABSENCE_DETAILS - No attendance record for this employee exists.
-			200 -	INSERTION_FINAL_ERROR - All details are computed, but there is something that failed while inserting.
-			201 -   ABSENCES_AND_LATE_ALREADY - For this payperiod, absences and tardiness info have been already generated. If you want
-												to generate again, clear all records first.
-		
-		*/
-		
-		if( $this->areAbsences_and_Late_Already_Generated($payperiod, $payment_mode) )	// later, an 'overwrite?' condition should be considered
+
+		// later, an 'overwrite?' condition should be considered
+		if( $this->areAbsences_and_Late_Already_Generated($payperiod, $payment_mode) )	
 		{
-			$result_to_be_returned["validation_errors"][] = array(
-				'ERROR_CODE' => 201,
-				'ERROR_TITLE' => "ABSENCES_AND_LATE_ALREADY",
-				'DESCRIPTION' => "For this payperiod, absences and tardiness info have been already generated. If you want to generate again, clear all records first."			
-			);
-			die(var_dump($result_to_be_returned["validation_errors"]) );
+			$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(201, NULL, NULL);	//already generated error			
+			return $result_to_be_returned;
 		}		
 		
 		//get employee details first
 		$employees_data = $this->getAllEmployees($payment_mode)->result();
 
+		//no single employee exists error
 		if( empty ($employees_data) )
 		{
-			die('No employee so far.');
-			//redirect('/errorWhatever');
+			$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(101, NULL, NULL);	//already generated error			
+			return $result_to_be_returned;
 		}
 		
 		//get payperiod obj, i don't think we need trouble shooting here
@@ -370,46 +366,26 @@ class Attendance_model extends CI_Model
 		$this->get_OverTime($payperiod, $payment_mode);
 		$this->get_UnderTime($payperiod, $payment_mode);
 		$this->get_NightDifferential($payperiod, $payment_mode);
+		
 		$OT_and_ND_data = $this->generate_OT_and_ND_Cost($payperiod, $payment_mode);
-		
-		
-		
-		
+								
 		//check absences data
 		if($absences_data['error_code'] != 0)
 		{
-			die("ABSENCES DATA ERROR: ".$absences_data['error_message']);
+			$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(702, NULL, NULL);	
+			return $result_to_be_returned;
 		}
 		
 		//check tardiness data first
 		if($tardiness_data['error_code'] != 0)
 		{
-			die("tardiness DATA ERROR: ".$tardiness_data['error_message']);
+			$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(703, NULL, NULL);	
+			return $result_to_be_returned;
 		}
 				
 		foreach($employees_data as $employee_individual)
 		{	
 			$daily_rate;
-			if($defaultWorkingDays == 0)
-			{
-				$daily_rate = -1;
-			}else
-			{
-				//calculate daily rate
-				
-				if( $payment_mode == '1' or $payment_mode == "SEMI-MONTHLY" )
-				{
-					$daily_rate = ($employee_individual->mrate / 2) / $defaultWorkingDays;	
-				}else
-				if( $payment_mode == '2' or $payment_mode == "MONTHLY" )
-				{
-					$daily_rate = $employee_individual->mrate / 22;	
-				}else
-				{
-					//later for this
-				}
-			}
-			$daily_rate = round($daily_rate, 2);
 			$absences_and_lwop = 0;
 			$absences_and_lwop_amount = 0;
 			
@@ -427,19 +403,48 @@ class Attendance_model extends CI_Model
 			$paid_sl_days = 0;
 			$paid_emergency_leave_days = 0;
 			
+			if($defaultWorkingDays == 0)
+			{
+				$daily_rate = -1;
+			}else
+			{
+				//calculate daily rate
+				/*
+				ABE | 05JUN2011 | deprecated the earlier method of computing the dailyrate,
+				            since now, i'll be depending on the dailyRate from table `salary`
+							if not found, then error						
+				if( $payment_mode == '1' or $payment_mode == "SEMI-MONTHLY" )
+				{
+					$daily_rate = ($employee_individual->mrate / 2) / $defaultWorkingDays;	
+				}else
+				if( $payment_mode == '2' or $payment_mode == "MONTHLY" )
+				{
+					$daily_rate = $employee_individual->mrate / 22;	
+				}else
+				{
+					//later for this
+				}
+				*/
+				
+				//this employee not found error
+				if( !isset($currentEmployeesDailyRate[$employee_individual->empnum]) )
+				{
+					$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(409, NULL, NULL);	
+					return $result_to_be_returned;				
+				}else{
+					$daily_rate = round(floatval($currentEmployeesDailyRate[$employee_individual->empnum]), 2);
+				}
+			}			
+			
+			
 			//access the absences data got from calling the respective function in the model
 			$this_employee_absence_data = $absences_data['result_array'][$employee_individual->empnum];
 			
-			//self-explanatory
+			//no absence data for this employee
 			if( empty($this_employee_absence_data) || $this_employee_absence_data == NULL)
-			{
-				echo "No absence data for {$employee_individual->empnum}.";
-				$result_to_be_returned['validation_errors'][] = array( 
-					'ERROR_CODE' => 102,
-					'ERROR_TITLE' => 'MISSING_ABSENCE_DETAILS',
-					'DESCRIPTION' => 'For employee: {$employee_individual->empnum}'
-				);
-				//continue;
+			{				
+				$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(102, $employee_individual->empnum, NULL);	
+				return $result_to_be_returned;								
 			}
 										
 			foreach($this_employee_absence_data as $this_employee_absence_data_x)
@@ -467,8 +472,8 @@ class Attendance_model extends CI_Model
 				$tardiness_count = $tardiness_data['result_array'][$employee_individual->empnum];
 			}else
 			{
-				echo "No data for tardiness of {.$employee_individual->empnum}";
-				//further error handling
+				$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(103, $employee_individual->empnum, NULL);	
+				return $result_to_be_returned;								
 			}
 		
 			/*
