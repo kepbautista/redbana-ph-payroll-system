@@ -24,15 +24,6 @@ class Employee_model extends CI_Model {
         return $data;
 	}
 	
-	public function get_bank() {//get the description of the status
-        $this->db->select('id, name');
-        $this->db->from('bank_main');
-        $query = $this->db->get();
-        foreach($query->result_array() as $row)
-            $data[$row['name']]=$row['name'];
-        
-        return $data;
-	}
 	public function get_shift() {//get the description of the status
         $this->db->select('ID,START_TIME,END_TIME');
         $this->db->from('shift');
@@ -47,7 +38,7 @@ class Employee_model extends CI_Model {
         $this->db->from('payment_mode');
         $query = $this->db->get();
         foreach($query->result_array() as $row)
-            $data[$row['title']]=$row['title'];
+            $data[$row['id']]=$row['title'];
         
         return $data;
 	}
