@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2011 at 01:21 PM
+-- Generation Time: Jun 07, 2011 at 01:52 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -358,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `PAYROLL_FINALIZED_BY` varchar(255) DEFAULT NULL,
   `PAYROLL_FINALIZED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `payperiod`
@@ -366,7 +366,9 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
 
 INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
 (1, 1, '2011-06-01', '2011-06-22', 11, 0, 0, NULL, NULL, 0, NULL, NULL),
-(2, 1, '2011-06-23', '2011-07-03', 11, 0, 0, NULL, NULL, 0, NULL, NULL);
+(2, 1, '2011-06-23', '2011-07-03', 11, 0, 0, NULL, NULL, 0, NULL, NULL),
+(3, 1, '2011-06-23', '2011-06-30', 8, 1, 0, NULL, NULL, 0, NULL, NULL),
+(4, 1, '2011-07-04', '2011-07-14', 11, 1, 0, NULL, NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -549,7 +551,11 @@ CREATE TABLE IF NOT EXISTS `salary` (
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `EmployeeName`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
 ('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
 ('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 25000, 0, 0, 0, 0, 0, 0, 25000, 0, 0, 25000, 24087.5, 0, 500, 312.5, 100, 0, 0, 0, 0, 0, 24087.5, ''),
-('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, '');
+('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
+('2011-06-23', '2011-06-30', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
+('2011-06-23', '2011-06-30', '2008-13916', 'Samaniego, Kim Pura', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
+('2011-07-04', '2011-07-14', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 12400, 1537.5, 0, 0, 100, 0, 0, 0, 0, 0, 10862.5, ''),
+('2011-07-04', '2011-07-14', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 102.53, 0, 0, 100, 0, 0, 0, 0, 0, 5297.47, '');
 
 -- --------------------------------------------------------
 

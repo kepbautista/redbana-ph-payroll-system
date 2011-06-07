@@ -61,7 +61,8 @@ class PayperiodController extends CI_Controller
 				$this->input->post('PAYMENT_MODE'),
 				$this->input->post('START_DATE'), 
 				$this->input->post('END_DATE'),
-				$this->input->post('WORKING_DAYS')
+				$this->input->post('WORKING_DAYS'),
+				$this->input->post('END_OF_THE_MONTH')
 			);
 			$this->load->view('success_AddedPayPeriod', $data);
 		}			

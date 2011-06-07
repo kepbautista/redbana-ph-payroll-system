@@ -164,6 +164,15 @@ version: 1.0.0 - initial work
 		 		?>
 			 	</td>
 			 </tr>
+			 <tr>
+				<td>END OF THE MONTH</td>
+				<td>
+				<select name="END_OF_THE_MONTH" id="END_OF_THE_MONTH">
+					<option value="0">NO</option>
+					<option value="1">YES</option>
+				</select>
+				</td>
+			 </tr>
 		 <?php
 		  	}
 		 ?>
