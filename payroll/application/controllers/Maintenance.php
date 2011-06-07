@@ -529,6 +529,7 @@ class Maintenance extends CI_Controller {
 				$this->Maintenance_model->Tax_update();
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->load->view('Tax_view',$data);
+				redirect('maintenance/taxview');
 			}else $this->load->view('no_access');
 		}
 		else
@@ -544,6 +545,7 @@ class Maintenance extends CI_Controller {
 				$this->Maintenance_model->Tax_insert();
 				$data['query']=$this->Maintenance_model->Tax_getall();
 				$this->load->view('Tax_view',$data);
+				redirect('maintenance/taxview');
 			}else $this->load->view('no_access');
 		}
 		else

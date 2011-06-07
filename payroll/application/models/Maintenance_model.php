@@ -103,7 +103,7 @@ class Maintenance_model extends CI_Model {
 	//Tax Maintenance
 	function Tax_getall() {//select all the list of employee type
 		$this->load->database();
-		$query = $this->db->query('SELECT * FROM tax_status');
+		$query = $this->db->query('SELECT * FROM `tax_status` ORDER BY status');
 		return $query->result();
 	}
 	function Tax_update(){//Update an employee type

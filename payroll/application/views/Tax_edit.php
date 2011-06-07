@@ -31,9 +31,9 @@
 					 echo form_input('status',$row->status);?></td>
 				<td><?php
 				$data = array(
-              'name'        => 'desc',
-              'size'        => '70',
-			  'value'        => $row->desc      );
+						'name' => 'desc',
+						'size' => '70',
+						'value' => $row->desc);
 					 echo form_input($data); ?></td>
 				<td><?php 
 					 echo form_input('ex',$row->exemption);echo "&nbsp";echo form_submit('mysubmit','Update'); ?></td>
@@ -49,9 +49,9 @@
 			<?php } else{?>
 			<tr>
 				<td><?php echo $cnt;?></td>
-				<td><?php echo $row->status;?></td>
-				<td><?php echo $row->desc;?></td>
-				<td><?php echo $row->exemption;?></td>
+				<td><?php echo strtoupper($row->status);?></td>
+				<td><?php echo strtoupper($row->desc);?></td>
+				<td><?php echo  number_format($row->exemption,2,'.',',');?></td>
 				<td>
 				<?php
 					echo form_open('maintenance/taxedit'); 
