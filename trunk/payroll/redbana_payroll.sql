@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `emp_status`, `shift_id`) VALUES
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 1),
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 6),
 ('2008-13916', 'Pura', 'Samaniego', 'Kim', 'employee', 11000, 1, 'Game Master', 'Localization', 'M', 'kimpurasamanieg', '1990-01-01', '1990-05-01', 'Ms.', 'Single', '', '', '', '', '', 'ME2', 'Regular', '13231', '1231', '32131', '31231', 'Active', 1);
 
 -- --------------------------------------------------------
@@ -246,7 +246,11 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
 (200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
 (700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
-(102, 'MISSING_ABSENCE_DETAILS', 'No attendance record for this employee exists.', NULL),
+(701, 'INVALID_DATE_FORMAT_ISO_INCONFORMANCE', 'The date submitted does not conform to the ISO Format YYYY/MM/DD where all of the characters should be numeric (Except for the separators).', NULL),
+(704, 'INVALID_PAYPERIOD_OBJECT', 'There is something wrong with payperiod submitted. ', NULL),
+(102, 'MISSING_ABSENCE_DETAILS', 'No absence details for this employee: you might have missed a day of checking attendance.', NULL),
+(103, 'MISSING_TARDINESS_DETAILS', 'No tardiness record for this employee exists: you might have missed a day of checking attendance.', NULL),
+(455, 'NEED_TO_LOGIN', 'The section you are trying to access requires you to be logged-in.', NULL),
 (410, 'NON_EXISTENT_TIMESHEET', 'This timesheet is not existing.', NULL),
 (101, 'NO_EMPLOYEE_EXISTS', 'There is no single employee in the database.', NULL),
 (405, 'PAYMENT_MODE_NOT_FOUND', 'The specified payment mode can''t be found.', NULL),
@@ -414,10 +418,6 @@ CREATE TABLE IF NOT EXISTS `payroll_absence` (
 -- Dumping data for table `payroll_absence`
 --
 
-INSERT INTO `payroll_absence` (`empnum`, `payperiod`, `payment_mode`, `monthly_rate`, `daily_rate`, `absences_lwop_days`, `absences_lwop_amount`, `leave_sick_vacation_days`, `leave_sick_vacation_amount`, `suspension_days`, `suspension_amount`, `tardiness_min`, `tardiness_amount`, `total_amount`, `paid_vl_days`, `paid_sl_days`, `paid_emergency_leave_days`, `last_update`, `modified_by`) VALUES
-('2008-00195', 3, 1, 11123, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-06-07 22:19:06', '2008-00196'),
-('2008-00196', 3, 1, 11000, 500, 1, 500, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, '2011-05-24 14:04:52', '2008-00196'),
-('2008-00198', 3, 1, 5000, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-06-07 22:19:06', '2008-00196');
 
 -- --------------------------------------------------------
 
@@ -560,7 +560,8 @@ CREATE TABLE IF NOT EXISTS `salary` (
 --
 
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `EmployeeName`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
-('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
+('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 500, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
+('2011-06-01', '2011-06-22', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
 ('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 25000, 0, 0, 0, 0, 0, 0, 25000, 0, 0, 25000, 24087.5, 0, 500, 312.5, 100, 0, 0, 0, 0, 0, 24087.5, ''),
 ('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
 ('2011-06-23', '2011-06-30', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
@@ -581,21 +582,22 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `END_TIME` time NOT NULL,
   `OVERFLOW` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'If the time starts on the current day and ends the next day (starting 00:00h)',
   `NIGHT_DIFF` time NOT NULL DEFAULT '00:00:00',
+  `BREAKTIME` time NOT NULL DEFAULT '01:00:00',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 
 --
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`, `NIGHT_DIFF`) VALUES
-(0, -1, '00:00:00', '09:00:00', 0, '05:00:00'),
-(1, -1, '07:00:00', '16:00:00', 0, '00:00:00'),
-(2, -1, '09:00:00', '18:00:00', 0, '00:00:00'),
-(3, -1, '14:00:00', '23:00:00', 0, '05:00:00'),
-(4, -1, '15:00:00', '00:00:00', 1, '02:00:00'),
-(5, -1, '21:00:00', '06:00:00', 1, '07:00:00'),
-(6, -1, '23:00:00', '08:00:00', 1, '06:00:00');
+INSERT INTO `shift` VALUES
+(1, -1, '00:00:00', '09:00:00', 0, '05:00:00', '01:00:00' ),
+(2, -1, '07:00:00', '16:00:00', 0, '00:00:00', '01:00:00' ),
+(3, -1, '09:00:00', '18:00:00', 0, '00:00:00', '01:00:00' ),
+(4, -1, '14:00:00', '23:00:00', 0, '05:00:00', '01:00:00'),
+(5, -1, '15:00:00', '00:00:00', 1, '02:00:00', '01:00:00'),
+(6, -1, '21:00:00', '06:00:00', 1, '07:00:00', '01:00:00'),
+(7, -1, '23:00:00', '08:00:00', 1, '06:00:00', '01:00:00');
 
 -- --------------------------------------------------------
 
@@ -697,7 +699,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `date_out` date NOT NULL,
   `time_out` time NOT NULL,
   `absence_reason` int(11) DEFAULT NULL,
-  `shift_id` int(11) NOT NULL,
+  `shift_id` int(11) NOT NULL DEFAULT 1,
   `tardiness` time DEFAULT '00:00:00',
   `undertime` time DEFAULT '00:00:00',
   `overtime` time DEFAULT '00:00:00',
@@ -706,22 +708,12 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
-(4, '2008-00195', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(5, '2008-00196', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(6, '2008-00198', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(7, '2008-00195', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(8, '2008-00196', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', 1, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(9, '2008-00198', '2011-05-23', '00:00:00', '2011-05-23', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(10, '2008-00195', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(11, '2008-00196', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0),
-(12, '2008-00198', '2011-05-25', '00:00:00', '2011-05-25', '00:00:00', NULL, 0, '00:00:00', NULL, NULL, NULL, '1', 0, 0);
 
 -- --------------------------------------------------------
 
