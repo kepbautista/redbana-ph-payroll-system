@@ -106,7 +106,7 @@
 							<td><?php echo $each_employee->leave_sick_vacation_amount; ?></td>
 							<td><?php echo $each_employee->suspension_days; ?></td>
 							<td><?php echo $each_employee->suspension_amount; ?></td>
-							<td><?php echo $each_employee->tardiness_min; ?></td>
+							<td><?php echo (floatval($each_employee->tardiness_min) * 60) / 60; ?></td>
 							<td><?php echo $each_employee->tardiness_amount; ?></td>
 							<td><?php echo $each_employee->total_amount; ?></td>
 							<td><?php echo $each_employee->paid_vl_days; ?></td>

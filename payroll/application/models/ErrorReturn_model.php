@@ -37,7 +37,10 @@ class ErrorReturn_model extends CI_Model
 			$thisError['result'] = FALSE;
 			$thisError['ERROR_NAME'] = $array_result[0]->NAME;
 			$thisError['ERROR_MESSAGE'] = $array_result[0]->MESSAGE;
-			$thisError['FURTHER_INFO'] = $array_result[0]->FURTHER_INFO;
+			if($furtherInfo == NULL)
+				$thisError['FURTHER_INFO'] = $array_result[0]->FURTHER_INFO;
+			else
+				$thisError['FURTHER_INFO'] = $furtherInfo;
 		}
 		if($code == 0) $thisError['result'] = TRUE;		
 		return $thisError;

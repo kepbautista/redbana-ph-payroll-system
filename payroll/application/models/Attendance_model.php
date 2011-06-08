@@ -7,6 +7,7 @@ class Attendance_model extends CI_Model
 		parent::__construct();
 		$this->load->model('Payperiod_model');
 		$this->load->model('ErrorReturn_model');
+		$this->load->model('Shift_model');
 	}
 
 	function getAbsences
@@ -116,7 +117,7 @@ class Attendance_model extends CI_Model
 			If $payperiod is not null, it will be preferred.
 		*/
 		
-		$emp_tardiness_result = array("total" => NULL, "eachday" => array() );		
+		$emp_tardiness_result = array();		
 		$theResult = array("error_code" => NULL,
 						   "error_message" => NULL,
 							"result_array" => NULL
@@ -162,10 +163,11 @@ class Attendance_model extends CI_Model
 			*	pull all records between the dates, inclusive,  specified for the employee
 			*/					
 			$daily_attendance = $this->pullAttendanceRecord($emp_x->empnum, $dateFrom, $dateTo)->result();
-			//echo var_dump($daily_attendance);
+			
 			foreach($daily_attendance as $daily_attendance_each_day)
 			{																			
 				//get shift id from its table				
+			
 				$shift_info = $this->pullShiftInfo($daily_attendance_each_day->shift_id)->result();
 				
 				if( empty ($shift_info) )
@@ -180,24 +182,34 @@ class Attendance_model extends CI_Model
 				*	and we only compute the late if start_time of that person for the day
 				*	is later than what should be for his/her shift
 				*/			
+				$employee_in_timestamp = $daily_attendance_each_day->date_in." ".$daily_attendance_each_day->time_in;
+				$employee_in_supposed  = $daily_attendance_each_day->date_in." ".$shift_info[0]->START_TIME;
+				$E_IN_TIMESTAMP_seconds = strtotime($employee_in_timestamp);
+				$E_IN_SUPPOSED_seconds = strtotime($employee_in_supposed);
 				
 				if( ( $daily_attendance_each_day->absence_reason == NULL 
 					  or $daily_attendance_each_day->absence_reason == '0')
 					and
-					( strtotime($daily_attendance_each_day->time_in) > strtotime($shift_info[0]->START_TIME) ) 
+					( $E_IN_TIMESTAMP_seconds > $E_IN_SUPPOSED_seconds ) 
 				)
 				{	
-					$today_tardiness = ( ( strtotime($daily_attendance_each_day->time_in) - strtotime($shift_info[0]->START_TIME) ) / 60 );										
-					$this->update_Today("TARDINESS", $daily_attendance_each_day, "MIN", $today_tardiness);
+					$today_tardiness = ( ( $E_IN_TIMESTAMP_seconds - $E_IN_SUPPOSED_seconds ) / 60 );															
+					$today_tardiness_decimal = $this->differenceTime_in_Float($shift_info[0]->START_TIME, $daily_attendance_each_day->time_in, $shift_info[0]->OVERFLOW);
+					$today_tardiness_decimal = round($today_tardiness_decimal, 2);
+					$today_workhours = $this->differenceTime_in_Float($shift_info[0]->START_TIME, $shift_info[0]->END_TIME, $shift_info[0]->OVERFLOW);
+					$today_workhours -= $this->thisTime_in_Float($shift_info[0]->BREAKTIME);	//of course we have to exclude breaktime
+					$this->update_Today("TARDINESS", $daily_attendance_each_day, "MIN", $today_tardiness);	//update the corresponding entries in timesheet
 					$tardiness_count += $today_tardiness;					
+					$emp_tardiness_result[$emp_x->empnum]['eachday'][$daily_attendance_each_day->date_in]['count'] = $today_tardiness_decimal;
+					$emp_tardiness_result[$emp_x->empnum]['eachday'][$daily_attendance_each_day->date_in]['workhours'] = $today_workhours;
 				}								
 			}//foreach daily_attendance...
 			
 			//at the end of sifting through the days, store it to some variable
-			$emp_tardiness_result[$emp_x->empnum] = $tardiness_count; 									
+			$emp_tardiness_result[$emp_x->empnum]['total'] = $tardiness_count; 									
 		}//foreach (employees
 			
-		//prep up the final results
+		
 		$theResult['result_array'] = $emp_tardiness_result;
 		$theResult['error_code'] = 0;
 		$theResult['error_message'] = 'SUCCESS';
@@ -466,15 +478,7 @@ class Attendance_model extends CI_Model
 				}
 			}//foreach absence data of an employee
 							
-			//now, compute for tardiness			
-			if( isset ($tardiness_data['result_array'][$employee_individual->empnum]) )
-			{
-				$tardiness_count = $tardiness_data['result_array'][$employee_individual->empnum];
-			}else
-			{
-				$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(103, $employee_individual->empnum, NULL);	
-				return $result_to_be_returned;								
-			}
+			
 		
 			/*
 				COMPUTATION SECTION
@@ -487,7 +491,25 @@ class Attendance_model extends CI_Model
 			/*	abe | 12may2011
 			*	isn't the computation of these supposed to change?	
 			*/
-			$tardiness_amount = round(($daily_rate / $defaultHoursPerDay) * ($tardiness_count * 0.01), 2);
+			//now, compute for tardiness						
+						
+			if( isset ($tardiness_data['result_array'][$employee_individual->empnum]['eachday']) 
+					and $tardiness_data['result_array'][$employee_individual->empnum] != NULL
+					and !empty($tardiness_data['result_array'][$employee_individual->empnum])
+			)
+			{
+				$tardiness_count = $tardiness_data['result_array'][$employee_individual->empnum]['total'];
+				foreach($tardiness_data['result_array'][$employee_individual->empnum]['eachday'] as $everyday_tardiness)
+				{
+					$tardiness_amount += round(
+										($daily_rate / $everyday_tardiness['workhours']) * ($everyday_tardiness['count']), 2
+					);
+				}
+			}else
+			{
+				$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(103, $employee_individual->empnum, NULL);	
+				return $result_to_be_returned;								
+			}			
 			$total_amount = $absences_and_lwop_amount + $vacation_and_sick_leave_amount + $suspension_amount 
 							+ $tardiness_amount;
 									
@@ -847,43 +869,6 @@ class Attendance_model extends CI_Model
 				
 		$theResult['result'] = $this->db->query($sql_x, array( $this->convert_to_Time($passed_is_what, $theNumber), $theTimeSheetObject->id) );	
 		return $theResult;
-	}
-	
-	function convert_to_Time($passed_is_what, $theTimeCount)
-	{
-		/*
-		made | abe | 23MAY2011_1122H
-		
-			PARAMETERS:
-			
-			$passed_is_what = string, takes on "MIN|SEC|HRS"
-			$theTimeCount = self-explanatory
-			
-			RETURNS TIME FORMAT IN STRING: HH:MM:SS
-		*/
-		$hours = 0;
-		$mins = 0;
-		$secs = 0;
-		$returnThisTime = 0;
-		
-		switch(strtoupper($passed_is_what))
-		{
-			case "HRS"	: 
-				$secs = $theTimeCount *= 3600;
-			case "MIN"	: 				
-				$secs = $theTimeCount *= 60;			
-			case "SEC"	: 
-				$secs = $theTimeCount;
-				$hours = floor($secs / 3600);
-				$secs = $secs % 3600;
-				$mins = floor($secs / 60);
-				$secs = $secs % 60; 				
-				break;										
-			default:					
-				return "00:00:00";
-		}						
-				
-		return $hours.":".$mins.":".$secs;
 	}
 	
 	function get_OverTime
@@ -1409,17 +1394,42 @@ class Attendance_model extends CI_Model
 	{
 		/*
 			made | abe | 24may2011_1558
+			changed | abe | 09JUN2011_0003: 
+				GENERAL OVERHAUL!!!!
+				IMPORTANT!!! Maximum determinance is 23:59:59 hours difference, anyway, that's not late isn't it?(ABSENCE ALREADY)
+				
 			PARAMS:
 			$time1, $time2 - INT, HH:MM:SS format
-			$overflow - indicates if $time1 starts in this day and ends ($time2) next day
+			$overflow - indicates if $time1 starts in this day and ends ($time2) next day, takes on 0|1 , binary
 		*/
+		$returnme;
+				
 		if($overflow == 1)
 		{
-			$time1 = strtotime("24:00:00") - strtotime($time1);
-		}
+			$shift_low_bound = strtotime($time1);				//employee's SUPPOSED to be TIME IN
+			$shift_upper_bound = strtotime("23:59:59") + 1; 	//for a total of 60*60*24 seconds
+			$time2_in_sec = strtotime($time2);							//for tardiness, this is the employee's ACTUAL TIME IN
+			
+			if( $shift_low_bound <= $time2_in_sec AND $shift_upper_bound >= $time2_in_sec)	//if time2 (actual time IN) is not past midnight
+			{
+				$resulting_diff = $time2_in_sec - $shift_low_bound;
+				$resulting_diff += 1;	//for 1 second backlog of 23:59:59
+				$resulting_diff = $this->convert_to_Time("SEC", $resulting_diff);		
+				$returnme = round($this->thisTime_in_Float($resulting_diff),2);
+			}else{
+				$midnight_diff = strtotime("23:59:59") - $shift_low_bound;
+				$midnight_diff += 1;	//for 1 second backlog of 23:59:59
+				$midnight_diff = $this->convert_to_Time("SEC", $midnight_diff);
+				$midnight_diff = $this->thisTime_in_Float($midnight_diff);
+				$returnme = ($midnight_diff + $this->differenceTime_in_Float("00:00:00", $time2, 0)); 	//call recursively for those past midnight remaining
+				$returnme = round($returnme, 2);
+			}						
+		}else
+		{
+			$returnme = (abs($this->thisTime_in_Float($time1) - $this->thisTime_in_Float($time2)));
+		}		
 		
-		return ($this->thisTime_in_Float($time1) + $this->thisTime_in_Float($time2));
-		
+		return $returnme;		
 	}
 	
 	function abeMethod_convert_Time($time)
@@ -1453,6 +1463,43 @@ class Attendance_model extends CI_Model
 		$grandTotal += ( intval($time_exp[0]) * 3600);
 		
 		return $grandTotal;
+	}
+	
+		function convert_to_Time($passed_is_what, $theTimeCount)
+	{
+		/*
+		made | abe | 23MAY2011_1122H
+		
+			PARAMETERS:
+			
+			$passed_is_what = string, takes on "MIN|SEC|HRS"
+			$theTimeCount = self-explanatory
+			
+			RETURNS TIME FORMAT IN STRING: HH:MM:SS
+		*/
+		$hours = 0;
+		$mins = 0;
+		$secs = 0;
+		$returnThisTime = 0;
+		
+		switch(strtoupper($passed_is_what))
+		{
+			case "HRS"	: 
+				$secs = $theTimeCount *= 3600;
+			case "MIN"	: 				
+				$secs = $theTimeCount *= 60;			
+			case "SEC"	: 
+				$secs = $theTimeCount;
+				$hours = floor($secs / 3600);
+				$secs = $secs % 3600;
+				$mins = floor($secs / 60);
+				$secs = $secs % 60; 				
+				break;										
+			default:					
+				return "00:00:00";
+		}						
+				
+		return $hours.":".$mins.":".$secs;
 	}
 }//class
 
