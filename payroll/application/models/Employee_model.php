@@ -189,7 +189,14 @@ class Employee_model extends CI_Model {
 		'pagibig' => mysql_real_escape_string($this->input->post('pagibig')),
 		'philno' => mysql_real_escape_string($this->input->post('phil')),
 		);
-		$this->db->insert('employee',$data); 
+		
+		$this->db->insert('employee',$data);
+		$leavedata = array(
+		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
+		'numofleave' => 0,
+		'maxleave' => 10
+		);
+		$this->db->insert('maxleave',$leavedata);
 	}
 	
 	function Employee_update(){
