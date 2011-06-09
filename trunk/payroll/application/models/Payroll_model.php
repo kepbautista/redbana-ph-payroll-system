@@ -375,6 +375,15 @@ class Payroll_model extends CI_Model{
 		mysql_query($sql);
 	}//update deduction for Absences/Tardiness
 	
+	function getHolidayPay($empnum,$start_date,$end_date){
+		/**BASTA, TIMESHEET RELATED**/
+		$sql = "SELECT SUBTIME('2007-12-31 23:59:59.999999','1 1:1:1.000002')";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		echo $data[0];
+	}//get holiday pay for pay period
+	
 	function getWithholdingStatus($taxStatus){
 		switch($taxStatus){
 			case 'Z': $status = 'A_Z';
@@ -400,7 +409,6 @@ class Payroll_model extends CI_Model{
 			case 'ME4': $status = 'B_MES4';
 					  break;
 		}
-		
 		return $status;
 	}//get tax status from tax bracket
 	

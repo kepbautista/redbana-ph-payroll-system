@@ -38,7 +38,7 @@
 			<?php } else{?>
 			<tr>
 				<td><?php echo $cnt;?></td>
-				<td><?php echo $row->type;?></td>
+				<td><?php echo strtoupper($row->type);?></td>
 				<td>
 				<?php
 					echo form_open('maintenance/typeedit'); 

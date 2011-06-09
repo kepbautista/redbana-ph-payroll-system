@@ -39,7 +39,6 @@
 				<td>
 				<?php
 					echo form_hidden('id', $row->id);
-					
 					echo form_close();
 				?>
 				</td>
@@ -48,7 +47,7 @@
 			<?php } else{?>
 			<tr>
 				<td><?php echo $cnt;?></td>
-				<td><?php echo $row->position;?></td>
+				<td><?php echo strtoupper($row->position);?></td>
 				<td>
 				<?php
 					echo form_open('maintenance/posedit'); 

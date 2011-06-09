@@ -96,6 +96,15 @@ class Payroll extends CI_Controller {
 			//no existing pay period yet
 	}//view the payroll for specified cutoff
 	
+	function testHoliday($payperiod){
+		$empnum = $this->session->userData('empnum');
+		$cutoff = $this->Payroll_model->returnCutoff($payperiod);
+		$start_date = $cutoff['start_date'];
+		$end_date = $cutoff['end_date'];
+		
+		$this->Payroll_model->getHolidayPay($empnum,$start_date,$end_date);
+	}
+	
 	/**VIEW PAY SLIP INDIVIDUALLY
 	(NOT SUPERUSER USER RIGHT)**/
 	function IndividualPayslip(){

@@ -137,7 +137,6 @@ background-color:#7A991A;
 		}
 		echo "</ul>";
 		echo "<ul><li><a href='login/logout' class='underline'>Sign out</a></li></ul>";
-		
 	?>
 </div>
 </div>
