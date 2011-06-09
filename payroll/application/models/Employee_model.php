@@ -488,10 +488,10 @@ class Employee_model extends CI_Model {
 		){
 			$this->ErrorReturn_model->createSingleError(704, NULL, NULL);
 		}
-		
+	
 		$sql_x = "SELECT `DailyRate` FROM `salary` WHERE `start_date` = ? AND `end_date` = ? and `EmployeeNumber` = ?";
 		$array_result = $this->db->query( $sql_x, array($payperiod_obj->START_DATE, $payperiod_obj->END_DATE, $empnum) )->result();
-		
+	
 		if( empty($array_result) ) return $this->ErrorReturn_model->createSingleError(409, NULL, NULL);
 		else return $this->ErrorReturn_model->createSingleError(0, $array_result[0]->DailyRate, NULL);		
 	}

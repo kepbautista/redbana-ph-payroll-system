@@ -116,9 +116,10 @@ class AttendanceController extends CI_Controller
 		
 		foreach($currentEmployees as $eachEmployee)
 		{			
-			$xyza = $this->Employee_model->getDailyRate_from_SalaryTable($payperiod_obj, $eachEmployee->empnum);			
+			$xyza = $this->Employee_model->getDailyRate_from_SalaryTable($payperiod_obj, $eachEmployee->empnum);				
 		    $currentEmployeesDailyRate[$eachEmployee->empnum] = floatval($xyza['FURTHER_INFO']);
-		}		
+		}	
+		
 		$data['generation_result'] = $this->Attendance_model->generateAbsences_and_Late($payment_mode, $payperiod, $payperiod_obj->TOTAL_WORK_DAYS, 8, $currentEmployeesDailyRate);
 		$data['mode'] = $mode;
 		

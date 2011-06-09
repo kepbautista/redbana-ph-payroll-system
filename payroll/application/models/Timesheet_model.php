@@ -50,15 +50,42 @@ class Timesheet_model extends CI_Model {
 		$query = $this->db->query('SELECT a.fname,a.mname,a.sname,b.empnum ,b.time_in,b.time_out,b.date_in,b.date_out FROM timesheet b,employee a WHERE b.empnum=a.empnum AND b.date_in="'.$date.'"');	
 		return $query->num_rows();
 	}
-	function Insert_time() {
+	function Insert_time($data) {
+		
 		$this->load->database();
-		$date = mysql_real_escape_string($this->input->post('date'));
+		$shifts = $data['shifts'];
+		$date_in = $this->input->post('date');		//removed the very long escaping sequence, in the foreach later below, it will be automatically escaped by CodeIgniter
+		
 		$query = $this->db->get('employee');
+		
 		foreach ($query->result() as $row)
-		{
-			$query1 = $this->db->query('INSERT INTO timesheet(`date_in`,`time_in`,`date_out`,`time_out`,`empnum`,`type`) VALUES("'.$date.'","00:00:00","'.$date.'","00:00:00","'.$row->empnum.'","'.$_POST['type'].'")');
+		{			
+			/*
+				abe | 09JUN2011_1200 | changed this foreach loop generally
+										added mechanism in automatically determining when should the date_out be in case of 'overflow' shifts
+			*/			
+			$date_out = $date_in;
+			
+			if( $shifts[intval($row->shift_id)]['OVERFLOW'] == 1 ){							
+				$tomorrow = mktime(0,0,0,date("m"),date("d")+1,date("Y"));
+				$date_out = date("Y-m-d", $tomorrow);
+			}
+			
+			
+			$sql_x = "INSERT INTO `timesheet` (`date_in`,`time_in`,`date_out`,`time_out`,`shift_id`,`empnum`,`type`) VALUES (?, ?, ?, ?, ?, ?, ? ); ";
+			$query_execution_result = $this->db->query($sql_x, array(
+										$date_in,
+										$shifts[intval($row->shift_id)]['START_TIME'],
+										$date_out,
+										$shifts[intval($row->shift_id)]['END_TIME'],
+										$row->shift_id,
+										$row->empnum,
+										$this->input->post('type')
+									) 
+			);
 		}
 	}
+	
 	function Update()
 	{
 		$restday_checked = 0;

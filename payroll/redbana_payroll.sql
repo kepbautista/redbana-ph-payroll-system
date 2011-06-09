@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
   `DEDUCTION_RATE` float DEFAULT '100' COMMENT 'this is in percent, so it means if this contains ''100'', multiply  some quantity (e.g. days absent) by 100% or (1.00)',
   `ABSENCE_REASON_CATEGORY` int(11) DEFAULT NULL,
   `TO_DISPLAY_DEDUCTIBLE` tinyint(4) NOT NULL DEFAULT '1' COMMENT 'For some reasons, we should display e.g. "PAID/UNPAID SICK LEAVE"',
+  `IS_LEAVE` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is this particular entry a leave',
   PRIMARY KEY (`TITLE`,`DEDUCTIBLE`),
   KEY `ID` (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
@@ -37,19 +38,19 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
 -- Dumping data for table `absence_reason`
 --
 
-INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`, `TO_DISPLAY_DEDUCTIBLE`) VALUES
-(1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0),
-(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1),
-(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1),
-(12, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0),
-(2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1),
-(0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0),
-(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0),
-(4, 'SICK_LEAVE', 0, 'With pay', NULL, 5, 1),
-(5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1),
-(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0),
-(6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1),
-(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1);
+INSERT INTO `absence_reason`  VALUES
+(1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0, 0),
+(9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1, 1),
+(8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1, 1),
+(12, 'HOLIDAY_BREAK', 0, 'Di pumasok kasi Holiday daw', NULL, NULL, 0, 0),
+(2, 'LEAVE (GENERIC)', 1, '...', 100, 1, 1, 1),
+(0, 'NULL (PRESENT)', 0, 'No absence, andiyan si Kuya/Ate.', NULL, NULL, 0, 0),
+(10, 'RESTDAY', 0, 'Of course day off, at hindi din ito ibabawas sa base pay', NULL, NULL, 0, 0),
+(4, 'SICK_LEAVE', 0, 'With pay', NULL, 5, 1, 1),
+(5, 'SICK_LEAVE', 1, 'Without pay', 100, 2, 1, 1),
+(3, 'SUSPENSION', 0, 'Hala!! Anyway, hindi naman to ibabawas sa base pay.', NULL, 3, 0, 1),
+(6, 'VACATION_LEAVE', 0, 'Paid daw.', NULL, 4, 1, 1),
+(7, 'VACATION_LEAVE', 1, 'Unpaid daw.', 100, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -257,6 +258,7 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
 (407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
 (452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
+(0, 'SUCCESS', NULL, NULL),
 (403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
 
 -- --------------------------------------------------------

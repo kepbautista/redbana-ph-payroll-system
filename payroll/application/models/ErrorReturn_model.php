@@ -43,6 +43,7 @@ class ErrorReturn_model extends CI_Model
 				$thisError['FURTHER_INFO'] = $furtherInfo;
 		}
 		if($code == 0) $thisError['result'] = TRUE;		
+		
 		return $thisError;
 	}
 	
