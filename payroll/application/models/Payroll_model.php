@@ -375,14 +375,68 @@ class Payroll_model extends CI_Model{
 		mysql_query($sql);
 	}//update deduction for Absences/Tardiness
 	
-	function getHolidayPay($empnum,$start_date,$end_date){
-		/**BASTA, TIMESHEET RELATED**/
-		$sql = "SELECT SUBTIME('2007-12-31 23:59:59.999999','1 1:1:1.000002')";
+	function getHolidayRate($empnum,$start_date,$end_date){
+		$holidayPay = 0;//initialize holiday pay for current pay period
+	
+		$sql = "SELECT empnum,work_date,type FROM `timesheet` 
+				WHERE work_date>='".$start_date."' 
+				AND work_date<='".$end_date."' 
+				AND empnum='".$empnum."'";
+		$query = mysql_query($sql);
+		
+		while($row = mysql_fetch_array($query)){
+			$empnum = $row['empnum'];
+			$work_date = $row['work_date'];
+			$type = $row['type'];
+			
+			//get daily rate of employee for the current pay period
+			$dailyRate = $this->getDailyRate($empnum,$start_date,$end_date);
+			
+			/*Check number of hours
+			If half-day, divide daily rate by 2*/
+			if($this->getHours($empnum,$work_date) <= 4)
+				$dailyRate /= 2;
+
+			$payrate = $this->getPayRate($type);//get pay rate
+			$holidayPay += ($dailyRate * ($payrate/100));
+		}
+		
+		/*update holiday pay for current pay period*/
+		$sql = "UPDATE `salary` SET Holiday='".$holidayPay."' WHERE 
+				EmployeeNumber='".$empnum."' AND start_date='".$start_date."' 
+				AND end_date='".$end_date."'";
+		mysql_query($sql);
+	}//function for computing holiday pay for current pay period
+	
+	function getPayRate($dayType){
+		$sql = "SELECT payrate FROM `daily_desc`
+				WHERE id='".$dayType."'";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+	
+		return $data['payrate'];
+	}////get pay rate for day description
+	
+	function getHours($empnum,$work_date){
+		$sql = "SELECT date_in,date_out,
+				time_in,time_out FROM `timesheet` WHERE 
+				work_date='".$work_date."' AND 
+				empnum='".$empnum."'";
 		$query = mysql_query($sql);
 		$data = mysql_fetch_array($query);
 		
-		echo $data[0];
-	}//get holiday pay for pay period
+		$date_in = $data['date_in'];
+		$date_out = $data['date_out'];
+		$time_in = $data['time_in'];
+		$time_out = $data['time_out'];
+		
+		$sql = "SELECT TIMEDIFF('".$date_out." ".$time_out."'
+				,'".$date_in." ".$time_in."')";
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		
+		return ($data[0] - 1);
+	}//get hours per day
 	
 	function getWithholdingStatus($taxStatus){
 		switch($taxStatus){
@@ -443,6 +497,7 @@ class Payroll_model extends CI_Model{
 	}//compute wittholding tax
 	
 	function compute($info,$taxStatus){
+		$this->getHolidayRate($info[0],$info[1],$info[2]);
 		$this->grossPay($info);//compute Gross Pay
 		$this->totalPay($info);//compute Total Pay
 		$taxBasis = $this->taxBasis($info);//compute Tax Basis
