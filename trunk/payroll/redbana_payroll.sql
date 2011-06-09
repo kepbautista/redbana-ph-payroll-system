@@ -1,23 +1,19 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.9
+-- version 3.2.0.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 09, 2011 at 01:18 PM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
+-- Generation Time: Jun 09, 2011 at 02:57 PM
+-- Server version: 5.1.36
+-- PHP Version: 5.3.0
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `redbana_payroll`
 --
+CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -133,6 +129,27 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -203,27 +220,6 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 (8, 'Employed husband and husband claims exemptions of children'),
 (9, 'Employed wife whose husband is also employed or engaged in business;husband waived claim for depende'),
 (10, 'Single with qualified dependent children');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `emp_type`
---
-
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `emp_type`
---
-
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
 
 -- --------------------------------------------------------
 
