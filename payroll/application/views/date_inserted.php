@@ -83,7 +83,7 @@
 							<?php
 							echo form_open('timesheet/editTime'); 
 							echo form_hidden('empnum', $emp);
-							echo form_hidden('date', $row->date_in);
+							echo form_hidden('date', $row->work_date);
 							echo form_submit('mysubmit','Edit'); 
 							echo form_close(); 
 							?>
