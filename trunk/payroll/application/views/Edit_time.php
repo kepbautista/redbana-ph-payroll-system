@@ -59,13 +59,26 @@
 						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>" >
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
-							<td>
-								<?php 
-									echo form_open('timesheet/UpdateTime'); 
-									echo date('M d, Y', strtotime($row->date_in)); 
-								    
-								?>							
+							<td><?php echo form_open('timesheet/UpdateTime');  
+								$date_in = preg_split("/[\s-]+/", $row->date_in);
+								//echo $date_in[0].' '.$date_in[1].' '.$date_in[2];
+								echo form_dropdown('date_in1', $months,$date_in[1]);?>
+								<select name="date_in2" id="select">
+								<?php
+								foreach ($days as $value) { 
+									if ($value==$date_in[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+									else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+								}
+								?></select>
+								<select name="date_in3" id="select">
+								<?php
+								foreach ($years as $value) { 
+									if ($value==$date_in[0])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+									else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+								}
+								?></select>
 							</td>
+		
 							<td>
 								
 								<select name="time_in1" id="select"><!-- Make dropdown for hour-->
@@ -183,7 +196,7 @@
 							<td>
 								<?php
 								echo form_hidden('empnum', $emp);
-								echo form_hidden('date', $row->date_in);
+								echo form_hidden('date', $row->work_date);
 								echo form_submit('mysubmit','Update!'); 
 								echo form_close(); 
 								?>
@@ -231,7 +244,7 @@
 							<?php
 							echo form_open('timesheet/editTime'); 
 							echo form_hidden('empnum', $emp);
-							echo form_hidden('date', $row->date_in);
+							echo form_hidden('date', $row->work_date);
 							echo form_submit('mysubmit','Edit'); 
 							echo form_close(); 
 							?>

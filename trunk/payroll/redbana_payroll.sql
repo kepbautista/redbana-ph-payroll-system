@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2011 at 03:36 PM
+-- Generation Time: Jun 09, 2011 at 12:32 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -586,16 +586,16 @@ CREATE TABLE IF NOT EXISTS `shift` (
   `NIGHT_DIFF` time NOT NULL DEFAULT '00:00:00',
   `BREAKTIME` time NOT NULL DEFAULT '01:00:00',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `shift`
 --
 
-INSERT INTO `shift` VALUES
-(1, -1, '00:00:00', '09:00:00', 0, '05:00:00', '01:00:00' ),
-(2, -1, '07:00:00', '16:00:00', 0, '00:00:00', '01:00:00' ),
-(3, -1, '09:00:00', '18:00:00', 0, '00:00:00', '01:00:00' ),
+INSERT INTO `shift` (`ID`, `POSITION_ID_FK`, `START_TIME`, `END_TIME`, `OVERFLOW`, `NIGHT_DIFF`, `BREAKTIME`) VALUES
+(1, -1, '00:00:00', '09:00:00', 0, '05:00:00', '01:00:00'),
+(2, -1, '07:00:00', '16:00:00', 0, '00:00:00', '01:00:00'),
+(3, -1, '09:00:00', '18:00:00', 0, '00:00:00', '01:00:00'),
 (4, -1, '14:00:00', '23:00:00', 0, '05:00:00', '01:00:00'),
 (5, -1, '15:00:00', '00:00:00', 1, '02:00:00', '01:00:00'),
 (6, -1, '21:00:00', '06:00:00', 1, '07:00:00', '01:00:00'),
@@ -696,12 +696,13 @@ INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
 CREATE TABLE IF NOT EXISTS `timesheet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `empnum` varchar(255) NOT NULL,
+  `work_date` date NOT NULL,
   `date_in` date NOT NULL,
   `time_in` time NOT NULL,
   `date_out` date NOT NULL,
   `time_out` time NOT NULL,
   `absence_reason` int(11) DEFAULT NULL,
-  `shift_id` int(11) NOT NULL DEFAULT 1,
+  `shift_id` int(11) NOT NULL DEFAULT '1',
   `tardiness` time DEFAULT '00:00:00',
   `undertime` time DEFAULT '00:00:00',
   `overtime` time DEFAULT '00:00:00',
@@ -710,12 +711,15 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
+INSERT INTO `timesheet` (`id`, `empnum`, `work_date`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
+(1, '2008-00196', '2011-06-09', '2011-06-09', '00:00:00', '2011-06-09', '00:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
+(2, '2008-13916', '2011-06-09', '2011-06-09', '00:00:00', '2011-06-09', '00:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0);
 
 -- --------------------------------------------------------
 
