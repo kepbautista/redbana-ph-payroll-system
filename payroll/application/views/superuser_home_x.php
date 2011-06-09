@@ -136,6 +136,8 @@
 									echo "<li><a href='AttendanceController' class='underline'>View Tardiness/Absences/etc and corresponding charges</a></li>";
 								if (can_Access("viewpay",$sql))
 									echo "<li><a href='payroll/payrollinfoview' class='underline'>View Payroll</a></li>";
+								if (can_Access("viewslip",$sql))
+			echo "<li><a href='payroll/individualpayslip' class='underline'>View Your Pay Slip</a></li>";
 							?>
 							<li><a href="http://localhost/payroll/index.php/PayPeriodController/addPayPeriod" >Add Payperiod</a></li>							
 						</ul>

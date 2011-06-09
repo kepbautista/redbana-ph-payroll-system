@@ -70,8 +70,8 @@
 			<?php } else{?>
 			<tr>
 				<td><?php echo $cnt;?></td>
-				<td><?php echo $row->title;?></td>
-				<td><?php echo $row->desc;?></td>
+				<td><?php echo strtoupper($row->title);?></td>
+				<td><?php echo strtoupper($row->desc);?></td>
 				<td><?php echo $row->payrate;?></td>
 				<td>
 				<?php

@@ -40,7 +40,7 @@
 			<?php } else{?>
 			<tr>
 				<td><?php echo $cnt;?></td>
-				<td><?php echo $row->user_right;?></td>
+				<td><?php echo strtoupper($row->user_right);?></td>
 				<td>
 				<?php
 					echo form_open('maintenance/useredit'); 
