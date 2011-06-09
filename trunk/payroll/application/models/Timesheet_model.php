@@ -59,7 +59,7 @@ class Timesheet_model extends CI_Model {
 		$query = $this->db->get('employee');
 		
 		foreach ($query->result() as $row)
-			
+		{	
 			/*
 				abe | 09JUN2011_1200 | changed this foreach loop generally
 										added mechanism in automatically determining when should the date_out be in case of 'overflow' shifts
