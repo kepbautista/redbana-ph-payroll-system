@@ -4,6 +4,7 @@ class Timesheet extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+				
 		global $data;
 
 		$data = array();
@@ -16,7 +17,7 @@ class Timesheet extends CI_Controller {
 		$this->load->model('Attendance_model');
 		
 		$data['absence_reason_category'] = $this->Attendance_model->getAbsenceReasons();
-		
+		$data['shifts'] = $this->Shift_model->makeAssociativeArray_of_Shifts();
 	}
 	
 	function index()
@@ -36,7 +37,7 @@ class Timesheet extends CI_Controller {
 		$date_rows=$this->Timesheet_model->Timesheet_viewalltime_rows(1);
 		if ($date_rows==0)
 		{
-			$this->Timesheet_model->insert_time();
+			$this->Timesheet_model->insert_time($data);
 		}
 		
 		$data['date']=$this->input->post('date');

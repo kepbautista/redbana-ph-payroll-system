@@ -147,6 +147,31 @@ class Payperiod_model extends CI_Model
 		);
 	}
 	
+	function deletePayPeriod($payperiod)
+	{
+		$payperiod_array = $this->pull_PayPeriod_Info( $payperiod )->result();
+		$payperiod_obj = $payperiod_array[0];
+		
+		$sql_x = "DELETE FROM `payperiod` WHERE `id` = ?";
+		$payperiod_deletion_self = $this->db->query($sql_x, array($payperiod) );
+		
+		$sql_x = "DELETE FROM `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ?";
+		$payperiod_deletion_PA = $this->db->query($sql_x, array($payperiod, $payperiod_obj->payment_mode) );
+		
+		$sql_x = "DELETE FROM `salary` WHERE `start_date` = ? and `end_date` = ?";
+		$payperiod_deletion_S = $this->db->query($sql_x, array($payperiod_obj->START_DATE, $payperiod_obj->END_DATE) );
+		
+		if (
+			$payperiod_deletion_self 
+			and $payperiod_deletion_PA
+			and $payperiod_deletion_S
+		){
+		
+		}else{
+		
+		}
+	}//deletePayPeriod($payperiod);
+	
 	function finalizePayPeriod($payment_mode = NULL, $payperiod = NULL, $currentUser = NULL)
 	{
 		$result = array

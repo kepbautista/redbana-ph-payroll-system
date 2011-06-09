@@ -67,7 +67,20 @@ class PayperiodController extends CI_Controller
 			$this->load->view('success_AddedPayPeriod', $data);
 		}			
 	}
-
+	
+	function deletePayPeriod_Process()
+	{
+		$payperiod = $this->input->post('payperiod');	//index number of payperiod
+		/*
+		if($payperiod == FALSE)
+		{
+			$this->addPayPeriod();
+		}
+		$sql_x = "DELETE FROM";
+		*/
+	}//deletePayPeriod_Process
+	
+	
 	function workingDays_check($str)		
 	{	
 		if($str == "")

@@ -35,7 +35,7 @@
 							<th>Name</th> 
 							<th>Date of Time-in</th> 
 							<th>Time-in</th> 
-							<th>Date of Time-in</th>
+							<th>Date of Time-Out</th>
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
 							<th>Reason for Absence</th>
@@ -59,9 +59,15 @@
 						<tr id="<?php echo $emp ?>" class="<?php echo $class ?>" >
 							<td><?php echo $emp; ?></td>
 							<td><?php echo $name; ?></td>
-							<td><?php echo date('M d, Y', strtotime($row->date_in)); ?></td>
 							<td>
-								<?php  echo form_open('timesheet/UpdateTime');  ?>
+								<?php 
+									echo form_open('timesheet/UpdateTime'); 
+									echo date('M d, Y', strtotime($row->date_in)); 
+								    
+								?>							
+							</td>
+							<td>
+								
 								<select name="time_in1" id="select"><!-- Make dropdown for hour-->
 								<?php
 								$log = preg_split("/[\s:]+/", $row->time_in);
@@ -242,7 +248,7 @@
 							<th>Name</th> 
 							<th>Date of Time-in</th> 
 							<th>Time-in</th> 
-							<th>Date of Time-in</th>
+							<th>Date of Time-Out</th>
 							<th>Time-out</th>
 							<th>Shift Schedule</th>
 							<th>Reason for Absence</th>						

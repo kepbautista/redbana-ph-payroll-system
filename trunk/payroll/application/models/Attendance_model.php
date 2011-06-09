@@ -420,25 +420,14 @@ class Attendance_model extends CI_Model
 				$daily_rate = -1;
 			}else
 			{
-				//calculate daily rate
 				/*
+				//calculate daily rate				
 				ABE | 05JUN2011 | deprecated the earlier method of computing the dailyrate,
 				            since now, i'll be depending on the dailyRate from table `salary`
-							if not found, then error						
-				if( $payment_mode == '1' or $payment_mode == "SEMI-MONTHLY" )
-				{
-					$daily_rate = ($employee_individual->mrate / 2) / $defaultWorkingDays;	
-				}else
-				if( $payment_mode == '2' or $payment_mode == "MONTHLY" )
-				{
-					$daily_rate = $employee_individual->mrate / 22;	
-				}else
-				{
-					//later for this
-				}
+							if not found, then error										
 				*/
 				
-				//this employee not found error
+				//this employee not found error				
 				if( !isset($currentEmployeesDailyRate[$employee_individual->empnum]) )
 				{
 					$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(409, NULL, NULL);	
@@ -447,8 +436,7 @@ class Attendance_model extends CI_Model
 					$daily_rate = round(floatval($currentEmployeesDailyRate[$employee_individual->empnum]), 2);
 				}
 			}			
-			
-			
+						
 			//access the absences data got from calling the respective function in the model
 			$this_employee_absence_data = $absences_data['result_array'][$employee_individual->empnum];
 			
@@ -477,22 +465,20 @@ class Attendance_model extends CI_Model
 							  break;							  
 				}
 			}//foreach absence data of an employee
-							
-			
-		
+												
 			/*
 				COMPUTATION SECTION
 			*/
 			$absences_and_lwop_amount = round($absences_and_lwop * $daily_rate, 2);
 			$vacation_and_sick_leave_amount = round($vacation_and_sick_leave * $daily_rate, 2);
 			$suspension_amount = round($suspension * $daily_rate, 2);
-			
+			$tardiness_count = 0;
+			$tardiness_amount = 0;
 			
 			/*	abe | 12may2011
 			*	isn't the computation of these supposed to change?	
 			*/
-			//now, compute for tardiness						
-						
+			//now, compute for tardiness									
 			if( isset ($tardiness_data['result_array'][$employee_individual->empnum]['eachday']) 
 					and $tardiness_data['result_array'][$employee_individual->empnum] != NULL
 					and !empty($tardiness_data['result_array'][$employee_individual->empnum])
@@ -500,19 +486,26 @@ class Attendance_model extends CI_Model
 			{
 				$tardiness_count = $tardiness_data['result_array'][$employee_individual->empnum]['total'];
 				foreach($tardiness_data['result_array'][$employee_individual->empnum]['eachday'] as $everyday_tardiness)
-				{
+				{				
 					$tardiness_amount += round(
 										($daily_rate / $everyday_tardiness['workhours']) * ($everyday_tardiness['count']), 2
 					);
 				}
 			}else
-			{
-				$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(103, $employee_individual->empnum, NULL);	
-				return $result_to_be_returned;								
+			{					
+				if( (!isset ($tardiness_data['result_array'][$employee_individual->empnum]['eachday'])
+					and $tardiness_data['result_array'][$employee_individual->empnum]['total'] == 0
+					) == FALSE
+				){
+					// When entered this section it means no tardiness of the employee for this period											
+					
+					$result_to_be_returned["validation_errors"][] = $this->ErrorReturn_model->createSingleError(103, $employee_individual->empnum, NULL);	
+					return $result_to_be_returned;								
+				}
 			}			
 			$total_amount = $absences_and_lwop_amount + $vacation_and_sick_leave_amount + $suspension_amount 
 							+ $tardiness_amount;
-									
+						
 			$result_to_be_returned['result'] = $this->insertComputation
 			(
 				$employee_individual->empnum,
