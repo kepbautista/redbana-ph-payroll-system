@@ -248,6 +248,40 @@ class Leave extends CI_Controller {
             redirect('login');//pag di pa xa nakalogin
 	}
 	
+	function EditMax()//insert an employee info to the database then redirect for viewing all employee page
+	{
+	if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$data['query']=$this->Leave_model->Leave_getmaxinfo();
+		$this->load->view('leave_editonemax', $data);
+		}else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
+	}
+	
+	function Editonemax()//insert an employee info to the database then redirect for viewing all employee page
+	{
+		 if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {
+            if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$this->Leave_model->Editonemax();
+		$data['query']=$this->Leave_model->Leave_getmaxinfo();
+		$this->load->view('Leave_editmax',$data);
+		 }else $this->load->view('no_access'); //walang access
+        }
+        else
+            redirect('login');//pag di pa xa nakalogin
+	
+	}
+	
 	function script_input($str){
 		$response = TRUE;
 	

@@ -1,19 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.3.9
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 09, 2011 at 12:32 PM
--- Server version: 5.1.36
--- PHP Version: 5.3.0
+-- Generation Time: Jun 09, 2011 at 01:18 PM
+-- Server version: 5.5.8
+-- PHP Version: 5.3.5
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `redbana_payroll`
 --
-CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -38,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `absence_reason` (
 -- Dumping data for table `absence_reason`
 --
 
-INSERT INTO `absence_reason`  VALUES
+INSERT INTO `absence_reason` (`ID`, `TITLE`, `DEDUCTIBLE`, `DESCRIPTION`, `DEDUCTION_RATE`, `ABSENCE_REASON_CATEGORY`, `TO_DISPLAY_DEDUCTIBLE`, `IS_LEAVE`) VALUES
 (1, 'ABSENT', 1, 'basta na lang hindi pumasok', 100, 1, 0, 0),
 (9, 'EMERGENCY_LEAVE', 0, 'With pay', NULL, 6, 1, 1),
 (8, 'EMERGENCY_LEAVE', 1, 'Without pay', 100, NULL, 1, 1),
@@ -129,27 +133,6 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `emp_type`
---
-
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `emp_type`
---
-
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `employee`
 --
 
@@ -224,6 +207,27 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `errorcodes`
 --
 
@@ -258,7 +262,7 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
 (407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
 (452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
-(0, 'SUCCESS', NULL, NULL),
+(0, 'SUCCESS', '', NULL),
 (403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
 
 -- --------------------------------------------------------
@@ -330,8 +334,30 @@ INSERT INTO `leave` (`empnum`, `filedate`, `startdate`, `returndate`, `type`, `r
 ('12222', '1990-04-01', '1990-01-01', '1990-01-08', 'bereavement', 'asa', 'Not yet approved'),
 ('13333', '2011-05-11', '2011-05-15', '2011-05-27', '0000-00-00', 'sick', ''),
 ('2008-00195', '1990-01-01', '1990-01-01', '1990-01-01', 'vacation', '', 'Not yet approved'),
+('2008-00196', '2011-06-09', '1990-01-01', '1990-01-01', 'vacation', 'hohoho', 'Not yet approved'),
 ('89992', '1992-03-04', '1993-03-04', '1993-04-04', 'emergency', 'i dunno', ''),
 ('89999', '1992-03-04', '1993-03-04', '1993-04-04', '0000-00-00', 'i dunno', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `maxleave`
+--
+
+CREATE TABLE IF NOT EXISTS `maxleave` (
+  `empnum` varchar(60) NOT NULL,
+  `maxleave` int(11) NOT NULL DEFAULT '10',
+  `numofleave` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`empnum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `maxleave`
+--
+
+INSERT INTO `maxleave` (`empnum`, `maxleave`, `numofleave`) VALUES
+('2008-00196', 11, 0),
+('2008-13916', 10, 0);
 
 -- --------------------------------------------------------
 
@@ -696,7 +722,6 @@ INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
 CREATE TABLE IF NOT EXISTS `timesheet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `empnum` varchar(255) NOT NULL,
-  `work_date` date NOT NULL,
   `date_in` date NOT NULL,
   `time_in` time NOT NULL,
   `date_out` date NOT NULL,
@@ -711,15 +736,19 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `work_date`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
-(1, '2008-00196', '2011-06-09', '2011-06-09', '00:00:00', '2011-06-09', '00:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
-(2, '2008-13916', '2011-06-09', '2011-06-09', '00:00:00', '2011-06-09', '00:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0);
+INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
+(1, '2008-00196', '2011-06-09', '21:00:00', '2011-06-10', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
+(2, '2008-13916', '2011-06-09', '00:00:00', '2011-06-09', '09:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
+(3, '2008-00196', '2011-06-10', '21:00:00', '2011-06-10', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
+(4, '2008-13916', '2011-06-10', '00:00:00', '2011-06-10', '09:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
+(5, '2008-00196', '2011-06-11', '21:00:00', '2011-06-10', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
+(6, '2008-13916', '2011-06-11', '00:00:00', '2011-06-11', '09:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0);
 
 -- --------------------------------------------------------
 

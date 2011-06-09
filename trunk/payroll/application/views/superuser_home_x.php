@@ -111,10 +111,12 @@
 						<?php
 							if (can_Access("allleave",$sql))
 								echo "<li><a href='leave/viewall' class='underline'>View All Leave and Approve</a></li>";
+								echo "<li><a href='leave/editmax' class='underline'>Edit Employee's Maximum Number of Leaves</a></li>";
 							if (can_Access("leave",$sql))
 							{
 								echo "<li><a href='leave/insert' class='underline'>File a leave</a></li>";
 								echo "<li><a href='leave/empview' class='underline'>View all your filed leave</a></li>";
+								
 							}
 						?>
 						</ul>

@@ -48,7 +48,21 @@ class Leave_model extends CI_Model {
 		$query = $this->db->query('SELECT * FROM `employee` `a`, `leave` `b` WHERE `b`.`empnum`=`a`.`empnum`');	
 		return $query->result();
 	}
-
+	
+	function Leave_getmaxinfo(){			//this is for viewing all the employee information from the joint table of employee and leave
+		$this->load->database();
+		$query = $this->db->query('SELECT * FROM `maxleave` `a`, `employee` `b` WHERE `b`.`empnum`=`a`.`empnum`');	
+		return $query->result();
+	}
+	
+	function EditoneMax() {//count number of rows
+		$this->load->database();
+		$max=$this->input->post('maxleave');
+		$empnum=$this->input->post('empnum');
+		$sql_x = 'UPDATE `maxleave` SET `maxleave` = ? WHERE `empnum` =?';
+		$this->db->query($sql_x, array($max, $this->input->post('empnum') ) );
+	}
+	
 	function Leave_numrows() {//count number of rows
 		$this->load->database();
 		$empnum=$this->input->post('empnum');
