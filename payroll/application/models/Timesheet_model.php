@@ -72,7 +72,7 @@ class Timesheet_model extends CI_Model {
 			}
 			
 			
-			$sql_x = "INSERT INTO `timesheet` (`work_date`,`date_in`,`time_in`,`date_out`,`time_out`,`shift_id`,`empnum`,`type`) VALUES (?, ?, ?, ?, ?, ?, ? ); ";
+			$sql_x = "INSERT INTO `timesheet` (`work_date`,`date_in`,`time_in`,`date_out`,`time_out`,`shift_id`,`empnum`,`type`) VALUES (?, ?, ?, ?, ?, ?, ?, ? ); ";
 			$query_execution_result = $this->db->query($sql_x, array(
 										$date_in,
 										$date_in,
