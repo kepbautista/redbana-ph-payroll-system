@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 09, 2011 at 02:57 PM
+-- Generation Time: Jun 10, 2011 at 11:23 AM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
   `desc` varchar(100) NOT NULL,
   `payrate` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=68 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;
 
 --
 -- Dumping data for table `daily_desc`
@@ -100,7 +100,11 @@ INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
 (1, 'Regular Work', 'Regular Work', 0),
 (2, 'Regular Holiday', 'Regular Holiday', 100),
 (3, 'Special Holiday', 'Special Holiday', 30),
-(67, 'Special Holiday on Rest Day', 'Special Holiday on Rest Day', 260);
+(4, 'Rest Day', 'Rest Day', 30),
+(5, 'Special Holiday on Rest Day', 'Special Holiday on Rest Day', 50),
+(6, 'Regular Holiday on Rest Day', 'Regular Holiday on Rest Day', 160),
+(7, 'Double Holiday', 'Double Holiday', 200),
+(8, 'Double Holiday on Rest Day', 'Double Holiday on Rest Day', 290);
 
 -- --------------------------------------------------------
 
@@ -190,8 +194,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `emp_status`, `shift_id`) VALUES
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 6),
-('2008-13916', 'Pura', 'Samaniego', 'Kim', 'employee', 11000, 1, 'Game Master', 'Localization', 'M', 'kimpurasamanieg', '1990-01-01', '1990-05-01', 'Ms.', 'Single', '', '', '', '', '', 'ME2', 'Regular', '13231', '1231', '32131', '31231', 'Active', 1);
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 6);
 
 -- --------------------------------------------------------
 
@@ -275,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `history` (
   `table` varchar(70) NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `history`
@@ -301,7 +304,15 @@ INSERT INTO `history` (`date`, `user`, `action`, `person`, `table`, `id`) VALUES
 ('2011-06-07 23:23:35', 'Kristine Elaine Bautista', 'insert', 's', 'tax_status', 17),
 ('2011-06-07 23:23:52', 'Kristine Elaine Bautista', 'insert', 's', 'tax_status', 18),
 ('2011-06-07 23:23:56', 'Kristine Elaine Bautista', 'delete', 's', 'tax_status', 19),
-('2011-06-07 23:23:59', 'Kristine Elaine Bautista', 'delete', 's', 'tax_status', 20);
+('2011-06-07 23:23:59', 'Kristine Elaine Bautista', 'delete', 's', 'tax_status', 20),
+('2011-06-10 18:55:02', 'Kristine Elaine Bautista', 'delete', 'Kim Samaniego', 'employee', 21),
+('2011-06-10 19:09:20', 'Kristine Elaine Bautista', 'insert', 'M', 'tax_status', 22),
+('2011-06-10 19:13:36', 'Kristine Elaine Bautista', 'insert', 'Rest Day', 'daily_desc', 23),
+('2011-06-10 19:15:11', 'Kristine Elaine Bautista', 'insert', 'Special Day on Rest Day', 'daily_desc', 24),
+('2011-06-10 19:18:14', 'Kristine Elaine Bautista', 'delete', 'Special Holiday on Rest Day', 'daily_desc', 25),
+('2011-06-10 19:20:38', 'Kristine Elaine Bautista', 'insert', 'Regular Holiday on Rest Day', 'daily_desc', 26),
+('2011-06-10 19:21:09', 'Kristine Elaine Bautista', 'insert', 'Double Holiday', 'daily_desc', 27),
+('2011-06-10 19:21:31', 'Kristine Elaine Bautista', 'insert', 'Double Holiday on Rest Day', 'daily_desc', 28);
 
 -- --------------------------------------------------------
 
@@ -586,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `salary` (
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `EmployeeName`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
 ('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 500, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
 ('2011-06-01', '2011-06-22', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
-('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 25000, 0, 0, 0, 0, 0, 0, 25000, 0, 0, 25000, 24087.5, 0, 500, 312.5, 100, 0, 0, 0, 0, 0, 24087.5, ''),
+('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
 ('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
 ('2011-06-23', '2011-06-30', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
 ('2011-06-23', '2011-06-30', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 102.53, 0, 0, 100, 0, 0, 0, 0, 0, 5297.47, ''),
@@ -692,7 +703,7 @@ CREATE TABLE IF NOT EXISTS `tax_status` (
   `desc` varchar(50) NOT NULL,
   `exemption` double NOT NULL,
   PRIMARY KEY (`id`,`status`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `tax_status`
@@ -702,12 +713,13 @@ INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
 (8, 'ME2', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 100000),
 (9, 'ME3', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 125000),
 (10, 'ME4', 'MARRIED WHERE ONLY ONE OF THE SPOUSE IS EMPLOYED -', 150000),
-(11, 'S', 'SINGLE OR EMPLOYED HUSBAND WHOSE WIFE IS ALSO EMPL', 50000),
+(11, 'S', 'SINGLE', 50000),
 (12, 'ME1', 'MARRIED WITH ONE DEPENDENT', 75000),
 (13, 'S1', 'SINGLE WITH ONE DEPENDENT', 75000),
 (15, 'S2', 'SINGLE WITH TWO DEPENDENT', 100000),
 (16, 'S3', 'SINGLE WITH THREE DEPENDENT', 125000),
-(17, 's4', 'single with four dependent', 150000);
+(17, 's4', 'single with four dependent', 150000),
+(20, 'M', 'Married and spouse is also employed', 50000);
 
 -- --------------------------------------------------------
 
@@ -733,7 +745,7 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `timesheet`
