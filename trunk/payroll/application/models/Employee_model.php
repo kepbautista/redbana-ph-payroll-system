@@ -210,8 +210,6 @@ class Employee_model extends CI_Model {
 		$bdate = $byear.'-'.$bmonth.'-'.$bday;
 		$change="";
 		$query=$this->db->query('SELECT * FROM employee WHERE empnum="'.$empnum.'"');
-		foreach($query->result() as $row)
-		echo $row->bdate.' '.$bdate;
 		//getchanges
 		$query=$this->db->query('SELECT * FROM employee WHERE empnum="'.$empnum.'"');
 		foreach($query->result() as $row)
@@ -234,8 +232,8 @@ class Employee_model extends CI_Model {
 				$change= $change.'position, ';
 			if ($row->mrate!=mysql_real_escape_string($this->input->post('mrate')))
 				$change= $change.'monthly rate, ';
-			if ($row->dept!=mysql_real_escape_string($this->input->post('mname')))
-				$change= $change.'birth date, ';
+			if ($row->dept!=mysql_real_escape_string($this->input->post('dept')))
+				$change= $change.'department, ';
 			if ($row->gender!=mysql_real_escape_string($this->input->post('gender')))
 				$change= $change.'gender, ';
 			if ($row->user_right!=mysql_real_escape_string($this->input->post('user_right')))
@@ -277,8 +275,8 @@ class Employee_model extends CI_Model {
 		$today=$row->time;
 		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
 		$person=mysql_real_escape_string($this->input->post('fname')).' '.mysql_real_escape_string($this->input->post('sname'));
-		$this->db->query('INSERT INTO history(`date`,`user`,`data`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$change.'","'.$person.'","employee","update")');
-		
+		if($change!="")
+			$this->db->query('INSERT INTO history(`date`,`user`,`data`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$change.'","'.$person.'","employee","update")');
 		$data = array(
 		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
         'fname' => mysql_real_escape_string($this->input->post('fname')),
