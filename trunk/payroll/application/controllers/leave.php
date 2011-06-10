@@ -77,6 +77,7 @@ class Leave extends CI_Controller {
 		$this->load->model('Leave_model');
 		$this->Leave_model->Checkmax();
 		$data['query']=$this->Leave_model->Leave_getinfo();
+		$data['dept']=$this->Leave_model->GetUserDept();
 		$this->load->view('Leave_all',$data);
 		 }else $this->load->view('no_access'); //walang access
         }
@@ -111,6 +112,7 @@ class Leave extends CI_Controller {
 		$this->load->model('Leave_model');
 		$this->Leave_model->Leave_notapproved();
 		$data['query']=$this->Leave_model->Leave_getinfo();
+		$data['dept']=$this->Leave_model->GetUserDept();
 		$this->load->view('Leave_all',$data);
 		 }else $this->load->view('no_access'); //walang access
         }
@@ -280,6 +282,26 @@ class Leave extends CI_Controller {
         else
             redirect('login');//pag di pa xa nakalogin
 	
+	}
+	
+	function ViewByDept(){
+		
+		if ( $this->login_model->isUser_LoggedIn() )     //pag nakalogin na xa
+        {     
+		if ($this->login_model->can_Access("accleave"))//kung pwede nia maaccess un
+            {		
+		$this->load->helper('form');  
+		$this->load->model('Leave_model');
+		$pos = $this->Leave_model->GetUserPos();
+		if($pos == "Department Head") {
+			$data['query']=$this->Leave_model->Leave_getinfo();
+			$data['dept']=$this->Leave_model->GetUserDept();
+			$this->load->view('leave_all', $data);
+		}
+		 }else $this->load->view('no_access'); //walang access
+		}
+        else
+            redirect('login');//pag di pa xa nakalogin
 	}
 	
 	function script_input($str){
