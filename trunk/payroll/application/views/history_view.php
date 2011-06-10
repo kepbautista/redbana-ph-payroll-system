@@ -64,7 +64,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of user rights.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the user right '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of user rights.';
 								}
@@ -73,7 +73,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of departments.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the department '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of departments.';
 								}
@@ -82,7 +82,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of positions.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the position '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of positions.';
 								}
@@ -91,7 +91,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of tax status.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the tax status '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of tax status.';
 								}
@@ -100,7 +100,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of employment type.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the employment type '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of employment type.';
 								}
@@ -109,7 +109,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of payment mode.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the payment mode '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of payment mode.';
 								}
@@ -118,7 +118,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of daily description.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the daily description '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of daily description.';
 								}
@@ -127,7 +127,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted the bracket '.$row->person.' on the Philhealth Table.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the bracket '.$row->person;
 									else 
 										echo $row->user.' deleted the bracket '.$row->person.' on the Philhealth Table.';
 								}
@@ -136,7 +136,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted the bracket'.$row->person.' on the SSS Table.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the bracket '.$row->person;
 									else 
 										echo $row->user.' deleted the bracket '.$row->person.' on the SSS Table.';
 								}
@@ -145,7 +145,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the Withholding Tax Table.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' updated the bracket '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the Withholding Tax Table.';
 								}
