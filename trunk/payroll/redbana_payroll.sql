@@ -897,3 +897,28 @@ CREATE TABLE `redbana_payroll`.`overtime_rate` (
 `TIME_END` TIME NULL DEFAULT NULL, 
  UNIQUE (`MULFACTOR`, `IS_OVERTIME`, `IS_NIGHTDIFF`, `DAY_START`, `DAY_END`, `HOL_TYPE`, `IS_RESTDAY`, `TIME_START`, `TIME_END`, `ID`), INDEX (`ID`)
 ) ENGINE = InnoDB;
+
+INSERT INTO `overtime_rate` (`ID`, `MULFACTOR`, `IS_OVERTIME`, `IS_NIGHTDIFF`, `DAY_START`, `DAY_END`, `HOL_TYPE`, `IS_RESTDAY`, `TIME_START`, `TIME_END`) VALUES
+(1, 1.25, 1, 0, 1, 5, NULL, 0, NULL, NULL),
+(2, 1.375, 1, 1, 1, 5, NULL, 0, NULL, NULL),
+(3, 0.3, 0, 0, 1, 5, 3, 0, NULL, NULL),
+(4, 1.69, 1, 0, 1, 5, 3, 0, NULL, NULL),
+(5, 1.859, 1, 1, 1, 5, 3, 0, NULL, NULL),
+(6, 1.3, 0, 0, 6, 7, NULL, 1, NULL, NULL),
+(7, 1.69, 1, 0, 6, 7, NULL, 1, "17:00:00", "22:00:00"),
+(8, 1.859, 1, 1, 6, 7, NULL, 1,  "22:00:00", "06:00:00"),
+(9, 1.5, 0, 0, NULL, NULL, 3, 1, "08:00:00", "17:00:00" ),
+(10, 1.95, 1, 0, NULL, NULL, 3, 1, "17:00:00", "22:00:00"),
+(11, 2.145, 1, 1, NULL, NULL, 3, 1, "22:00:00", "06:00:00"),
+(12, 2, 0, 0, NULL, NULL, 2, 0, "08:00:00", "17:00:00" ),
+(13, 2.6, 1, 0, NULL, NULL, 2, 0, "17:00:00", "22:00:00"),
+(14, 2.86, 1, 1, NULL, NULL, 2, 0, "22:00:00", "06:00:00"),
+(15, 2.6, 0, 0, NULL, NULL, 2, 1, "08:00:00", "17:00:00" ),
+(16, 3.38, 1, 0, NULL, NULL, 2, 1, "17:00:00", "22:00:00"),
+(17, 3.718, 1, 1, NULL, NULL, 2, 1, "22:00:00", "06:00:00"),
+(18, 2, 0, 0, NULL, NULL, 2, 0, "08:00:00", "17:00:00" ),
+(19, 2.6, 1, 0, NULL, NULL, 2, 0, "17:00:00", "22:00:00"),
+(20, 2.86, 1, 0, NULL, NULL, 2, 1, "22:00:00", "06:00:00"),
+(21, 2.6, 0, 0, NULL, NULL, 2, 1, "08:00:00", "17:00:00" ),
+(22, 3.38, 1, 0, NULL, NULL, 2, 1, "17:00:00", "22:00:00"),
+(23, 3.718, 1, 1, NULL, NULL, 2, 1, "22:00:00", "06:00:00");
