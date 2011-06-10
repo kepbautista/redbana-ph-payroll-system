@@ -198,16 +198,8 @@ class Employee_model extends CI_Model {
 		);
 		$this->db->insert('maxleave',$leavedata);
 	}
-	
 	function Employee_update(){
-		//insert to history
-		$query=$this->db->query('SELECT NOW() time FROM dual');
-		foreach($query->result() as $row)
-		$today=$row->time;
-		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
-		$person=mysql_real_escape_string($this->input->post('fname')).' '.mysql_real_escape_string($this->input->post('sname'));
-		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$person.'","employee","update")');
-		
+		$empnum=mysql_real_escape_string($this->input->post('empnum'));
 		$sday = mysql_real_escape_string($this->input->post('sday'));
 		$smonth = mysql_real_escape_string($this->input->post('smonth'));
 		$syear = mysql_real_escape_string($this->input->post('syear'));
@@ -216,6 +208,77 @@ class Employee_model extends CI_Model {
 		$byear = mysql_real_escape_string($this->input->post('byear'));
 		$sdate = $syear.'-'.$smonth.'-'.$sday;
 		$bdate = $byear.'-'.$bmonth.'-'.$bday;
+		$change="";
+		$query=$this->db->query('SELECT * FROM employee WHERE empnum="'.$empnum.'"');
+		foreach($query->result() as $row)
+		echo $row->bdate.' '.$bdate;
+		//getchanges
+		$query=$this->db->query('SELECT * FROM employee WHERE empnum="'.$empnum.'"');
+		foreach($query->result() as $row)
+		{
+			if ($row->fname!=mysql_real_escape_string($this->input->post('fname')))
+				$change= $change.'first name, ';
+			if ($row->shift_id!=mysql_real_escape_string($this->input->post('shift_id')))
+				$change= $change.'shift id, ';
+			if ($row->sname!=mysql_real_escape_string($this->input->post('sname')))
+				$change= $change.'last name, ';
+			if ($row->mname!=mysql_real_escape_string($this->input->post('mname')))
+				$change= $change.'middle name, ';
+			if ($row->sdate!=$sdate)
+				$change= $change.'starting date, ';
+			if ($row->bdate!=$bdate)
+				$change= $change.'birth date, ';
+			if ($row->password!=mysql_real_escape_string($this->input->post('password')))
+				$change= $change.'password, ';
+			if ($row->position!=mysql_real_escape_string($this->input->post('position')))
+				$change= $change.'position, ';
+			if ($row->mrate!=mysql_real_escape_string($this->input->post('mrate')))
+				$change= $change.'monthly rate, ';
+			if ($row->dept!=mysql_real_escape_string($this->input->post('mname')))
+				$change= $change.'birth date, ';
+			if ($row->gender!=mysql_real_escape_string($this->input->post('gender')))
+				$change= $change.'gender, ';
+			if ($row->user_right!=mysql_real_escape_string($this->input->post('user_right')))
+				$change= $change.'user right, ';
+			if ($row->payment_mode!=mysql_real_escape_string($this->input->post('pmode')))
+				$change= $change.'payment mode, ';
+			if ($row->title!=mysql_real_escape_string($this->input->post('title')))
+				$change= $change.'title, ';
+			if ($row->civil_status!=mysql_real_escape_string($this->input->post('cstatus')))
+				$change= $change.'civil status, ';
+			if ($row->emp_status!=mysql_real_escape_string($this->input->post('emp_status')))
+				$change= $change.'employee status, ';
+			if ($row->emp_type!=mysql_real_escape_string($this->input->post('emp_type')))
+				$change= $change.'employee type, ';
+			if ($row->tax_status!=mysql_real_escape_string($this->input->post('tax_status')))
+				$change= $change.'tax status, ';
+			if ($row->hphone!=mysql_real_escape_string($this->input->post('hphone')))
+				$change= $change.'home number, ';
+			if ($row->mphone!=mysql_real_escape_string($this->input->post('mphone')))
+				$change= $change.'mobile number, ';
+			if ($row->email!=mysql_real_escape_string($this->input->post('email')))
+				$change= $change.'email address, ';
+			if ($row->address!=mysql_real_escape_string($this->input->post('address')))
+				$change= $change.'home address, ';
+			if ($row->zipcode!=mysql_real_escape_string($this->input->post('zip')))
+				$change= $change.'zipcode, ';
+			if ($row->sssno!=mysql_real_escape_string($this->input->post('sss')))
+				$change= $change.'sss number, ';
+			if ($row->tinno!=mysql_real_escape_string($this->input->post('tin')))
+				$change= $change.'tin number, ';
+			if ($row->pagibig!=mysql_real_escape_string($this->input->post('pagibig')))
+				$change= $change.'pagibig number, ';
+			if ($row->philno!=mysql_real_escape_string($this->input->post('phil')))
+				$change= $change.'philhealth number, ';
+		}
+		//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+		$today=$row->time;
+		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$person=mysql_real_escape_string($this->input->post('fname')).' '.mysql_real_escape_string($this->input->post('sname'));
+		$this->db->query('INSERT INTO history(`date`,`user`,`data`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$change.'","'.$person.'","employee","update")');
+		
 		$data = array(
 		'empnum' => mysql_real_escape_string($this->input->post('empnum')),
         'fname' => mysql_real_escape_string($this->input->post('fname')),

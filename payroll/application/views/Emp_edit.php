@@ -5,6 +5,34 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
+					
+	<script type="text/javascript" src="<?php echo base_url(); ?>devtools/jquery-1.5.2"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>devtools/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>devtools/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>devtools/ui/jquery.ui.accordion.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>devtools/ui/jquery.ui.datepicker.js"></script>
+	<script type="text/javascript" >
+		$(function() {
+			/*abe, 31jan2011/1044pm: won't it be good, that we if the date picker
+			  is trigerred in filling out the form, the year less 17 appears? 
+			  (because residents of ACCI dorm are most often born 17 years before the present year)
+			*/
+		
+			$( "#datepicker").datepicker({
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: 'yy-mm-dd',
+				yearRange: '1950:2099'
+			});
+			$( "#datepicker2"  ).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				dateFormat: 'yy-mm-dd',
+				yearRange: '1950:2099'
+			});
+
+		});
+	</script>
 	<title>Edit Employee</title>
 	<?php
 	include 'validators.php';
@@ -129,9 +157,18 @@ foreach($query as $row){
 			echo form_dropdown('bmonth', $months,$bdate[1]);?>
 			<select name="bday" id="select">
 			<?php
-			foreach ($days as $value) { 
-				if ($value==$bdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
-				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+			foreach ($days as $value) {
+				if ($value<10) 
+				{
+					if ($value==$bdate[2])echo '<option value="0'.$value.'" SELECTED>0'.$value.'</option>\n'; 
+					else echo '<option value="0'.$value.'" SELECTED>0'.$value.'</option>\n'; 
+					
+				}
+				else
+				{
+					if ($value==$bdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+					else echo '<option value="'.$value.'">'.$value.'</option>\n';
+				}
 			}
 			?></select>
 			<select name="byear" id="select">
@@ -157,8 +194,14 @@ foreach($query as $row){
 			<select name="sday" id="select">
 			<?php
 				foreach ($days as $value) { 
-				if ($value==$sdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
-				else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+					if($value<10){
+						if ($value==$sdate[2])echo '<option value="0'.$value.'" SELECTED>0'.$value.'</option>\n'; 
+						else echo '<option value="0'.$value.'">0'.$value.'</option>\n'; 
+					}
+					else{
+						if ($value==$sdate[2])echo '<option value="'.$value.'" SELECTED>'.$value.'</option>\n'; 
+						else echo '<option value="'.$value.'">'.$value.'</option>\n'; 
+					}
 				}
 			?></select>
 			<select name="syear" id="select">
