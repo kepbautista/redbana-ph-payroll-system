@@ -205,7 +205,7 @@ class Employee_model extends CI_Model {
 		foreach($query->result() as $row)
 		$today=$row->time;
 		$name=$this->session->userdata("fname").' '.$this->session->userdata("sname");
-		$person=$this->input->post('fname').' '.$this->input->post('sname');
+		$person=mysql_real_escape_string($this->input->post('fname')).' '.mysql_real_escape_string($this->input->post('sname'));
 		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$person.'","employee","update")');
 		
 		$sday = mysql_real_escape_string($this->input->post('sday'));
