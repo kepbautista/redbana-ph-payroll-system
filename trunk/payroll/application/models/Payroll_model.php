@@ -389,6 +389,7 @@ class Payroll_model extends CI_Model{
 			$empnum = $row['empnum'];
 			$work_date = $row['work_date'];
 			$type = $row['type'];
+			$restday = $row['restday'];
 			
 			//get daily rate of employee for the current pay period
 			$dailyRate = $this->getDailyRate($empnum,$start_date,$end_date);
@@ -399,6 +400,11 @@ class Payroll_model extends CI_Model{
 				$dailyRate /= 2;
 
 			$payrate = $this->getPayRate($type);//get pay rate
+			
+			//check if holiday & rest day
+			if(($restday==1) && ($payrate>0))
+				$payrate = $this->getPayRate($type+1);//get pay rate
+			
 			$holidayPay += ($dailyRate * ($payrate/100));
 		}
 		
