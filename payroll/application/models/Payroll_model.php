@@ -378,7 +378,8 @@ class Payroll_model extends CI_Model{
 	function getHolidayRate($empnum,$start_date,$end_date){
 		$holidayPay = 0;//initialize holiday pay for current pay period
 	
-		$sql = "SELECT empnum,work_date,type FROM `timesheet` 
+		$sql = "SELECT empnum,work_date,type,restday 
+				FROM `timesheet` 
 				WHERE work_date>='".$start_date."' 
 				AND work_date<='".$end_date."' 
 				AND empnum='".$empnum."'";

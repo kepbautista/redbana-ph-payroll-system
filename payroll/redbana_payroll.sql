@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 10, 2011 at 11:23 AM
+-- Generation Time: Jun 10, 2011 at 12:07 PM
 -- Server version: 5.1.36
 -- PHP Version: 5.3.0
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
   `desc` varchar(100) NOT NULL,
   `payrate` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `daily_desc`
@@ -99,12 +99,11 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
 INSERT INTO `daily_desc` (`id`, `title`, `desc`, `payrate`) VALUES
 (1, 'Regular Work', 'Regular Work', 0),
 (2, 'Regular Holiday', 'Regular Holiday', 100),
-(3, 'Special Holiday', 'Special Holiday', 30),
-(4, 'Rest Day', 'Rest Day', 30),
+(3, 'Regular Holiday on Rest Day', 'Regular Holiday on Rest Day', 160),
+(4, 'Special Holiday', 'Special Holiday', 30),
 (5, 'Special Holiday on Rest Day', 'Special Holiday on Rest Day', 50),
-(6, 'Regular Holiday on Rest Day', 'Regular Holiday on Rest Day', 160),
-(7, 'Double Holiday', 'Double Holiday', 200),
-(8, 'Double Holiday on Rest Day', 'Double Holiday on Rest Day', 290);
+(6, 'Double Holiday', 'Double Holiday', 200),
+(7, 'Double Holiday on Rest Day', 'Double Holiday on Rest Day', 290);
 
 -- --------------------------------------------------------
 
@@ -745,12 +744,14 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
+INSERT INTO `timesheet` (`id`, `empnum`, `work_date`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
+(1, '2008-00196', '2011-06-09', '2011-06-09', '21:00:00', '2011-06-11', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0);
 
 -- --------------------------------------------------------
 
