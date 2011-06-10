@@ -12,6 +12,7 @@ class Maintenance_model extends CI_Model {
 		$dept = mysql_real_escape_string(trim($this->input->post('dept')));
 		$id = mysql_real_escape_string($this->input->post('id'));
 		$this->db->query('UPDATE dept_main SET dept="'.$dept.'" WHERE id="'.$id.'"');
+		$this->insert_history("dept_main","update",$dept);
 	}
 	
 	function Dept_delete(){//delete a department
@@ -36,8 +37,8 @@ class Maintenance_model extends CI_Model {
 		$position = mysql_real_escape_string(trim($this->input->post('position')));
 		$id = mysql_real_escape_string($this->input->post('id'));		
 		$this->db->query('UPDATE pos_main SET position="'.$position.'" WHERE id="'.$id.'"');
+		$this->insert_history("pos_main","update",$position);
 	}
-	
 	function Pos_delete(){//delete a department
 		$this->db->where('id',$this->input->post('id'));
 		$this->db->delete('pos_main'); 
@@ -59,6 +60,7 @@ class Maintenance_model extends CI_Model {
 	function User_update(){//Update a department
 		$user = mysql_real_escape_string(trim($this->input->post('user')));
 		$this->db->query('UPDATE user_main SET user_right="'.$user.'" WHERE user_right="'.$this->input->post('hidden').'"');
+		$this->insert_history("user_main","update",$user);
 	}
 	
 	function User_delete(){//delete a department
@@ -103,6 +105,7 @@ class Maintenance_model extends CI_Model {
 		$type = mysql_real_escape_string(trim($this->input->post('type')));
 		$id = mysql_real_escape_string($this->input->post('id'));		
 		$this->db->query('UPDATE emp_type SET type="'.$type.'" WHERE id="'.$id.'"');
+		$this->insert_history("emp_type","update",$type);
 	}
 	
 	function Type_delete(){//delete a type
@@ -130,6 +133,7 @@ class Maintenance_model extends CI_Model {
 		$ex = mysql_real_escape_string($this->input->post('ex'));
 		$id = mysql_real_escape_string($this->input->post('id'));
 		$this->db->query('UPDATE tax_status SET `status`="'.$status.'",`desc`="'.$desc.'",`exemption`="'.$ex.'" WHERE `id`="'.$id.'"');
+		$this->insert_history("tax_status","update",$status);
 	}
 	
 	function Tax_delete(){//delete a type
@@ -157,6 +161,7 @@ class Maintenance_model extends CI_Model {
 		$desc = mysql_real_escape_string(trim($this->input->post('desc')));
 		$payrate = mysql_real_escape_string($this->input->post('payrate'));
 		$this->db->query('UPDATE `daily_desc` SET `title`="'.$title.'", `desc`="'.$desc.'", `payrate`="'.$payrate.'" WHERE `id`="'.$id.'"');
+		$this->insert_history("daily_desc","update",$title);
 	}
 	
 	function day_delete(){//delete a department
@@ -187,7 +192,6 @@ class Maintenance_model extends CI_Model {
 	function duplicate_daytype($str){
 		//search if user right is existing
 		$query = mysql_query("SELECT * from `daiy_desc` WHERE title LIKE '".$str."'");
-		
 		//count number of rows produced by the query
 		$rows = mysql_num_rows($query);
 	
