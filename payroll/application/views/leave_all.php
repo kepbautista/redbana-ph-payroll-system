@@ -21,7 +21,7 @@
 			<table cellpadding="0" cellspacing="0" border="0" class="display" id="example"> 
 			<thead> 
 				<tr> 
-					<th>Employee Number</th> 
+				<th>Employee Number</th> 
 				<th>Employee Name</th>
 				<th>Start Date of Leave</th>
 				<th>Return Date to Work</th>
@@ -31,7 +31,8 @@
 			<tbody> 
 			<?php $cnt=1;$count=0;
 			foreach ($query as $row)
-			{ 
+			{
+				if($row->dept == $dept){
 				if ($cnt%2==0)	$class="even";
 				else	$class="odd";
 				$emp=$row->empnum;
@@ -57,7 +58,8 @@
 			<?php  
 			$cnt++; 
 			$count++;
-			} ?>
+				}
+			}?>
 			</tbody>
 			<tfoot> 
 				<tr> 

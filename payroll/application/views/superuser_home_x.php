@@ -110,7 +110,7 @@
 						<ul>
 						<?php
 							if (can_Access("allleave",$sql))
-								echo "<li><a href='leave/viewall' class='underline'>View All Leave and Approve</a></li>";
+								echo "<li><a href='leave/viewbydept' class='underline'>View All Leave and Approve</a></li>";
 								echo "<li><a href='leave/editmax' class='underline'>Edit Employee's Maximum Number of Leaves</a></li>";
 							if (can_Access("leave",$sql))
 							{
