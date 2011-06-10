@@ -69,6 +69,26 @@ class Leave_model extends CI_Model {
 		$query = $this->db->get_where('leave',array('empnum'=>$empnum));
 		return $query->num_rows();
 	}
+	function GetUserDept(){
+		$emp = $this->session->userdata('empnum');
+		$sql = 'SELECT dept FROM `employee` WHERE empnum ="'.$emp.'"';
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$dept = $data['dept'];
+		echo $dept;
+		return $dept;
+		
+	}
+	function GetUserPos(){
+		$emp = $this->session->userdata('empnum');
+		$sql = 'SELECT position FROM `employee` WHERE empnum ="'.$emp.'"';
+		$query = mysql_query($sql);
+		$data = mysql_fetch_array($query);
+		$pos = $data['position'];
+		echo $pos;
+		return $pos;
+	}
+	
 	function Leave_Insert(){			//insert a leave form
 		
 		$fday=$this->input->post('fday');
