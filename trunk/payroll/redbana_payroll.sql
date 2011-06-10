@@ -193,7 +193,9 @@ CREATE TABLE IF NOT EXISTS `employee` (
 --
 
 INSERT INTO `employee` (`empnum`, `mname`, `sname`, `fname`, `user_right`, `mrate`, `payment_mode`, `position`, `dept`, `gender`, `password`, `sdate`, `bdate`, `title`, `civil_status`, `hphone`, `mphone`, `email`, `address`, `zipcode`, `tax_status`, `emp_type`, `sssno`, `tinno`, `philno`, `pagibig`, `emp_status`, `shift_id`) VALUES
-('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 6);
+('2008-00196', 'Perez', 'Bautista', 'Kristine Elaine', 'superuser', 25000, 1, 'Operations Team Leader', 'Operations', 'F', 'teamnomads', '2011-03-03', '1991-05-15', 'Ms.', 'Single', '8240235', '09157662833', 'kepbautista@gmail.com', 'Bahay ni Lola', '171', 'ME2', 'Probational', '12', '12', '12', '12', 'Active', 6),
+('2008-13916', 'Pura', 'Samaniego', 'Kim', 'employee', 11000, 1, 'Game Master', 'Localization', 'M', 'kimpurasamanieg', '1990-01-01', '1990-05-01', 'Ms.', 'Single', '', '', '', '', '', 'ME2', 'Regular', '13231', '1231', '32131', '31231', 'Active', 1),
+('2008-13917', 'Purata', 'Samaniegota', 'Kimta', 'employee', 11000, 1, 'Game Master', 'Localization', 'M', 'kimpurasamanieg', '1990-01-01', '1990-05-01', 'Ms.', 'Single', '', '', '', '', '', 'ME2', 'Regular', '13231', '1231', '32131', '31231', 'Active', 1);
 
 -- --------------------------------------------------------
 
@@ -248,6 +250,7 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
 (450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
 (200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
+(456, 'INVALID_DAILY_RATE', 'The daily rate should be greater than 0. Please edit it.', NULL),
 (700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
 (701, 'INVALID_DATE_FORMAT_ISO_INCONFORMANCE', 'The date submitted does not conform to the ISO Format YYYY/MM/DD where all of the characters should be numeric (Except for the separators).', NULL),
 (704, 'INVALID_PAYPERIOD_OBJECT', 'There is something wrong with payperiod submitted. ', NULL),
@@ -260,8 +263,10 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (451, 'PAYMENT_MODE_REQUIRED', 'Please specify payment mode.', NULL),
 (407, 'PAYPERIOD_NOT_FOUND', 'Pay period does not exist', NULL),
 (452, 'PAYPERIOD_REQUIRED', 'Please specify payperiod.', NULL),
+(409, 'PAYSLIP_NOT_FOUND', 'For this employee, we have to look at his/her payslip, whether finalized or not, so that we can have his/her Daily Rate and use it in our computations. It seems you have not generated a payslip for this employee for the pay period concerned. You might as well generate a payroll for the whole pay period.', NULL),
 (0, 'SUCCESS', '', NULL),
 (403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
+
 
 -- --------------------------------------------------------
 
@@ -833,8 +838,8 @@ CREATE TABLE IF NOT EXISTS `variables` (
 
 INSERT INTO `variables` (`Name`, `Value`) VALUES
 ('PagIbig', 100),
-('WorkingDaysPerMonth', 22);
-
+('WorkingDaysPerMonth', 22),
+('NIGHT_DIFF_RATE', 0.1);
 -- --------------------------------------------------------
 
 --
@@ -878,3 +883,17 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
+
+CREATE TABLE `redbana_payroll`.`overtime_rate` (
+`ID` INT NOT NULL AUTO_INCREMENT, 
+`MULFACTOR` FLOAT NOT NULL, 
+`IS_OVERTIME` BOOLEAN NOT NULL DEFAULT '0', 
+`IS_NIGHTDIFF` BOOLEAN NOT NULL DEFAULT '0', 
+`DAY_START` INT NULL DEFAULT NULL, 
+`DAY_END` INT NULL DEFAULT NULL, 
+`HOL_TYPE` INT NULL DEFAULT NULL, 
+`IS_RESTDAY` BOOLEAN NOT NULL DEFAULT '0', 
+`TIME_START` TIME NULL DEFAULT NULL, 
+`TIME_END` TIME NULL DEFAULT NULL, 
+ UNIQUE (`MULFACTOR`, `IS_OVERTIME`, `IS_NIGHTDIFF`, `DAY_START`, `DAY_END`, `HOL_TYPE`, `IS_RESTDAY`, `TIME_START`, `TIME_END`, `ID`), INDEX (`ID`)
+) ENGINE = InnoDB;
