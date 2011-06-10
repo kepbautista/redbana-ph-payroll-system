@@ -53,7 +53,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted '.$row->person.' on the list of employees.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the profile of '.$row->person;
+										echo $row->user.' changed the '.$row->data.' of '.$row->person;
 									else 
 										echo $row->user.' deleted '.$row->person.' on the list of employees.';
 								}
