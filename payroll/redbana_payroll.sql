@@ -718,6 +718,7 @@ INSERT INTO `tax_status` (`id`, `status`, `desc`, `exemption`) VALUES
 CREATE TABLE IF NOT EXISTS `timesheet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `empnum` varchar(255) NOT NULL,
+  `work_date` date NOT NULL,
   `date_in` date NOT NULL,
   `time_in` time NOT NULL,
   `date_out` date NOT NULL,
@@ -732,19 +733,12 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
-INSERT INTO `timesheet` (`id`, `empnum`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
-(1, '2008-00196', '2011-06-09', '21:00:00', '2011-06-10', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
-(2, '2008-13916', '2011-06-09', '00:00:00', '2011-06-09', '09:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
-(3, '2008-00196', '2011-06-10', '21:00:00', '2011-06-10', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
-(4, '2008-13916', '2011-06-10', '00:00:00', '2011-06-10', '09:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
-(5, '2008-00196', '2011-06-11', '21:00:00', '2011-06-10', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0),
-(6, '2008-13916', '2011-06-11', '00:00:00', '2011-06-11', '09:00:00', NULL, 1, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0);
 
 -- --------------------------------------------------------
 
