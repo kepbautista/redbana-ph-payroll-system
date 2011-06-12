@@ -70,14 +70,20 @@ class PayperiodController extends CI_Controller
 	
 	function deletePayPeriod_Process()
 	{
-		$payperiod = $this->input->post('payperiod');	//index number of payperiod
-		/*
+		$payperiod = $this->input->post('PAYPERIOD');	//index number of payperiod
+		
 		if($payperiod == FALSE)
 		{
-			$this->addPayPeriod();
+			die(var_dump($this->ErrorReturn_model->createSingleError(452, NULL, NULL) ));
 		}
-		$sql_x = "DELETE FROM";
-		*/
+		
+		$operation_result = $this->Payperiod_model->deletePayPeriod($payperiod);
+		if($operation_result['ERROR_CODE'] == 0)
+		{
+			echo "Success";
+		}else{
+			die(var_dump($operation_result));
+		}
 	}//deletePayPeriod_Process
 	
 	

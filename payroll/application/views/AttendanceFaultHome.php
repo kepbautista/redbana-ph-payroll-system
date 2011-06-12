@@ -90,6 +90,13 @@ td
 								echo form_submit('mysubmit','View'); 
 								echo form_close();								
 							?>
+							<?php
+								echo form_open('PayperiodController/deletePayPeriod_Process');
+								echo form_hidden('PAYMENT_MODE', $individ->ID);
+								echo form_hidden('PAYPERIOD', $individ_x->ID);
+								echo form_submit('mysubmit','Delete'); 
+								echo form_close();								
+							?>
 							</td>
 							<td>
 							<?php

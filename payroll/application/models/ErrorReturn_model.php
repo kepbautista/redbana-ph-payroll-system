@@ -19,6 +19,8 @@ class ErrorReturn_model extends CI_Model
 		
 			RETURNS AN ARRAY, a single instance of an error
 		*/
+		/*echo "called for ".$code."<br/>";
+		echo var_dump($furtherInfo);*/
 		$thisError = array
 		(
 			"ERROR_CODE" => -1,
@@ -40,7 +42,7 @@ class ErrorReturn_model extends CI_Model
 			if($furtherInfo == NULL)
 				$thisError['FURTHER_INFO'] = $array_result[0]->FURTHER_INFO;
 			else
-				$thisError['FURTHER_INFO'] = $furtherInfo;
+				$thisError['FURTHER_INFO'] = $furtherInfo."|"."Tried to call ".$code;
 		}
 		if($code == 0) $thisError['result'] = TRUE;		
 		

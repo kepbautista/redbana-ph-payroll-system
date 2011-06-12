@@ -117,6 +117,10 @@ class AttendanceController extends CI_Controller
 		foreach($currentEmployees as $eachEmployee)
 		{			
 			$xyza = $this->Employee_model->getDailyRate_from_SalaryTable($payperiod_obj, $eachEmployee->empnum);				
+			if($xyza['ERROR_CODE'] != 0)
+			{
+				die(var_dump($xyza));
+			}
 		    $currentEmployeesDailyRate[$eachEmployee->empnum] = floatval($xyza['FURTHER_INFO']);
 		}	
 		
@@ -142,6 +146,7 @@ class AttendanceController extends CI_Controller
 		}	
 		
 		$data['payperiod_obj'] = $payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);	
+		if($payperiod_obj == NULL) die(var_dump($this->ErrorReturn_model->createSingleError(407, NULL, NULL)));		//payperiod not found
 		$data['result'] = $this->Attendance_model->getAttendanceFaults($payperiod, $payment_mode);
 		$data['statistics'] = $this->Attendance_model->computeTotal_AttendanceFaults($data['result']);		
 		if( !empty($data['result']) )
