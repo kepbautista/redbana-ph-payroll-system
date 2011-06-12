@@ -149,14 +149,23 @@ class Payperiod_model extends CI_Model
 	
 	function deletePayPeriod($payperiod)
 	{
+		/*
+			made | abe | 09JUN2011_2100
+			
+			started using transactions
+		*/
 		$payperiod_array = $this->pull_PayPeriod_Info( $payperiod )->result();
 		$payperiod_obj = $payperiod_array[0];
+		
+		if( empty($payperiod_array) ) die(var_dump($this->ErrorReturn_model->createSingleError(407, NULL, NULL) ));	//payperiod not found error
+		
+		$this->db->trans_begin(); //should create a restore point first
 		
 		$sql_x = "DELETE FROM `payperiod` WHERE `id` = ?";
 		$payperiod_deletion_self = $this->db->query($sql_x, array($payperiod) );
 		
 		$sql_x = "DELETE FROM `payroll_absence` WHERE `payperiod` = ? and `payment_mode` = ?";
-		$payperiod_deletion_PA = $this->db->query($sql_x, array($payperiod, $payperiod_obj->payment_mode) );
+		$payperiod_deletion_PA = $this->db->query($sql_x, array($payperiod, $payperiod_obj->PAYMENT_MODE) );
 		
 		$sql_x = "DELETE FROM `salary` WHERE `start_date` = ? and `end_date` = ?";
 		$payperiod_deletion_S = $this->db->query($sql_x, array($payperiod_obj->START_DATE, $payperiod_obj->END_DATE) );
@@ -166,9 +175,12 @@ class Payperiod_model extends CI_Model
 			and $payperiod_deletion_PA
 			and $payperiod_deletion_S
 		){
-		
+			$this->db->trans_commit();
+			return $this->ErrorReturn_model->createSingleError(0, NULL, NULL);		//success			 
 		}else{
-		
+			//rollback transaction
+			$this->db->trans_rollback();
+			return $this->ErrorReturn_model->createSingleError(300, NULL, NULL);	//payperiod deletion error			  
 		}
 	}//deletePayPeriod($payperiod);
 	
