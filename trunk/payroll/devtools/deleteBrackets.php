@@ -34,6 +34,12 @@ function getThing($id,$table) {
 			case 'dept_main':
 				$name=$row['dept'];
 				break;
+			case 'philhealth':
+				$name=$row['bracket'];
+				break;
+			case 'sss':
+				$name=$row['rangel'].'-'.$row['rangeh'];
+				break;
 			
 		}
 	}return $name;
