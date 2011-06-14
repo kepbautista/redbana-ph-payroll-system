@@ -127,7 +127,7 @@
 									if ($row->action=="insert") 
 										echo $row->user.' inserted the bracket '.$row->person.' on the Philhealth Table.';
 									else if ($row->action=="update")
-										echo $row->user.' updated the bracket '.$row->person;
+										echo $row->user.' updated the bracket '.$row->person.' on the Philhealth Table.';
 									else 
 										echo $row->user.' deleted the bracket '.$row->person.' on the Philhealth Table.';
 								}

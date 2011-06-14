@@ -38,6 +38,15 @@ class Sss_model extends CI_Model {
 		);
 		$this->db->where('id',$this->input->post('hidden'));
 		$this->db->update('sss',$data);  
+		//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+			$today=$row->time;
+			
+		$name = $this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$bracket= mysql_real_escape_string($this->input->post('rangel')).'-'.mysql_real_escape_string($this->input->post('rangeh'));
+		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$bracket.'","sss","update")');
+	
 	}
 	
 	function get($id)
@@ -71,6 +80,14 @@ class Sss_model extends CI_Model {
 			.$ttotal[$i]."','".$msc[$i]."','".$totalcont[$i]."',"
 			."'null')";
 			mysql_query($query);	// insert each new bracket
+			//insert to history
+			$query=$this->db->query('SELECT NOW() time FROM dual');
+			foreach($query->result() as $row)
+				$today=$row->time;
+			$name = 	$name = $this->session->userdata("fname").' '.$this->session->userdata("sname");
+			$bracket= $rangel[$i].'-'.$rangeh[$i];
+			$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$bracket.'","sss","insert")');
+		
 		}
 	}	// insert SSS Brackets
 }

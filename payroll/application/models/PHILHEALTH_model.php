@@ -33,7 +33,15 @@ class Philhealth_model extends CI_Model {
 		'per' => mysql_real_escape_string($this->input->post('per'))
 		);
 		$this->db->where('id',$this->input->post('hidden'));
-		$this->db->update('philhealth',$data);  
+		$this->db->update('philhealth',$data); 
+			//insert to history
+		$query=$this->db->query('SELECT NOW() time FROM dual');
+		foreach($query->result() as $row)
+			$today=$row->time;
+		$name = $this->session->userdata("fname").' '.$this->session->userdata("sname");
+		$bracket= mysql_real_escape_string($this->input->post('bracket'));
+		$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$bracket.'","philhealth","update")');
+
 	}
 		
 	function get($id)
@@ -62,6 +70,13 @@ class Philhealth_model extends CI_Model {
 			'".$total[$i]."', '".$pes[$i]."',
 			'".$per[$i]."', "."'null')";
 			mysql_query($query);	// insert each new bracket
+			//insert to history
+			$query=$this->db->query('SELECT NOW() time FROM dual');
+			foreach($query->result() as $row)
+				$today=$row->time;
+			$name = 	$name = $this->session->userdata("fname").' '.$this->session->userdata("sname");
+			$bracket= $bracket[$i];
+			$this->db->query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$today.'","'.$name.'","'.$bracket.'","philhealth","insert")');
 		}
 	}	// insert Philhealth Brackets
 }
