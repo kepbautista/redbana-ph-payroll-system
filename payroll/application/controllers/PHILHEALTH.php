@@ -68,6 +68,7 @@ class Philhealth extends CI_Controller {
 			$message = "<ul><li>Adding brckets not successful.</li>".$display."</ul>";
 			$this->PrintAll($message);
 		}	// add brackets not successful
+		redirect("philhealth/getall");
 	}	// function that will insert another bracket to the PhilHealth Table
 
 	function Insertdb(){

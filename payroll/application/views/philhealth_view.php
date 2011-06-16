@@ -15,36 +15,37 @@ $(document).ready(function()
 );
 </script>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("button").click(function(){
-		var r = confirm(("Are you sure you want to delete this bracket?");
+$(document).ready(function(){
+	$("button").click(function(){
+		var r = confirm("Are you sure you want to delete this bracket?");
 			if(r==true){
 				$.post("<?php echo base_url();?>devtools/deleteBrackets.php", {
 					query: $(this).val(),
 					tableType: "philhealth",
-				},	// perform ajax here to delete the bracket (row) using mysql_query
+				},	// perform ajax to delete the bracket (row) using mysql_query
 				function(data){
 					alert("Bracket deleted! ");
-					window.location.href = "<?php echo site_url();?>"+"/philhealth/getall";	// reload page to see the effect of the deleted bracket (row)
+					window.location.href = "<?php echo site_url();?>"+"/philhealth/getall";	// reload page to see the effect of deleted bracket (row)
 				});
 			}
 			else alert("Bracket delete cancelled!");
 		});
-		$('#addView').hide();
-		$('#add').click(function(){
-			$.post("<?php echo base_url();?>devtools/insertPHBrackets.php", {
-			N: $('#brackets').val(),
-			tableType: "philhealth",
-		},
-		function(data){
+		
+	$('#addView').hide();
+	$('#add').click(function(){
+			$.post("<?php echo base_url();?>devtools/insertBrackets.php", {
+             N: $('#brackets').val(),
+			 tableType: "philhealth",
+        },
+        function(data){
 			$("#insertView").html(data);
 			$("#philhealth_table").fadeOut();
 			$('#addView').fadeOut();
 			$('#addView').slideDown();
-		}
+        }
 		);
 	});
-});
+});	
 </script>
 
 <style type="text/css">
@@ -77,14 +78,7 @@ td.betterhover, #tableone tbody tr:hover
 {
 	background: LightCyan;
 }
-#insert{
-	position:absolute;
-	top:0;
-	right:0;
-	width:200px;
-}
-#philhealth_tables{
-	position:absolute;
+#philhealth_table{
 	top:0;
 	left:0
 	width:200px;
@@ -126,7 +120,7 @@ color: navy;
 		
 		<td>
 		<?php
-			$hidden=$row->id;
+			$hidden = $row->id;
 			echo form_open('philhealth/edit'); 
 			echo form_hidden('hidden', $hidden);
 			echo form_submit('mysubmit','Edit');
@@ -142,7 +136,7 @@ color: navy;
 </div>
 
 <div id="insert" name="insert">
-	<h4> Insert Brackets </h4> <br />
+	<h4> Insert Brackets </h4>
 	How many brackets to insert?&nbsp&nbsp
 	<input type="text" name="brackets" id="brackets" class="numeric" size="4"/>
 	<input type="button" name="add" id="add" value="Add"/>

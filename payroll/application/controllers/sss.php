@@ -69,7 +69,7 @@ class Sss extends CI_Controller {
 			$message = "<ul><li>Adding brackets not successful.</li>".$display."</ul>";
 			$this->PrintAll($message);
 		}	// add brackets not succesful
-		
+		redirect("sss/getall");
 	}	// function that will insert another bracket to the SSS Table
 	
 	function Insertdb(){

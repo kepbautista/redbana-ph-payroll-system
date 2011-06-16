@@ -76,12 +76,6 @@ td.betterhover, #tabletwo tbody tr:hover
 {
 	background: LightCyan;
 }
-#insert{
-	position:absolute;
-	top:0;
-	right:0;
-	width:200px;
-}
 #sss_tables{
 	position:absolute;
 	top:0;
@@ -159,7 +153,7 @@ color: navy;
 </div>
 
 <div id="insert" name="insert">
-	<h4> Insert Brackets </h4> <br />
+	<h4> Insert Brackets </h4>
 	How many brackets to insert?&nbsp&nbsp
 	<input type="text" name="brackets" id="brackets" class="numeric" size="4"/>
 	<input type="button" name="add" id="add" value="Add"/>

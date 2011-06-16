@@ -54,7 +54,7 @@ class PayperiodController extends CI_Controller
 		$this->form_validation->set_rules('END_DATE', 'End date', 'callback_endDate_check');	
 		$this->form_validation->set_rules('WORKING_DAYS', 'Working days', 'callback_workingDays_check');	
 		
-		if($this->form_validation->run() == FALSE){				//has not been run or failed validation.
+		if($this->form_validation->run() == FALSE){	//has not been run or failed validation.
 			$this->addPayPeriod();
 		}else{	
 			$data['result'] = $this->Payperiod_model->add_new_PayPeriod(
@@ -64,6 +64,11 @@ class PayperiodController extends CI_Controller
 				$this->input->post('WORKING_DAYS'),
 				$this->input->post('END_OF_THE_MONTH')
 			);
+			
+			$start_date = $this->input->post('START_DATE');
+			$end_date = $this->input->post('END_DATE');
+			
+			$this->Payperiod_model->insertPayslips($start_date,$end_date);
 			$this->load->view('success_AddedPayPeriod', $data);
 		}			
 	}

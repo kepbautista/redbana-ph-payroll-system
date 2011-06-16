@@ -8,6 +8,7 @@ function getName($empnum) {
 		$name=$row['fname'].' '.$row['sname'];
 	return $name;
 }
+
 function getThing($id,$table) {
 	if ($table=="user_main")
 		$result = mysql_query("SELECT * FROM `".$table."` WHERE user_right='".$id."'");
@@ -44,6 +45,7 @@ function getThing($id,$table) {
 		}
 	}return $name;
 }
+
 function getTime()
 {
 	$result = mysql_query("SELECT NOW() time FROM dual");
@@ -51,10 +53,12 @@ function getTime()
 		$time=$row['time'];
 	return $time;
 }
+
 function insert_history($date,$user,$person,$table,$action)
 {
 		mysql_query('INSERT INTO history(`date`,`user`,`person`,`table`,`action`) VALUES ("'.$date.'","'.$user.'","'.$person.'","'.$table.'","'.$action.'")');
 }
+
 if(isset($_POST)){
 
 $query2 = $_POST['query'];
