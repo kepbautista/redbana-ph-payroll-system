@@ -5,9 +5,7 @@
 **/
 
 function addPHILHEALTH($N,$response){
-	$response = $response.'
-	<table>
-	<tr>
+	$response = $response.'<table><tr>
 		<td rowspan="3">&nbsp&nbsp</td>
 		<th rowspan="3"> Monthly <br /> Salary <br /> Bracket </th>
 		<th rowspan="3" colspan="3">  Monthly Salary Range </th>
@@ -15,7 +13,6 @@ function addPHILHEALTH($N,$response){
 		<th rowspan="3" colspan="2"> Total Monthly <br /> Contributions </th>
 		<th rowspan="3" colspan="2"> Employee Share <br /> (EeS) <br /> (EeS = 0.5 x TMC) </th>
 		<th rowspan="3" colspan="2"> Employer Share <br /> (ErS) <br /> (ErS = 0.5 x TMC) </th>
-		<th rowspan="3" colspan="2"> Edit </th>
 	</tr>';
 	
 	for($i=0;$i<$N;$i++){

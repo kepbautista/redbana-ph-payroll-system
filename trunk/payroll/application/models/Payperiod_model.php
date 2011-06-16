@@ -133,8 +133,6 @@ class Payperiod_model extends CI_Model
 		$end_date[4] = '-';	
 		$end_date[7] = '-';
 		
-		$this->insertPayslips($start_date,$end_date);
-		
 		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, ?, FALSE, NULL, NULL, 0, NULL, NULL) ";			
 		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays, $endOfMonth));
 	
