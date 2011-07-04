@@ -32,7 +32,7 @@
         
          <div id="menu">
             <ul>                                        
-                <li><a class="current" href="home.html" title="">Home</a></li>
+                <li><a class="current" href="<?php echo base_url(); ?>" title="">Home</a></li>
 				<li><a href="#" title="">My Account</a></li>
                 <li><a href="#" title="">Edit Other Accounts</a></li>
                 <li><a href="contact.html" title="">menu4</a></li>
@@ -44,7 +44,7 @@
 				<li><?php echo $userData['empNum']; ?></li>
 				<li><?php echo $userData['fname']." ".$userData['mname']."&nbsp;".$userData['sname']; ?></li>
 				<li class="last">
-					<a href='login/logout' class='underline'>Log out</a>
+					<a href="<?php echo base_url().'index.php/login/logout'; ?>" class='underline'>Log out</a>
 				</li>
 			</ul>			
 		</div>

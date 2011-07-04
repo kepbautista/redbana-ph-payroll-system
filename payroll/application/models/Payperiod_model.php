@@ -133,8 +133,8 @@ class Payperiod_model extends CI_Model
 		$end_date[4] = '-';	
 		$end_date[7] = '-';
 		
-		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, ?, FALSE, NULL, NULL, 0, NULL, NULL) ";			
-		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays, $endOfMonth));
+		$sql_x = "INSERT INTO `payperiod` VALUES ('', ?, ?, ?, ?, ?, FALSE, NULL, NULL, 0, NULL, NULL, ?, ?) ";			
+		$obj_result = $this->db->query($sql_x, array($payment_mode, $start_date, $end_date, $workingDays, $endOfMonth, 0, ''));
 	
 		$check_it = $this->get_Last_PayPeriod($payment_mode);
 		
@@ -231,6 +231,81 @@ class Payperiod_model extends CI_Model
 			.$data['fname']." "
 			.$data['mname'];
 	}//get name of the employee
+	
+	function getWorkDays()
+	{
+		/*	made | abe | 24JUN2011_1151
+			returns NULL if no entries, ARRAY if there is/are
+		*/
+		$sql_x = "SELECT * FROM `daily_desc`  ORDER BY `ID`  ASC";
+		$array_result = $this->db->query($sql_x, array())->result();
+		$returnThis = array();
+		
+		if(empty($array_result))
+			return NULL;
+		
+		foreach($array_result as $each_obj)
+		{
+			$returnThis[$each_obj->id] = $each_obj;
+		}
+		return $returnThis;
+	}
+	
+	function getOvertimeRates()
+	{
+		/*	made | abe | 24JUN2011_1151
+			returns NULL if no entries, ARRAY if there is/are
+		*/
+		$sql_x = "SELECT * FROM `overtime_rate` ORDER BY `ID` ASC";
+		$array_result = $this->db->query($sql_x, array())->result();
+		$returnThis = array();
+		
+		foreach($array_result as $each_obj)
+		{
+			$returnThis[$each_obj->id] = $each_obj;
+		}
+		return $returnThis;
+	}
+	
+	function getOvertimeRateSingle($id)
+	{
+		$sql_x = "SELECT * FROM `overtime_rate` WHERE `id` = ?";
+		$array_result = $this->db->query($sql_x, array($id))->result();
+		
+		if(empty($array_result)) return NULL;
+		
+		return $array_result;		
+	}
+	
+	
+	function getAllowedOT_Rates($each_attendance_obj)
+	{
+		/*	made by abe forgot na kung kelan.. anyway
+			me pa rin to, 04 JUL 2011 1816
+			sa sql, it would be better if `HOL_TYPE` IS INCLUDED as another criterion.
+			However, the `daily_desc` table was modified by someone and added the ff
+			   "Regular Holiday on Rest Day",
+			   "Special Holiday on Rest Day",
+			   "Double Holiday on Rest Day"
+			 which could conflict here, as I previously set that a Rest day should be referenced
+			 to the entry in `timesheet`					
+		*/
+		
+		if($each_attendance_obj == NULL) return NULL;
+		$sql_x = "SELECT * FROM `overtime_rate` WHERE `IS_OVERTIME` = ? AND `IS_NIGHTDIFF` = ? AND `IS_RESTDAY` = ? ORDER BY `ID` ASC";
+		$array_result = $this->db->query($sql_x, 
+			array(
+				($each_attendance_obj->overtime == "00:00:00" ? 0 : 1),
+				($each_attendance_obj->night_diff == "00:00:00" ? 0 : 1),
+				($each_attendance_obj->restday)
+			)
+		)->result();
+	    				
+		if(empty($array_result))
+			return NULL;
+		else
+			return $array_result;	
+	}
 }
 
 /* End of file Payperiod_model.php */

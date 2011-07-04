@@ -114,6 +114,22 @@ class Login_model extends CI_Model {
 			}	
 		}
 	}
+	
+	function getUserInfo_for_Panel()
+	{
+		/*
+			made | abe | 15JUN2011_2343
+			
+		*/
+		
+		return array(
+						   'empNum' => $this->session->userData('empnum'),
+						   'sname' => $this->session->userData('sname'), 
+						   'fname' => $this->session->userData('fname'),
+						   'mname' => $this->session->userData('mname')
+		);	
+	}
+	
 }//CLASS
 
 /* End of file login_model.php */

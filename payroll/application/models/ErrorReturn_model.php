@@ -42,14 +42,14 @@ class ErrorReturn_model extends CI_Model
 			if($furtherInfo == NULL)
 				$thisError['FURTHER_INFO'] = $array_result[0]->FURTHER_INFO;
 			else
-				$thisError['FURTHER_INFO'] = $furtherInfo."|"."Tried to call ".$code;
+				//$thisError['FURTHER_INFO'] = $furtherInfo."|"."Tried to call ".$code;
+				$thisError['FURTHER_INFO'] = $furtherInfo;
 		}
 		if($code == 0) $thisError['result'] = TRUE;		
 		
 		return $thisError;
 	}
-	
-	
+		
 }
 
 /* End of file ErrorReturn_model.php */

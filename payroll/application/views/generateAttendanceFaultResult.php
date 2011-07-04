@@ -47,7 +47,6 @@
 		<?php
 			if($generation_result['result'] == FALSE)
 			{
-			echo var_dump($generation_result);
 		?>
 			<div id="form_error_notice" style="width: 80%" class="center"><br/>			
 				Error in <?php echo $mode['present_progressive']; ?> Attendance Faults for this Payperiod.

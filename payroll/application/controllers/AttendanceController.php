@@ -13,7 +13,7 @@ class AttendanceController extends CI_Controller
 		$this->load->model('Payperiod_model');	
 		$this->load->model('Employee_model');
 		$this->load->model('ErrorReturn_model');
-		
+		$this->load->model('Shift_model');
 		/*  ABE | 15MAY2011 2326 | The succeeding lines until the end of this functionareunder development,
 			isn't it nice that such error is displayed on the login page on the circumstance?				
 		*/			
@@ -95,39 +95,95 @@ class AttendanceController extends CI_Controller
 			"ERROR_CODE" => NULL,
 			"ERROR_MESSAGE" => NULL
 		);
+		$OvertimeTakenNoteAlready;
+		$payperiod_obj;
 		
+		//get user info for displaying on our header later
+		$data['userData'] = $this->login_model->getUserInfo_for_Panel();
+		
+		//FORM DATA GATHERING
 		if($payperiod == NULL)  $payperiod = $this->input->post('PAYPERIOD');
 		if($payment_mode == NULL) $payment_mode = $this->input->post('PAYMENT_MODE');
+		$OvertimeTakenNoteAlready = $this->input->post('OT_TOOK_NOTE_ALREADY');
+		
+		// DEALING WITH INVALID, NSUFFICIENT, ABSENT FORM DATA
+		if( !( $OvertimeTakenNoteAlready == '0' or $OvertimeTakenNoteAlready == '1'))
+		{ 
+			$OvertimeTakenNoteAlready = FALSE;
+		}
 		
 		if( !$payment_mode or !$payperiod )
 		{			
 			die(var_dump($this->ErrorReturn_model->createSingleError(408, NULL, NULL)));			
 		}				
-		
-		
+				
 		$payperiod_obj = $this->Payperiod_model->pull_PayPeriod_Info_X($payperiod, $payment_mode);		
 		if( empty($mode) )
 		{
 			$mode['present_progressive'] = 'generating';
 			$mode['past'] = 'generated';
 		}
-		$currentEmployees = $this->Employee_model->get_Employees_Associative();
-		$currentEmployeesDailyRate = array();
 		
-		foreach($currentEmployees as $eachEmployee)
-		{			
-			$xyza = $this->Employee_model->getDailyRate_from_SalaryTable($payperiod_obj, $eachEmployee->empnum);				
-			if($xyza['ERROR_CODE'] != 0)
+		//GETTING DAILY RATES OF EMPLOYEES  PART
+		$GDR_x = $this->Employee_model->getAllEmployees_DailyRate($payperiod_obj);
+		if( $GDR_x['ERROR_CODE'] != 0)
+		{
+			if($GDR_x['FURTHER_INFO'] != NULL)
 			{
-				die(var_dump($xyza));
+				//$this->load->view("ShowErrorsGeneral", $GDR_x['FURTHER_INFO']);
+			}else{
+				//$this->load->view("ShowErrorsGeneral", $GDR_x);
+			}			
+			die('GDR Error');
+		}
+		$currentEmployeesDailyRate = $GDR_x['FURTHER_INFO'];	//daily rates are here		
+		$absences_data = $this->Attendance_model->getAbsences($payperiod, ``, ``, $payment_mode);
+		$tardiness_data = $this->Attendance_model->getTardiness($payperiod, ``, ``, $payment_mode);		
+		
+		//calculate times concerned for these
+		$this->Attendance_model->get_OverTime($payperiod, $payment_mode);
+		$this->Attendance_model->get_UnderTime($payperiod, $payment_mode);
+		$this->Attendance_model->get_NightDifferential($payperiod, $payment_mode);
+						
+		if( $OvertimeTakenNoteAlready == '0' AND $this->Attendance_model->isThereOvertime_in_PayPeriod($payperiod_obj) )
+		{
+			$allowedOvertime = array();
+			$nameList = array();
+			$data['overtime_entries'] = $this->Attendance_model->getOvertimes_in_Payperiod($payperiod_obj);
+			foreach($data['overtime_entries'] as $each_day)
+			{				
+				foreach($each_day as $each_attendance)
+				{
+					if( !isset( $allowedOvertime[$each_attendance->work_date] ) )
+					{
+						$allowedOvertime[$each_attendance->work_date] = array();
+					}
+					$allowedOvertime[$each_attendance->work_date][$each_attendance->empnum] = $this->Payperiod_model->getAllowedOT_Rates($each_attendance);
+					if(! isset ($nameList[$each_attendance->empnum]) )	$nameList[$each_attendance->empnum] = $this->Payperiod_model->getName($each_attendance->empnum);
+				}
 			}
-		    $currentEmployeesDailyRate[$eachEmployee->empnum] = floatval($xyza['FURTHER_INFO']);
-		}	
-		
-		$data['generation_result'] = $this->Attendance_model->generateAbsences_and_Late($payment_mode, $payperiod, $payperiod_obj->TOTAL_WORK_DAYS, 8, $currentEmployeesDailyRate);
-		$data['mode'] = $mode;
-		
-		$this->loadGenerationResult($data);
+			//echo var_dump($allowedOvertime);
+			$data['allowedOvertime'] = $allowedOvertime;
+			$data['nameList'] = $nameList;
+			$data['payperiod'] = $payperiod;
+			$data['payment_mode'] = $payment_mode;		
+			$data['shifts'] = $this->Shift_model->makeAssociativeArray_of_Shifts();
+			$data['workday_classes'] = $this->Payperiod_model->getWorkDays();			
+			$this->load->view("inputOvertimeRates", $data);				
+		}else{			
+			$data['generation_result'] = $this->Attendance_model->generateAbsences_and_Late(
+				$payment_mode, 
+				$payperiod, 
+				$payperiod_obj->TOTAL_WORK_DAYS, 
+				8, 
+				$currentEmployeesDailyRate,
+				$absences_data,
+				$tardiness_data
+			);
+			$data['mode'] = $mode;
+			
+			$this->loadGenerationResult($data);
+		}
 	}
 			
 	private function loadGenerationResult($data)
@@ -156,6 +212,33 @@ class AttendanceController extends CI_Controller
 		$this->load->view('viewAttendanceFaultResult', $data);
 	}
 
+	function updateOvertime()
+	{
+		$empnum = $this->input->post('empnum');
+		$workDate = $this->input->post('work_date');
+		$OT_ID = $this->input->post('value');
+	
+		if( !( 
+		  $empnum != FALSE AND
+		  $workDate != FALSE AND
+		  $OT_ID != FALSE
+		  )
+		) 
+		{
+			echo "DATA_INSUFFICIENT";		
+			return;
+		}
+		
+		$OT_array = $this->Payperiod_model->getOvertimeRateSingle($OT_ID);
+		if($OT_array == NULL)
+		{			
+			echo "OVERTIME_RATE_NOT_FOUND";
+			return;
+		}				
+		if(!$this->Attendance_model->update_Overtime_in_Timesheet($empnum, $workDate, $OT_array[0]->MULFACTOR)) echo "INSERTION_ERROR";
+		return;
+	}
+	
 }//class
 
 

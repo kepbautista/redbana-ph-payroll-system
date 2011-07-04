@@ -43,7 +43,7 @@
 				<li><?php echo $userData['empNum']; ?></li>
 				<li><?php echo $userData['fname']." ".$userData['mname']."&nbsp;".$userData['sname']; ?></li>
 				<li class="last">
-					<a href='login/logout' class='underline'>Log out</a>
+					<a href="<?php echo base_url().'index.php/login/logout'; ?>" class='underline'>Log out</a>
 				</li>
 			</ul>			
 		</div>
