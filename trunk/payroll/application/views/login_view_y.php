@@ -32,7 +32,7 @@
         
          <div id="menu">
             <ul>                                        
-                <li><a class="current" href="home.html" title="">Home</a></li>
+                <li><a class="current" href="<?php echo base_url(); ?>" title="">Home</a></li>
 				<li><a href="#" title="">My Account</a></li>
                 <li><a href="#" title="">Edit Other Accounts</a></li>
                 <li><a href="contact.html" title="">menu4</a></li>

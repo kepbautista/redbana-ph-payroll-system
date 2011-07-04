@@ -18,17 +18,11 @@
         
         <div id="menu">
             <ul>                                        
-                <li><a class="current" href="home.html" title="">Home</a></li>
+                <li><a class="current" href="<?php echo base_url(); ?>" title="">Home</a></li>
             </ul>
         </div>
 		<div id="graynavbar" >
-			<!--
-			<ul>
-				<li>009102901921</li>
-				<li>Kristine Chorvah</li>
-				<li class="last">Log out</li>
-			</ul>
-			-->
+			&nbsp;
 		</div>
         
     </div>

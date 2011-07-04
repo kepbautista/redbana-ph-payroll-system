@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 24, 2011 at 04:22 PM
+-- Generation Time: Jul 04, 2011 at 11:33 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -18,8 +18,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `redbana_payroll`
 --
-CREATE DATABASE `redbana_payroll` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `redbana_payroll`;
 
 -- --------------------------------------------------------
 
@@ -96,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `daily_desc` (
   `desc` varchar(100) NOT NULL,
   `payrate` double NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `daily_desc`
@@ -134,27 +132,6 @@ INSERT INTO `dept_main` (`dept`, `id`) VALUES
 ('HRD', 4),
 ('Marketing', 5),
 ('Operations', 6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `emp_type`
---
-
-CREATE TABLE IF NOT EXISTS `emp_type` (
-  `type` varchar(50) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `emp_type`
---
-
-INSERT INTO `emp_type` (`type`, `id`) VALUES
-('Probational', 2),
-('Regular', 3),
-('Project Based', 4);
 
 -- --------------------------------------------------------
 
@@ -234,6 +211,27 @@ INSERT INTO `employee_status` (`id`, `desc`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emp_type`
+--
+
+CREATE TABLE IF NOT EXISTS `emp_type` (
+  `type` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `emp_type`
+--
+
+INSERT INTO `emp_type` (`type`, `id`) VALUES
+('Probational', 2),
+('Regular', 3),
+('Project Based', 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `errorcodes`
 --
 
@@ -255,6 +253,7 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (453, 'DATE_SPECIFIED_NULL', 'The date you submitted is NULL.', NULL),
 (404, 'EMPLOYEE_DOES_NOT_EXIST', 'The employee you have requested cannot be found on our records.', NULL),
 (450, 'EMPLOYEE_NUMBER_REQUIRED', 'Please submit employee number.', NULL),
+(1000, 'ERROR_PALOOZA', 'There are a bunch of errors that prevents us from doing what you want to do. Please deal with them accordingly.', NULL),
 (200, 'INSERTION_FINAL_ERROR', 'All details are computed, but there is something that failed while inserting.', NULL),
 (456, 'INVALID_DAILY_RATE', 'The daily rate should be greater than 0. Please edit it.', NULL),
 (700, 'INVALID_DATE_FORMAT_INSUFFICIENT_DIGITS', 'The date submitted should be composed exactly of 10 characters, separators included', NULL),
@@ -272,7 +271,6 @@ INSERT INTO `errorcodes` (`CODE`, `NAME`, `MESSAGE`, `FURTHER_INFO`) VALUES
 (409, 'PAYSLIP_NOT_FOUND', 'For this employee, we have to look at his/her payslip, whether finalized or not, so that we can have his/her Daily Rate and use it in our computations. It seems you have not generated a payslip for this employee for the pay period concerned. You might as well generate a payroll for the whole pay period.', NULL),
 (0, 'SUCCESS', '', NULL),
 (403, 'UNKNOWN_FIELD_UPDATE_ATTEMPT', 'You have tried to update a field that does not exist', NULL);
-
 
 -- --------------------------------------------------------
 
@@ -379,6 +377,51 @@ INSERT INTO `maxleave` (`empnum`, `maxleave`, `numofleave`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `overtime_rate`
+--
+
+CREATE TABLE IF NOT EXISTS `overtime_rate` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `MULFACTOR` float NOT NULL,
+  `DESCRIPTION` varchar(255) DEFAULT NULL,
+  `IS_OVERTIME` tinyint(1) NOT NULL DEFAULT '0',
+  `IS_NIGHTDIFF` tinyint(1) NOT NULL DEFAULT '0',
+  `DAY_START` int(11) DEFAULT NULL,
+  `DAY_END` int(11) DEFAULT NULL,
+  `HOL_TYPE` int(11) DEFAULT NULL,
+  `IS_RESTDAY` tinyint(1) NOT NULL DEFAULT '0',
+  `TIME_START` time DEFAULT NULL,
+  `TIME_END` time DEFAULT NULL,
+  UNIQUE KEY `MULFACTOR` (`MULFACTOR`,`IS_OVERTIME`,`IS_NIGHTDIFF`,`DAY_START`,`DAY_END`,`HOL_TYPE`,`IS_RESTDAY`,`TIME_START`,`TIME_END`,`ID`),
+  KEY `ID` (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `overtime_rate`
+--
+
+INSERT INTO `overtime_rate` (`ID`, `MULFACTOR`, `DESCRIPTION`, `IS_OVERTIME`, `IS_NIGHTDIFF`, `DAY_START`, `DAY_END`, `HOL_TYPE`, `IS_RESTDAY`, `TIME_START`, `TIME_END`) VALUES
+(1, 1.25, 'OVERTIME w/o ND, M-F', 1, 0, 1, 5, NULL, 0, NULL, NULL),
+(2, 1.375, 'OVERTIME w/ ND, M-F', 1, 1, 1, 5, NULL, 0, NULL, NULL),
+(3, 0.3, 'REGULAR w/o ND, SP HOL(M-F)', 0, 0, 1, 5, 3, 0, NULL, NULL),
+(4, 1.69, 'OVERTIME w/o ND, SP HOL(M-F)', 1, 0, 1, 5, 3, 0, NULL, NULL),
+(5, 1.859, 'OVERTIME w/ ND, SP HOL(M-F)', 1, 1, 1, 5, 3, 0, NULL, NULL),
+(6, 1.3, 'REGULAR w/o ND, REST DAYS (sat/sun)', 0, 0, 6, 7, NULL, 1, NULL, NULL),
+(7, 1.69, 'OVERTIME w/o ND, 5-10, REST DATS (sat/sun)', 1, 0, 6, 7, NULL, 1, '17:00:00', '22:00:00'),
+(8, 1.859, 'OVERTIME w/ ND. 10-6, Rest days SAT/SUN', 1, 1, 6, 7, NULL, 1, '22:00:00', '06:00:00'),
+(9, 1.5, 'REGULAR w/o ND, 8-5, SP HOL (Rest Day)', 0, 0, NULL, NULL, 3, 1, '08:00:00', '17:00:00'),
+(10, 1.95, 'OVERTIME w/o ND, 5-10, SP HOL(Restday)', 1, 0, NULL, NULL, 3, 1, '17:00:00', '22:00:00'),
+(11, 2.145, 'OVERTIME w/ ND. 10-6, SP HOL (Rest Day)', 1, 1, NULL, NULL, 3, 1, '22:00:00', '06:00:00'),
+(12, 2, 'REGULAR w/o ND, 8-5 LEG HOL or REGULAR Hol', 0, 0, NULL, NULL, 2, 0, '08:00:00', '17:00:00'),
+(13, 2.6, 'OVERTIME w/o ND, 5-10, LEG or REGULAR HOL', 1, 0, NULL, NULL, 2, 0, '17:00:00', '22:00:00'),
+(14, 2.86, 'OVERTIME w/ ND. 10-6, LEG HOL or REG HOL', 1, 1, NULL, NULL, 2, 0, '22:00:00', '06:00:00'),
+(15, 2.6, 'REGULAR w/o ND, 8-5 LEG HOL or REGULAR Hol (REST DAY)', 0, 0, NULL, NULL, 2, 1, '08:00:00', '17:00:00'),
+(16, 3.38, 'OVERTIME w/o ND, 5-10, LEG or REGULAR HOL (Rest Day)', 1, 0, NULL, NULL, 2, 1, '17:00:00', '22:00:00'),
+(17, 3.718, 'OVERTIME w/ ND, 10-6, LEG HOL or REGULAR HOL (REST DAY)', 1, 1, NULL, NULL, 2, 1, '22:00:00', '06:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment_mode`
 --
 
@@ -417,20 +460,17 @@ CREATE TABLE IF NOT EXISTS `payperiod` (
   `PAYROLL_FINALIZED` tinyint(1) NOT NULL DEFAULT '0',
   `PAYROLL_FINALIZED_BY` varchar(255) DEFAULT NULL,
   `PAYROLL_FINALIZED_DATE` timestamp NULL DEFAULT NULL,
-  `NEEDS_REGENERATION` tinyint(1) NOT NULL DEFAULT 0,
+  `NEEDS_REGENERATION` tinyint(1) NOT NULL DEFAULT '0',
   `NEEDS_REGENERATION_REASON` varchar(255) NOT NULL DEFAULT 'unspecified',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `payperiod`
 --
 
-INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`) VALUES
-(1, 1, '2011-06-01', '2011-06-22', 11, 0, 0, NULL, NULL, 0, NULL, NULL),
-(2, 1, '2011-06-23', '2011-07-03', 11, 0, 0, NULL, NULL, 0, NULL, NULL),
-(3, 1, '2011-06-23', '2011-06-30', 8, 1, 0, NULL, NULL, 0, NULL, NULL),
-(4, 1, '2011-07-04', '2011-07-14', 11, 1, 0, NULL, NULL, 0, NULL, NULL);
+INSERT INTO `payperiod` (`ID`, `PAYMENT_MODE`, `START_DATE`, `END_DATE`, `TOTAL_WORK_DAYS`, `END_OF_THE_MONTH`, `FINALIZED`, `FINALIZED_BY`, `FINALIZED_DATE`, `PAYROLL_FINALIZED`, `PAYROLL_FINALIZED_BY`, `PAYROLL_FINALIZED_DATE`, `NEEDS_REGENERATION`, `NEEDS_REGENERATION_REASON`) VALUES
+(7, 1, '2011-06-01', '2011-06-22', 11, 0, 0, NULL, NULL, 0, NULL, NULL, 0, '');
 
 -- --------------------------------------------------------
 
@@ -465,6 +505,10 @@ CREATE TABLE IF NOT EXISTS `payroll_absence` (
 -- Dumping data for table `payroll_absence`
 --
 
+INSERT INTO `payroll_absence` (`empnum`, `payperiod`, `payment_mode`, `monthly_rate`, `daily_rate`, `absences_lwop_days`, `absences_lwop_amount`, `leave_sick_vacation_days`, `leave_sick_vacation_amount`, `suspension_days`, `suspension_amount`, `tardiness_min`, `tardiness_amount`, `total_amount`, `paid_vl_days`, `paid_sl_days`, `paid_emergency_leave_days`, `last_update`, `modified_by`) VALUES
+('2008-00196', 7, 1, 25000, 500, 0, 0, 0, 0, 0, 0, 240, 250, 250, 0, 0, 0, '2011-07-04 19:25:25', '2008-00196'),
+('2008-13916', 7, 1, 11000, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2011-07-04 19:25:25', '2008-00196'),
+('2008-13917', 7, 1, 11000, 500, 0, 0, 0, 0, 0, 0, 60, 62.5, 62.5, 0, 0, 0, '2011-07-04 19:25:25', '2008-00196');
 
 -- --------------------------------------------------------
 
@@ -598,8 +642,7 @@ CREATE TABLE IF NOT EXISTS `salary` (
   `AdvancestoEmployee` double NOT NULL DEFAULT '0',
   `NetPay` double NOT NULL DEFAULT '0',
   `Status` varchar(50) DEFAULT NULL,
-  KEY `EmployeeNumber` (`EmployeeNumber`),
-  KEY `EmployeeNumber_2` (`EmployeeNumber`)
+  PRIMARY KEY (`start_date`,`end_date`,`EmployeeNumber`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -607,14 +650,9 @@ CREATE TABLE IF NOT EXISTS `salary` (
 --
 
 INSERT INTO `salary` (`start_date`, `end_date`, `EmployeeNumber`, `EmployeeName`, `DailyRate`, `PayPeriodRate`, `AbsencesTardiness`, `Overtime`, `Holiday`, `HolidayAdjustment`, `TaxRefund`, `NightDifferential`, `GrossPay`, `NonTax`, `TaxShield`, `TotalPay`, `WithholdingBasis`, `WithholdingTax`, `SSS`, `Philhealth`, `Pagibig`, `PagibigLoan`, `SSSLoan`, `CompanyLoan`, `CellphoneCharges`, `AdvancestoEmployee`, `NetPay`, `Status`) VALUES
-('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 500, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
-('2011-06-01', '2011-06-22', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
-('2011-06-23', '2011-07-03', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 11687.5, 1359.375, 500, 312.5, 0, 0, 0, 0, 0, 0, 10328.125, ''),
-('2011-06-23', '2011-07-03', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 4995.8, 62.11, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 4933.69, ''),
-('2011-06-23', '2011-06-30', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL),
-('2011-06-23', '2011-06-30', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 102.53, 0, 0, 100, 0, 0, 0, 0, 0, 5297.47, ''),
-('2011-07-04', '2011-07-14', '2008-00196', 'Bautista, Kristine Elaine Perez', 0, 12500, 0, 0, 0, 0, 0, 0, 12500, 0, 0, 12500, 12400, 1537.5, 0, 0, 100, 0, 0, 0, 0, 0, 10862.5, ''),
-('2011-07-04', '2011-07-14', '2008-13916', 'Samaniego, Kim Pura', 0, 5500, 0, 0, 0, 0, 0, 0, 5500, 0, 0, 5500, 5400, 102.53, 0, 0, 100, 0, 0, 0, 0, 0, 5297.47, '');
+('2011-06-01', '2011-06-22', '2008-00196', 'Bautista, Kristine Elaine Perez', 500, 12500, 0, 0, 0, 0, 0, 87.5, 12587.5, 0, 0, 12587.5, 11775, 1381.25, 500, 312.5, 0, 0, 0, 0, 0, 0, 10393.75, ''),
+('2011-06-01', '2011-06-22', '2008-13916', 'Samaniego, Kim Pura', 500, 5500, 0, 117.19, 0, 0, 0, 61.44, 5678.63, 0, 0, 5678.63, 5174.43, 79.973, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 5094.457, ''),
+('2011-06-01', '2011-06-22', '2008-13917', 'Samaniegota, Kimta Purata', 500, 5500, 0, 117.19, 0, 0, 0, 56.25, 5673.44, 0, 0, 5673.44, 5169.24, 79.454, 366.7, 137.5, 0, 0, 0, 0, 0, 0, 5089.786, '');
 
 -- --------------------------------------------------------
 
@@ -757,14 +795,19 @@ CREATE TABLE IF NOT EXISTS `timesheet` (
   `restday` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'This is reserved for times na, pumasok siya pero supposed to be restday niya. This is additional pay kasi.',
   `overtime_rate` int(11) NOT NULL DEFAULT '0' COMMENT 'If 0, this means when generating overtime cost, automatically find what rate to use (determine data from other columns), otherwise, specified in this.',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `timesheet`
 --
 
 INSERT INTO `timesheet` (`id`, `empnum`, `work_date`, `date_in`, `time_in`, `date_out`, `time_out`, `absence_reason`, `shift_id`, `tardiness`, `undertime`, `overtime`, `night_diff`, `type`, `restday`, `overtime_rate`) VALUES
-(1, '2008-00196', '2011-06-09', '2011-06-09', '21:00:00', '2011-06-11', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '1', 0, 0);
+(2, '2008-00196', '2011-06-15', '2011-06-15', '21:00:00', '2011-06-16', '06:00:00', NULL, 6, '00:00:00', '00:00:00', '00:00:00', '07:00:00', '1', 0, 0),
+(3, '2008-13916', '2011-06-15', '2011-06-14', '23:00:00', '2011-06-15', '08:50:00', 0, 1, '00:00:00', '00:10:00', '00:00:00', '04:50:00', '1', 0, 0),
+(4, '2008-13917', '2011-06-15', '2011-06-15', '01:00:00', '2011-06-15', '10:30:00', 0, 1, '01:00:00', '00:00:00', '01:30:00', '05:00:00', '1', 0, 1),
+(5, '2008-00196', '2011-06-16', '2011-06-17', '01:00:00', '2011-06-17', '06:00:00', 0, 6, '04:00:00', '00:00:00', '00:00:00', '07:00:00', '1', 0, 0),
+(6, '2008-13916', '2011-06-16', '2011-06-15', '23:00:00', '2011-06-16', '10:30:00', 0, 1, '00:00:00', '00:00:00', '01:30:00', '05:00:00', '1', 0, 1),
+(7, '2008-13917', '2011-06-16', '2011-06-16', '00:00:00', '2011-06-16', '08:00:00', 0, 1, '00:00:00', '01:00:00', '00:00:00', '04:00:00', '1', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -845,9 +888,10 @@ CREATE TABLE IF NOT EXISTS `variables` (
 --
 
 INSERT INTO `variables` (`Name`, `Value`) VALUES
+('NIGHT_DIFF_RATE', 0.1),
 ('PagIbig', 100),
-('WorkingDaysPerMonth', 22),
-('NIGHT_DIFF_RATE', 0.1);
+('WorkingDaysPerMonth', 22);
+
 -- --------------------------------------------------------
 
 --
@@ -891,42 +935,3 @@ INSERT INTO `witholding_tax` (`PAYMENT_MODE_ID_FK`, `BRACKET`, `EXEMPTION_DEFINI
 (2, 6, 1875, 25, 11667, 15833, 17917, 20000, 22083, 24167),
 (2, 7, 4166.67, 30, 20833, 25000, 27083, 29167, 31250, 33333),
 (2, 8, 10416.7, 32, 41667, 45833, 47917, 50000, 52083, 54167);
-
-CREATE TABLE `redbana_payroll`.`overtime_rate` (
-`ID` INT NOT NULL AUTO_INCREMENT, 
-`MULFACTOR` FLOAT NOT NULL, 
-`IS_OVERTIME` BOOLEAN NOT NULL DEFAULT '0', 
-`IS_NIGHTDIFF` BOOLEAN NOT NULL DEFAULT '0', 
-`DAY_START` INT NULL DEFAULT NULL, 
-`DAY_END` INT NULL DEFAULT NULL, 
-`HOL_TYPE` INT NULL DEFAULT NULL, 
-`IS_RESTDAY` BOOLEAN NOT NULL DEFAULT '0', 
-`TIME_START` TIME NULL DEFAULT NULL, 
-`TIME_END` TIME NULL DEFAULT NULL, 
- UNIQUE (`MULFACTOR`, `IS_OVERTIME`, `IS_NIGHTDIFF`, `DAY_START`, `DAY_END`, `HOL_TYPE`, `IS_RESTDAY`, `TIME_START`, `TIME_END`, `ID`), INDEX (`ID`)
-) ENGINE = InnoDB;
-
-INSERT INTO `overtime_rate` (`ID`, `MULFACTOR`, `IS_OVERTIME`, `IS_NIGHTDIFF`, `DAY_START`, `DAY_END`, `HOL_TYPE`, `IS_RESTDAY`, `TIME_START`, `TIME_END`) VALUES
-(1, 1.25, 1, 0, 1, 5, NULL, 0, NULL, NULL),
-(2, 1.375, 1, 1, 1, 5, NULL, 0, NULL, NULL),
-(3, 0.3, 0, 0, 1, 5, 3, 0, NULL, NULL),
-(4, 1.69, 1, 0, 1, 5, 3, 0, NULL, NULL),
-(5, 1.859, 1, 1, 1, 5, 3, 0, NULL, NULL),
-(6, 1.3, 0, 0, 6, 7, NULL, 1, NULL, NULL),
-(7, 1.69, 1, 0, 6, 7, NULL, 1, "17:00:00", "22:00:00"),
-(8, 1.859, 1, 1, 6, 7, NULL, 1,  "22:00:00", "06:00:00"),
-(9, 1.5, 0, 0, NULL, NULL, 3, 1, "08:00:00", "17:00:00" ),
-(10, 1.95, 1, 0, NULL, NULL, 3, 1, "17:00:00", "22:00:00"),
-(11, 2.145, 1, 1, NULL, NULL, 3, 1, "22:00:00", "06:00:00"),
-(12, 2, 0, 0, NULL, NULL, 2, 0, "08:00:00", "17:00:00" ),
-(13, 2.6, 1, 0, NULL, NULL, 2, 0, "17:00:00", "22:00:00"),
-(14, 2.86, 1, 1, NULL, NULL, 2, 0, "22:00:00", "06:00:00"),
-(15, 2.6, 0, 0, NULL, NULL, 2, 1, "08:00:00", "17:00:00" ),
-(16, 3.38, 1, 0, NULL, NULL, 2, 1, "17:00:00", "22:00:00"),
-(17, 3.718, 1, 1, NULL, NULL, 2, 1, "22:00:00", "06:00:00"),
-(18, 2, 0, 0, NULL, NULL, 2, 0, "08:00:00", "17:00:00" ),
-(19, 2.6, 1, 0, NULL, NULL, 2, 0, "17:00:00", "22:00:00"),
-(20, 2.86, 1, 0, NULL, NULL, 2, 1, "22:00:00", "06:00:00"),
-(21, 2.6, 0, 0, NULL, NULL, 2, 1, "08:00:00", "17:00:00" ),
-(22, 3.38, 1, 0, NULL, NULL, 2, 1, "17:00:00", "22:00:00"),
-(23, 3.718, 1, 1, NULL, NULL, 2, 1, "22:00:00", "06:00:00");

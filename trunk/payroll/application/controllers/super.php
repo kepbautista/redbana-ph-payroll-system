@@ -24,18 +24,18 @@ class Super extends CI_Controller {
 		
 		if ( $this->login_model->isUser_LoggedIn() ) 	
 		{
-			$data['userData'] = array(
-						   'empNum' => $this->session->userData('empnum'),
-						   'sname' => $this->session->userData('sname'), 
-						   'fname' => $this->session->userData('fname'),
-						   'mname' => $this->session->userData('mname')
-			);
+			$data['userData'] = $this->login_model->getUserInfo_for_Panel();
 			$data['sql']=$this->login_model->permission($this->session->userData('userType'));
 			$this->load->view('superuser_home_x', $data);					
 		}
 		else
 			redirect('login');						
 	}//index()
+	
+	function jqtest()
+	{
+		$this->load->view('jqtest');
+	}
 		
 }//class				
 ?>
